@@ -1,1 +1,3 @@
-# ski-app
+# Capstone Two
+
+## SnowPro
