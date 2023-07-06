@@ -18,9 +18,8 @@ CREATE TABLE "users" (
     "email" text   NOT NULL,
     "password" text   NOT NULL,
     "avatar" text   NULL,
-    "bio" varchar(250)   NULL,
+    "bio" varchar(1000)   NULL,
     "video_links" text   NULL,
-    "fav_mountains" int   NULL UNIQUE,
     CONSTRAINT "pk_User" PRIMARY KEY (
         "id"
      ),
@@ -99,11 +98,16 @@ CREATE TABLE "videos" (
      )
 );
 
-ALTER TABLE "ski_areas" ADD CONSTRAINT "fk_ski_areas_id" FOREIGN KEY("id")
-REFERENCES "users" ("fav_mountains");
+CREATE TABLE "fav_mountains" (
+    "user_id" TEXT
+        REFERENCES users ON DELETE CASCADE,
+    "ski_areas_id" INTEGER
+        REFERENCES "ski_areas" ON DELETE CASCADE,
+    PRIMARY KEY ("user_id", "ski_areas_id")
+)
 
 ALTER TABLE "reviews" ADD CONSTRAINT "fk_reviews_user_id" FOREIGN KEY("user_id")
-REFERENCES "users" ("username");
+REFERENCES "users" ("id");
 
 ALTER TABLE "reviews" ADD CONSTRAINT "fk_reviews_ski_area_id" FOREIGN KEY("ski_area_id")
 REFERENCES "ski_areas" ("id");
@@ -112,27 +116,31 @@ ALTER TABLE "reviews" ADD CONSTRAINT "fk_reviews_tag_ids" FOREIGN KEY("tag_ids")
 REFERENCES "tags" ("id");
 
 ALTER TABLE "review_replies" ADD CONSTRAINT "fk_review_replies_user_id" FOREIGN KEY("user_id")
-REFERENCES "users" ("username");
+REFERENCES "users" ("id");
 
 ALTER TABLE "review_replies" ADD CONSTRAINT "fk_review_replies_tag_ids" FOREIGN KEY("tag_ids")
 REFERENCES "tags" ("id");
 
 ALTER TABLE "messages" ADD CONSTRAINT "fk_messages_sender_id" FOREIGN KEY("sender_id")
-REFERENCES "users" ("username");
+REFERENCES "users" ("id");
 
 ALTER TABLE "messages" ADD CONSTRAINT "fk_messages_recipient_id" FOREIGN KEY("recipient_id")
-REFERENCES "users" ("username");
+REFERENCES "users" ("id");
 
 ALTER TABLE "photos" ADD CONSTRAINT "fk_photos_user_id" FOREIGN KEY("user_id")
-REFERENCES "users" ("username");
+REFERENCES "users" ("id");
 
 ALTER TABLE "photos" ADD CONSTRAINT "fk_photos_tag_id" FOREIGN KEY("tag_id")
 REFERENCES "tags" ("id");
 
 ALTER TABLE "videos" ADD CONSTRAINT "fk_videos_user_id" FOREIGN KEY("user_id")
-REFERENCES "users" ("username");
+REFERENCES "users" ("id");
 
 ALTER TABLE "videos" ADD CONSTRAINT "fk_videos_tag_id" FOREIGN KEY("tag_id")
 REFERENCES "tags" ("id");
 
+ALTER TABLE "fav_mountains" ADD CONSTRAINT "fk_fav_mountains_user_id" FOREIGN KEY("user_id")
+REFERENCES "users" ("id")
 
+ALTER TABLE "fav_mountains" ADD CONSTRAINT "fk_fav_mountains_ski_areas_id" FOREIGN KEY("ski_areas_id")
+REFERENCES "ski_areas" ("id")

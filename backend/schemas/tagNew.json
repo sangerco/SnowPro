@@ -1,0 +1,14 @@
+{
+    "type": "object",
+    "properties": {
+        "tag": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 15
+        }
+    },
+    "additionalProperties": false,
+    "required": [
+        "tag"
+    ]
+}
