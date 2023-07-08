@@ -14,18 +14,28 @@ interface SqlForPartialUpdateResult {
 }
 
 const sqlForPartialUpdate = 
-    (dataToUpate: DataToUpdate, nodeToSql: NodeToSql): SqlForPartialUpdateResult => {
-        const keys = Object.keys(dataToUpate);
+    (dataToUpdate: DataToUpdate, nodeToSql: NodeToSql): SqlForPartialUpdateResult => {
+        const keys = Object.keys(dataToUpdate);
         if (keys.length === 0) {
             throw new BadRequestError("No data")
         } 
-        const cols = keys.map((colName, idx) => {
-            `"${nodeToSql[colName] || colName}"=$${idx + 1}`
+
+        const cols: string[] = [];
+        const values: any[] = [];
+
+        keys.forEach((colName, idx) => {
+            const value = dataToUpdate[colName];
+            if(value !== undefined) {
+                const sqlColName = nodeToSql[colName] || colName;
+                cols.push(`"${sqlColName}"=$${idx + 1}`);
+                values.push(value)
+            }
+            
         });
 
         return {
             setCols: cols.join(", "),
-            values: Object.values(dataToUpate)
+            values: Object.values(dataToUpdate)
         };
 }
 

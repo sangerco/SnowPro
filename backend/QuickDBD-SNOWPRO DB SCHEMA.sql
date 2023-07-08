@@ -54,7 +54,6 @@ CREATE TABLE "review_replies" (
     "review_id" text   NOT NULL,
     "user_id" text   NOT NULL,
     "body" varchar(500)   NOT NULL,
-    "tag_ids" text   NULL,
     CONSTRAINT "pk_review_replies" PRIMARY KEY (
         "id"
      )
@@ -82,6 +81,7 @@ CREATE TABLE "photos" (
     "id" text   NOT NULL,
     "user_id" text   NOT NULL,
     "link" text   NOT NULL,
+    "about" text NULL,
     "tag_id" text   NULL,
     CONSTRAINT "pk_photos" PRIMARY KEY (
         "id"
@@ -92,6 +92,7 @@ CREATE TABLE "videos" (
     "id" text   NOT NULL,
     "user_id" text   NOT NULL,
     "link" text   NULL,
+    "about" text NULL,
     "tag_id" text NULL,
     CONSTRAINT "pk_videos" PRIMARY KEY (
         "id"

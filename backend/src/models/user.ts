@@ -17,6 +17,16 @@ interface UserData {
     videoLinks: string
 }
 
+interface UserDataRow {
+    username: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    avatar: string;
+    bio: string;
+    videoLinks: string;
+}
+
 class User {
     static async authenticate (username: string, password: string): Promise<UserData | undefined> {
         const result = await db.query(

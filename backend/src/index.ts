@@ -1,12 +1,13 @@
 import express, { Express, Request, Response } from 'express';
 import axios, { AxiosRequestConfig } from 'axios';
 import cors from 'cors';
+import { Key, Host } from './vault/secret';
 const port = 5000;
 
 const app: Express = express();
 
-const apiKey: string = 'd5d3480381msh53bfc1010a93e4dp163156jsn7ec3fa2fb72f';
-const apiHost: string = 'ski-resorts-and-conditions.p.rapidapi.com';
+const apiKey: string = Key;
+const apiHost: string = Host;
 const url: string = 'https://ski-resorts-and-conditions.p.rapidapi.com/v1/resort/monarch';
 
 app.use(cors())
