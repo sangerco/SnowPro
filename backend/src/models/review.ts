@@ -6,7 +6,7 @@ import { v4 as uuidv4 } from 'uuid';
 interface ReviewData {
     id: string;
     userId: string;
-    skiAreaId: string;
+    skiAreaSlug: string;
     body: string;
     stars: number;
     photos: string;
@@ -16,7 +16,7 @@ interface ReviewData {
 class Review {
     static async createReview(
         userId: string,
-        skiAreaId: number,
+        skiAreaSlug: number,
         body: string,
         stars: number,
         photos: string,
@@ -29,7 +29,7 @@ class Review {
             `INSERT INTO reviews
                 (id,
                    user_id,
-                   ski_area_id,
+                   ski_area_slug,
                    body,
                    stars,
                    photos,
@@ -38,14 +38,14 @@ class Review {
             RETURNING
                 id,
                 user_id AS "userId", 
-                ski_area_id AS "skiAreaId", 
+                ski_area_slug AS "skiAreaSlug", 
                 body, 
                 stars, 
                 photos, 
                 tag_ids AS "tagIds"`,
             [   id,
                 userId,
-                skiAreaId,
+                skiAreaSlug,
                 body,
                 stars,
                 photos,
@@ -70,7 +70,7 @@ class Review {
                             SET ${setCols}
                             WHERE id = ${id}
                             RETURNING user_id AS "userId",
-                            ski_area_id AS "skiAreaId",
+                            ski_area_slug AS "skiAreaSlug",
                             body,
                             stars,
                             photos,

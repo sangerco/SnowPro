@@ -29,17 +29,17 @@ CREATE TABLE "users" (
 );
 
 CREATE TABLE "ski_areas" (
-    "id" int   NOT NULL,
+    "slug" text  NOT NULL,
     "name" text   NOT NULL,
     CONSTRAINT "pk_Ski_areas" PRIMARY KEY (
-        "id"
+        "slug"
      )
 );
 
 CREATE TABLE "reviews" (
     "id" text   NOT NULL,
     "user_id" text   NOT NULL,
-    "ski_area_id" int   NOT NULL,
+    "ski_area_slug" text  NOT NULL,
     "body" varchar(500)   NULL,
     "stars" int   NOT NULL,
     "photos" text   NULL,
@@ -102,16 +102,16 @@ CREATE TABLE "videos" (
 CREATE TABLE "fav_mountains" (
     "user_id" TEXT
         REFERENCES users ON DELETE CASCADE,
-    "ski_areas_id" INTEGER
+    "ski_areas_slug" TEXT
         REFERENCES "ski_areas" ON DELETE CASCADE,
-    PRIMARY KEY ("user_id", "ski_areas_id")
+    PRIMARY KEY ("user_id", "ski_areas_slug")
 )
 
 ALTER TABLE "reviews" ADD CONSTRAINT "fk_reviews_user_id" FOREIGN KEY("user_id")
 REFERENCES "users" ("id");
 
-ALTER TABLE "reviews" ADD CONSTRAINT "fk_reviews_ski_area_id" FOREIGN KEY("ski_area_id")
-REFERENCES "ski_areas" ("id");
+ALTER TABLE "reviews" ADD CONSTRAINT "fk_reviews_ski_area_slug" FOREIGN KEY("ski_area_slug")
+REFERENCES "ski_areas" ("slug");
 
 ALTER TABLE "reviews" ADD CONSTRAINT "fk_reviews_tag_ids" FOREIGN KEY("tag_ids")
 REFERENCES "tags" ("id");
@@ -143,5 +143,5 @@ REFERENCES "tags" ("id");
 ALTER TABLE "fav_mountains" ADD CONSTRAINT "fk_fav_mountains_user_id" FOREIGN KEY("user_id")
 REFERENCES "users" ("id")
 
-ALTER TABLE "fav_mountains" ADD CONSTRAINT "fk_fav_mountains_ski_areas_id" FOREIGN KEY("ski_areas_id")
-REFERENCES "ski_areas" ("id")
+ALTER TABLE "fav_mountains" ADD CONSTRAINT "fk_fav_mountains_ski_areas_slug" FOREIGN KEY("ski_areas_slug")
+REFERENCES "ski_areas" ("slug")

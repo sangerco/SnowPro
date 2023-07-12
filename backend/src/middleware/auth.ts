@@ -19,7 +19,7 @@ const authenticateJWT = (req: Request, res: Response, next: NextFunction): void 
 
 const ensureLoggedIn = (req: Request, res: Response, next: NextFunction): void => {
     try {
-        if (!res.locals.user) throw new UnauthorizedError();
+        if (!res.locals.user) throw new UnauthorizedError('Unauthorized');
         return next();
     } catch (e) {
         return next();
@@ -28,7 +28,7 @@ const ensureLoggedIn = (req: Request, res: Response, next: NextFunction): void =
 
 const checkIfAdmin = (req: Request, res: Response, next: NextFunction): void => {
     try {
-        if (res.locals.user.isAdmin === false) throw new UnauthorizedError;
+        if (res.locals.user.isAdmin === false) throw new UnauthorizedError('Unauthorized');
         return next();
     } catch (e) {
         return next();
@@ -38,7 +38,7 @@ const checkIfAdmin = (req: Request, res: Response, next: NextFunction): void => 
 const checkIfUserOrAdmin = (req: Request, res: Response, next: NextFunction): void => {
     try {
         const user = res.locals.user;
-        if (user.username !== req.params.username && user.isAdmin === false) throw new UnauthorizedError();
+        if (user.username !== req.params.username && user.isAdmin === false) throw new UnauthorizedError('Unauthorized');
         return next();
     } catch (e) {
         return next();

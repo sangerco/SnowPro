@@ -9,27 +9,47 @@ class ExpressError extends Error {
     }   
 }
 
-class NotFoundError extends ExpressError {
-    constructor (message = 'Not Found') {
-        super(message, 404);
+class NotFoundError extends Error {
+    constructor(errors: string | string[]) {
+        if (typeof errors === 'string') {
+            super(errors);
+        } else {
+            super(errors.join('\n'));
+        }
+        this.name = 'Not Found';
     }
 }
 
-class UnauthorizedError extends ExpressError {
-    constructor (message = 'Unauthorized') {
-        super(message, 401);
+class UnauthorizedError extends Error {
+    constructor(errors: string | string[]) {
+      if (typeof errors === 'string') {
+        super(errors);
+      } else {
+        super(errors.join('\n'));
+      }
+      this.name = 'Unauthorized';
     }
 }
 
-class BadRequestError extends ExpressError {
-    constructor (message = 'Bad Request') {
-        super(message, 400);
+class BadRequestError extends Error {
+    constructor(errors: string | string[]) {
+      if (typeof errors === 'string') {
+        super(errors);
+      } else {
+        super(errors.join('\n'));
+      }
+      this.name = 'BadRequestError';
     }
 }
 
-class ForbiddenError extends ExpressError {
-    constructor (message = 'Forbidden') {
-        super(message, 403);
+class ForbiddenError extends Error {
+    constructor(errors: string | string[]) {
+      if (typeof errors === 'string') {
+        super(errors);
+      } else {
+        super(errors.join('\n'));
+      }
+      this.name = 'Forbidden';
     }
 }
 
