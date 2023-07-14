@@ -1,22 +1,31 @@
 {
     "type": "object",
     "properties": {
+        "review_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 20
+        },
         "user_id": {
             "type": "string",
             "minLength": 1,
             "maxLength": 20
         },
-        "link": {
+        "body": {
             "type": "string",
-            "minLength": 10,
-            "maxLength": 125
+            "minLength": 2,
+            "maxLength": 500
         },
-        "about": {
+        "tag_ids": {
             "type": "string",
             "minLength": 1,
             "maxLength": 20
         }
     },
     "additionalProperties": false,
-    "required": []
+    "required": [
+        "review_id",
+        "user_id",
+        "body"
+    ]
 }

@@ -8,11 +8,12 @@ interface VideoData {
     userId: string;
     link: string;
     about: string;
-    tagId: string;
+    tagIds: string[];
+    tags: string[];
 }
 
 class Video {
-    static async createVideo(userId: string, link: string, about: string, tagId: string): Promise<VideoData> {
+    static async createVideo(userId: string, link: string, about: string, tagIds: string[]): Promise<VideoData> {
         const id = uuidv4();
 
         const result = await db.query( `
@@ -20,19 +21,48 @@ class Video {
                 (   id,
                     user_id,
                     link,
-                    about,
-                    tag_id)
+                    about)
             VALUES ($1, $2, $3, $4, $5)
             RETURNING 
                     id,
                     user_id AS "userId",
                     link,
-                    about,
-                    tag_id AS "tagId"`,
-            [id, userId, link, about, tagId]
+                    about`,
+            [id, userId, link, about]
         );
 
         const video = result.rows[0];
+
+        for (let tagId of tagIds) {
+            await db.query(`
+                INSERT INTO review_tags (review_id, tag_id)
+                VALUES ($1, $2)`,
+            [video.id, tagId])
+
+            video.tagIds.push(tagId);
+        }
+
+        return video;
+    };
+
+    static async getVideo(id:string): Promise<VideoData> {
+        const result = await db.query(
+            `SELECT v.id,
+                v.user_id AS "userId",
+                v.link,
+                v.about,
+                v.tag_id AS "tagId",
+                t.tag
+                FROM videos v
+                LEFT JOIN videos_tags vt ON v.tag_id = vt.tag_id
+                LEFT JOIN tags t ON vt.tag_id = t.id
+                WHERE v.id = $1`,
+            [id]
+        )
+
+        const video = result.rows[0];
+
+        if(!video) throw new NotFoundError('Photo Not Found');
 
         return video;
     };
@@ -41,8 +71,7 @@ class Video {
         const { setCols, values } = sqlForPartialUpdate(
             data,
             {
-                userId: "user_id",
-                tagId: "tag_id"
+                userId: "user_id"
             }
         );
 
@@ -52,8 +81,7 @@ class Video {
                             RETURNING id,
                                 user_id AS "userId",
                                 link,
-                                about,
-                                tag_id AS "tagId"`;
+                                about`;
         const result = await db.query(sqlQuery, [...values, id]);
         const video = result.rows[0];
 
@@ -74,3 +102,5 @@ class Video {
         if(!video) throw new NotFoundError('Video not found!');
     }
 }
+
+export default Video;

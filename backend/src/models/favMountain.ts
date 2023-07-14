@@ -4,11 +4,11 @@ import { v4 as uuidv4 } from 'uuid';
 
 interface FavMountainData {
     userId: string;
-    skiAreaId: number
+    skiAreaId: string
 }
 
 class FavMountain {
-    static async createFavMountain(userId: string, skiAreaId: number): Promise<FavMountainData> {
+    static async createFavMountain(userId: string, skiAreaId: string): Promise<FavMountainData> {
         const id = uuidv4();
 
         const result = await db.query(`
@@ -25,7 +25,7 @@ class FavMountain {
         return favMountain;
     }
 
-    static async remove(id: number): Promise<void> {
+    static async remove(id: string): Promise<void> {
         const result = await db.query(
             `DELETE FROM fav_mountains
                 WHERE id = $1

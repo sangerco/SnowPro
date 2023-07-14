@@ -1,17 +1,12 @@
 {
     "type": "object",
     "properties": {
-        "user_id": {
+        "body": {
             "type": "string",
-            "minLength": 1,
-            "maxLength": 20
+            "minLength": 2,
+            "maxLength": 500
         },
-        "link": {
-            "type": "string",
-            "minLength": 10,
-            "maxLength": 125
-        },
-        "about": {
+        "tag_ids": {
             "type": "string",
             "minLength": 1,
             "maxLength": 20

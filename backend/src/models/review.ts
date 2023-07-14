@@ -10,17 +10,17 @@ interface ReviewData {
     body: string;
     stars: number;
     photos: string;
-    tagIds: string
+    tagIds: string[];
 }
 
 class Review {
     static async createReview(
         userId: string,
-        skiAreaSlug: number,
+        skiAreaSlug: string,
         body: string,
         stars: number,
         photos: string,
-        tagIds: string
+        tagIds: string[]
     ): Promise<ReviewData> {
 
         const id = uuidv4();
@@ -32,8 +32,7 @@ class Review {
                    ski_area_slug,
                    body,
                    stars,
-                   photos,
-                   tag_ids)
+                   photos)
             VALUES ($1, $2, $3, $4, $5, $6, $7)
             RETURNING
                 id,
@@ -41,19 +40,26 @@ class Review {
                 ski_area_slug AS "skiAreaSlug", 
                 body, 
                 stars, 
-                photos, 
-                tag_ids AS "tagIds"`,
+                photos`,
             [   id,
                 userId,
                 skiAreaSlug,
                 body,
                 stars,
-                photos,
-                tagIds
+                photos
             ]
         )
 
         const review = result.rows[0];
+        
+        for (let tagId of tagIds) {
+            await db.query(`
+                INSERT INTO review_tags (review_id, tag_id)
+                VALUES ($1, $2)`,
+            [review.id, tagId])
+
+            review.tagIds.push(tagId);
+        }
 
         return review;
     }
@@ -73,8 +79,7 @@ class Review {
                             ski_area_slug AS "skiAreaSlug",
                             body,
                             stars,
-                            photos,
-                            tag_ids AS "tagIds"`;
+                            photos`;
         const result = await db.query(sqlQuery, [...values, id])
         const review = result.rows[0];
 

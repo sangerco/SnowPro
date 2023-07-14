@@ -1,45 +1,49 @@
-import express, { Express, Request, Response } from 'express';
-import axios, { AxiosRequestConfig } from 'axios';
+import express, { Express, NextFunction, Request, Response } from 'express';
 import cors from 'cors';
-import { Key, Host } from './vault/secret';
-const port = 5000;
+import { NotFoundError } from './expressError';
+import { authenticateJWT } from './middleware/auth';
+import messageRoutes from './routes/messages';
+import reviewRoutes from './routes/reviews';
+import skiAreaRoutes from './routes/skiAreas';
+import userRoutes from './routes/users';
+import photoRoutes from './routes/photos';
+import videoRoutes from './routes/videos';
+import tagRoutes from './routes/tags';
+import favMountainRoutes from './routes/favMountains';
+
+
+import { PORT } from './config'
 
 const app: Express = express();
 
-const apiKey: string = Key;
-const apiHost: string = Host;
-const url: string = 'https://ski-resorts-and-conditions.p.rapidapi.com/v1/resort/monarch';
+app.use(cors());
+app.use(express.json());
+// app.use(morgan('combined')); - deal with this later
+app.use(authenticateJWT);
 
-app.use(cors())
+app.use(messageRoutes);
+app.use(reviewRoutes);
+app.use(skiAreaRoutes);
+app.use(userRoutes);
+app.use(photoRoutes);
+app.use(videoRoutes);
+app.use(tagRoutes);
+app.use(favMountainRoutes);
 
-app.get('/', (req: Request, res: Response) => {
-    res.send('Here we go!')
+app.use((req: Request, res: Response, next: NextFunction) => {
+    return next(new NotFoundError("Route not found."))
 });
 
-app.get('/resort/example', async (req: Request, res: Response) => {
-    try {
-        const options: AxiosRequestConfig = {
-            method: 'GET',
-            url: url,
-            headers: {
-                'X-RapidAPI-Key': apiKey,
-                'X-RapidAPI-Host': apiHost
-            }
-        };
+app.use((err: any, req: Request, res: Response, next: NextFunction) => {
+    if(process.env.NODE_ENV !== 'test') console.error(err.stack);
+    const status = err.status || 500;
+    const message = err.message;
 
-        const response = await axios.request(options);
-        res.json(response.data);
-
-    } catch (e) {
-        console.error(e);
-        res.status(500).json({ error: 'An error occurred while fetching data.'})
-    }
-})
-
-app.get('/ski', (req: Request, res: Response) => {
-    res.send('Skiers!')
+    return res.status(status).json({
+        error: { message, status }
+    });
 });
 
-app.listen(port, () => {
+app.listen(PORT, () => {
     console.log('Now listening on port 5000');
 });

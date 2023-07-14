@@ -28,6 +28,7 @@
     "fs": "^0.0.1-security",
     "jsonschema": "^1.4.1",
     "jsonwebtoken": "^9.0.1",
+    "morgan": "^1.10.0",
     "nodemon": "^2.0.22",
     "rimraf": "^5.0.1",
     "ts-node": "^10.9.1"
@@ -38,6 +39,7 @@
     "@types/dotenv": "^8.2.0",
     "@types/json-schema": "^7.0.12",
     "@types/jsonwebtoken": "^9.0.2",
+    "@types/morgan": "^1.9.4",
     "@types/pg": "^8.10.2",
     "@types/uuid": "^9.0.2",
     "bcrypt": "^5.1.0",

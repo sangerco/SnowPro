@@ -18,8 +18,7 @@ CREATE TABLE "users" (
     "email" text   NOT NULL,
     "password" text   NOT NULL,
     "avatar" text   NULL,
-    "bio" varchar(1000)   NULL,
-    "video_links" text   NULL,
+    "bio" varchar(1000)   NULL
     CONSTRAINT "pk_User" PRIMARY KEY (
         "id"
      ),
@@ -43,7 +42,7 @@ CREATE TABLE "reviews" (
     "body" varchar(500)   NULL,
     "stars" int   NOT NULL,
     "photos" text   NULL,
-    "tag_ids" text   NULL,
+    "tag_ids" text NULL
     CONSTRAINT "pk_reviews" PRIMARY KEY (
         "id"
      )
@@ -81,8 +80,7 @@ CREATE TABLE "photos" (
     "id" text   NOT NULL,
     "user_id" text   NOT NULL,
     "link" text   NOT NULL,
-    "about" text NULL,
-    "tag_id" text   NULL,
+    "about" text NULL
     CONSTRAINT "pk_photos" PRIMARY KEY (
         "id"
      )
@@ -92,8 +90,7 @@ CREATE TABLE "videos" (
     "id" text   NOT NULL,
     "user_id" text   NOT NULL,
     "link" text   NULL,
-    "about" text NULL,
-    "tag_id" text NULL,
+    "about" text NULL
     CONSTRAINT "pk_videos" PRIMARY KEY (
         "id"
      )
@@ -101,11 +98,59 @@ CREATE TABLE "videos" (
 
 CREATE TABLE "fav_mountains" (
     "user_id" TEXT
-        REFERENCES users ON DELETE CASCADE,
+        REFERENCES "users" ("id") ON DELETE CASCADE,
     "ski_areas_slug" TEXT
-        REFERENCES "ski_areas" ON DELETE CASCADE,
+        REFERENCES "ski_areas" ("slug") ON DELETE CASCADE,
     PRIMARY KEY ("user_id", "ski_areas_slug")
 )
+
+CREATE TABLE review_tags (
+    "review_id" TEXT 
+        REFERENCES "reviews" ("id") ON DELETE CASCADE,
+    "tag_id" TEXT 
+        REFERENCES "tags" ("id") ON DELETE CASCADE,
+    PRIMARY KEY ("review_id", "tag_id")
+);
+
+CREATE TABLE photos_tags (
+    "photo_id" TEXT 
+        REFERENCES "photos" ("id") ON DELETE CASCADE,
+    "tag_id" TEXT 
+        REFERENCES "tags" ("id") ON DELETE CASCADE,
+    PRIMARY KEY ("photo_id", "tag_id")
+);
+
+CREATE TABLE videos_tags (
+    "video_id" TEXT 
+        REFERENCES "videos" ("id") ON DELETE CASCADE,
+    "tag_id" TEXT 
+        REFERENCES "tags" ("id") ON DELETE CASCADE,
+    PRIMARY KEY ("video_id", "tag_id")
+);
+
+CREATE TABLE users_photos (
+    "user_id" TEXT
+        REFERENCES "users" ("id") ON DELETE CASCADE,
+    "photo_id" TEXT
+        REFERENCES "photos" ("id") ON DELETE CASCADE,
+    PRIMARY KEY ("user_id", "photo_id")
+);
+
+CREATE TABLE reviews_photos (
+    "review_id" TEXT
+        REFERENCES "reviews" ("id") ON DELETE CASCADE,
+    "photo_id" TEXT
+        REFERENCES "photos" ("id") ON DELETE CASCADE,
+    PRIMARY KEY ("review_id", "photo_id")
+);
+
+CREATE TABLE users_videos (
+    "user_id" TEXT
+        REFERENCES "users" ("id") ON DELETE CASCADE,
+    "video_id" TEXT
+        REFERENCES "videos" ("id") ON DELETE CASCADE,
+    PRIMARY KEY ("user_id", "video_id")
+);
 
 ALTER TABLE "reviews" ADD CONSTRAINT "fk_reviews_user_id" FOREIGN KEY("user_id")
 REFERENCES "users" ("id");

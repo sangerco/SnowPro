@@ -1,16 +1,6 @@
 {
     "type": "object",
     "properties": {
-        "user_id": {
-            "type": "string",
-            "minLength": 1,
-            "maxLength": 14
-        },
-        "ski_area_id": {
-            "type": "integer",
-            "minLength": 1,
-            "maxLength": 25
-        },
         "body": {
             "type": "string",
             "minLength": 0,
@@ -25,12 +15,13 @@
             "type": "string",
             "minLength": 0,
             "maxLength": 125
+        },
+        "tag_ids": {
+            "type": "string",
+            "minLength": 0,
+            "maxLength": 20
         }
     },
     "additionalProperties": false,
-    "required": [
-        "user_id",
-        "ski_area_id",
-        "stars"
-    ]
+    "required": []
 }

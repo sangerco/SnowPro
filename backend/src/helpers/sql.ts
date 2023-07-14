@@ -20,18 +20,9 @@ const sqlForPartialUpdate =
             throw new BadRequestError("No data")
         } 
 
-        const cols: string[] = [];
-        const values: any[] = [];
-
-        keys.forEach((colName, idx) => {
-            const value = dataToUpdate[colName];
-            if(value !== undefined) {
-                const sqlColName = nodeToSql[colName] || colName;
-                cols.push(`"${sqlColName}"=$${idx + 1}`);
-                values.push(value)
-            }
-            
-        });
+        const cols: string[] = keys.map((colName, idx) =>
+            `"${nodeToSql[colName] || colName}"=$${idx + 1}`,
+        );
 
         return {
             setCols: cols.join(", "),

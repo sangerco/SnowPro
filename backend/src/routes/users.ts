@@ -20,7 +20,7 @@ interface UserRegisterData {
 
 // create a new user
 
-router.post('/new-user', ensureLoggedIn, checkIfAdmin, async (req: Request, res: Response, next: NextFunction) => { 
+router.post('/api/new-user', ensureLoggedIn, checkIfAdmin, async (req: Request, res: Response, next: NextFunction) => { 
     try {
         const validator: jsonschema.ValidatorResult = jsonschema.validate(req.body, userRegisterSchema);
         if(!validator.valid) {
@@ -47,7 +47,7 @@ router.get('/all-users', ensureLoggedIn, checkIfAdmin, async (req: Request, res:
     };
 });
 
-// return a single user's group
+// return a single user's profile
 
 router.get('/:username', ensureLoggedIn, checkIfUserOrAdmin,async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -77,7 +77,7 @@ router.patch('/:username', ensureLoggedIn, checkIfUserOrAdmin, async (req: Reque
 
 // delete a user
 
-router.delete('/:username', ensureLoggedIn, checkIfUserOrAdmin, async (req: Request, res: Response, next: NextFunction) => {
+router.delete('/api/:username', ensureLoggedIn, checkIfUserOrAdmin, async (req: Request, res: Response, next: NextFunction) => {
     try {
         await User.remove(req.params.username);
         return res.json({ deleted: req.params.username });

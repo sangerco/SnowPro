@@ -1,13 +1,22 @@
-import db from '../db';
+import * as jsonschema from 'jsonschema';
 import express, { Request, Response, NextFunction } from 'express';
 import { BadRequestError, NotFoundError } from '../expressError';
 import SkiArea from '../models/skiArea';
-
+import Review from '../models/review';
+import reviewNewSchema from '../schemas/reviewNew.json';
 import { Key, Host } from '../vault/secret';
 import axios, { AxiosRequestConfig } from 'axios';
+import { SkiAreaData, SkiAreaReviewData, AllSkiAreasData, SkiAreasUsersFavoritedBy } from '../interfaces/skiAreaInterfaces';
+import { checkIfUserOrAdmin, ensureLoggedIn } from '../middleware/auth';
 
-import { SkiAreaData, SkiAreaReviewData } from '../interfaces/skiAreaInterfaces';
-import { AllSkiAreasData } from '../interfaces/skiAreaInterfaces';
+interface ReviewData {
+    userId: string;
+    skiAreaSlug: string;
+    body: string;
+    stars: number;
+    photos: string;
+    tagIds: string[]
+}
 
 const router = express.Router();
 
@@ -57,10 +66,12 @@ router.get('/ski-areas/:slug', async (req: Request, res: Response, next: NextFun
         const skiAreaData: SkiAreaData = response.data;
 
         const getReviewData: SkiAreaReviewData[] = await SkiArea.returnReviewDataBySlug(slug);
+        const getUsersFavoritedBy: SkiAreasUsersFavoritedBy[] = await SkiArea.returnUsersFavoritedBy(slug);
 
         const combinedData = {
             ...skiAreaData,
-            reviewData: getReviewData
+            reviewData: getReviewData,
+            usersFavoritedBy: getUsersFavoritedBy
         }
 
         res.json(combinedData);
@@ -68,6 +79,21 @@ router.get('/ski-areas/:slug', async (req: Request, res: Response, next: NextFun
     } catch (e) {
         console.error(e);
         res.status(500).json({ error: 'An error occurred while fetching the data.' })
+    };
+});
+
+router.post('/api/ski-areas/:slug/review', ensureLoggedIn, checkIfUserOrAdmin, async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const validator: jsonschema.ValidatorResult = jsonschema.validate(req.body, reviewNewSchema);
+        if(!validator.valid) {
+            const errors: string | string[] = validator.errors.map(e => e.stack);
+            throw new BadRequestError(errors);
+        }
+        const { userId, skiAreaSlug, body, stars, photos, tagIds }: ReviewData = req.body;
+        const review = await Review.createReview(userId, skiAreaSlug, body, stars, photos, tagIds);
+        return res.status(201).json({ review });
+    } catch (e) {
+        return next(e);
     };
 })
 

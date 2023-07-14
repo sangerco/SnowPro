@@ -1,6 +1,6 @@
 import * as jsonschema from 'jsonschema';
 import express, { Request, Response, NextFunction } from 'express';
-import { ensureLoggedIn, checkIfAdmin, checkIfUserOrAdmin } from '../middleware/auth';
+import { ensureLoggedIn, checkIfUserOrAdmin } from '../middleware/auth';
 import { BadRequestError } from '../expressError';
 import Message from '../models/message';
 import messageNewSchema from '../schemas/messageNew.json';
@@ -15,7 +15,7 @@ interface MessageData {
 
 // create a new message
 
-router.post('/new-message', ensureLoggedIn, async (req: Request, res: Response, next: NextFunction) => {
+router.post('/api/new-message', ensureLoggedIn, async (req: Request, res: Response, next: NextFunction) => {
     try {
         const validator: jsonschema.ValidatorResult = jsonschema.validate(req.body, messageNewSchema);
         if (!validator.valid) {
@@ -65,9 +65,9 @@ router.get('/messages/:username/sent', ensureLoggedIn, checkIfUserOrAdmin, async
 
 // delete a message
 
-router.delete('/messages/:id', ensureLoggedIn, checkIfUserOrAdmin, async (req: Request, res: Response, next: NextFunction) => {
+router.delete('/api/messages/:id', ensureLoggedIn, checkIfUserOrAdmin, async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const message = await Message.removeMessage(req.params.id);
+        await Message.removeMessage(req.params.id);
         return res.json({ deleted: req.params.id });
     } catch (e) {
         return next(e);

@@ -6,15 +6,29 @@ import { BCRYPT_WORK_FACTOR } from '../config';
 import { v4 as uuidv4 } from 'uuid';
 
 interface UserData {
-    id: string,
-    username: string,
-    password: string,
-    firstName: string,
-    lastName: string,
-    email: string,
-    avatar: string,
-    bio: string,
-    videoLinks: string
+    username: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    avatar: string;
+    bio: string;
+    videos: string[];
+    photos: string[];
+    favMountains: string[];
+}
+
+interface UserUpdateData {
+    id: string;
+    username: string;
+    password: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    avatar: string;
+    bio: string;
+    videos: string[];
+    photos: string[];
+    favMountains: string[];
 }
 
 interface UserDataRow {
@@ -24,7 +38,9 @@ interface UserDataRow {
     email: string;
     avatar: string;
     bio: string;
-    videoLinks: string;
+    videos: string[];
+    photos: string[];
+    favMountains: string[];
 }
 
 class User {
@@ -106,8 +122,7 @@ class User {
                     last_name AS "lastName",
                     email,
                     avatar,
-                    bio,
-                    video_links AS "videoLinks"
+                    bio
                 FROM users
                 ORDER BY username`
             );
@@ -117,26 +132,46 @@ class User {
 
         static async getUser(username: string): Promise<UserData> {
             const result = await db.query(
-                `SELECT username,
-                    first_name AS "firstName",
-                    last_name AS "lastName",
-                    email,
-                    avatar,
-                    bio,
-                    video_links AS "videoLinks"
-                FROM users
+                `SELECT u.username,
+                    u.first_name AS "firstName",
+                    u.last_name AS "lastName",
+                    u.email,
+                    u.avatar,
+                    u.bio,
+                    v.link AS "videos",
+                    p.link AS "photos",
+                    f.ski_areas_slug AS "favMountains" 
+                FROM users u
+                LEFT JOIN users_videos uv ON u.id = uv.user_id
+                LEFT JOIN videos v ON uv.video_id = v.id
+                LEFT JOIN users_photos up ON u.id = up.user_id
+                LEFT JOIN photos p ON up.photo_id = p.id
+                LEFT JOIN favMountains fm ON u.id = fm.user_id
+                LEFT JOIN ski_areas s ON fm.ski_areas_slug = s.slug
                 WHERE username = $1`,
                 [username]
             );
 
-            const user = result.rows[0];
+            const rows = result.rows;
 
-            if (!user) throw new NotFoundError('User not found.')
+            if (rows.length === 0) throw new NotFoundError('User not found.')
+
+            const user: UserData = {
+                username: rows[0].username,
+                firstName: rows[0].firstName,
+                lastName: rows[0].lastName,
+                email: rows[0].email,
+                avatar: rows[0].avatar,
+                bio: rows[0].bio,
+                videos: rows.map(row => row.videos).filter(link => link !== null),
+                photos: rows.map(row => row.photos).filter(link => link !== null),
+                favMountains: rows.map(row => row.favMountains).filter(slug => slug !== null)
+            }
 
             return user;
         }
 
-        static async updateUser(username: string, data: Partial<UserData>): Promise<UserData> {
+        static async updateUser(username: string, data: Partial<UserUpdateData>): Promise<UserUpdateData> {
             if (data.password) {
                 data.password = await bcrypt.hash(data.password, BCRYPT_WORK_FACTOR)
             }
@@ -159,8 +194,7 @@ class User {
                                     last_name AS "lastName",
                                     email,
                                     avatar,
-                                    bio,
-                                    video_links AS "videoLinks"`;
+                                    bio`;
             const result = await db.query(sqlQuery, [...values, username]);
             const user = result.rows[0];
 
