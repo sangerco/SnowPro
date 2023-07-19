@@ -34,6 +34,7 @@ router.get('/ski-areas', async (req: Request, res: Response, next: NextFunction)
         };
 
         const response = await axios.request(options);
+        console.log(response);
         const skiAreas: AllSkiAreasData[] = response.data;
         
         for (let skiArea of skiAreas) {

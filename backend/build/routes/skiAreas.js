@@ -103,6 +103,7 @@ router.get('/ski-areas', function (req, res, next) { return __awaiter(void 0, vo
                 return [4 /*yield*/, axios_1.default.request(options)];
             case 2:
                 response = _a.sent();
+                console.log(response);
                 skiAreas = response.data;
                 _i = 0, skiAreas_1 = skiAreas;
                 _a.label = 3;

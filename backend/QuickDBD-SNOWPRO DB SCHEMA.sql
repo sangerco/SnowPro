@@ -18,21 +18,15 @@ CREATE TABLE "users" (
     "email" text   NOT NULL,
     "password" text   NOT NULL,
     "avatar" text   NULL,
-    "bio" varchar(1000)   NULL
-    CONSTRAINT "pk_User" PRIMARY KEY (
-        "id"
-     ),
-    CONSTRAINT "uc_User_username" UNIQUE (
-        "username"
-    )
+    "bio" varchar(1000)   NULL,
+    CONSTRAINT "pk_User" PRIMARY KEY ("id"),
+    CONSTRAINT "uc_User_username" UNIQUE ("username")
 );
 
 CREATE TABLE "ski_areas" (
     "slug" text  NOT NULL,
     "name" text   NOT NULL,
-    CONSTRAINT "pk_Ski_areas" PRIMARY KEY (
-        "slug"
-     )
+    CONSTRAINT "pk_Ski_areas" PRIMARY KEY ("slug")
 );
 
 CREATE TABLE "reviews" (
@@ -42,10 +36,8 @@ CREATE TABLE "reviews" (
     "body" varchar(500)   NULL,
     "stars" int   NOT NULL,
     "photos" text   NULL,
-    "tag_ids" text NULL
-    CONSTRAINT "pk_reviews" PRIMARY KEY (
-        "id"
-     )
+    "tag_ids" text NULL,
+    CONSTRAINT "pk_reviews" PRIMARY KEY ("id")
 );
 
 CREATE TABLE "review_replies" (
@@ -53,9 +45,7 @@ CREATE TABLE "review_replies" (
     "review_id" text   NOT NULL,
     "user_id" text   NOT NULL,
     "body" varchar(500)   NOT NULL,
-    CONSTRAINT "pk_review_replies" PRIMARY KEY (
-        "id"
-     )
+    CONSTRAINT "pk_review_replies" PRIMARY KEY ("id")
 );
 
 CREATE TABLE "messages" (
@@ -63,37 +53,31 @@ CREATE TABLE "messages" (
     "sender_id" text   NOT NULL,
     "recipient_id" text   NOT NULL,
     "body" varchar(500)   NOT NULL,
-    CONSTRAINT "pk_messages" PRIMARY KEY (
-        "id"
-     )
+    CONSTRAINT "pk_messages" PRIMARY KEY ("id")
 );
 
 CREATE TABLE "tags" (
     "id" text   NOT NULL,
     "tag" varchar(15)   NOT NULL,
-    CONSTRAINT "pk_tags" PRIMARY KEY (
-        "id"
-     )
+    CONSTRAINT "pk_tags" PRIMARY KEY ("id")
 );
 
 CREATE TABLE "photos" (
     "id" text   NOT NULL,
     "user_id" text   NOT NULL,
     "link" text   NOT NULL,
-    "about" text NULL
-    CONSTRAINT "pk_photos" PRIMARY KEY (
-        "id"
-     )
+    "about" text NULL,
+    "tag_ids" text NULL,
+    CONSTRAINT "pk_photos" PRIMARY KEY ("id")
 );
 
 CREATE TABLE "videos" (
     "id" text   NOT NULL,
     "user_id" text   NOT NULL,
     "link" text   NULL,
-    "about" text NULL
-    CONSTRAINT "pk_videos" PRIMARY KEY (
-        "id"
-     )
+    "about" text NULL,
+    "tag_ids" text NULL,
+    CONSTRAINT "pk_videos" PRIMARY KEY ("id")
 );
 
 CREATE TABLE "fav_mountains" (
@@ -102,7 +86,7 @@ CREATE TABLE "fav_mountains" (
     "ski_areas_slug" TEXT
         REFERENCES "ski_areas" ("slug") ON DELETE CASCADE,
     PRIMARY KEY ("user_id", "ski_areas_slug")
-)
+);
 
 CREATE TABLE review_tags (
     "review_id" TEXT 
@@ -164,9 +148,6 @@ REFERENCES "tags" ("id");
 ALTER TABLE "review_replies" ADD CONSTRAINT "fk_review_replies_user_id" FOREIGN KEY("user_id")
 REFERENCES "users" ("id");
 
-ALTER TABLE "review_replies" ADD CONSTRAINT "fk_review_replies_tag_ids" FOREIGN KEY("tag_ids")
-REFERENCES "tags" ("id");
-
 ALTER TABLE "messages" ADD CONSTRAINT "fk_messages_sender_id" FOREIGN KEY("sender_id")
 REFERENCES "users" ("id");
 
@@ -176,17 +157,17 @@ REFERENCES "users" ("id");
 ALTER TABLE "photos" ADD CONSTRAINT "fk_photos_user_id" FOREIGN KEY("user_id")
 REFERENCES "users" ("id");
 
-ALTER TABLE "photos" ADD CONSTRAINT "fk_photos_tag_id" FOREIGN KEY("tag_id")
+ALTER TABLE "photos" ADD CONSTRAINT "fk_photos_tag_id" FOREIGN KEY("tag_ids")
 REFERENCES "tags" ("id");
 
 ALTER TABLE "videos" ADD CONSTRAINT "fk_videos_user_id" FOREIGN KEY("user_id")
 REFERENCES "users" ("id");
 
-ALTER TABLE "videos" ADD CONSTRAINT "fk_videos_tag_id" FOREIGN KEY("tag_id")
+ALTER TABLE "videos" ADD CONSTRAINT "fk_videos_tag_id" FOREIGN KEY("tag_ids")
 REFERENCES "tags" ("id");
 
 ALTER TABLE "fav_mountains" ADD CONSTRAINT "fk_fav_mountains_user_id" FOREIGN KEY("user_id")
-REFERENCES "users" ("id")
+REFERENCES "users" ("id");
 
 ALTER TABLE "fav_mountains" ADD CONSTRAINT "fk_fav_mountains_ski_areas_slug" FOREIGN KEY("ski_areas_slug")
-REFERENCES "ski_areas" ("slug")
+REFERENCES "ski_areas" ("slug");

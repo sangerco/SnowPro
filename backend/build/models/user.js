@@ -116,7 +116,7 @@ var User = /** @class */ (function () {
             var result;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, db_1.default.query("SELECT username,\n                    first_name AS \"firstName\",\n                    last_name AS \"lastName\",\n                    email,\n                    avatar,\n                    bio\n                FROM users\n                ORDER BY username")];
+                    case 0: return [4 /*yield*/, db_1.default.query("SELECT id,\n                    username,\n                    first_name AS \"firstName\",\n                    last_name AS \"lastName\",\n                    email,\n                    avatar,\n                    bio\n                FROM users\n                ORDER BY username")];
                     case 1:
                         result = _a.sent();
                         return [2 /*return*/, result.rows];
@@ -129,7 +129,7 @@ var User = /** @class */ (function () {
             var result, rows, user;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, db_1.default.query("SELECT u.username,\n                    u.first_name AS \"firstName\",\n                    u.last_name AS \"lastName\",\n                    u.email,\n                    u.avatar,\n                    u.bio,\n                    v.link AS \"videos\",\n                    p.link AS \"photos\",\n                    f.ski_areas_slug AS \"favMountains\" \n                FROM users u\n                LEFT JOIN users_videos uv ON u.id = uv.user_id\n                LEFT JOIN videos v ON uv.video_id = v.id\n                LEFT JOIN users_photos up ON u.id = up.user_id\n                LEFT JOIN photos p ON up.photo_id = p.id\n                LEFT JOIN favMountains fm ON u.id = fm.user_id\n                LEFT JOIN ski_areas s ON fm.ski_areas_slug = s.slug\n                WHERE username = $1", [username])];
+                    case 0: return [4 /*yield*/, db_1.default.query("SELECT u.username,\n                    u.first_name AS \"firstName\",\n                    u.last_name AS \"lastName\",\n                    u.email,\n                    u.avatar,\n                    u.bio,\n                    v.link AS \"videos\",\n                    p.link AS \"photos\",\n                    s.name AS \"favMountains\" \n                FROM users u\n                LEFT JOIN users_videos uv ON u.id = uv.user_id\n                LEFT JOIN videos v ON uv.video_id = v.id\n                LEFT JOIN users_photos up ON u.id = up.user_id\n                LEFT JOIN photos p ON up.photo_id = p.id\n                LEFT JOIN fav_mountains fm ON u.id = fm.user_id\n                LEFT JOIN ski_areas s ON fm.ski_areas_slug = s.slug\n                WHERE username = $1", [username])];
                     case 1:
                         result = _a.sent();
                         rows = result.rows;

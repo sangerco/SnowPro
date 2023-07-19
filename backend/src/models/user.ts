@@ -117,7 +117,8 @@ class User {
 
         static async findAllUsers(): Promise<UserData[]> {
             const result = await db.query(
-                `SELECT username,
+                `SELECT id,
+                    username,
                     first_name AS "firstName",
                     last_name AS "lastName",
                     email,
@@ -140,13 +141,13 @@ class User {
                     u.bio,
                     v.link AS "videos",
                     p.link AS "photos",
-                    f.ski_areas_slug AS "favMountains" 
+                    s.name AS "favMountains" 
                 FROM users u
                 LEFT JOIN users_videos uv ON u.id = uv.user_id
                 LEFT JOIN videos v ON uv.video_id = v.id
                 LEFT JOIN users_photos up ON u.id = up.user_id
                 LEFT JOIN photos p ON up.photo_id = p.id
-                LEFT JOIN favMountains fm ON u.id = fm.user_id
+                LEFT JOIN fav_mountains fm ON u.id = fm.user_id
                 LEFT JOIN ski_areas s ON fm.ski_areas_slug = s.slug
                 WHERE username = $1`,
                 [username]

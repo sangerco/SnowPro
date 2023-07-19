@@ -97,7 +97,7 @@ router.post('/api/new-user', auth_1.ensureLoggedIn, auth_1.checkIfAdmin, functio
     });
 }); });
 // get a list of all users
-router.get('/all-users', auth_1.ensureLoggedIn, auth_1.checkIfAdmin, function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+router.get('/users/all-users', auth_1.ensureLoggedIn, auth_1.checkIfAdmin, function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
     var users, e_2;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -117,7 +117,7 @@ router.get('/all-users', auth_1.ensureLoggedIn, auth_1.checkIfAdmin, function (r
     });
 }); });
 // return a single user's profile
-router.get('/:username', auth_1.ensureLoggedIn, auth_1.checkIfUserOrAdmin, function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+router.get('/users/:username', auth_1.ensureLoggedIn, auth_1.checkIfUserOrAdmin, function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
     var user, e_3;
     return __generator(this, function (_a) {
         switch (_a.label) {

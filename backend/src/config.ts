@@ -6,7 +6,7 @@ const SECRET_KEY: string = process.env.SECRET_KEY || 'this-is-my-secret-key';
 const PORT: number = +(process.env.PORT || 5000);
 
 function getDatabaseURI(): string {
-    return process.env.NODE_ENV === 'test' ? 'snowpro_test' : process.env.DATABASE_URL || 'snowpro';
+    return process.env.NODE_ENV === 'test' ? 'postgresql:///snowpro_test' : process.env.DATABASE_URL || 'postgresql:///snowpro';
 }
 
 const BCRYPT_WORK_FACTOR: number = process.env.NODE_ENV === 'test' ? 1 : 12;

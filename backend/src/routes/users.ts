@@ -38,7 +38,7 @@ router.post('/api/new-user', ensureLoggedIn, checkIfAdmin, async (req: Request, 
 
 // get a list of all users
 
-router.get('/all-users', ensureLoggedIn, checkIfAdmin, async (req: Request, res: Response, next: NextFunction) => {
+router.get('/users/all-users', ensureLoggedIn, checkIfAdmin, async (req: Request, res: Response, next: NextFunction) => {
     try {
         const users = await User.findAllUsers();
         return res.json({ users });
@@ -49,7 +49,7 @@ router.get('/all-users', ensureLoggedIn, checkIfAdmin, async (req: Request, res:
 
 // return a single user's profile
 
-router.get('/:username', ensureLoggedIn, checkIfUserOrAdmin,async (req: Request, res: Response, next: NextFunction) => {
+router.get('/users/:username', ensureLoggedIn, checkIfUserOrAdmin,async (req: Request, res: Response, next: NextFunction) => {
     try {
         const user = await User.getUser(req.params.username);
         return res.json({ user });
