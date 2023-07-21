@@ -44,7 +44,7 @@ interface UserDataRow {
 }
 
 class User {
-    static async authenticate (username: string, password: string): Promise<UserData | undefined> {
+    static async authenticate (username: string, password: string): Promise<UserData> {
         const result = await db.query(
             `SELECT username,
                     password,

@@ -70,10 +70,11 @@ var user_1 = __importDefault(require("../models/user"));
 var tokens_1 = require("../helpers/tokens");
 var userRegister_json_1 = __importDefault(require("../schemas/userRegister.json"));
 var userUpdate_json_1 = __importDefault(require("../schemas/userUpdate.json"));
+var userLogin_json_1 = __importDefault(require("../schemas/userLogin.json"));
 var router = express_1.default.Router();
 // create a new user
-router.post('/api/new-user', auth_1.ensureLoggedIn, auth_1.checkIfAdmin, function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var validator, errors, _a, username, password, firstName, lastName, email, user, token, e_1;
+router.post('/api/new-user', function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+    var validator, errors, _a, username, password, first_name, last_name, email, user, token, e_1;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
@@ -83,8 +84,8 @@ router.post('/api/new-user', auth_1.ensureLoggedIn, auth_1.checkIfAdmin, functio
                     errors = validator.errors.map(function (e) { return e.stack; });
                     throw new expressError_1.BadRequestError(errors);
                 }
-                _a = req.body, username = _a.username, password = _a.password, firstName = _a.firstName, lastName = _a.lastName, email = _a.email;
-                return [4 /*yield*/, user_1.default.register(username, password, firstName, lastName, email)];
+                _a = req.body, username = _a.username, password = _a.password, first_name = _a.first_name, last_name = _a.last_name, email = _a.email;
+                return [4 /*yield*/, user_1.default.register(username, password, first_name, last_name, email)];
             case 1:
                 user = _b.sent();
                 token = (0, tokens_1.createToken)(user);
@@ -96,9 +97,34 @@ router.post('/api/new-user', auth_1.ensureLoggedIn, auth_1.checkIfAdmin, functio
         }
     });
 }); });
+// login a user
+router.post('/login', function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+    var validator, errors, _a, username, password, user, token, e_2;
+    return __generator(this, function (_b) {
+        switch (_b.label) {
+            case 0:
+                _b.trys.push([0, 2, , 3]);
+                validator = jsonschema.validate(req.body, userLogin_json_1.default);
+                if (!validator.valid) {
+                    errors = validator.errors.map(function (e) { return e.stack; });
+                    throw new expressError_1.BadRequestError(errors);
+                }
+                _a = req.body, username = _a.username, password = _a.password;
+                return [4 /*yield*/, user_1.default.authenticate(username, password)];
+            case 1:
+                user = _b.sent();
+                token = (0, tokens_1.createToken)(user);
+                return [2 /*return*/, res.json({ token: token })];
+            case 2:
+                e_2 = _b.sent();
+                return [2 /*return*/, next(e_2)];
+            case 3: return [2 /*return*/];
+        }
+    });
+}); });
 // get a list of all users
 router.get('/users/all-users', auth_1.ensureLoggedIn, auth_1.checkIfAdmin, function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var users, e_2;
+    var users, e_3;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -108,8 +134,8 @@ router.get('/users/all-users', auth_1.ensureLoggedIn, auth_1.checkIfAdmin, funct
                 users = _a.sent();
                 return [2 /*return*/, res.json({ users: users })];
             case 2:
-                e_2 = _a.sent();
-                return [2 /*return*/, next(e_2)];
+                e_3 = _a.sent();
+                return [2 /*return*/, next(e_3)];
             case 3:
                 ;
                 return [2 /*return*/];
@@ -118,7 +144,7 @@ router.get('/users/all-users', auth_1.ensureLoggedIn, auth_1.checkIfAdmin, funct
 }); });
 // return a single user's profile
 router.get('/users/:username', auth_1.ensureLoggedIn, auth_1.checkIfUserOrAdmin, function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var user, e_3;
+    var user, e_4;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -128,8 +154,8 @@ router.get('/users/:username', auth_1.ensureLoggedIn, auth_1.checkIfUserOrAdmin,
                 user = _a.sent();
                 return [2 /*return*/, res.json({ user: user })];
             case 2:
-                e_3 = _a.sent();
-                return [2 /*return*/, next(e_3)];
+                e_4 = _a.sent();
+                return [2 /*return*/, next(e_4)];
             case 3:
                 ;
                 return [2 /*return*/];
@@ -138,7 +164,7 @@ router.get('/users/:username', auth_1.ensureLoggedIn, auth_1.checkIfUserOrAdmin,
 }); });
 // update a user's profile
 router.patch('/:username', auth_1.ensureLoggedIn, auth_1.checkIfUserOrAdmin, function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var validator, errors, user, e_4;
+    var validator, errors, user, e_5;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -153,8 +179,8 @@ router.patch('/:username', auth_1.ensureLoggedIn, auth_1.checkIfUserOrAdmin, fun
                 user = _a.sent();
                 return [2 /*return*/, res.json({ user: user })];
             case 2:
-                e_4 = _a.sent();
-                return [2 /*return*/, next(e_4)];
+                e_5 = _a.sent();
+                return [2 /*return*/, next(e_5)];
             case 3:
                 ;
                 return [2 /*return*/];
@@ -163,7 +189,7 @@ router.patch('/:username', auth_1.ensureLoggedIn, auth_1.checkIfUserOrAdmin, fun
 }); });
 // delete a user
 router.delete('/api/:username', auth_1.ensureLoggedIn, auth_1.checkIfUserOrAdmin, function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var e_5;
+    var e_6;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -173,8 +199,8 @@ router.delete('/api/:username', auth_1.ensureLoggedIn, auth_1.checkIfUserOrAdmin
                 _a.sent();
                 return [2 /*return*/, res.json({ deleted: req.params.username })];
             case 2:
-                e_5 = _a.sent();
-                return [2 /*return*/, next(e_5)];
+                e_6 = _a.sent();
+                return [2 /*return*/, next(e_6)];
             case 3:
                 ;
                 return [2 /*return*/];

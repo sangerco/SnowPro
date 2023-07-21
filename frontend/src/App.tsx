@@ -1,20 +1,20 @@
 import React from 'react';
 import './App.css';
 import { Provider } from 'react-redux';
-import { createStore, applyMiddleware } from 'redux';
-import thunk from 'redux-thunk';
-import rootReducer from './redux/reducers/rootReducer';
 import SkiAreaData from './components/SkiAreas/SkiAreaData';
+import CreateNewUser from './components/Users/CreateNewUser';
 import User from './components/Users/User';
 import UserList from './components/Users/UserList'; 
+import store from './redux/store';
 
-const store = createStore(rootReducer, applyMiddleware(thunk));
+
 
 const App: React.FC = () => {
   return (
     <Provider store={store}>
       <>
         {/* <SkiAreaData /> */}
+        <CreateNewUser />
         <User username='jane'/>
         <UserList />
       </>

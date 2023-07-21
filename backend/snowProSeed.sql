@@ -18,9 +18,9 @@ INSERT INTO "review_replies" ("id", "review_id", "user_id", "body")
 VALUES ('1', '1', '2', 'Glad you enjoyed it!');
 
 -- Insert dummy data for the "messages" table
-INSERT INTO "messages" ("id", "sender_id", "recipient_id", "body")
-VALUES ('1', '1', '2', 'Hello Jane! How are you?'),
-       ('2', '2', '1', 'Hi John! I''m doing great.');
+INSERT INTO "messages" ("id", "sender_id", "recipient_id", "subject", "body")
+VALUES ('1', '1', '2', 'Hi', 'Hello Jane! How are you?'),
+       ('2', '2', '1', 'Hi back!','Hi John! I''m doing great.');
 
 -- Insert dummy data for the "tags" table
 INSERT INTO "tags" ("id", "tag")

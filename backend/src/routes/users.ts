@@ -6,35 +6,57 @@ import User from '../models/user';
 import { createToken } from '../helpers/tokens';
 import userRegisterSchema from '../schemas/userRegister.json';
 import userUpdateSchema from '../schemas/userUpdate.json';
-import FavMountain from '../models/favMountain';
-
+import userLoginSchema from '../schemas/userLogin.json'
 const router = express.Router();
 
 interface UserRegisterData {
     username: string,
     password: string,
-    firstName: string,
-    lastName: string,
+    first_name: string,
+    last_name: string,
     email: string
+}
+
+interface UserLoginData {
+    username: string;
+    password: string;
 }
 
 // create a new user
 
-router.post('/api/new-user', ensureLoggedIn, checkIfAdmin, async (req: Request, res: Response, next: NextFunction) => { 
+router.post('/api/new-user', async (req: Request, res: Response, next: NextFunction) => { 
     try {
         const validator: jsonschema.ValidatorResult = jsonschema.validate(req.body, userRegisterSchema);
         if(!validator.valid) {
             const errors: string | string[] = validator.errors.map(e => e.stack);
             throw new BadRequestError(errors);
         }
-        const { username, password, firstName, lastName, email }: UserRegisterData = req.body;
-        const user = await User.register(username, password, firstName, lastName, email);
+        const { username, password, first_name, last_name, email }: UserRegisterData = req.body;
+        const user = await User.register(username, password, first_name, last_name, email);
         const token = createToken(user);
         return res.status(201).json({ user, token })
     }  catch (e) {
         return next(e)
     }
 });
+
+// login a user
+
+router.post('/login', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const validator: jsonschema.ValidatorResult = jsonschema.validate(req.body, userLoginSchema);
+        if(!validator.valid) {
+            const errors: string | string[] = validator.errors.map(e => e.stack);
+            throw new BadRequestError(errors)
+        }
+        const { username, password }: UserLoginData = req.body;
+        const user = await User.authenticate(username, password);
+        const token = createToken(user);
+        return res.json({ token })
+    } catch (e) {
+        return next(e);
+    }
+})
 
 // get a list of all users
 

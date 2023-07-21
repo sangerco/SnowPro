@@ -1,32 +1,33 @@
-import { FETCH_USER_DATA_FAILURE, FETCH_USER_DATA_REQUEST, FETCH_USER_DATA_SUCCESS, UserData } from "../types/userTypes";
+import { SEND_LOGIN_DATA_FAILURE, SEND_LOGIN_DATA_REQUEST, SEND_LOGIN_DATA_SUCCESS, LoginData } from "../types/userTypes";
 
-interface UserState {
-    data: UserData | null;
+interface LoginState {
+    data: LoginData | null;
     loading: boolean;
     error: string | null;
 }
 
-const initialState: UserState = {
+const initialState: LoginState = {
     data: null,
     loading: false,
     error: null
-};
 
-const userReducer = ( state = initialState, action: any ) => {
-    switch (action.type) {
-        case FETCH_USER_DATA_REQUEST:
+} 
+
+const loginReducer = ( state = initialState, action: any ) => {
+    switch(action.type) {
+        case SEND_LOGIN_DATA_REQUEST:
             return {
                 ...state,
                 loading: true,
                 error: null
             };
-        case FETCH_USER_DATA_SUCCESS:
+        case SEND_LOGIN_DATA_SUCCESS:
             return {
                 ...state,
                 loading: false,
                 data: action.payload
             };
-        case FETCH_USER_DATA_FAILURE:
+        case SEND_LOGIN_DATA_FAILURE:
             return {
                 ...state,
                 loading: false,
@@ -38,4 +39,4 @@ const userReducer = ( state = initialState, action: any ) => {
     }
 };
 
-export default userReducer;
+export default loginReducer;

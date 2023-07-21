@@ -52,6 +52,7 @@ CREATE TABLE "messages" (
     "id" text   NOT NULL,
     "sender_id" text   NOT NULL,
     "recipient_id" text   NOT NULL,
+    "subject" text  NULL,
     "body" varchar(500)   NOT NULL,
     CONSTRAINT "pk_messages" PRIMARY KEY ("id")
 );

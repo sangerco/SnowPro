@@ -10,6 +10,7 @@ const router = express.Router();
 interface MessageData {
     senderId: string;
     recipientId: string;
+    subject: string;
     body: string;
 };
 
@@ -22,8 +23,8 @@ router.post('/api/new-message', ensureLoggedIn, async (req: Request, res: Respon
             const errors: string | string[] = validator.errors.map(e => e.stack);
             throw new BadRequestError(errors);            
         }
-        const { senderId, recipientId, body }: MessageData = req.body;
-        const message = await Message.createMessage(senderId, recipientId, body);
+        const { senderId, recipientId, subject, body }: MessageData = req.body;
+        const message = await Message.createMessage(senderId, recipientId, subject, body);
         return res.status(201).json({ message })
     } catch (e) {
         return next(e);

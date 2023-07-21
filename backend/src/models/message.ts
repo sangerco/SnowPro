@@ -7,6 +7,7 @@ interface MessageData {
     id: string;
     senderId: string;
     recipientId: string;
+    subject: string;
     body: string;
 }
 
@@ -20,7 +21,7 @@ interface UserWithMessages extends MessageData {
 }
 
 class Message {
-    static async createMessage(senderId: string, recipientId:string, body: string): Promise<MessageData> {
+    static async createMessage(senderId: string, recipientId:string, subject: string, body: string): Promise<MessageData> {
         const id = uuidv4();
 
         const result = await db.query(`
@@ -28,16 +29,19 @@ class Message {
             (   id,
                 sender_id,
                 recipient_id,
+                subject,
                 body)
-            VALUES ($1, $2, $3, $4)
+            VALUES ($1, $2, $3, $4, $5)
             RETURNING
                 id,
                 sender_id AS "senderId",
                 recipient_id AS "recipientId",
+                subject,
                 body`,
             [   id,
                 senderId,
                 recipientId,
+                subject,
                 body
             ]
         );
@@ -54,6 +58,7 @@ class Message {
                 RETURNING 
                     sender_id AS "senderId",
                     recipient_id AS "recipientId",
+                    subject,
                     body`,
                 [id]
         );
@@ -71,6 +76,7 @@ class Message {
                 m.id,
                 m.sender_id AS "senderId",
                 m.recipient_id AS "recipientId",
+                m.subject,
                 m.body
                 FROM users u
                 JOIN messages m ON u.id = m.recipient_id
@@ -89,6 +95,7 @@ class Message {
                 m.id,
                 m.sender_id AS "senderId",
                 m.recipient_id AS "recipientId",
+                m.subject,
                 m.body
                 FROM users u
                 JOIN messages m ON u.id = m.sender_id
