@@ -107,5 +107,5 @@ export const deleteMessageReducer = (state = initialDeleteMessageState, action: 
         default:
             return state;
         }
-}
+};
 

@@ -11,7 +11,7 @@ interface MessageData {
     body: string;
 }
 
-interface UsernameWithId {
+export interface UsernameWithId {
     id: string;
     username: string;
 }

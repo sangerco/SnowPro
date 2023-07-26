@@ -10,19 +10,17 @@ class SkiArea {
             (   slug,
                 name)
                 VALUES ($1, $2)
-                RETURNING slug AS "skiAreaSlug", name`,
+                ON CONFLICT DO NOTHING`,
             [   slug,
                 name
             ]
         );
-
-        return result.rows[0];
     };
 
     static async returnUsersFavoritedBy(slug: string): Promise<SkiAreasUsersFavoritedBy[]> {
         const result = await db.query(`
             SELECT s.slug,
-                u.user_id as "userId",
+                u.id as "userId",
                 u.username
                 FROM ski_areas s
                 LEFT JOIN fav_mountains fm ON s.slug = fm.ski_areas_slug
@@ -43,12 +41,12 @@ class SkiArea {
                 r.body,
                 r.stars,
                 r.photos,
-                r.tag_id AS "tagIds",
-                t.tag
+                r.tag_ids AS "tagIds",
+                t.tag AS "tags"
                 FROM ski_areas s
                 LEFT JOIN reviews r ON s.slug = r.ski_area_slug
-                LEFT JOIN review_tags ON r.tag_id = rt.tag_id
-                LEFT JOIN tags ON rt.tag_id = t.id
+                LEFT JOIN review_tags rt ON r.tag_ids = rt.tag_id
+                LEFT JOIN tags t ON rt.tag_id = t.id
                 WHERE s.slug = $1`,
                 [slug]
         )

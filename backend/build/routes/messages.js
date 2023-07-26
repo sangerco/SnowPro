@@ -72,7 +72,7 @@ var router = express_1.default.Router();
 ;
 // create a new message
 router.post('/api/new-message', auth_1.ensureLoggedIn, function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var validator, errors, _a, senderId, recipientId, body, message, e_1;
+    var validator, errors, _a, senderId, recipientId, subject, body, message, e_1;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
@@ -82,8 +82,8 @@ router.post('/api/new-message', auth_1.ensureLoggedIn, function (req, res, next)
                     errors = validator.errors.map(function (e) { return e.stack; });
                     throw new expressError_1.BadRequestError(errors);
                 }
-                _a = req.body, senderId = _a.senderId, recipientId = _a.recipientId, body = _a.body;
-                return [4 /*yield*/, message_1.default.createMessage(senderId, recipientId, body)];
+                _a = req.body, senderId = _a.senderId, recipientId = _a.recipientId, subject = _a.subject, body = _a.body;
+                return [4 /*yield*/, message_1.default.createMessage(senderId, recipientId, subject, body)];
             case 1:
                 message = _b.sent();
                 return [2 /*return*/, res.status(201).json({ message: message })];

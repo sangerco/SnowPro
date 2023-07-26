@@ -11,7 +11,7 @@
             "minLength": 1,
             "maxLength": 20
         },
-        "string": {
+        "subject": {
             "type": "string",
             "minLength": 0,
             "maxLength": 50

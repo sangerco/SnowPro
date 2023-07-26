@@ -90,7 +90,7 @@ export const deleteMessageSuccess = (id: string) => ({
 export const deleteMessageFailure = (error: string) => ({
     type: DELETE_MESSAGE_FAILURE,
     payload: error
-})
+});
 
 export const sendNewMessageData = (sender_id: string, recipient_id: string, subject: string, body: string) => {
     return async (dispatch: Dispatch) => {
@@ -158,7 +158,7 @@ export const deleteMessage = (deleteMessage: DeleteMessage) => {
 
     try {
         const response = await axios.delete(`${URL}/api/messages/${id}`)
-        const responseData: string = response.data;
+        const responseData: string = response.data.id;
         dispatch(deleteMessageSuccess(responseData));
     } catch (error: any) {
         dispatch(deleteMessageFailure(error.message));

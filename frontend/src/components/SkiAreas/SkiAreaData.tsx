@@ -1,54 +1,45 @@
 import React, { useEffect, useState } from "react";
 import { Dimmer, Loader } from "semantic-ui-react";
+import { URL } from "../../config";
 import SkiArea from "./SkiArea";
 import axios from "axios";
-
-interface SkiResort {
-    slug: string;
-    name: string;
-    country: string;
-    region: string;
-    location: {
-      latitude: number;
-      longitude: number;
-    };
-    url: string;
-}
-
-interface SkiResortDataResponse {
-    object: {
-      page: number;
-      per_page: number;
-      pre_page: null;
-      next_page: number;
-      total: number;
-      total_pages: number;
-    };
-    data: SkiResort[];
-} 
+import { SkiResort, SkiResortDataResponse } from "../../interfaces/skiAreaInterfaces";
 
 const SkiAreaData = () => {
     const [skiAreaResponse, setSkiAreaResponse] = useState<SkiResort[]>([]);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchSkiAreaData =async () => {
             try {
-                const response: SkiResortDataResponse = await axios.get('http://localhost:5000/ski-areas');
+                const response: SkiResortDataResponse = await axios.get(`${URL}/ski-areas`);
                 setSkiAreaResponse(response.data);
+                console.log(skiAreaResponse)
+                setLoading(false);
             } catch (e) {
-                console.error(e)
+                console.error(e);
+                setLoading(false);
             }
         };
 
         fetchSkiAreaData();
     }, []);
 
-    if(skiAreaResponse) {
+    if(skiAreaResponse === null) {
+        return (
+            <div>
+                <Dimmer active>
+                    <Loader>Loading...</Loader>
+                </Dimmer>
+            </div>
+        )
+    } else {
         return (
             <div>
                 {skiAreaResponse.map((skiArea) => (
                     <SkiArea 
                         key={skiArea.slug}
+                        slug={skiArea.slug}
                         name={skiArea.name}
                         country={skiArea.country}
                         region={skiArea.region}
@@ -58,15 +49,7 @@ const SkiAreaData = () => {
                     />
             ))}
             </div>
-        )
-    } else {
-        return (
-            <div>
-                <Dimmer active>
-                    <Loader>Loading...</Loader>
-                </Dimmer>
-            </div>
-        )
+        );
     }
 };
 

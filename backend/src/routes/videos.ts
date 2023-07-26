@@ -14,7 +14,7 @@ interface VideoData {
     tagIds: string[];
 }
 
-router.post('/api/photos', ensureLoggedIn, checkIfUserOrAdmin,async (req: Request, res: Response, next: NextFunction) => {
+router.post('/api/videos', ensureLoggedIn, checkIfUserOrAdmin,async (req: Request, res: Response, next: NextFunction) => {
     try {
         const validator: jsonschema.ValidatorResult = jsonschema.validate(req.body, videoNewSchema);
         if(!validator.valid) {
@@ -29,7 +29,7 @@ router.post('/api/photos', ensureLoggedIn, checkIfUserOrAdmin,async (req: Reques
     }
 });
 
-router.get('/photo/:id', async (req: Request, res: Response, next: NextFunction) => {
+router.get('/video/:id', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const video = await Video.getVideo(req.params.id);
         return res.json({ video });
@@ -38,7 +38,7 @@ router.get('/photo/:id', async (req: Request, res: Response, next: NextFunction)
     }
 });
 
-router.delete('/api/photo/:id', async (req: Request, res: Response, next: NextFunction) => {
+router.delete('/api/video/:id', async (req: Request, res: Response, next: NextFunction) => {
     try {
         await Video.removeVideo(req.params.id);
         return res.json({ deleted: `Video removed ${req.params.id}` })

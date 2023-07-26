@@ -1,7 +1,7 @@
 -- Insert dummy data for the "users" table
-INSERT INTO "users" ("id", "username", "first_name", "last_name", "email", "password", "avatar", "bio")
-VALUES ('1', 'john', 'John', 'Doe', 'john@example.com', 'password123', NULL, NULL),
-       ('2', 'jane', 'Jane', 'Smith', 'jane@example.com', 'password456', NULL, NULL);
+INSERT INTO "users" ("id", "username", "first_name", "last_name", "email", "password", "avatar", "bio", "is_admin")
+VALUES ('1', 'john', 'John', 'Doe', 'john@example.com', 'password123', NULL, NULL, "true"),
+       ('2', 'jane', 'Jane', 'Smith', 'jane@example.com', 'password456', NULL, NULL, "false");
 
 -- Insert dummy data for the "ski_areas" table
 INSERT INTO "ski_areas" ("slug", "name")
@@ -21,6 +21,11 @@ VALUES ('1', '1', '2', 'Glad you enjoyed it!');
 INSERT INTO "messages" ("id", "sender_id", "recipient_id", "subject", "body")
 VALUES ('1', '1', '2', 'Hi', 'Hello Jane! How are you?'),
        ('2', '2', '1', 'Hi back!','Hi John! I''m doing great.');
+
+-- Insert dummy data for the "message_replies" table
+INSERT INTO "message_replies" ("id", "message_id", "sender_id", "recipient_id", "subject", "body")
+VALUES ('1', '1', '2', '1', 're: Hi', 'Good to hear from you'),
+        ('2', '2', '1', '2', 're: Hi back!', 'This is fun!');
 
 -- Insert dummy data for the "tags" table
 INSERT INTO "tags" ("id", "tag")

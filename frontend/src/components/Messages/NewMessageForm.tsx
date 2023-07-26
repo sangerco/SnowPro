@@ -54,7 +54,7 @@ const NewMessageForm: React.FC<NewMessageProps> = ({ newMessage, error, sendNewM
     return (
         <Form onSubmit={handleSubmit} error>
             <Form.Field>
-                <input placeholder='Who do you want to send this message to?' name='recipient id' value={formData.recipient_id} onChange={handleChange}/>
+                <input placeholder='Who do you want to send this message to?' name='recipient_id' value={formData.recipient_id} onChange={handleChange}/>
             </Form.Field>
             <Form.Field>
                 <input placeholder='Whatcha talking about?' name='subject' value={formData.subject} onChange={handleChange}/>
@@ -75,6 +75,6 @@ const NewMessageForm: React.FC<NewMessageProps> = ({ newMessage, error, sendNewM
 const mapStateToProps = (state: RootState) => ({
     newMessage: state.newMessage.data,
     error: state.newMessage.error
-})
+});
 
-export default connect(mapStateToProps, { sendNewMessageData })(NewMessageForm)
+export default connect(mapStateToProps, { sendNewMessageData })(NewMessageForm);

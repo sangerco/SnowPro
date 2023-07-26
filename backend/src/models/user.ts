@@ -15,6 +15,7 @@ interface UserData {
     videos: string[];
     photos: string[];
     favMountains: string[];
+    isAdmin: boolean;
 }
 
 interface UserUpdateData {
@@ -41,6 +42,7 @@ interface UserDataRow {
     videos: string[];
     photos: string[];
     favMountains: string[];
+    isAdmin: boolean;
 }
 
 class User {
@@ -139,6 +141,7 @@ class User {
                     u.email,
                     u.avatar,
                     u.bio,
+                    u.is_admin AS "isAdmin",
                     v.link AS "videos",
                     p.link AS "photos",
                     s.name AS "favMountains" 
@@ -166,7 +169,8 @@ class User {
                 bio: rows[0].bio,
                 videos: rows.map(row => row.videos).filter(link => link !== null),
                 photos: rows.map(row => row.photos).filter(link => link !== null),
-                favMountains: rows.map(row => row.favMountains).filter(slug => slug !== null)
+                favMountains: rows.map(row => row.favMountains).filter(slug => slug !== null),
+                isAdmin: rows[0].isAdmin
             }
 
             return user;

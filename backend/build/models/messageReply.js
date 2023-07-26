@@ -42,17 +42,18 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var db_1 = __importDefault(require("../db"));
 var expressError_1 = require("../expressError");
 var uuid_1 = require("uuid");
-var Message = /** @class */ (function () {
-    function Message() {
+var Reply = /** @class */ (function () {
+    function Reply() {
     }
-    Message.createMessage = function (senderId, recipientId, subject, body) {
+    Reply.createReply = function (messageId, senderId, recipientId, subject, body) {
         return __awaiter(this, void 0, void 0, function () {
-            var id, result, message;
+            var id, result, reply;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         id = (0, uuid_1.v4)();
-                        return [4 /*yield*/, db_1.default.query("\n            INSERT INTO messages\n            (   id,\n                sender_id,\n                recipient_id,\n                subject,\n                body)\n            VALUES ($1, $2, $3, $4, $5)\n            RETURNING\n                id,\n                sender_id AS \"senderId\",\n                recipient_id AS \"recipientId\",\n                subject,\n                body", [id,
+                        return [4 /*yield*/, db_1.default.query("\n            INSERT INTO message_replies\n            (   id,\n                message_id,\n                sender_id,\n                recipient_id,\n                subject,\n                body)\n            VALUES ($1, $2, $3, $4, $5, $6)\n            RETURNING \n                id,\n                message_id AS \"messageId\",\n                sender_id AS \"senderId\",\n                recipient_id AS \"recipientId\",\n                subject,\n                body", [id,
+                                messageId,
                                 senderId,
                                 recipientId,
                                 subject,
@@ -60,69 +61,91 @@ var Message = /** @class */ (function () {
                             ])];
                     case 1:
                         result = _a.sent();
-                        message = result.rows[0];
-                        return [2 /*return*/, message];
+                        reply = result.rows[0];
+                        return [2 /*return*/, reply];
                 }
             });
         });
     };
     ;
-    Message.getMessage = function (id) {
+    Reply.getReplyById = function (id) {
         return __awaiter(this, void 0, void 0, function () {
-            var result, message;
+            var result, reply;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, db_1.default.query("SELECT FROM messages\n                WHERE id = $1\n                RETURNING \n                    sender_id AS \"senderId\",\n                    recipient_id AS \"recipientId\",\n                    subject,\n                    body", [id])];
+                    case 0: return [4 /*yield*/, db_1.default.query("\n            SELECT \n                id,\n                message_id AS \"messageId\",\n                sender_id AS \"senderId\",\n                recipient_id AS \"recipientId\",\n                subject,\n                body\n                FROM message_replies\n                WHERE id = $1", [id])];
                     case 1:
                         result = _a.sent();
-                        message = result.rows[0];
-                        return [2 /*return*/, message];
+                        reply = result.rows[0];
+                        return [2 /*return*/, reply];
                 }
             });
         });
     };
-    Message.getUsersMessages = function (username) {
+    ;
+    Reply.getRepliesByMessageId = function (messageId) {
         return __awaiter(this, void 0, void 0, function () {
-            var result;
+            var result, replies;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, db_1.default.query("SELECT \n                u.username, \n                u.id, \n                m.id,\n                m.sender_id AS \"senderId\",\n                m.recipient_id AS \"recipientId\",\n                m.subject,\n                m.body\n                FROM users u\n                JOIN messages m ON u.id = m.recipient_id\n                WHERE u.username = $1", [username])];
+                    case 0: return [4 /*yield*/, db_1.default.query("\n            SELECT FROM message_replies\n                WHERE message_id = $1\n                RETURNING id,\n                message_id AS \"messageId\",\n                sender_id AS \"senderId\",\n                recipient_id AS \"recipientId\",\n                subject,\n                body", [messageId])];
                     case 1:
                         result = _a.sent();
-                        return [2 /*return*/, result.rows];
+                        replies = result.rows;
+                        return [2 /*return*/, replies];
                 }
             });
         });
     };
-    Message.getSentMessages = function (username) {
+    ;
+    Reply.getReceivedRepliesByUsername = function (username) {
         return __awaiter(this, void 0, void 0, function () {
-            var result;
+            var result, replies;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, db_1.default.query("SELECT \n                u.username, \n                u.id, \n                m.id,\n                m.sender_id AS \"senderId\",\n                m.recipient_id AS \"recipientId\",\n                m.subject,\n                m.body\n                FROM users u\n                JOIN messages m ON u.id = m.sender_id\n                WHERE u.username = $1", [username])];
+                    case 0: return [4 /*yield*/, db_1.default.query("\n            SELECT \n                u.username,\n                u.id,\n                r.id,\n                r.message_id AS \"messageId\",\n                r.sender_id AS \"senderId\",\n                r.recipient_id AS \"recipientId\",\n                r.subject,\n                r.body,\n            FROM users u \n            JOIN message_replies r on u.id = r.recipient_id\n            WHERE u.username = $1", [username])];
                     case 1:
                         result = _a.sent();
-                        return [2 /*return*/, result.rows];
+                        replies = result.rows;
+                        return [2 /*return*/, replies];
                 }
             });
         });
     };
-    Message.removeMessage = function (id) {
+    ;
+    Reply.getSentRepliesByUsername = function (username) {
         return __awaiter(this, void 0, void 0, function () {
-            var result, message;
+            var result, replies;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, db_1.default.query("DELETE FROM messages\n                WHERE id = $1\n                RETURNING id", [id])];
+                    case 0: return [4 /*yield*/, db_1.default.query("\n            SELECT \n                u.username,\n                u.id,\n                r.id,\n                r.message_id AS \"messageId\",\n                r.sender_id AS \"senderId\",\n                r.recipient_id AS \"recipientId\",\n                r.subject,\n                r.body,\n            FROM users u \n            JOIN message_replies r on u.id = r.sender_id\n            WHERE u.username = $1", [username])];
                     case 1:
                         result = _a.sent();
-                        message = result.rows[0];
-                        if (!message)
+                        replies = result.rows;
+                        return [2 /*return*/, replies];
+                }
+            });
+        });
+    };
+    ;
+    Reply.deleteReply = function (id) {
+        return __awaiter(this, void 0, void 0, function () {
+            var result, reply;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, db_1.default.query("\n            DELETE FROM message_replies\n                WHERE id = $1\n                RETURNING id", [id])];
+                    case 1:
+                        result = _a.sent();
+                        reply = result.rows[0];
+                        if (!reply)
                             throw new expressError_1.NotFoundError('Message does not exist!');
                         return [2 /*return*/];
                 }
             });
         });
     };
-    return Message;
+    ;
+    return Reply;
 }());
-exports.default = Message;
+;
+exports.default = Reply;

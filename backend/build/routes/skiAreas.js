@@ -69,6 +69,15 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
+    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
+        if (ar || !(i in from)) {
+            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
+            ar[i] = from[i];
+        }
+    }
+    return to.concat(ar || Array.prototype.slice.call(from));
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -84,14 +93,21 @@ var axios_1 = __importDefault(require("axios"));
 var auth_1 = require("../middleware/auth");
 var router = express_1.default.Router();
 router.get('/ski-areas', function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var url, options, response, skiAreas, _i, skiAreas_1, skiArea, e_1;
+    var baseUrl, currentPage, totalPages, allSkiAreas, url, options, response, data, _i, allSkiAreas_1, skiArea, e_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                url = 'https://api.skiapi.com/v1/resort';
+                baseUrl = 'https://api.skiapi.com/v1/resort';
                 _a.label = 1;
             case 1:
-                _a.trys.push([1, 7, , 8]);
+                _a.trys.push([1, 9, , 10]);
+                currentPage = 1;
+                totalPages = 6;
+                allSkiAreas = [];
+                _a.label = 2;
+            case 2:
+                if (!(currentPage <= totalPages)) return [3 /*break*/, 4];
+                url = "".concat(baseUrl, "?page=").concat(currentPage);
                 options = {
                     method: 'GET',
                     url: url,
@@ -101,31 +117,36 @@ router.get('/ski-areas', function (req, res, next) { return __awaiter(void 0, vo
                     }
                 };
                 return [4 /*yield*/, axios_1.default.request(options)];
-            case 2:
+            case 3:
                 response = _a.sent();
                 console.log(response);
-                skiAreas = response.data;
-                _i = 0, skiAreas_1 = skiAreas;
-                _a.label = 3;
-            case 3:
-                if (!(_i < skiAreas_1.length)) return [3 /*break*/, 6];
-                skiArea = skiAreas_1[_i];
-                return [4 /*yield*/, skiArea_1.default.createSkiArea(skiArea.slug, skiArea.name)];
+                data = response.data.data;
+                allSkiAreas = __spreadArray(__spreadArray([], allSkiAreas, true), data, true);
+                currentPage++;
+                return [3 /*break*/, 2];
             case 4:
-                _a.sent();
+                _i = 0, allSkiAreas_1 = allSkiAreas;
                 _a.label = 5;
             case 5:
-                _i++;
-                return [3 /*break*/, 3];
+                if (!(_i < allSkiAreas_1.length)) return [3 /*break*/, 8];
+                skiArea = allSkiAreas_1[_i];
+                console.log(skiArea.slug, skiArea.name);
+                return [4 /*yield*/, skiArea_1.default.createSkiArea(skiArea.slug, skiArea.name)];
             case 6:
-                res.json(skiAreas);
-                return [3 /*break*/, 8];
+                _a.sent();
+                _a.label = 7;
             case 7:
+                _i++;
+                return [3 /*break*/, 5];
+            case 8:
+                res.json(allSkiAreas);
+                return [3 /*break*/, 10];
+            case 9:
                 e_1 = _a.sent();
                 console.error(e_1);
                 res.status(500).json({ error: 'An error occurred while fetching data.' });
-                return [3 /*break*/, 8];
-            case 8:
+                return [3 /*break*/, 10];
+            case 10:
                 ;
                 return [2 /*return*/];
         }
@@ -152,7 +173,7 @@ router.get('/ski-areas/:slug', function (req, res, next) { return __awaiter(void
                 return [4 /*yield*/, axios_1.default.request(options)];
             case 2:
                 response = _a.sent();
-                skiAreaData = response.data;
+                skiAreaData = response.data.data;
                 return [4 /*yield*/, skiArea_1.default.returnReviewDataBySlug(slug)];
             case 3:
                 getReviewData = _a.sent();
@@ -160,6 +181,7 @@ router.get('/ski-areas/:slug', function (req, res, next) { return __awaiter(void
             case 4:
                 getUsersFavoritedBy = _a.sent();
                 combinedData = __assign(__assign({}, skiAreaData), { reviewData: getReviewData, usersFavoritedBy: getUsersFavoritedBy });
+                console.log(combinedData);
                 res.json(combinedData);
                 return [3 /*break*/, 6];
             case 5:

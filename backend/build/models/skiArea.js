@@ -48,12 +48,12 @@ var SkiArea = /** @class */ (function () {
             var result;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, db_1.default.query("INSERT INTO ski_areas \n            (   slug,\n                name)\n                VALUES ($1, $2)\n                RETURNING slug AS \"skiAreaSlug\", name", [slug,
+                    case 0: return [4 /*yield*/, db_1.default.query("INSERT INTO ski_areas \n            (   slug,\n                name)\n                VALUES ($1, $2)\n                ON CONFLICT DO NOTHING", [slug,
                             name
                         ])];
                     case 1:
                         result = _a.sent();
-                        return [2 /*return*/, result.rows[0]];
+                        return [2 /*return*/];
                 }
             });
         });
@@ -64,7 +64,7 @@ var SkiArea = /** @class */ (function () {
             var result;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, db_1.default.query("\n            SELECT s.slug,\n                u.user_id as \"userId\",\n                u.username\n                FROM ski_areas s\n                LEFT JOIN fav_mountains fm ON s.slug = fm.ski_areas_slug\n                LEFT JOIN users u ON fm.user_id = u.id\n                WHERE s.slug = $1", [slug])];
+                    case 0: return [4 /*yield*/, db_1.default.query("\n            SELECT s.slug,\n                u.id as \"userId\",\n                u.username\n                FROM ski_areas s\n                LEFT JOIN fav_mountains fm ON s.slug = fm.ski_areas_slug\n                LEFT JOIN users u ON fm.user_id = u.id\n                WHERE s.slug = $1", [slug])];
                     case 1:
                         result = _a.sent();
                         return [2 /*return*/, result.rows];
@@ -77,7 +77,7 @@ var SkiArea = /** @class */ (function () {
             var result;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, db_1.default.query("SELECT s.slug,\n                s.name,\n                r.user_id AS \"userId\",\n                r.ski_area_slug AS \"skiAreaSlug\",\n                r.body,\n                r.stars,\n                r.photos,\n                r.tag_id AS \"tagIds\",\n                t.tag\n                FROM ski_areas s\n                LEFT JOIN reviews r ON s.slug = r.ski_area_slug\n                LEFT JOIN review_tags ON r.tag_id = rt.tag_id\n                LEFT JOIN tags ON rt.tag_id = t.id\n                WHERE s.slug = $1", [slug])];
+                    case 0: return [4 /*yield*/, db_1.default.query("SELECT s.slug,\n                s.name,\n                r.user_id AS \"userId\",\n                r.ski_area_slug AS \"skiAreaSlug\",\n                r.body,\n                r.stars,\n                r.photos,\n                r.tag_ids AS \"tagIds\",\n                t.tag AS \"tags\"\n                FROM ski_areas s\n                LEFT JOIN reviews r ON s.slug = r.ski_area_slug\n                LEFT JOIN review_tags rt ON r.tag_ids = rt.tag_id\n                LEFT JOIN tags t ON rt.tag_id = t.id\n                WHERE s.slug = $1", [slug])];
                     case 1:
                         result = _a.sent();
                         return [2 /*return*/, result.rows];

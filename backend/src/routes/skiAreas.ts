@@ -5,7 +5,7 @@ import SkiArea from '../models/skiArea';
 import Review from '../models/review';
 import reviewNewSchema from '../schemas/reviewNew.json';
 import { Key, Host } from '../vault/secret';
-import axios, { AxiosRequestConfig } from 'axios';
+import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 import { SkiAreaData, SkiAreaReviewData, AllSkiAreasData, SkiAreasUsersFavoritedBy } from '../interfaces/skiAreaInterfaces';
 import { checkIfUserOrAdmin, ensureLoggedIn } from '../middleware/auth';
 
@@ -21,27 +21,38 @@ interface ReviewData {
 const router = express.Router();
 
 router.get('/ski-areas', async (req: Request, res: Response, next: NextFunction) => {
-    const url = 'https://api.skiapi.com/v1/resort'
+    const baseUrl = 'https://api.skiapi.com/v1/resort'
     
     try {
-        const options: AxiosRequestConfig = {
-            method: 'GET',
-            url: url,
-            headers: {
-                'X-RapidAPI-Key': Key,
-                'X-RapidAPI-Host': Host
-            }
-        };
+        let currentPage = 1;
+        let totalPages = 6;
+        let allSkiAreas: AllSkiAreasData[] = [];
 
-        const response = await axios.request(options);
-        console.log(response);
-        const skiAreas: AllSkiAreasData[] = response.data;
+        while(currentPage <= totalPages){
+            const url = `${baseUrl}?page=${currentPage}`;
+            const options: AxiosRequestConfig = {
+                method: 'GET',
+                url: url,
+                headers: {
+                    'X-RapidAPI-Key': Key,
+                    'X-RapidAPI-Host': Host
+                }
+            };
+    
+            const response = await axios.request(options);
+            console.log(response)
+            const { data } = response.data;
+            
+            allSkiAreas = [ ...allSkiAreas, ...data ];
+            currentPage++;
+        }
         
-        for (let skiArea of skiAreas) {
+        for (let skiArea of allSkiAreas) {
+            console.log(skiArea.slug, skiArea.name);
             await SkiArea.createSkiArea(skiArea.slug, skiArea.name)
         }
 
-        res.json(skiAreas);
+        res.json(allSkiAreas);
 
     } catch (e) {
         console.error(e);
@@ -64,7 +75,7 @@ router.get('/ski-areas/:slug', async (req: Request, res: Response, next: NextFun
         };
 
         const response = await axios.request(options);
-        const skiAreaData: SkiAreaData = response.data;
+        const skiAreaData: SkiAreaData = response.data.data;
 
         const getReviewData: SkiAreaReviewData[] = await SkiArea.returnReviewDataBySlug(slug);
         const getUsersFavoritedBy: SkiAreasUsersFavoritedBy[] = await SkiArea.returnUsersFavoritedBy(slug);
@@ -73,8 +84,8 @@ router.get('/ski-areas/:slug', async (req: Request, res: Response, next: NextFun
             ...skiAreaData,
             reviewData: getReviewData,
             usersFavoritedBy: getUsersFavoritedBy
-        }
-
+        };
+        
         res.json(combinedData);
 
     } catch (e) {

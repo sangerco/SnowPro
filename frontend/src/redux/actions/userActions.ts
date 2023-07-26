@@ -68,7 +68,6 @@ export const fetchUserData = (username: string) => {
         try {
             const response = await axios.get(`${URL}/users/${username}`);
             const responseData: UserData = response.data.user;
-            console.log(response);
             dispatch(fetchUserDataSuccess(responseData));
         } catch (error: any) {
             dispatch(fetchUserDataFailure(error.message));

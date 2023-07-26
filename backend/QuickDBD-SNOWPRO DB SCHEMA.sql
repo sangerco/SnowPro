@@ -19,6 +19,7 @@ CREATE TABLE "users" (
     "password" text   NOT NULL,
     "avatar" text   NULL,
     "bio" varchar(1000)   NULL,
+    "is_admin" text NULL,
     CONSTRAINT "pk_User" PRIMARY KEY ("id"),
     CONSTRAINT "uc_User_username" UNIQUE ("username")
 );
@@ -37,6 +38,7 @@ CREATE TABLE "reviews" (
     "stars" int   NOT NULL,
     "photos" text   NULL,
     "tag_ids" text NULL,
+    "created_at" TIMESTAMP NOT NULL,
     CONSTRAINT "pk_reviews" PRIMARY KEY ("id")
 );
 
@@ -45,6 +47,7 @@ CREATE TABLE "review_replies" (
     "review_id" text   NOT NULL,
     "user_id" text   NOT NULL,
     "body" varchar(500)   NOT NULL,
+    "created_at" TIMESTAMP NOT NULL,
     CONSTRAINT "pk_review_replies" PRIMARY KEY ("id")
 );
 
@@ -54,7 +57,19 @@ CREATE TABLE "messages" (
     "recipient_id" text   NOT NULL,
     "subject" text  NULL,
     "body" varchar(500)   NOT NULL,
+    "created_at" TIMESTAMP NOT NULL,
     CONSTRAINT "pk_messages" PRIMARY KEY ("id")
+);
+
+CREATE TABLE "message_replies" (
+    "id" text  NOT NULL,
+    "message_id" text NOT NULL,
+    "sender_id" text NOT NULL,
+    "recipient_id" text NOT NULL,
+    "subject" text NULL,
+    "body" varchar(500)  NOT NULL,
+    "created_at" TIMESTAMP NOT NULL,
+    CONSTRAINT "pk_message_replies" PRIMARY KEY ("id")
 );
 
 CREATE TABLE "tags" (
@@ -69,6 +84,7 @@ CREATE TABLE "photos" (
     "link" text   NOT NULL,
     "about" text NULL,
     "tag_ids" text NULL,
+    "created_at" TIMESTAMP NOT NULL,
     CONSTRAINT "pk_photos" PRIMARY KEY ("id")
 );
 
@@ -78,6 +94,7 @@ CREATE TABLE "videos" (
     "link" text   NULL,
     "about" text NULL,
     "tag_ids" text NULL,
+    "created_at" TIMESTAMP NOT NULL,
     CONSTRAINT "pk_videos" PRIMARY KEY ("id")
 );
 
@@ -139,6 +156,9 @@ CREATE TABLE users_videos (
 
 ALTER TABLE "reviews" ADD CONSTRAINT "fk_reviews_user_id" FOREIGN KEY("user_id")
 REFERENCES "users" ("id");
+
+ALTER TABLE "message_replies" ADD CONSTRAINT "fk_message_replies" FOREIGN KEY("message_id")
+REFERENCES "messages" ("id");
 
 ALTER TABLE "reviews" ADD CONSTRAINT "fk_reviews_ski_area_slug" FOREIGN KEY("ski_area_slug")
 REFERENCES "ski_areas" ("slug");

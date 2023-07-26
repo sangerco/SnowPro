@@ -13,7 +13,7 @@ const App: React.FC = () => {
   return (
     <Provider store={store}>
       <>
-        {/* <SkiAreaData /> */}
+        <SkiAreaData />
         <CreateNewUser />
         <User username='jane'/>
         <UserList />

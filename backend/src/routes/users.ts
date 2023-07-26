@@ -6,7 +6,9 @@ import User from '../models/user';
 import { createToken } from '../helpers/tokens';
 import userRegisterSchema from '../schemas/userRegister.json';
 import userUpdateSchema from '../schemas/userUpdate.json';
-import userLoginSchema from '../schemas/userLogin.json'
+import userLoginSchema from '../schemas/userLogin.json';
+import makeAdminSchema from '../schemas/makeAdminSchema.json';
+
 const router = express.Router();
 
 interface UserRegisterData {
@@ -75,6 +77,23 @@ router.get('/users/:username', ensureLoggedIn, checkIfUserOrAdmin,async (req: Re
     try {
         const user = await User.getUser(req.params.username);
         return res.json({ user });
+    } catch (e) {
+        return next(e);
+    };
+});
+
+// make a user an admin
+
+router.patch('/:username', ensureLoggedIn, checkIfAdmin, async (req: Request, res: Response, next: NextFunction) => {
+    try{
+        const validator: jsonschema.ValidatorResult = jsonschema.validate(req.body, makeAdminSchema);
+        if(!validator.valid) {
+            const errors: string | string[] = validator.errors.map(e => e.stack);
+            throw new BadRequestError(errors);
+        }
+
+        const user = await User.makeAdmin(req.params.username, req.body);
+        return res.json({ "Made admin" : user });
     } catch (e) {
         return next(e);
     };

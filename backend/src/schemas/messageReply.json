@@ -1,6 +1,11 @@
 {
     "type": "object",
     "properties": {
+        "message_id" : {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 20
+        },
         "sender_id": {
             "type": "string",
             "minLength": 1,
@@ -24,6 +29,7 @@
     },
     "additionalProperties": false,
     "required": [
+        "message_id",
         "sender_id",
         "recipient_id",
         "body"

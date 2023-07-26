@@ -66,64 +66,88 @@ var jsonschema = __importStar(require("jsonschema"));
 var express_1 = __importDefault(require("express"));
 var auth_1 = require("../middleware/auth");
 var expressError_1 = require("../expressError");
-var video_1 = __importDefault(require("../models/video"));
-var videoLinkNew_json_1 = __importDefault(require("../schemas/videoLinkNew.json"));
+var messageReply_1 = __importDefault(require("../models/messageReply"));
+var messageReply_json_1 = __importDefault(require("../schemas/messageReply.json"));
 var router = express_1.default.Router();
-router.post('/api/videos', auth_1.ensureLoggedIn, auth_1.checkIfUserOrAdmin, function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var validator, errors, _a, userId, link, about, tagIds, video, e_1;
+router.post('/api/messages/:id/reply', auth_1.ensureLoggedIn, function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+    var validator, errors, _a, messageId, senderId, recipientId, subject, body, reply, e_1;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
                 _b.trys.push([0, 2, , 3]);
-                validator = jsonschema.validate(req.body, videoLinkNew_json_1.default);
+                validator = jsonschema.validate(req.body, messageReply_json_1.default);
                 if (!validator.valid) {
                     errors = validator.errors.map(function (e) { return e.stack; });
                     throw new expressError_1.BadRequestError(errors);
                 }
-                _a = req.body, userId = _a.userId, link = _a.link, about = _a.about, tagIds = _a.tagIds;
-                return [4 /*yield*/, video_1.default.createVideo(userId, link, about, tagIds)];
+                _a = req.body, messageId = _a.messageId, senderId = _a.senderId, recipientId = _a.recipientId, subject = _a.subject, body = _a.body;
+                return [4 /*yield*/, messageReply_1.default.createReply(messageId, senderId, recipientId, subject, body)];
             case 1:
-                video = _b.sent();
-                return [2 /*return*/, res.status(201).json({ video: video })];
+                reply = _b.sent();
+                return [2 /*return*/, res.status(201).json({ reply: reply })];
             case 2:
                 e_1 = _b.sent();
                 return [2 /*return*/, next(e_1)];
-            case 3: return [2 /*return*/];
+            case 3:
+                ;
+                return [2 /*return*/];
         }
     });
 }); });
-router.get('/video/:id', function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var video, e_2;
+router.get('/messages/:id/replies/:replyId', auth_1.ensureLoggedIn, auth_1.checkIfUserOrAdmin, function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+    var reply, e_2;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                return [4 /*yield*/, video_1.default.getVideo(req.params.id)];
+                return [4 /*yield*/, messageReply_1.default.getReplyById(req.params.replyId)];
             case 1:
-                video = _a.sent();
-                return [2 /*return*/, res.json({ video: video })];
+                reply = _a.sent();
+                return [2 /*return*/, res.json({ reply: reply })];
             case 2:
                 e_2 = _a.sent();
                 return [2 /*return*/, next(e_2)];
-            case 3: return [2 /*return*/];
+            case 3:
+                ;
+                return [2 /*return*/];
         }
     });
 }); });
-router.delete('/api/video/:id', function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var e_3;
+router.get('/messages/:id/replies', auth_1.ensureLoggedIn, auth_1.checkIfUserOrAdmin, function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+    var replies, e_3;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                return [4 /*yield*/, video_1.default.removeVideo(req.params.id)];
+                return [4 /*yield*/, messageReply_1.default.getRepliesByMessageId(req.params.id)];
             case 1:
-                _a.sent();
-                return [2 /*return*/, res.json({ deleted: "Video removed ".concat(req.params.id) })];
+                replies = _a.sent();
+                return [2 /*return*/, res.json({ replies: replies })];
             case 2:
                 e_3 = _a.sent();
                 return [2 /*return*/, next(e_3)];
-            case 3: return [2 /*return*/];
+            case 3:
+                ;
+                return [2 /*return*/];
         }
     });
 }); });
-exports.default = router;
+router.delete('/api/messages/:id/replies/:replyId', auth_1.ensureLoggedIn, auth_1.checkIfUserOrAdmin, function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+    var e_4;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                return [4 /*yield*/, messageReply_1.default.deleteReply(req.params.replyId)];
+            case 1:
+                _a.sent();
+                return [2 /*return*/, res.json({ deleted: req.params.replyId })];
+            case 2:
+                e_4 = _a.sent();
+                return [2 /*return*/, next(e_4)];
+            case 3:
+                ;
+                return [2 /*return*/];
+        }
+    });
+}); });
