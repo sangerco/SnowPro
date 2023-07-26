@@ -24,6 +24,7 @@ class Review {
     ): Promise<ReviewData> {
 
         const id = uuidv4();
+        const createdAt = new Date()
 
         const result = await db.query(
             `INSERT INTO reviews
@@ -32,7 +33,8 @@ class Review {
                    ski_area_slug,
                    body,
                    stars,
-                   photos)
+                   photos,
+                   created_at)
             VALUES ($1, $2, $3, $4, $5, $6, $7)
             RETURNING
                 id,
@@ -40,13 +42,15 @@ class Review {
                 ski_area_slug AS "skiAreaSlug", 
                 body, 
                 stars, 
-                photos`,
+                photos,
+                created_at AS "createdAt"`,
             [   id,
                 userId,
                 skiAreaSlug,
                 body,
                 stars,
-                photos
+                photos,
+                createdAt
             ]
         )
 
@@ -79,7 +83,8 @@ class Review {
                             ski_area_slug AS "skiAreaSlug",
                             body,
                             stars,
-                            photos`;
+                            photos,
+                            created_at AS "createdAt"`;
         const result = await db.query(sqlQuery, [...values, id])
         const review = result.rows[0];
 

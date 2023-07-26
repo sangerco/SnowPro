@@ -15,20 +15,23 @@ interface VideoData {
 class Video {
     static async createVideo(userId: string, link: string, about: string, tagIds: string[]): Promise<VideoData> {
         const id = uuidv4();
+        const createdAt = new Date();
 
         const result = await db.query( `
             INSERT INTO videos
                 (   id,
                     user_id,
                     link,
-                    about)
-            VALUES ($1, $2, $3, $4, $5)
+                    about,
+                    created_at)
+            VALUES ($1, $2, $3, $4, $5, $6)
             RETURNING 
                     id,
                     user_id AS "userId",
                     link,
-                    about`,
-            [id, userId, link, about]
+                    about,
+                    created_at AS "createdAt"`,
+            [id, userId, link, about, createdAt]
         );
 
         const video = result.rows[0];
@@ -52,11 +55,13 @@ class Video {
                 v.link,
                 v.about,
                 v.tag_id AS "tagId",
+                v.created_at AS "createdAt",
                 t.tag
                 FROM videos v
                 LEFT JOIN videos_tags vt ON v.tag_id = vt.tag_id
                 LEFT JOIN tags t ON vt.tag_id = t.id
-                WHERE v.id = $1`,
+                WHERE v.id = $1
+                ORDER BY v.created_at`,
             [id]
         )
 
@@ -81,7 +86,8 @@ class Video {
                             RETURNING id,
                                 user_id AS "userId",
                                 link,
-                                about`;
+                                about,
+                                created_at`;
         const result = await db.query(sqlQuery, [...values, id]);
         const video = result.rows[0];
 

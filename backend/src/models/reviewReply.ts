@@ -32,23 +32,27 @@ class ReviewReply {
         
         
         const id = uuidv4();
+        const createdAt = new Date();
 
         const result = await db.query(
             `INSERT INTO review_replies
                 (id,
                     user_id,
                     review_id,
-                    body)
-            VALUES ($1, $2, $3, $4)
+                    body,
+                    created_at)
+            VALUES ($1, $2, $3, $4, $5)
             RETURNING 
                 id,
                 user_id AS "userId",
                 review_id AS "reviewId",
-                body`,
+                body,
+                created_at AS "createdAt"`,
             [   id,
                 userId,
                 reviewId,
-                body
+                body,
+                createdAt
             ]
         );
 
@@ -65,7 +69,8 @@ class ReviewReply {
                             WHERE id = ${id}
                             RETURNING user_id AS "userId",
                                         review_id AS "reviewId",
-                                        body`;
+                                        body,
+                                        created_at AS "createdAt"`;
         const result = await db.query<ReviewReplyRow>(sqlQuery, [...values, id]);
         const reviewReply: ReviewReplyData = {
             id: result.rows[0].id,

@@ -14,20 +14,23 @@ interface PhotoData {
 class Photo {
     static async createPhoto(userId: string, link: string, about: string, tagIds: string[]): Promise<PhotoData> {
         const id = uuidv4();
+        const createdAt = new Date();
 
         const result = await db.query( `
             INSERT INTO photos
                 (   id,
                     user_id,
                     link,
-                    about)
-            VALUES ($1, $2, $3, $4)
+                    about,
+                    created_at)
+            VALUES ($1, $2, $3, $4, $5)
             RETURNING 
                     id,
                     user_id AS "userId",
                     link,
-                    about`,
-            [id, userId, link, about]
+                    about
+                    created_at AS "createdAt"`,
+            [id, userId, link, about, createdAt]
         );
 
         const photo = result.rows[0];
@@ -51,11 +54,13 @@ class Photo {
                 p.link,
                 p.about,
                 p.tag_id AS "tagId",
+                p.created_at AS "createdAt",
                 t.tag
                 FROM photos p
                 LEFT JOIN photos_tags pt ON p.tag_id = pt.tag_id
                 LEFT JOIN tags t ON pt.tag_id = t.id
-                WHERE p.id = $1`,
+                WHERE p.id = $1
+                ORDER BY p.created_at`,
             [id]
         )
 
@@ -80,7 +85,8 @@ class Photo {
                             RETURNING id,
                                 user_id AS "userId",
                                 link,
-                                about`;
+                                about,
+                                created_at as "createdAt"`;
         const result = await db.query(sqlQuery, [...values, id]);
         const photo = result.rows[0];
 

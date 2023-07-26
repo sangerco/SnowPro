@@ -19,6 +19,7 @@ interface UserWithReplies extends ReplyData {
 class Reply {
     static async createReply(messageId: string, senderId: string, recipientId: string, subject: string, body: string): Promise<ReplyData> {
         const id = uuidv4();
+        const created_at = new Date();
 
         const result = await db.query(`
             INSERT INTO message_replies
@@ -27,7 +28,8 @@ class Reply {
                 sender_id,
                 recipient_id,
                 subject,
-                body)
+                body,
+                created_at)
             VALUES ($1, $2, $3, $4, $5, $6)
             RETURNING 
                 id,
@@ -35,13 +37,15 @@ class Reply {
                 sender_id AS "senderId",
                 recipient_id AS "recipientId",
                 subject,
-                body`,
+                body,
+                created_at AS "createdAt"`,
             [   id,
                 messageId,
                 senderId,
                 recipientId,
                 subject,
-                body
+                body,
+                created_at
             ]
         );
 
@@ -58,9 +62,11 @@ class Reply {
                 sender_id AS "senderId",
                 recipient_id AS "recipientId",
                 subject,
-                body
+                body,
+                created_at AS "createdAt"
                 FROM message_replies
-                WHERE id = $1`,
+                WHERE id = $1
+                ORDER BY created_at`,
                 [id]
             );
 
@@ -71,14 +77,17 @@ class Reply {
 
     static async getRepliesByMessageId(messageId: string): Promise<ReplyData[]> {
         const result = await db.query(`
-            SELECT FROM message_replies
-                WHERE message_id = $1
-                RETURNING id,
+            SELECT 
+                id,
                 message_id AS "messageId",
                 sender_id AS "senderId",
                 recipient_id AS "recipientId",
                 subject,
-                body`,
+                body,
+                created_at AS "createdAt"
+                FROM message_replies
+                WHERE message_id = $1
+                ORDER BY created_at`,
             [ messageId ]
         );
 
@@ -98,9 +107,11 @@ class Reply {
                 r.recipient_id AS "recipientId",
                 r.subject,
                 r.body,
+                r.created_at AS "createdAt"
             FROM users u 
             JOIN message_replies r on u.id = r.recipient_id
-            WHERE u.username = $1`,
+            WHERE u.username = $1
+            ORDER BY r.created_at`,
             [ username ]
         );
 
@@ -120,9 +131,11 @@ class Reply {
                 r.recipient_id AS "recipientId",
                 r.subject,
                 r.body,
+                r.created_at AS "createdAt"
             FROM users u 
             JOIN message_replies r on u.id = r.sender_id
-            WHERE u.username = $1`,
+            WHERE u.username = $1
+            ORDER BY r.created_at`,
             [ username ]
         );
 

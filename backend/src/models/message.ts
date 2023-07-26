@@ -9,6 +9,7 @@ interface MessageData {
     recipientId: string;
     subject: string;
     body: string;
+    createdId: Date;
 }
 
 export interface UsernameWithId {
@@ -23,6 +24,7 @@ interface UserWithMessages extends MessageData {
 class Message {
     static async createMessage(senderId: string, recipientId:string, subject: string, body: string): Promise<MessageData> {
         const id = uuidv4();
+        const createdAt = new Date();
 
         const result = await db.query(`
             INSERT INTO messages
@@ -30,19 +32,22 @@ class Message {
                 sender_id,
                 recipient_id,
                 subject,
-                body)
-            VALUES ($1, $2, $3, $4, $5)
+                body, 
+                created_at)
+            VALUES ($1, $2, $3, $4, $5, $6)
             RETURNING
                 id,
                 sender_id AS "senderId",
                 recipient_id AS "recipientId",
                 subject,
-                body`,
+                body
+                created_at AS "createdAt"`,
             [   id,
                 senderId,
                 recipientId,
                 subject,
-                body
+                body,
+                createdAt
             ]
         );
 
@@ -53,13 +58,15 @@ class Message {
 
     static async getMessage(id: string): Promise<MessageData> {
         const result = await db.query(
-            `SELECT FROM messages
+            `SELECT 
+                sender_id AS "senderId",
+                recipient_id AS "recipientId",
+                subject,
+                body,
+                created_at AS "createdAt"
+                FROM messages
                 WHERE id = $1
-                RETURNING 
-                    sender_id AS "senderId",
-                    recipient_id AS "recipientId",
-                    subject,
-                    body`,
+                ORDER BY created_at`,
                 [id]
         );
 
@@ -77,10 +84,12 @@ class Message {
                 m.sender_id AS "senderId",
                 m.recipient_id AS "recipientId",
                 m.subject,
-                m.body
+                m.body,
+                m.created_at AS "createdAt"
                 FROM users u
                 JOIN messages m ON u.id = m.recipient_id
-                WHERE u.username = $1`,
+                WHERE u.username = $1
+                ORDER BY m.created_at`,
                 [username]
         );
 
@@ -96,10 +105,12 @@ class Message {
                 m.sender_id AS "senderId",
                 m.recipient_id AS "recipientId",
                 m.subject,
-                m.body
+                m.body,
+                m.created_at AS "createdAt"
                 FROM users u
                 JOIN messages m ON u.id = m.sender_id
-                WHERE u.username = $1`,
+                WHERE u.username = $1
+                ORDER BY m.created_at`,
                 [username]
         );
 

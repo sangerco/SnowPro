@@ -3,6 +3,7 @@ import express, { Request, Response, NextFunction } from 'express';
 import { ensureLoggedIn, checkIfUserOrAdmin } from '../middleware/auth';
 import { BadRequestError } from '../expressError';
 import Message from '../models/message';
+import MessageReply from '../models/messageReply';
 import messageNewSchema from '../schemas/messageNew.json';
 
 const router = express.Router();
@@ -36,6 +37,9 @@ router.post('/api/new-message', ensureLoggedIn, async (req: Request, res: Respon
 router.get('/messages/:id', ensureLoggedIn, checkIfUserOrAdmin, async (req: Request, res: Response, next: NextFunction) => {
     try {
         const message = await Message.getMessage(req.params.id);
+        const replies = await MessageReply.getRepliesByMessageId(req.params.id)
+
+        
         return res.json({ message });
     } catch (e) {
         return next(e);
