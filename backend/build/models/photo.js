@@ -57,12 +57,13 @@ var Photo = /** @class */ (function () {
     }
     Photo.createPhoto = function (userId, link, about, tagIds) {
         return __awaiter(this, void 0, void 0, function () {
-            var id, result, photo, _i, tagIds_1, tagId;
+            var id, createdAt, result, photo, _i, tagIds_1, tagId;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         id = (0, uuid_1.v4)();
-                        return [4 /*yield*/, db_1.default.query("\n            INSERT INTO photos\n                (   id,\n                    user_id,\n                    link,\n                    about)\n            VALUES ($1, $2, $3, $4)\n            RETURNING \n                    id,\n                    user_id AS \"userId\",\n                    link,\n                    about", [id, userId, link, about])];
+                        createdAt = new Date();
+                        return [4 /*yield*/, db_1.default.query("\n            INSERT INTO photos\n                (   id,\n                    user_id,\n                    link,\n                    about,\n                    created_at)\n            VALUES ($1, $2, $3, $4, $5)\n            RETURNING \n                    id,\n                    user_id AS \"userId\",\n                    link,\n                    about\n                    created_at AS \"createdAt\"", [id, userId, link, about, createdAt])];
                     case 1:
                         result = _a.sent();
                         photo = result.rows[0];
@@ -90,7 +91,7 @@ var Photo = /** @class */ (function () {
             var result, photo;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, db_1.default.query("SELECT p.id,\n                p.user_id AS \"userId\",\n                p.link,\n                p.about,\n                p.tag_id AS \"tagId\",\n                t.tag\n                FROM photos p\n                LEFT JOIN photos_tags pt ON p.tag_id = pt.tag_id\n                LEFT JOIN tags t ON pt.tag_id = t.id\n                WHERE p.id = $1", [id])];
+                    case 0: return [4 /*yield*/, db_1.default.query("SELECT p.id,\n                p.user_id AS \"userId\",\n                p.link,\n                p.about,\n                p.tag_id AS \"tagId\",\n                p.created_at AS \"createdAt\",\n                t.tag\n                FROM photos p\n                LEFT JOIN photos_tags pt ON p.tag_id = pt.tag_id\n                LEFT JOIN tags t ON pt.tag_id = t.id\n                WHERE p.id = $1\n                ORDER BY p.created_at", [id])];
                     case 1:
                         result = _a.sent();
                         photo = result.rows[0];
@@ -111,7 +112,7 @@ var Photo = /** @class */ (function () {
                         _a = (0, sql_1.sqlForPartialUpdate)(data, {
                             userId: "user_id"
                         }), setCols = _a.setCols, values = _a.values;
-                        sqlQuery = "UPDATE photos\n                            SET ".concat(setCols, "\n                            WHERE id = ").concat(id, "\n                            RETURNING id,\n                                user_id AS \"userId\",\n                                link,\n                                about");
+                        sqlQuery = "UPDATE photos\n                            SET ".concat(setCols, "\n                            WHERE id = ").concat(id, "\n                            RETURNING id,\n                                user_id AS \"userId\",\n                                link,\n                                about,\n                                created_at as \"createdAt\"");
                         return [4 /*yield*/, db_1.default.query(sqlQuery, __spreadArray(__spreadArray([], values, true), [id], false))];
                     case 1:
                         result = _b.sent();

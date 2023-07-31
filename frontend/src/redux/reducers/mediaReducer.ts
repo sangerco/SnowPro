@@ -5,6 +5,10 @@ import {    PhotoData,
             FETCH_PHOTO_DATA_REQUEST,
             FETCH_PHOTO_DATA_SUCCESS,
             FETCH_PHOTO_DATA_FAILURE,
+            UpdatePhotoData,
+            UPDATE_PHOTO_DATA_REQUEST,
+            UPDATE_PHOTO_DATA_SUCCESS,
+            UPDATE_PHOTO_DATA_FAILURE,
             DELETE_PHOTO_REQUEST,
             DELETE_PHOTO_SUCCESS,
             DELETE_PHOTO_FAILURE,
@@ -16,6 +20,10 @@ import {    PhotoData,
             FETCH_VIDEO_DATA_REQUEST,
             FETCH_VIDEO_DATA_SUCCESS,
             FETCH_VIDEO_DATA_FAILURE,
+            UpdateVideoData,
+            UPDATE_VIDEO_DATA_REQUEST,
+            UPDATE_VIDEO_DATA_SUCCESS,
+            UPDATE_VIDEO_DATA_FAILURE,
             DELETE_VIDEO_REQUEST,
             DELETE_VIDEO_SUCCESS,
             DELETE_VIDEO_FAILURE,
@@ -30,6 +38,11 @@ interface NewPhotoState {
     data: PhotoData | null;
     error: string | null
  };
+
+ interface UpdatePhotoState {
+    data: UpdatePhotoData | null;
+    error: string | null
+ }
                         
 interface DeletePhotoState {
     data: DeletePhoto | null;
@@ -45,6 +58,11 @@ interface NewVideoState {
     data: VideoData | null;
     error: string | null
  };
+
+ interface UpdateVideoState {
+    data: UpdateVideoData | null;
+    error: string | null
+ }
                         
 interface DeleteVideoState {
     data: DeleteVideo | null;
@@ -61,6 +79,11 @@ const initialNewPhotoState: NewPhotoState = {
     error: null
 };
 
+const initialUpdatePhotoState: UpdatePhotoState = {
+    data: null,
+    error: null
+}
+
 const initialDeletePhotoState: DeletePhotoState = {
     data: null,
     error: null
@@ -75,6 +98,11 @@ const initialNewVideoState: NewVideoState = {
     data: null,
     error: null
 };
+
+const initialUpdateVideoState: UpdateVideoState = {
+    data: null,
+    error: null
+}
 
 const initialDeleteVideoState: DeleteVideoState = {
     data: null,
@@ -117,6 +145,29 @@ export const newPhotoReducer = (state = initialNewPhotoState, action: any) => {
                 data: action.payload
             };
         case SEND_NEW_PHOTO_DATA_FAILURE:
+            return {
+                ...state,
+                error: action.payload
+            };
+
+        default: 
+            return state;
+    }
+};
+
+export const updatePhotoReducer = (state = initialUpdatePhotoState, action: any) => {
+    switch(action.type) {
+        case UPDATE_PHOTO_DATA_REQUEST:
+            return {
+                ...state,
+                error: null
+            };
+        case UPDATE_PHOTO_DATA_SUCCESS: 
+            return {
+                ...state,
+                data: action.payload
+            };
+        case UPDATE_PHOTO_DATA_FAILURE: 
             return {
                 ...state,
                 error: action.payload
@@ -185,6 +236,29 @@ export const newVideoReducer = (state = initialNewVideoState, action: any) => {
                 data: action.payload
             };
         case SEND_NEW_VIDEO_DATA_FAILURE:
+            return {
+                ...state,
+                error: action.payload
+            };
+
+        default: 
+            return state;
+    }
+};
+
+export const updateVideoReducer = (state = initialUpdateVideoState, action: any) => {
+    switch(action.type) {
+        case UPDATE_VIDEO_DATA_REQUEST:
+            return {
+                ...state,
+                error: null
+            };
+        case UPDATE_VIDEO_DATA_SUCCESS: 
+            return {
+                ...state,
+                data: action.payload
+            };
+        case UPDATE_VIDEO_DATA_FAILURE: 
             return {
                 ...state,
                 error: action.payload

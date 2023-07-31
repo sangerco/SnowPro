@@ -2,6 +2,7 @@ import axios from "axios";
 import { Dispatch } from "redux";
 import { URL } from "../../config";
 import {    MessageData,
+            MessageDataReturn,
             SEND_NEW_MESSAGE_DATA_REQUEST, 
             SEND_NEW_MESSAGE_DATA_SUCCESS, 
             SEND_NEW_MESSAGE_DATA_FAILURE,
@@ -38,7 +39,7 @@ export const fetchAllUsersMessagesDataRequest = (recipient_id: string) => ({
     type: FETCH_MESSAGE_DATA_REQUEST
 });
 
-export const fetchAllUsersMessagesDataSuccess = (messageData: MessageData) => ({
+export const fetchAllUsersMessagesDataSuccess = (messageData: MessageData[]) => ({
     type: FETCH_MESSAGE_DATA_SUCCESS,
     payload: messageData
 });
@@ -52,7 +53,7 @@ export const fetchAllSentMessagesDataRequest = (sender_id: string) => ({
     type: FETCH_MESSAGE_DATA_REQUEST
 });
 
-export const fetchAllSentMessagesDataSuccess = (messageData: MessageData) => ({
+export const fetchAllSentMessagesDataSuccess = (messageData: MessageData[]) => ({
     type: FETCH_MESSAGE_DATA_SUCCESS,
     payload: messageData
 });
@@ -67,7 +68,7 @@ export const fetchMessageDataByIdRequest = (id: string) => ({
     payload: id
 });
 
-export const fetchMessageDataByIdSuccess = (messageData: MessageData) => ({
+export const fetchMessageDataByIdSuccess = (messageData: MessageDataReturn) => ({
     type: FETCH_MESSAGE_DATA_SUCCESS,
     payload: messageData
 });
@@ -109,13 +110,13 @@ export const sendNewMessageData = (sender_id: string, recipient_id: string, subj
     }
 };
 
-export const fetchAllUsersMessagesData = (recipient_id: string) => {
+export const fetchAllUsersMessagesData = (username: string) => {
     return async (dispatch: Dispatch) => {
-        dispatch(fetchAllUsersMessagesDataRequest(recipient_id));
+        dispatch(fetchAllUsersMessagesDataRequest(username));
 
         try {
-            const response = await axios.get(`${URL}/messages/${recipient_id}`);
-            const responseData: MessageData = response.data.messages;
+            const response = await axios.get(`${URL}/messages/${username}`);
+            const responseData: MessageData[] = response.data.messages;
             dispatch(fetchAllUsersMessagesDataSuccess(responseData));
         } catch (error: any) {
             dispatch(fetchAllUsersMessagesDataFailure(error.message))
@@ -123,13 +124,13 @@ export const fetchAllUsersMessagesData = (recipient_id: string) => {
     }
 };
 
-export const fetchAllSentMessagesData = (sender_id: string) => {
+export const fetchAllSentMessagesData = (username: string) => {
     return async (dispatch: Dispatch) => {
-        dispatch(fetchAllSentMessagesDataRequest(sender_id));
+        dispatch(fetchAllSentMessagesDataRequest(username));
 
         try {
-            const response = await axios.get(`${URL}/messages/${sender_id}/sent`);
-            const responseData: MessageData = response.data.messages;
+            const response = await axios.get(`${URL}/messages/${username}/sent`);
+            const responseData: MessageData[] = response.data.messages;
             dispatch(fetchAllSentMessagesDataSuccess(responseData));
         } catch (error: any) {
             dispatch(fetchAllSentMessagesDataFailure(error.message))
@@ -143,7 +144,7 @@ export const fetchMessageDataById = (id: string) => {
 
         try {
             const response = await axios.get(`${URL}/messages/${id}`);
-            const responseData: MessageData = response.data.message;
+            const responseData: MessageDataReturn = response.data.message;
             dispatch(fetchMessageDataByIdSuccess(responseData));
         } catch (error: any) {
             dispatch(fetchMessageDataByIdFailure(error.message))

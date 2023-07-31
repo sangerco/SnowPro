@@ -1,4 +1,15 @@
 "use strict";
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     var desc = Object.getOwnPropertyDescriptor(m, k);
@@ -67,6 +78,7 @@ var express_1 = __importDefault(require("express"));
 var auth_1 = require("../middleware/auth");
 var expressError_1 = require("../expressError");
 var message_1 = __importDefault(require("../models/message"));
+var messageReply_1 = __importDefault(require("../models/messageReply"));
 var messageNew_json_1 = __importDefault(require("../schemas/messageNew.json"));
 var router = express_1.default.Router();
 ;
@@ -98,19 +110,22 @@ router.post('/api/new-message', auth_1.ensureLoggedIn, function (req, res, next)
 }); });
 // get message
 router.get('/messages/:id', auth_1.ensureLoggedIn, auth_1.checkIfUserOrAdmin, function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var message, e_2;
+    var message, replies, e_2;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                _a.trys.push([0, 2, , 3]);
+                _a.trys.push([0, 3, , 4]);
                 return [4 /*yield*/, message_1.default.getMessage(req.params.id)];
             case 1:
                 message = _a.sent();
-                return [2 /*return*/, res.json({ message: message })];
+                return [4 /*yield*/, messageReply_1.default.getRepliesByMessageId(req.params.id)];
             case 2:
+                replies = _a.sent();
+                return [2 /*return*/, res.json(__assign(__assign({}, message), { replies: replies }))];
+            case 3:
                 e_2 = _a.sent();
                 return [2 /*return*/, next(e_2)];
-            case 3: return [2 /*return*/];
+            case 4: return [2 /*return*/];
         }
     });
 }); });

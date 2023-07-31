@@ -38,9 +38,8 @@ router.get('/messages/:id', ensureLoggedIn, checkIfUserOrAdmin, async (req: Requ
     try {
         const message = await Message.getMessage(req.params.id);
         const replies = await MessageReply.getRepliesByMessageId(req.params.id)
-
         
-        return res.json({ message });
+        return res.json({ ...message, replies: replies });
     } catch (e) {
         return next(e);
     }

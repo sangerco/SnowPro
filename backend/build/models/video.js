@@ -57,12 +57,13 @@ var Video = /** @class */ (function () {
     }
     Video.createVideo = function (userId, link, about, tagIds) {
         return __awaiter(this, void 0, void 0, function () {
-            var id, result, video, _i, tagIds_1, tagId;
+            var id, createdAt, result, video, _i, tagIds_1, tagId;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         id = (0, uuid_1.v4)();
-                        return [4 /*yield*/, db_1.default.query("\n            INSERT INTO videos\n                (   id,\n                    user_id,\n                    link,\n                    about)\n            VALUES ($1, $2, $3, $4, $5)\n            RETURNING \n                    id,\n                    user_id AS \"userId\",\n                    link,\n                    about", [id, userId, link, about])];
+                        createdAt = new Date();
+                        return [4 /*yield*/, db_1.default.query("\n            INSERT INTO videos\n                (   id,\n                    user_id,\n                    link,\n                    about,\n                    created_at)\n            VALUES ($1, $2, $3, $4, $5, $6)\n            RETURNING \n                    id,\n                    user_id AS \"userId\",\n                    link,\n                    about,\n                    created_at AS \"createdAt\"", [id, userId, link, about, createdAt])];
                     case 1:
                         result = _a.sent();
                         video = result.rows[0];
@@ -90,7 +91,7 @@ var Video = /** @class */ (function () {
             var result, video;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, db_1.default.query("SELECT v.id,\n                v.user_id AS \"userId\",\n                v.link,\n                v.about,\n                v.tag_id AS \"tagId\",\n                t.tag\n                FROM videos v\n                LEFT JOIN videos_tags vt ON v.tag_id = vt.tag_id\n                LEFT JOIN tags t ON vt.tag_id = t.id\n                WHERE v.id = $1", [id])];
+                    case 0: return [4 /*yield*/, db_1.default.query("SELECT v.id,\n                v.user_id AS \"userId\",\n                v.link,\n                v.about,\n                v.tag_id AS \"tagId\",\n                v.created_at AS \"createdAt\",\n                t.tag\n                FROM videos v\n                LEFT JOIN videos_tags vt ON v.tag_id = vt.tag_id\n                LEFT JOIN tags t ON vt.tag_id = t.id\n                WHERE v.id = $1\n                ORDER BY v.created_at", [id])];
                     case 1:
                         result = _a.sent();
                         video = result.rows[0];
@@ -111,7 +112,7 @@ var Video = /** @class */ (function () {
                         _a = (0, sql_1.sqlForPartialUpdate)(data, {
                             userId: "user_id"
                         }), setCols = _a.setCols, values = _a.values;
-                        sqlQuery = "UPDATE videos\n                            SET ".concat(setCols, "\n                            WHERE id = ").concat(id, "\n                            RETURNING id,\n                                user_id AS \"userId\",\n                                link,\n                                about");
+                        sqlQuery = "UPDATE videos\n                            SET ".concat(setCols, "\n                            WHERE id = ").concat(id, "\n                            RETURNING id,\n                                user_id AS \"userId\",\n                                link,\n                                about,\n                                created_at");
                         return [4 /*yield*/, db_1.default.query(sqlQuery, __spreadArray(__spreadArray([], values, true), [id], false))];
                     case 1:
                         result = _b.sent();

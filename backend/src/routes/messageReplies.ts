@@ -30,9 +30,10 @@ router.post('/api/messages/:id/reply', ensureLoggedIn, async (req: Request, res:
     };
 });
 
-router.get('/messages/:id/replies/:replyId', ensureLoggedIn, checkIfUserOrAdmin, async (req: Request, res: Response, next: NextFunction) => {
+router.get('/messages/replies/:id', ensureLoggedIn, checkIfUserOrAdmin, async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const reply = await Reply.getReplyById(req.params.replyId);
+        console.log(req.params.id);
+        const reply = await Reply.getReplyById(req.params.id);
         return res.json({ reply });
     } catch (e) {
         return next(e);

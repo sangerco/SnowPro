@@ -54,7 +54,7 @@ class User {
                     last_name AS "lastName",
                     email
             FROM users
-            WHERE username is $1`,
+            WHERE username = $1`,
         [username],
         );
 

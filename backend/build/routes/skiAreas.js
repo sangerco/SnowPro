@@ -181,7 +181,6 @@ router.get('/ski-areas/:slug', function (req, res, next) { return __awaiter(void
             case 4:
                 getUsersFavoritedBy = _a.sent();
                 combinedData = __assign(__assign({}, skiAreaData), { reviewData: getReviewData, usersFavoritedBy: getUsersFavoritedBy });
-                console.log(combinedData);
                 res.json(combinedData);
                 return [3 /*break*/, 6];
             case 5:

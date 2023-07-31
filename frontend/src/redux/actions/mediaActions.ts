@@ -8,6 +8,9 @@ import {    PhotoData,
             FETCH_PHOTO_DATA_REQUEST,
             FETCH_PHOTO_DATA_SUCCESS,
             FETCH_PHOTO_DATA_FAILURE,
+            FETCH_USER_PHOTO_DATA_REQUEST,
+            FETCH_USER_PHOTO_DATA_SUCCESS,
+            FETCH_USER_PHOTO_DATA_FAILURE,
             DELETE_PHOTO_REQUEST,
             DELETE_PHOTO_SUCCESS,
             DELETE_PHOTO_FAILURE,
@@ -20,6 +23,9 @@ import {    PhotoData,
             FETCH_VIDEO_DATA_REQUEST,
             FETCH_VIDEO_DATA_SUCCESS,
             FETCH_VIDEO_DATA_FAILURE,
+            FETCH_USER_VIDEO_DATA_REQUEST,
+            FETCH_USER_VIDEO_DATA_SUCCESS,
+            FETCH_USER_VIDEO_DATA_FAILURE,
             DELETE_VIDEO_REQUEST,
             DELETE_VIDEO_SUCCESS,
             DELETE_VIDEO_FAILURE,
@@ -56,6 +62,20 @@ export const fetchPhotoDataByIdFailure = (error: string) => ({
     payload: error
 });
 
+export const fetchPhotoDataByUserIdRequest = (userId: string) => ({
+    type: FETCH_USER_PHOTO_DATA_REQUEST,
+    payload: userId
+});
+
+export const fetchPhotoDataByUserIdSuccess = (photoData: PhotoData[]) => ({
+    type: FETCH_USER_PHOTO_DATA_SUCCESS,
+    payload: photoData
+});
+
+export const fetchPhotoDataByUserIdFailure = (error: string) => ({
+    type: FETCH_USER_PHOTO_DATA_FAILURE,
+    payload: error
+});
 export const deletePhotoRequest = (deletePhoto: DeletePhoto) => ({
     type: DELETE_PHOTO_REQUEST,
     payload: deletePhoto
@@ -91,6 +111,20 @@ export const fetchPhotoById = (id: string) => {
         try { 
             const response = await axios.get(`${URL}/photo/${id}`);
             const responseData: PhotoData = response.data.photo;
+            dispatch(fetchPhotoDataByIdSuccess(responseData));
+        } catch (error: any) {
+            dispatch(fetchPhotoDataByIdFailure(error.message));
+        }
+    }
+};
+
+export const fetchPhotoByUserId = (userId: string) => {
+    return async (dispatch: Dispatch) => {
+        dispatch(fetchPhotoDataByIdRequest(userId));
+
+        try { 
+            const response = await axios.get(`${URL}/photo/${id}`);
+            const responseData: PhotoData[] = response.data.photo;
             dispatch(fetchPhotoDataByIdSuccess(responseData));
         } catch (error: any) {
             dispatch(fetchPhotoDataByIdFailure(error.message));

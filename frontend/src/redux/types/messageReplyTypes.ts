@@ -1,10 +1,11 @@
 export interface ReplyData {
     id: string;
-    message_id: string;
-    sender_id: string;
-    recipient_id: string;
+    messageId: string;
+    senderId: string;
+    recipientId: string;
     subject: string;
     body: string;
+    createdAt: Date;
 }
 
 export interface NewReplyData {

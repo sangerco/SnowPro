@@ -1,9 +1,17 @@
+import { ReplyData } from "./messageReplyTypes";
+
 export interface MessageData {
     id: string;
     senderId: string;
     recipientId: string;
     subject: string;
     body: string;
+    createdAt: Date;
+}
+
+export interface MessageDataReturn {
+    message: MessageData;
+    replies: ReplyData[];
 }
 
 export interface NewMessageData {
@@ -56,7 +64,7 @@ export interface fetchMessageDataRequestAction {
 
 export interface fetchMessageDataSuccessAction {
     type: typeof FETCH_MESSAGE_DATA_SUCCESS;
-    payload: MessageData;
+    payload: MessageDataReturn;
 };
 
 export interface fetchMessageDataFailureAction {

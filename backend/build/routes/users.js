@@ -71,6 +71,7 @@ var tokens_1 = require("../helpers/tokens");
 var userRegister_json_1 = __importDefault(require("../schemas/userRegister.json"));
 var userUpdate_json_1 = __importDefault(require("../schemas/userUpdate.json"));
 var userLogin_json_1 = __importDefault(require("../schemas/userLogin.json"));
+var makeAdminSchema_json_1 = __importDefault(require("../schemas/makeAdminSchema.json"));
 var router = express_1.default.Router();
 // create a new user
 router.post('/api/new-user', function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
@@ -162,9 +163,34 @@ router.get('/users/:username', auth_1.ensureLoggedIn, auth_1.checkIfUserOrAdmin,
         }
     });
 }); });
-// update a user's profile
-router.patch('/:username', auth_1.ensureLoggedIn, auth_1.checkIfUserOrAdmin, function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+// make a user an admin
+router.patch('/admin/:username', auth_1.ensureLoggedIn, auth_1.checkIfAdmin, function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
     var validator, errors, user, e_5;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                validator = jsonschema.validate(req.body, makeAdminSchema_json_1.default);
+                if (!validator.valid) {
+                    errors = validator.errors.map(function (e) { return e.stack; });
+                    throw new expressError_1.BadRequestError(errors);
+                }
+                return [4 /*yield*/, user_1.default.updateUser(req.params.username, req.body)];
+            case 1:
+                user = _a.sent();
+                return [2 /*return*/, res.json({ "Made admin": user })];
+            case 2:
+                e_5 = _a.sent();
+                return [2 /*return*/, next(e_5)];
+            case 3:
+                ;
+                return [2 /*return*/];
+        }
+    });
+}); });
+// update a user's profile
+router.patch('/api/users/:username', auth_1.ensureLoggedIn, auth_1.checkIfUserOrAdmin, function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+    var validator, errors, user, e_6;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -179,8 +205,8 @@ router.patch('/:username', auth_1.ensureLoggedIn, auth_1.checkIfUserOrAdmin, fun
                 user = _a.sent();
                 return [2 /*return*/, res.json({ user: user })];
             case 2:
-                e_5 = _a.sent();
-                return [2 /*return*/, next(e_5)];
+                e_6 = _a.sent();
+                return [2 /*return*/, next(e_6)];
             case 3:
                 ;
                 return [2 /*return*/];
@@ -188,8 +214,8 @@ router.patch('/:username', auth_1.ensureLoggedIn, auth_1.checkIfUserOrAdmin, fun
     });
 }); });
 // delete a user
-router.delete('/api/:username', auth_1.ensureLoggedIn, auth_1.checkIfUserOrAdmin, function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var e_6;
+router.delete('/api/users/:username', auth_1.ensureLoggedIn, auth_1.checkIfUserOrAdmin, function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+    var e_7;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -199,8 +225,8 @@ router.delete('/api/:username', auth_1.ensureLoggedIn, auth_1.checkIfUserOrAdmin
                 _a.sent();
                 return [2 /*return*/, res.json({ deleted: req.params.username })];
             case 2:
-                e_6 = _a.sent();
-                return [2 /*return*/, next(e_6)];
+                e_7 = _a.sent();
+                return [2 /*return*/, next(e_7)];
             case 3:
                 ;
                 return [2 /*return*/];

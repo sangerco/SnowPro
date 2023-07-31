@@ -14,7 +14,6 @@ const SkiAreaData = () => {
             try {
                 const response: SkiResortDataResponse = await axios.get(`${URL}/ski-areas`);
                 setSkiAreaResponse(response.data);
-                console.log(skiAreaResponse)
                 setLoading(false);
             } catch (e) {
                 console.error(e);

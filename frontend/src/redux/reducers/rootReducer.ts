@@ -1,15 +1,24 @@
 import { combineReducers } from 'redux';
-import userReducer from './userReducer';
+import { userReducer, deleteUserReducer, makeUserAdminReducer } from './userReducer';
 import newUserReducer from './createUserReducer';
 import loginReducer from './loginReducer';
 import { messageReducer, newMessageReducer, deleteMessageReducer } from './messageReducer';
 import { replyReducer, newReplyReducer, deleteReplyReducer } from './messageReplyReducer';
 import { tagReducer, newTagReducer, deleteTagReducer } from './tagReducer';
-import { deletePhotoReducer, deleteVideoReducer, newPhotoReducer, newVideoReducer, photoReducer, videoReducer } from './mediaReducer';
+import {  deletePhotoReducer, 
+          deleteVideoReducer, 
+          newPhotoReducer, 
+          newVideoReducer, 
+          photoReducer, 
+          videoReducer,
+          updatePhotoReducer,
+          updateVideoReducer } from './mediaReducer';
 
 const rootReducer = combineReducers({
   user: userReducer,
   newUser: newUserReducer,
+  deleteUser: deleteUserReducer,
+  makeUserAdmin: makeUserAdminReducer,
   login: loginReducer,
   message: messageReducer,
   newMessage: newMessageReducer,
@@ -22,9 +31,11 @@ const rootReducer = combineReducers({
   deleteTag: deleteTagReducer,
   photo: photoReducer,
   newPhoto: newPhotoReducer,
+  updatePhoto: updatePhotoReducer,
   deletePhoto: deletePhotoReducer,
   video: videoReducer,
   newVideo: newVideoReducer,
+  updateVideo: updateVideoReducer,
   delete: deleteVideoReducer
 });
 

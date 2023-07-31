@@ -10,6 +10,13 @@ interface ReplyData {
     recipientId: string;
     subject: string;
     body: string;
+    createdId: Date;
+    senderUsername: string;
+    senderFirstName: string;
+    senderLastName: string;
+    recipientUsername: string;
+    recipientFirstName: string;
+    recipientLastName: string;
 }
 
 interface UserWithReplies extends ReplyData {
@@ -57,17 +64,25 @@ class Reply {
     static async getReplyById(id: string): Promise<ReplyData> {
         const result = await db.query(`
             SELECT 
-                id,
-                message_id AS "messageId",
-                sender_id AS "senderId",
-                recipient_id AS "recipientId",
-                subject,
-                body,
-                created_at AS "createdAt"
-                FROM message_replies
-                WHERE id = $1
-                ORDER BY created_at`,
-                [id]
+                r.id,
+                r.message_id AS "messageId",
+                r.sender_id AS "senderId",
+                r.recipient_id AS "recipientId",
+                r.subject,
+                r.body,
+                r.created_at AS "createdAt",
+                sender.username AS "senderUsername",
+                sender.first_name AS "senderFirstName",
+                sender.last_name AS "senderLastName",            
+                recipient.username AS "recipientUsername",
+                recipient.first_name AS "recipientFirstName",
+                recipient.last_name AS "recipientLastName"
+            FROM message_replies r
+            JOIN users sender ON r.sender_id = sender.id
+            JOIN users recipient ON r.recipient_id = recipient.id
+            WHERE r.id = $1
+            ORDER BY r.created_at`,
+            [id]
             );
 
             const reply = result.rows[0];
@@ -78,16 +93,24 @@ class Reply {
     static async getRepliesByMessageId(messageId: string): Promise<ReplyData[]> {
         const result = await db.query(`
             SELECT 
-                id,
-                message_id AS "messageId",
-                sender_id AS "senderId",
-                recipient_id AS "recipientId",
-                subject,
-                body,
-                created_at AS "createdAt"
-                FROM message_replies
-                WHERE message_id = $1
-                ORDER BY created_at`,
+                r.id,
+                r.message_id AS "messageId",
+                r.sender_id AS "senderId",
+                r.recipient_id AS "recipientId",
+                r.subject,
+                r.body,
+                r.created_at AS "createdAt",
+                sender.username AS "senderUsername",
+                sender.first_name AS "senderFirstName",
+                sender.last_name AS "senderLastName",            
+                recipient.username AS "recipientUsername",
+                recipient.first_name AS "recipientFirstName",
+                recipient.last_name AS "recipientLastName"                
+                FROM message_replies r
+                JOIN users sender ON r.sender_id = sender.id
+                JOIN users recipient ON r.recipient_id = recipient.id
+                WHERE r.message_id = $1
+                ORDER BY r.created_at`,
             [ messageId ]
         );
 
@@ -99,18 +122,23 @@ class Reply {
     static async getReceivedRepliesByUsername(username: string): Promise<UserWithReplies[]> {
         const result = await db.query(`
             SELECT 
-                u.username,
-                u.id,
                 r.id,
                 r.message_id AS "messageId",
                 r.sender_id AS "senderId",
                 r.recipient_id AS "recipientId",
                 r.subject,
                 r.body,
-                r.created_at AS "createdAt"
-            FROM users u 
-            JOIN message_replies r on u.id = r.recipient_id
-            WHERE u.username = $1
+                r.created_at AS "createdAt",
+                sender.username AS "senderUsername",
+                sender.first_name AS "senderFirstName",
+                sender.last_name AS "senderLastName",
+                recipient.username AS "recipientUsername",
+                recipient.first_name AS "recipientFirstName",
+                recipient.last_name AS "recipientLastName"
+            FROM message_replies r
+            JOIN users sender on r.sender_id = sender.id
+            JOIN users recipient on r.recipient_id = recipient.id
+            WHERE recipient.username = $1
             ORDER BY r.created_at`,
             [ username ]
         );
@@ -123,18 +151,23 @@ class Reply {
     static async getSentRepliesByUsername(username: string): Promise<UserWithReplies[]> {
         const result = await db.query(`
             SELECT 
-                u.username,
-                u.id,
                 r.id,
                 r.message_id AS "messageId",
                 r.sender_id AS "senderId",
                 r.recipient_id AS "recipientId",
                 r.subject,
                 r.body,
-                r.created_at AS "createdAt"
-            FROM users u 
-            JOIN message_replies r on u.id = r.sender_id
-            WHERE u.username = $1
+                r.created_at AS "createdAt",
+                sender.username AS "senderUsername",
+                sender.first_name AS "senderFirstName",
+                sender.last_name AS "senderLastName",
+                recipient.username AS "recipientUsername",
+                recipient.first_name AS "recipientFirstName",
+                recipient.last_name AS "recipientLastName"
+            FROM message_replies r
+            JOIN users sender on r.sender_id = sender.id
+            JOIN users recipient on r.recipient_id = recipient.id
+            WHERE sender.username = $1
             ORDER BY r.created_at`,
             [ username ]
         );

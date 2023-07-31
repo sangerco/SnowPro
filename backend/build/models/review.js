@@ -57,17 +57,19 @@ var Review = /** @class */ (function () {
     }
     Review.createReview = function (userId, skiAreaSlug, body, stars, photos, tagIds) {
         return __awaiter(this, void 0, void 0, function () {
-            var id, result, review, _i, tagIds_1, tagId;
+            var id, createdAt, result, review, _i, tagIds_1, tagId;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         id = (0, uuid_1.v4)();
-                        return [4 /*yield*/, db_1.default.query("INSERT INTO reviews\n                (id,\n                   user_id,\n                   ski_area_slug,\n                   body,\n                   stars,\n                   photos)\n            VALUES ($1, $2, $3, $4, $5, $6, $7)\n            RETURNING\n                id,\n                user_id AS \"userId\", \n                ski_area_slug AS \"skiAreaSlug\", \n                body, \n                stars, \n                photos", [id,
+                        createdAt = new Date();
+                        return [4 /*yield*/, db_1.default.query("INSERT INTO reviews\n                (id,\n                   user_id,\n                   ski_area_slug,\n                   body,\n                   stars,\n                   photos,\n                   created_at)\n            VALUES ($1, $2, $3, $4, $5, $6, $7)\n            RETURNING\n                id,\n                user_id AS \"userId\", \n                ski_area_slug AS \"skiAreaSlug\", \n                body, \n                stars, \n                photos,\n                created_at AS \"createdAt\"", [id,
                                 userId,
                                 skiAreaSlug,
                                 body,
                                 stars,
-                                photos
+                                photos,
+                                createdAt
                             ])];
                     case 1:
                         result = _a.sent();
@@ -99,7 +101,7 @@ var Review = /** @class */ (function () {
                         _a = (0, sql_1.sqlForPartialUpdate)(data, {
                             tagIds: 'tag_ids'
                         }), setCols = _a.setCols, values = _a.values;
-                        sqlQuery = "UPDATE reviews\n                            SET ".concat(setCols, "\n                            WHERE id = ").concat(id, "\n                            RETURNING user_id AS \"userId\",\n                            ski_area_slug AS \"skiAreaSlug\",\n                            body,\n                            stars,\n                            photos");
+                        sqlQuery = "UPDATE reviews\n                            SET ".concat(setCols, "\n                            WHERE id = ").concat(id, "\n                            RETURNING user_id AS \"userId\",\n                            ski_area_slug AS \"skiAreaSlug\",\n                            body,\n                            stars,\n                            photos,\n                            created_at AS \"createdAt\"");
                         return [4 /*yield*/, db_1.default.query(sqlQuery, __spreadArray(__spreadArray([], values, true), [id], false))];
                     case 1:
                         result = _b.sent();

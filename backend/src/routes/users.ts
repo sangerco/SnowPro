@@ -84,7 +84,7 @@ router.get('/users/:username', ensureLoggedIn, checkIfUserOrAdmin,async (req: Re
 
 // make a user an admin
 
-router.patch('/:username', ensureLoggedIn, checkIfAdmin, async (req: Request, res: Response, next: NextFunction) => {
+router.patch('/admin/:username', ensureLoggedIn, checkIfAdmin, async (req: Request, res: Response, next: NextFunction) => {
     try{
         const validator: jsonschema.ValidatorResult = jsonschema.validate(req.body, makeAdminSchema);
         if(!validator.valid) {
@@ -92,7 +92,7 @@ router.patch('/:username', ensureLoggedIn, checkIfAdmin, async (req: Request, re
             throw new BadRequestError(errors);
         }
 
-        const user = await User.makeAdmin(req.params.username, req.body);
+        const user = await User.updateUser(req.params.username, req.body);
         return res.json({ "Made admin" : user });
     } catch (e) {
         return next(e);
@@ -101,7 +101,7 @@ router.patch('/:username', ensureLoggedIn, checkIfAdmin, async (req: Request, re
 
 // update a user's profile
 
-router.patch('/:username', ensureLoggedIn, checkIfUserOrAdmin, async (req: Request, res: Response, next: NextFunction) => {
+router.patch('/api/users/:username', ensureLoggedIn, checkIfUserOrAdmin, async (req: Request, res: Response, next: NextFunction) => {
     try {
         const validator: jsonschema.ValidatorResult = jsonschema.validate(req.body, userUpdateSchema);
         if(!validator.valid) {
@@ -118,7 +118,7 @@ router.patch('/:username', ensureLoggedIn, checkIfUserOrAdmin, async (req: Reque
 
 // delete a user
 
-router.delete('/api/:username', ensureLoggedIn, checkIfUserOrAdmin, async (req: Request, res: Response, next: NextFunction) => {
+router.delete('/api/users/:username', ensureLoggedIn, checkIfUserOrAdmin, async (req: Request, res: Response, next: NextFunction) => {
     try {
         await User.remove(req.params.username);
         return res.json({ deleted: req.params.username });

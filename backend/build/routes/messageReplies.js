@@ -94,13 +94,14 @@ router.post('/api/messages/:id/reply', auth_1.ensureLoggedIn, function (req, res
         }
     });
 }); });
-router.get('/messages/:id/replies/:replyId', auth_1.ensureLoggedIn, auth_1.checkIfUserOrAdmin, function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+router.get('/messages/replies/:id', auth_1.ensureLoggedIn, auth_1.checkIfUserOrAdmin, function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
     var reply, e_2;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                return [4 /*yield*/, messageReply_1.default.getReplyById(req.params.replyId)];
+                console.log(req.params.id);
+                return [4 /*yield*/, messageReply_1.default.getReplyById(req.params.id)];
             case 1:
                 reply = _a.sent();
                 return [2 /*return*/, res.json({ reply: reply })];

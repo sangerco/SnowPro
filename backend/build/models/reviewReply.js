@@ -57,7 +57,7 @@ var ReviewReply = /** @class */ (function () {
     }
     ReviewReply.replyToReview = function (userId, reviewId, body) {
         return __awaiter(this, void 0, void 0, function () {
-            var reviewCheck, review, id, result, reviewReply;
+            var reviewCheck, review, id, createdAt, result, reviewReply;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, db_1.default.query("SELECT id\n            FROM reviews\n            WHERE id = $1", [reviewId])];
@@ -67,10 +67,12 @@ var ReviewReply = /** @class */ (function () {
                         if (!review)
                             throw new expressError_1.NotFoundError('Review does not exist!');
                         id = (0, uuid_1.v4)();
-                        return [4 /*yield*/, db_1.default.query("INSERT INTO review_replies\n                (id,\n                    user_id,\n                    review_id,\n                    body)\n            VALUES ($1, $2, $3, $4)\n            RETURNING \n                id,\n                user_id AS \"userId\",\n                review_id AS \"reviewId\",\n                body", [id,
+                        createdAt = new Date();
+                        return [4 /*yield*/, db_1.default.query("INSERT INTO review_replies\n                (id,\n                    user_id,\n                    review_id,\n                    body,\n                    created_at)\n            VALUES ($1, $2, $3, $4, $5)\n            RETURNING \n                id,\n                user_id AS \"userId\",\n                review_id AS \"reviewId\",\n                body,\n                created_at AS \"createdAt\"", [id,
                                 userId,
                                 reviewId,
-                                body
+                                body,
+                                createdAt
                             ])];
                     case 2:
                         result = _a.sent();
@@ -88,7 +90,7 @@ var ReviewReply = /** @class */ (function () {
                 switch (_b.label) {
                     case 0:
                         _a = (0, sql_1.sqlForPartialUpdate)(data, {}), setCols = _a.setCols, values = _a.values;
-                        sqlQuery = "UPDATE review_replies\n                            SET ".concat(setCols, "\n                            WHERE id = ").concat(id, "\n                            RETURNING user_id AS \"userId\",\n                                        review_id AS \"reviewId\",\n                                        body");
+                        sqlQuery = "UPDATE review_replies\n                            SET ".concat(setCols, "\n                            WHERE id = ").concat(id, "\n                            RETURNING user_id AS \"userId\",\n                                        review_id AS \"reviewId\",\n                                        body,\n                                        created_at AS \"createdAt\"");
                         return [4 /*yield*/, db_1.default.query(sqlQuery, __spreadArray(__spreadArray([], values, true), [id], false))];
                     case 1:
                         result = _b.sent();

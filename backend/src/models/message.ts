@@ -10,6 +10,12 @@ interface MessageData {
     subject: string;
     body: string;
     createdId: Date;
+    senderUsername: string;
+    senderFirstName: string;
+    senderLastName: string;
+    recipientUsername: string;
+    recipientFirstName: string;
+    recipientLastName: string;
 }
 
 export interface UsernameWithId {
@@ -59,14 +65,23 @@ class Message {
     static async getMessage(id: string): Promise<MessageData> {
         const result = await db.query(
             `SELECT 
-                sender_id AS "senderId",
-                recipient_id AS "recipientId",
-                subject,
-                body,
-                created_at AS "createdAt"
-                FROM messages
-                WHERE id = $1
-                ORDER BY created_at`,
+                m.id,
+                m.sender_id AS "senderId",
+                m.recipient_id AS "recipientId",
+                m.subject,
+                m.body,
+                m.created_at AS "createdAt",
+                sender.username AS "senderUsername",
+                sender.first_name AS "senderFirstName",
+                sender.last_name AS "senderLastName",
+                recipient.username AS "recipientUsername",
+                recipient.first_name AS "recipientFirstName",
+                recipient.last_name AS "recipientLastName"              
+            FROM messages m
+            JOIN users sender ON m.sender_id = sender.id
+            JOIN users recipient ON m.recipient_id = recipient.id
+            WHERE m.id = $1
+            ORDER BY created_at`,
                 [id]
         );
 
@@ -78,18 +93,23 @@ class Message {
     static async getUsersMessages(username: string): Promise<UserWithMessages[]> {
         const result = await db.query(
             `SELECT 
-                u.username, 
-                u.id, 
                 m.id,
                 m.sender_id AS "senderId",
                 m.recipient_id AS "recipientId",
                 m.subject,
                 m.body,
-                m.created_at AS "createdAt"
-                FROM users u
-                JOIN messages m ON u.id = m.recipient_id
-                WHERE u.username = $1
-                ORDER BY m.created_at`,
+                m.created_at AS "createdAt",
+                sender.username AS "senderUsername",
+                sender.first_name AS "senderFirstName",
+                sender.last_name AS "senderLastName",
+                recipient.username AS "recipientUsername",
+                recipient.first_name AS "recipientFirstName",
+                recipient.last_name AS "recipientLastName"              
+            FROM messages m
+            JOIN users sender ON m.sender_id = sender.id
+            JOIN users recipient ON m.recipient_id = recipient.id
+            WHERE recipient.username = $1
+            ORDER BY m.created_at`,
                 [username]
         );
 
@@ -99,18 +119,23 @@ class Message {
     static async getSentMessages(username: string): Promise<UserWithMessages[]> {
         const result = await db.query(
             `SELECT 
-                u.username, 
-                u.id, 
                 m.id,
                 m.sender_id AS "senderId",
                 m.recipient_id AS "recipientId",
                 m.subject,
                 m.body,
-                m.created_at AS "createdAt"
-                FROM users u
-                JOIN messages m ON u.id = m.sender_id
-                WHERE u.username = $1
-                ORDER BY m.created_at`,
+                m.created_at AS "createdAt",
+                sender.username AS "senderUsername",
+                sender.first_name AS "senderFirstName",
+                sender.last_name AS "senderLastName",
+                recipient.username AS "recipientUsername",
+                recipient.first_name AS "recipientFirstName",
+                recipient.last_name AS "recipientLastName"              
+            FROM messages m
+            JOIN users sender ON m.sender_id = sender.id
+            JOIN users recipient ON m.recipient_id = recipient.id
+            WHERE sender.username = $1
+            ORDER BY m.created_at`,
                 [username]
         );
 
