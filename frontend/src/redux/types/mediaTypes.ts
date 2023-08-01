@@ -1,23 +1,31 @@
 export interface PhotoData {
     id: string;
     link: string;
-    userId: string;
+    username: string;
+    about: string;
+    tags: string[];
+    createdAt: Date;
 };
 
 export interface NewPhotoData {
     link: string;
-    userId: string;
+    username: string;
+    about: string;
+    tags: string[];
 };
 
 export interface NewPhotoDataReturn {
     id: string;
     link: string;
-    userId: string;
+    username: string;
+    about: string;
+    createdAt: Date;
 };
 
 export interface UpdatePhotoData {
-    id: string;
-    link: string;
+    link?: string;
+    about?: string;
+    tags?: string[];
 };
 
 export interface DeletePhoto {
@@ -119,22 +127,31 @@ export interface VideoData {
     id: string;
     link: string;
     username: string;
+    about: string;
+    tags: string[];
+    createdAt: Date;
 };
 
 export interface NewVideoData {
     link: string;
     username: string;
+    about: string;
+    tags: string[];
 };
 
 export interface NewVideoDataReturn {
     id: string;
     link: string;
     username: string;
+    about: string;
+    tags: string[];
+    createdAt: Date;
 };
 
 export interface UpdateVideoData {
-    id: string;
-    link: string;
+    link?: string;
+    about?: string;
+    tags?: string;
 };
 
 export interface DeleteVideo {

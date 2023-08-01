@@ -34,6 +34,18 @@ export interface SkiAreaReviewData {
     tags: string[];
 }
 
+export interface SkiAreaReviewDataReturn {
+    id: string;
+    userId: string;
+    username: string;
+    skiAreaSlug: string;
+    skiAreaName: string;
+    body: string;
+    stars: number;
+    photos: string[];
+    tags: string[];
+}
+
 export interface SkiAreasUsersFavoritedBy {
     slug: string;
     user_ids: string[];

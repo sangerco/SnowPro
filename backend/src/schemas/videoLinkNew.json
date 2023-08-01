@@ -1,7 +1,7 @@
 {
     "type": "object",
     "properties": {
-        "user_id": {
+        "username": {
             "type": "string",
             "minLength": 1,
             "maxLength": 20
@@ -15,6 +15,14 @@
             "type": "string",
             "minLength": 1,
             "maxLength": 20
+        },
+        "tags": {
+            "type": "array",
+            "items": {
+                "minLength": 1,
+                "maxLength": 20
+            }
+
         }
     },
     "additionalProperties": false,

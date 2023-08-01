@@ -11,10 +11,14 @@ import {    PhotoData,
             FETCH_USER_PHOTO_DATA_REQUEST,
             FETCH_USER_PHOTO_DATA_SUCCESS,
             FETCH_USER_PHOTO_DATA_FAILURE,
+            UPDATE_PHOTO_DATA_REQUEST,
+            UPDATE_PHOTO_DATA_SUCCESS,
+            UPDATE_PHOTO_DATA_FAILURE,
             DELETE_PHOTO_REQUEST,
             DELETE_PHOTO_SUCCESS,
             DELETE_PHOTO_FAILURE,
             NewPhotoDataReturn,
+            UpdatePhotoData,
             DeletePhoto,
             VideoData,
             SEND_NEW_VIDEO_DATA_REQUEST,
@@ -26,15 +30,19 @@ import {    PhotoData,
             FETCH_USER_VIDEO_DATA_REQUEST,
             FETCH_USER_VIDEO_DATA_SUCCESS,
             FETCH_USER_VIDEO_DATA_FAILURE,
+            UPDATE_VIDEO_DATA_REQUEST,
+            UPDATE_VIDEO_DATA_SUCCESS,
+            UPDATE_VIDEO_DATA_FAILURE,
             DELETE_VIDEO_REQUEST,
             DELETE_VIDEO_SUCCESS,
             DELETE_VIDEO_FAILURE,
             NewVideoDataReturn,
+            UpdateVideoData,
             DeleteVideo} from '../types/mediaTypes';
 
-export const sendNewPhotoDataRequest = (link: string) => ({
+export const sendNewPhotoDataRequest = (link: string, about: string, tags: string[], username: string) => ({
     type: SEND_NEW_PHOTO_DATA_REQUEST,
-    payload: { link }
+    payload: { link, about, tags, username }
 });
 
 export const sendNewPhotoDataSuccess = (sendNewPhotoDataReturn: NewPhotoDataReturn) => ({
@@ -62,20 +70,36 @@ export const fetchPhotoDataByIdFailure = (error: string) => ({
     payload: error
 });
 
-export const fetchPhotoDataByUserIdRequest = (userId: string) => ({
+export const fetchPhotoDataByUsernameRequest = (username: string) => ({
     type: FETCH_USER_PHOTO_DATA_REQUEST,
-    payload: userId
+    payload: username
 });
 
-export const fetchPhotoDataByUserIdSuccess = (photoData: PhotoData[]) => ({
+export const fetchPhotoDataByUsernameSuccess = (photoData: PhotoData[]) => ({
     type: FETCH_USER_PHOTO_DATA_SUCCESS,
     payload: photoData
 });
 
-export const fetchPhotoDataByUserIdFailure = (error: string) => ({
+export const fetchPhotoDataByUsernameFailure = (error: string) => ({
     type: FETCH_USER_PHOTO_DATA_FAILURE,
     payload: error
 });
+
+export const updatePhotoRequest = (id: string) => ({
+    type: UPDATE_PHOTO_DATA_REQUEST,
+    payload: id
+});
+
+export const updatePhotoSuccess = (updatePhotoData: UpdatePhotoData) => ({
+    type: UPDATE_PHOTO_DATA_SUCCESS,
+    payload: updatePhotoData
+});
+
+export const updatePhotoFailure = (error: string) => ({
+    type: UPDATE_PHOTO_DATA_FAILURE,
+    payload: error
+});
+
 export const deletePhotoRequest = (deletePhoto: DeletePhoto) => ({
     type: DELETE_PHOTO_REQUEST,
     payload: deletePhoto
@@ -91,12 +115,16 @@ export const deletePhotoFailure = (error: string) => ({
     payload: error
 });
 
-export const sendNewPhoto = (link: string) => {
+export const sendNewPhoto = (link: string, about: string, tags: string[], username: string) => {
     return async (dispatch: Dispatch) => {
-        dispatch(sendNewPhotoDataRequest(link));
+        dispatch(sendNewPhotoDataRequest(link, about, tags, username));
 
         try {
-            const response = await axios.post(`${URL}/api/photos`, { link: link });
+            const response = await axios.post(`${URL}/api/photos`, 
+                {   link: link,
+                    about: about,
+                    tags: tags,
+                    username: username });
             dispatch(sendNewPhotoDataSuccess(response.data.photo));
         } catch (error: any) {
             dispatch(sendNewPhotoDataFailure(error.message));
@@ -118,16 +146,30 @@ export const fetchPhotoById = (id: string) => {
     }
 };
 
-export const fetchPhotoByUserId = (userId: string) => {
+export const fetchPhotosByUsername = (username: string) => {
     return async (dispatch: Dispatch) => {
-        dispatch(fetchPhotoDataByIdRequest(userId));
+        dispatch(fetchPhotoDataByUsernameRequest(username));
 
         try { 
-            const response = await axios.get(`${URL}/photo/${id}`);
-            const responseData: PhotoData[] = response.data.photo;
-            dispatch(fetchPhotoDataByIdSuccess(responseData));
+            const response = await axios.get(`${URL}/users/${username}/photos`);
+            const responseData: PhotoData[] = response.data.photos;
+            dispatch(fetchPhotoDataByUsernameSuccess(responseData));
         } catch (error: any) {
-            dispatch(fetchPhotoDataByIdFailure(error.message));
+            dispatch(fetchPhotoDataByUsernameFailure(error.message));
+        }
+    }
+};
+
+export const updatePhoto = (id: string, data: UpdatePhotoData) => {
+    return async (dispatch: Dispatch) => {
+        dispatch(updatePhotoRequest(id));
+
+        try {
+            const response = await axios.patch(`${URL}/api/photo/${id}`, {data});
+            const responseData: UpdatePhotoData = response.data.photo;
+            dispatch(updatePhotoSuccess(responseData));
+        } catch (error: any) {
+            dispatch(updatePhotoFailure(error.message));
         }
     }
 };
@@ -147,9 +189,9 @@ export const deletePhotoById = (deletePhoto: DeletePhoto) => {
     }
 };
 
-export const sendNewVideoDataRequest = (link: string) => ({
+export const sendNewVideoDataRequest = (link: string, about: string, tags: string[], username: string) => ({
     type: SEND_NEW_VIDEO_DATA_REQUEST,
-    payload: { link }
+    payload: { link, about, tags, username }
 });
 
 export const sendNewVideoDataSuccess = (sendNewVideoDataReturn: NewVideoDataReturn) => ({
@@ -177,6 +219,37 @@ export const fetchVideoDataByIdFailure = (error: string) => ({
     payload: error
 });
 
+export const fetchVideoDataByUsernameRequest = (username: string) => ({
+    type: FETCH_USER_VIDEO_DATA_REQUEST,
+    payload: username
+});
+
+export const fetchVideoDataByUsernameSuccess = (videoData: VideoData[]) => ({
+    type: FETCH_USER_VIDEO_DATA_SUCCESS,
+    payload: videoData
+});
+
+export const fetchVideoDataByUsernameFailure = (error: string) => ({
+    type: FETCH_USER_VIDEO_DATA_FAILURE,
+    payload: error
+});
+
+export const updateVideoRequest = (id: string) => ({
+    type: UPDATE_VIDEO_DATA_REQUEST,
+    payload: id
+});
+
+export const updateVideoSuccess = (updateVideoData: UpdateVideoData) => ({
+    type: UPDATE_VIDEO_DATA_SUCCESS,
+    payload: updateVideoData
+});
+
+export const updateVideoFailure = (error: string) => ({
+    type: UPDATE_VIDEO_DATA_FAILURE,
+    payload: error
+});
+
+
 export const deleteVideoRequest = (deleteVideo: DeleteVideo) => ({
     type: DELETE_VIDEO_REQUEST,
     payload: deleteVideo
@@ -192,12 +265,16 @@ export const deleteVideoFailure = (error: string) => ({
     payload: error
 });
 
-export const sendNewVideo = (link: string) => {
+export const sendNewVideo = (link: string, about: string, tags: string[], username: string) => {
     return async (dispatch: Dispatch) => {
-        dispatch(sendNewVideoDataRequest(link));
+        dispatch(sendNewVideoDataRequest(link, about, tags, username));
 
         try {
-            const response = await axios.post(`${URL}/api/videos`, { link: link });
+            const response = await axios.post(`${URL}/api/videos`, 
+                {   link: link,
+                    about: about,
+                    tags: tags,
+                    username: username });
             dispatch(sendNewVideoDataSuccess(response.data.video));
         } catch (error: any) {
             dispatch(sendNewVideoDataFailure(error.message));
@@ -215,6 +292,34 @@ export const fetchVideoById = (id: string) => {
             dispatch(fetchVideoDataByIdSuccess(responseData));
         } catch (error: any) {
             dispatch(fetchVideoDataByIdFailure(error.message));
+        }
+    }
+};
+
+export const fetchVideosByUsername = (username: string) => {
+    return async (dispatch: Dispatch) => {
+        dispatch(fetchVideoDataByUsernameRequest(username));
+
+        try { 
+            const response = await axios.get(`${URL}/users/${username}/videos`);
+            const responseData: VideoData[] = response.data.videos;
+            dispatch(fetchVideoDataByUsernameSuccess(responseData));
+        } catch (error: any) {
+            dispatch(fetchVideoDataByUsernameFailure(error.message));
+        }
+    }
+};
+
+export const updateVideo = (id: string, data: UpdateVideoData) => {
+    return async (dispatch: Dispatch) => {
+        dispatch(updateVideoRequest(id));
+
+        try {
+            const response = await axios.patch(`${URL}/api/video/${id}`, {data});
+            const responseData: UpdateVideoData = response.data.video;
+            dispatch(updateVideoSuccess(responseData));
+        } catch (error: any) {
+            dispatch(updateVideoFailure(error.message));
         }
     }
 };

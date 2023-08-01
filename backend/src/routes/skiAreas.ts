@@ -6,7 +6,10 @@ import Review from '../models/review';
 import reviewNewSchema from '../schemas/reviewNew.json';
 import { Key, Host } from '../vault/secret';
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
-import { SkiAreaData, SkiAreaReviewData, AllSkiAreasData, SkiAreasUsersFavoritedBy } from '../interfaces/skiAreaInterfaces';
+import {    SkiAreaData,
+            AllSkiAreasData, 
+            SkiAreasUsersFavoritedBy, 
+            SkiAreaReviewDataReturn } from '../interfaces/skiAreaInterfaces';
 import { checkIfUserOrAdmin, ensureLoggedIn } from '../middleware/auth';
 
 interface ReviewData {
@@ -14,7 +17,7 @@ interface ReviewData {
     skiAreaSlug: string;
     body: string;
     stars: number;
-    photos: string;
+    photos: string[];
     tagIds: string[]
 }
 
@@ -77,7 +80,7 @@ router.get('/ski-areas/:slug', async (req: Request, res: Response, next: NextFun
         const response = await axios.request(options);
         const skiAreaData: SkiAreaData = response.data.data;
 
-        const getReviewData: SkiAreaReviewData[] = await SkiArea.returnReviewDataBySlug(slug);
+        const getReviewData: SkiAreaReviewDataReturn[] = await SkiArea.fetchReviewsBySkiAreaSlug(slug);
         const getUsersFavoritedBy: SkiAreasUsersFavoritedBy[] = await SkiArea.returnUsersFavoritedBy(slug);
 
         const combinedData = {

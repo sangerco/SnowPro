@@ -1,6 +1,7 @@
 import db from '../db';
+import { NotFoundError } from '../expressError';
 
-import { SkiAreaReviewData, SkiAreasUsersFavoritedBy } from '../interfaces/skiAreaInterfaces';
+import { SkiAreaReviewData, SkiAreasUsersFavoritedBy, SkiAreaReviewDataReturn } from '../interfaces/skiAreaInterfaces';
 
 class SkiArea {
     static async createSkiArea(slug: string, name: string): Promise<void> {
@@ -32,26 +33,33 @@ class SkiArea {
         return result.rows;
     }
 
-    static async returnReviewDataBySlug(slug: string): Promise<SkiAreaReviewData[]> {
-        const result = await db.query(
-            `SELECT s.slug,
-                s.name,
+    static async fetchReviewsBySkiAreaSlug(slug: string): Promise<SkiAreaReviewDataReturn[]> {
+        const result = await db.query(`
+            SELECT r.id,
                 r.user_id AS "userId",
                 r.ski_area_slug AS "skiAreaSlug",
                 r.body,
                 r.stars,
                 r.photos,
-                r.tag_ids AS "tagIds",
-                t.tag AS "tags"
-                FROM ski_areas s
-                LEFT JOIN reviews r ON s.slug = r.ski_area_slug
-                LEFT JOIN review_tags rt ON r.tag_ids = rt.tag_id
-                LEFT JOIN tags t ON rt.tag_id = t.id
-                WHERE s.slug = $1`,
-                [slug]
-        )
+                u.username,
+                s.name AS "skiAreaName",
+                t.tag
+            FROM reviews r
+            LEFT JOIN users u ON r.user_id = u.id
+            LEFT JOIN ski_areas s ON r.ski_area_slug = s.slug
+            LEFT JOIN review_tags rt ON r.tag_ids = rt.tag_id
+            LEFT JOIN tags t ON rt.tag_id = t.id
+            WHERE r.ski_area_slug = $1
+            ORDER BY r.created_at`,
+            [slug]);
 
-        return result.rows;
+        const reviews = result.rows;
+
+        if(reviews.length === 0) {
+            throw new NotFoundError('No reviews found')
+        };
+
+        return reviews;
     }
 }
 

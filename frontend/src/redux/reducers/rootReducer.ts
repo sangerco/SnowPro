@@ -13,6 +13,14 @@ import {  deletePhotoReducer,
           videoReducer,
           updatePhotoReducer,
           updateVideoReducer } from './mediaReducer';
+import {  reviewReducer,
+          newReviewReducer,
+          updateReviewReducer,
+          deleteReviewReducer } from './reviewReducer';
+import {  newReviewReplyReducer,
+          reviewReplyReducer,
+          updateReviewReplyReducer,
+          deleteReviewReplyReducer } from './reviewReplyReducer';
 
 const rootReducer = combineReducers({
   user: userReducer,
@@ -36,7 +44,15 @@ const rootReducer = combineReducers({
   video: videoReducer,
   newVideo: newVideoReducer,
   updateVideo: updateVideoReducer,
-  delete: deleteVideoReducer
+  deleteVideo: deleteVideoReducer,
+  review: reviewReducer,
+  newReview: newReviewReducer,
+  updateReview: updateReviewReducer,
+  deleteReview: deleteReviewReducer,
+  reviewReply: reviewReplyReducer,
+  newReviewReply: newReviewReplyReducer,
+  updateReviewReply: updateReviewReplyReducer,
+  deleteReviewReply: deleteReviewReplyReducer
 });
 
 export default rootReducer;

@@ -7,6 +7,7 @@ import reviewUpdateSchema from '../schemas/reviewUpdate.json';
 import reviewReplyNewSchema from '../schemas/reviewReplyNew.json';
 import reviewReplyUpdateSchema from '../schemas/reviewReplyUpdate.json';
 import ReviewReply from '../models/reviewReply';
+import SkiArea from '../models/skiArea';
 
 const router = express.Router();
 
@@ -14,11 +15,12 @@ interface ReplyReviewData {
     userId: string;
     reviewId: string;
     body: string;
+    slug: string;
 }
 
 // update a ski area review
 
-router.patch('/reviews/:id', ensureLoggedIn, checkIfUserOrAdmin,async (req: Request, res: Response, next: NextFunction) => {
+router.patch('/api/reviews/:id', ensureLoggedIn, checkIfUserOrAdmin,async (req: Request, res: Response, next: NextFunction) => {
     try {
         const validator: ValidatorResult = validate(req.body, reviewUpdateSchema);
         if(!validator.valid) {
@@ -32,9 +34,38 @@ router.patch('/reviews/:id', ensureLoggedIn, checkIfUserOrAdmin,async (req: Requ
     }
 });
 
+// get reviews by ski area name
+
+router.get('/ski-areas/:slug/reviews', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const reviews = await SkiArea.fetchReviewsBySkiAreaSlug(req.params.slug);
+        return res.json({ reviews });
+    } catch (e) {
+        next(e);
+    }
+});
+
+// get review by id
+
+router.get('/ski-areas/:slug/reviews/:id', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const reviewData = await Review.fetchReviewById(req.params.id);
+
+        const getReviewReplyData: ReplyReviewData[] = await ReviewReply.fetchRepliesByReviewId(req.params.id);
+
+        const combinedData = {
+            ...reviewData,
+            replyReplyData: getReviewReplyData
+        }
+        return res.json({ combinedData });
+    } catch (e) {
+        next(e);
+    }
+});
+
 // delete a ski area review
 
-router.delete('/api/reviews/:id', ensureLoggedIn, checkIfUserOrAdmin, async (req: Request, res: Response, next: NextFunction) => {
+router.delete('/api/:slug/reviews/:id', ensureLoggedIn, checkIfUserOrAdmin, async (req: Request, res: Response, next: NextFunction) => {
     try {
         await Review.removeReview(req.params.id);
         return res.json({ deleted: `review ${req.params.id}` });
@@ -45,15 +76,15 @@ router.delete('/api/reviews/:id', ensureLoggedIn, checkIfUserOrAdmin, async (req
 
 // create a review reply 
 
-router.post('/reviews/:id/reply', ensureLoggedIn, checkIfUserOrAdmin, async (req: Request, res: Response, next: NextFunction) => {
+router.post('/api/reviews/:id/reply', ensureLoggedIn, checkIfUserOrAdmin, async (req: Request, res: Response, next: NextFunction) => {
     try {
         const validator: ValidatorResult = validate(req.body, reviewReplyNewSchema);
         if(!validator.valid) {
             const errors: string | string[] = validator.errors.map(e => e.stack);
             throw new BadRequestError(errors);
         }
-        const { userId, reviewId, body }: ReplyReviewData = req.body;
-        const reply = await ReviewReply.replyToReview(userId, reviewId, body);
+        const { userId, reviewId, body, slug }: ReplyReviewData = req.body;
+        const reply = await ReviewReply.replyToReview(userId, reviewId, body, slug);
         return res.status(201).json({ reply });
     } catch (e) {
         return next(e);
@@ -62,7 +93,7 @@ router.post('/reviews/:id/reply', ensureLoggedIn, checkIfUserOrAdmin, async (req
 
 // update a review reply
 
-router.patch('/reviews/reply/:id', ensureLoggedIn, checkIfUserOrAdmin, async (req: Request, res: Response, next: NextFunction) => {
+router.patch('/api/reviews/reply/:id', ensureLoggedIn, checkIfUserOrAdmin, async (req: Request, res: Response, next: NextFunction) => {
     try {
         const validator: ValidatorResult = validate(req.body, reviewReplyUpdateSchema);
         if(!validator.valid) {
@@ -71,6 +102,17 @@ router.patch('/reviews/reply/:id', ensureLoggedIn, checkIfUserOrAdmin, async (re
         }
 
         const reply = await ReviewReply.replyToReviewUpdate(req.params.id, req.body);
+        return res.json({ reply });
+    } catch (e) {
+        return next(e);
+    }
+});
+
+// fetch a review reply by id
+
+router.get('/ski-areas/:slug/reviews/:review_id/replies/:id', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const reply = await ReviewReply.fetchReplyId(req.params.id);
         return res.json({ reply });
     } catch (e) {
         return next(e);

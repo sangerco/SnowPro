@@ -16,7 +16,7 @@
             "minLength": 2,
             "maxLength": 500
         },
-        "tag_ids": {
+        "slug": {
             "type": "string",
             "minLength": 1,
             "maxLength": 20
@@ -26,6 +26,7 @@
     "required": [
         "review_id",
         "user_id",
-        "body"
+        "body",
+        "slug"
     ]
 }

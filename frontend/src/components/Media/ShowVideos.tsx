@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Dimmer, Loader, Card, Image, Label, Icon, Button, Modal } from "semantic-ui-react";
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { fetchPhotosByUsername } from '../../redux/actions/mediaActions';
+import { fetchVideosByUsername } from '../../redux/actions/mediaActions';
 import { URL } from '../../config';
 
 import axios from 'axios';
@@ -11,7 +11,7 @@ interface Tag {
     tag: string;
 }
 
-interface PhotoData {
+interface VideoData {
     id: string;
     username: string;
     about: string;
@@ -20,39 +20,39 @@ interface PhotoData {
     createdAt: Date;
 };
 
-interface PhotoProps {
+interface VideoProps {
     username: string;
-    photos: PhotoData[] | null;
+    videos: VideoData[] | null;
     loading: boolean;
     error: string | null;
-    fetchPhotosByUsername: (username: string) => void;
+    fetchVideosByUsername: (username: string) => void;
 };
 
-const Photos: React.FC<PhotoProps> = ({ username, photos, loading, error, fetchPhotosByUsername }) => {
+const Videos: React.FC<VideoProps> = ({ username, videos, loading, error, fetchVideosByUsername }) => {
     const [showDeleteModal, setShowDeleteModal] = useState(false);
-    const [photoToDelete, setPhotoToDelete] = useState('')
+    const [videoToDelete, setVideoToDelete] = useState('')
 
 
     useEffect(() => {
-        fetchPhotosByUsername(username);
-    }, [username, fetchPhotosByUsername]);
+        fetchVideosByUsername(username);
+    }, [username, fetchVideosByUsername]);
 
     const handleShowDeleteModal = (id: string) => {
-        setPhotoToDelete(id);
+        setVideoToDelete(id);
         setShowDeleteModal(true);
     }
 
     const handleDelete = async () => {
-        const id = photoToDelete
+        const id = videoToDelete
 
-        await axios.delete(`${URL}/photo/${id}`);
-        setPhotoToDelete('');
+        await axios.delete(`${URL}/video/${id}`);
+        setVideoToDelete('');
         setShowDeleteModal(false);
-        fetchPhotosByUsername(username);
+        fetchVideosByUsername(username);
     }
 
     const handleCancelDelete = () => {
-        setPhotoToDelete('');
+        setVideoToDelete('');
         setShowDeleteModal(false);
     }
 
@@ -70,31 +70,31 @@ const Photos: React.FC<PhotoProps> = ({ username, photos, loading, error, fetchP
         return <div>{`${username} has no photos yet!`}</div>
     }
 
-    if(photos) {
+    if(videos) {
         return (
             <div> 
-                {photos.map((photo: PhotoData) => 
-                    <Card key={photo.id}>
-                        <Image src={photo.link} wrapped />
+                {videos.map((video: VideoData) => 
+                    <Card key={video.id}>
+                        <Image src={video.link} wrapped />
                         <Card.Content>
                             <Card.Description>
-                                {photo.about}
+                                {video.about}
                             </Card.Description>
                         </Card.Content>
                         <Label.Group color='green'>
-                            {photo.tags.map((tag) =>
+                            {video.tags.map((tag) =>
                                 <Label as='a'>{tag.tag}</Label> )}
                         </Label.Group>
                         <Card.Content extra>
                             <Link to={'madeuplinkfornow'}>
                                 <Icon name='edit' style={{ cursor: 'pointer' }} />
                             </Link>
-                            <Icon name='trash' style={{ cursor: 'pointer' }} onClick={handleShowDeleteModal(photo.id)} />
+                            <Icon name='trash' style={{ cursor: 'pointer' }} onClick={handleShowDeleteModal(video.id)} />
                         </Card.Content>
                     </Card>)}
 
                 <Modal open={showDeleteModal} onClose={handleCancelDelete}>
-                    <Modal.Content>Are You Sure You Want To Delete This Picture?</Modal.Content>
+                    <Modal.Content>Are You Sure You Want To Delete This Video?</Modal.Content>
                     <Modal.Actions>
                         <Button negative onClick={handleDelete}>Yes</Button>
                         <Button onClick={handleCancelDelete}>Cancel</Button>
@@ -108,13 +108,13 @@ const Photos: React.FC<PhotoProps> = ({ username, photos, loading, error, fetchP
 };
 
 const mapStateToProps = (state: any) => ({
-    photos: state.photo.data,
-    loading: state.photo.loading,
-    error: state.photo.error
+    videos: state.video.data,
+    loading: state.video.loading,
+    error: state.video.error
 });
 
 const mapDispatchToProps = {
-    fetchPhotosByUsername
+    fetchVideosByUsername
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Photos);
+export default connect(mapStateToProps, mapDispatchToProps)(Videos);

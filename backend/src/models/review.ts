@@ -7,10 +7,23 @@ interface ReviewData {
     id: string;
     userId: string;
     skiAreaSlug: string;
+    skiAreaName: string;
     body: string;
     stars: number;
-    photos: string;
+    photos: string[];
     tagIds: string[];
+}
+
+interface ReviewDataReturn {
+    id: string;
+    userId: string;
+    username: string;
+    skiAreaSlug: string;
+    skiAreaName: string;
+    body: string;
+    stars: number;
+    photos: string[];
+    tagsId: string[];
 }
 
 class Review {
@@ -19,7 +32,7 @@ class Review {
         skiAreaSlug: string,
         body: string,
         stars: number,
-        photos: string,
+        photos: string[],
         tagIds: string[]
     ): Promise<ReviewData> {
 
@@ -34,6 +47,7 @@ class Review {
                    body,
                    stars,
                    photos,
+                   tag_ids,
                    created_at)
             VALUES ($1, $2, $3, $4, $5, $6, $7)
             RETURNING
@@ -43,6 +57,7 @@ class Review {
                 body, 
                 stars, 
                 photos,
+                tag_ids AS "tagIds",
                 created_at AS "createdAt"`,
             [   id,
                 userId,
@@ -50,6 +65,7 @@ class Review {
                 body,
                 stars,
                 photos,
+                tagIds,
                 createdAt
             ]
         )
@@ -91,6 +107,62 @@ class Review {
         if (!review) throw new NotFoundError('No such review found.')
 
         return review;
+    }
+
+    static async fetchReviewsBySkiArea(skiAreaName: string): Promise<ReviewDataReturn[]> {
+        const result = await db.query(`
+            SELECT r.id,
+                r.user_id AS "userId",
+                r.ski_area_slug AS "skiAreaSlug",
+                r.body,
+                r.stars,
+                r.photos,
+                u.username,
+                s.name AS "skiAreaName",
+                t.tag
+            FROM reviews r
+            LEFT JOIN users u ON r.user_id = u.id
+            LEFT JOIN ski_areas s ON r.ski_area_slug = s.slug
+            LEFT JOIN review_tags rt ON r.tag_ids = rt.tag_id
+            LEFT JOIN tags t ON rt.tag_id = t.id
+            WHERE s.name = $1
+            ORDER BY r.created_at`,
+            [skiAreaName]);
+
+        const reviews = result.rows;
+
+        if(reviews.length === 0) {
+            throw new NotFoundError('No reviews found')
+        };
+
+        return reviews;
+    }
+
+    static async fetchReviewById(id: string): Promise<ReviewDataReturn> {
+        const result = await db.query(`
+            SELECT r.id,
+                r.user_id AS "userId",
+                r.ski_area_slug AS "skiAreaSlug",
+                r.body,
+                r.stars,
+                r.photos,
+                u.username,
+                s.name AS "skiAreaName",
+                t.tag
+            FROM reviews r
+            LEFT JOIN users u ON r.user_id = u.id
+            LEFT JOIN ski_areas s ON r.ski_area_slug = s.slug
+            LEFT JOIN review_tags rt ON r.tag_ids = rt.tag_id
+            LEFT JOIN tags t ON rt.tag_id = t.id
+            WHERE r.id = $1
+            ORDER BY r.created_at`,
+            [id]);
+
+            const review = result.rows[0];
+
+            if(!review) throw new NotFoundError('Review Not Found');
+
+            return review;
     }
 
     static async removeReview(id: string): Promise<void> {

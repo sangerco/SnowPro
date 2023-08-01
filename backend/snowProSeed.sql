@@ -27,11 +27,11 @@ VALUES
     ('103', '1', 'powder', 'Amazing powder!', 5, NULL, '2', '2023-07-24 08:09:10');
 
 -- Dummy data for review_replies table
-INSERT INTO "review_replies" ("id", "review_id", "user_id", "body", "created_at")
+INSERT INTO "review_replies" ("id", "review_id", "user_id", "ski_area_slug", "body", "created_at")
 VALUES
-    ('201', '101', '2', 'Glad you enjoyed it!', '2023-07-26 12:36:00'),
-    ('202', '102', '1', 'Thanks for the review!', '2023-07-25 10:15:00'),
-    ('203', '103', '2', 'Powder days are the best!', '2023-07-24 08:11:00');
+    ('201', '101', '2', 'alpine' ,'Glad you enjoyed it!', '2023-07-26 12:36:00'),
+    ('202', '102', '1', 'snowy' ,'Thanks for the review!', '2023-07-25 10:15:00'),
+    ('203', '103', '2', 'powder' ,'Powder days are the best!', '2023-07-24 08:11:00');
 
 -- Dummy data for messages table
 INSERT INTO "messages" ("id", "sender_id", "recipient_id", "subject", "body", "created_at")
