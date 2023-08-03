@@ -34,7 +34,8 @@ export interface LoginDataReturn {
     username: string;
     firstName: string;
     lastName: string;
-    email: string;    
+    email: string;
+    token: string;
 }
 
 export interface UpdateUserData {
@@ -79,6 +80,7 @@ export const DELETE_USER_FAILURE = 'DELETE_USER_FAILURE';
 export const SEND_LOGIN_DATA_REQUEST = 'SEND_LOGIN_DATA_REQUEST';
 export const SEND_LOGIN_DATA_SUCCESS = 'SEND_LOGIN_DATA_SUCCESS';
 export const SEND_LOGIN_DATA_FAILURE = 'SEND_LOGIN_DATA_FAILURE';
+export const SET_TOKEN = 'SET_TOKEN';
 export const MAKE_ADMIN_DATA_REQUEST = 'MAKE_ADMIN_DATA_REQUEST';
 export const MAKE_ADMIN_DATA_SUCCESS = 'MAKE_ADMIN_DATA_SUCCESS';
 export const MAKE_ADMIN_DATA_FAILURE = 'MAKE_ADMIN_DATA_FAILURE';
@@ -157,6 +159,11 @@ export interface SendLoginDataFailureAction {
     payload: string;
 }
 
+export interface SetTokenAction {
+    type: typeof SET_TOKEN;
+    payload: string;
+}
+
 export interface MakeUserAdminRequestAction {
     type: typeof MAKE_ADMIN_DATA_REQUEST;
     payload: MakeUserAdmin;
@@ -188,6 +195,7 @@ export type UserActionTypes =
     | SendLoginDataRequestAction
     | SendLoginDataSuccessAction
     | SendLoginDataFailureAction
+    | SetTokenAction
     | MakeUserAdminRequestAction
     | MakeUserAdminSuccessAction
     | MakeUserAdminFailureAction

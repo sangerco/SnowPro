@@ -79,7 +79,7 @@ export const sendNewTagData = ( tag: string ) => {
 
         try {
             const response = await axios.post(`${URL}/api/tags`, {tag: tag});
-            dispatch(sendNewTagDataSuccess(response.data.tags));
+            dispatch(sendNewTagDataSuccess(response.data));
         } catch (error: any) {
             dispatch(sendNewTagDataFailure(error.message));
         }

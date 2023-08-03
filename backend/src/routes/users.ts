@@ -1,7 +1,7 @@
 import * as jsonschema from 'jsonschema';
 import express, { Request, Response, NextFunction } from 'express';
 import { ensureLoggedIn, checkIfAdmin, checkIfUserOrAdmin } from '../middleware/auth';
-import { BadRequestError } from '../expressError';
+import { BadRequestError, UnauthorizedError } from '../expressError';
 import User from '../models/user';
 import { createToken } from '../helpers/tokens';
 import userRegisterSchema from '../schemas/userRegister.json';
@@ -70,6 +70,17 @@ router.get('/users/all-users', ensureLoggedIn, checkIfAdmin, async (req: Request
         return next(e);
     };
 });
+
+// return a user's data from their token
+
+router.get('/api/user', ensureLoggedIn, async (req: Request, res: Response, next: NextFunction) => {
+    const user = res.locals.user
+
+    if(!user) throw new UnauthorizedError('Please log in before attempting this action.');
+
+    const { userId, username } = user;
+    return res.json({ userId, username });
+})
 
 // return a single user's profile
 

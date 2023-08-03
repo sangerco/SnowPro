@@ -19,7 +19,7 @@ interface AssociatedData {
 
 class Tag {
     static async createTag(tag: string): Promise<TagData> {
-        const id = uuidv4;
+        const id = uuidv4();
 
         const result = await db.query(`
                 INSERT INTO tags (id, tag),

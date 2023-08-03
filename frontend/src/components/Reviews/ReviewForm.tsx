@@ -1,8 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from 'react-redux';
 import { sendNewReviewData } from "../../redux/actions/reviewActions";
+import { fetchTagData } from "../../redux/actions/tagActions";
+import NewTagForm from "../Tags/NewTagForm";
+import { NewTagData } from "../../redux/types/tagTypes";
 import { RootState } from "../../redux/store";
 import { Button, Container, Dropdown, Form, Message } from 'semantic-ui-react';
+import { TagData } from "../../redux/types/tagTypes";
+import { useParams } from "react-router";
 
 interface NewReviewData {
     userId: string;
@@ -11,7 +16,7 @@ interface NewReviewData {
     body: string;
     stars: number;
     photos: string[];
-    tags: string[];
+    tagIds: string[];
 };
 
 interface NewReviewProps {
@@ -23,19 +28,42 @@ interface NewReviewProps {
                             body: string,
                             stars: number,
                             photos: string[],
-                            tags: string[]) => Promise<void>
+                            tagIds: string[]) => Promise<void>;
+    fetchTagData: () => Promise<void>
 };
 
-const ReviewForm: React.FC<NewReviewProps> = ({ newReview, error, sendNewReviewData }) => {
-    const initialReviewState = { userId: '',
-                                    skiAreaSlug: '',
+const ReviewForm: React.FC<NewReviewProps> = ({ newReview, error, sendNewReviewData, fetchTagData }) => {
+    const { skiAreaSlug } = useParams<{ skiAreaSlug: string }>();
+    const userId = localStorage.getItem('userId') ?? '';
+    const initialReviewState = { userId: userId,
+                                    skiAreaSlug: skiAreaSlug,
                                     header: '',
                                     body: '',
                                     stars: 3,
                                     photos: [],
-                                    tags: []}
+                                    tagIds: []}
 
     const [formData, setFormData] = useState(initialReviewState);
+    const [tags, setTags] = useState<TagData[]>([]);
+    const [photoLinks, setPhotoLinks] = useState<string[]>(['']);
+    const [showCreateNewTagForm, setShowCreateNewTagForm] = useState<boolean>(false);
+    
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                await fetchTagData();
+            } catch (error: any) {
+                return `Can't retrieve tag data: error ${error.message}`
+            }
+        };
+        fetchData();
+    }, [fetchTagData]);
+
+    useEffect(() => {
+        if(tags.length > 0) {
+            setTags(tags);
+        }
+    }, [tags])
 
     const dropdownOptions = [
         { key: 1, text: '1', value: 1 },
@@ -45,16 +73,18 @@ const ReviewForm: React.FC<NewReviewProps> = ({ newReview, error, sendNewReviewD
         { key: 5, text: '5', value: 5 },
     ]
 
+    const tagOptions = tags.map((tag) => ({ key: tag.id, text: tag.tag, value: tag.id}))
+
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         await sendNewReviewData(formData.userId,
-                                    formData.skiAreaSlug,
+                                    formData.skiAreaSlug ?? '',
                                     formData.header,
                                     formData.body,
                                     formData.stars,
                                     formData.photos,
-                                    formData.tags);
+                                    formData.tagIds);
                 
         setFormData(initialReviewState);
     };
@@ -67,8 +97,28 @@ const ReviewForm: React.FC<NewReviewProps> = ({ newReview, error, sendNewReviewD
         });
     };
 
+    const handlePhotoChange = (index: number, value: string) => {
+        const updatedPhotoLinks = [...photoLinks];
+        updatedPhotoLinks[index] = value;
+        setPhotoLinks(updatedPhotoLinks);
+    };
+
+    const handleAddPhotoInput = () => {
+        setPhotoLinks([...photoLinks, '']);
+    };
+
+    const handleRemovePhotoInput = (index: number) => {
+        const updatedPhotoLinks = [...photoLinks];
+        updatedPhotoLinks.splice(index, 1);
+        setPhotoLinks(updatedPhotoLinks);
+    };
+
+    const initialNewTagData: NewTagData = {
+        tag: 'New Tag'
+    }
+
     return (
-        <Container>
+        <Container fluid>
             <Form onSubmit={handleSubmit} error>
                 <Form.Field>
                     <label>Header</label>
@@ -78,8 +128,47 @@ const ReviewForm: React.FC<NewReviewProps> = ({ newReview, error, sendNewReviewD
                     <label>Review</label>
                     <input placeholder="How Was It?" name="body" value={formData.body} onChange={handleChange} />
                 </Form.TextArea>
+                {photoLinks.map((photoLink, index) => (
+                    <Form.Field key={index}>
+                        <label>Photo Links</label>
+                        <input 
+                            type="text" 
+                            value={photoLink} 
+                            onChange={(e) => handlePhotoChange(index, e.target.value)} 
+                        />
+                        {index === photoLinks.length - 1 && (
+                            <Button icon='plus' onClick={handleAddPhotoInput} />
+                        )}
+                        {(index > 0 && (
+                            <Button icon='minus' onClick={() => handleRemovePhotoInput(index)} />
+                        ))}
+                    </Form.Field>
+                ))}
+                <Button type="submit">Send It!</Button>
+                <Message 
+                    error
+                    header={error}
+                    content={error}
+                />
             </Form>
-            <Dropdown />
+            <label>Tags</label>
+            <Dropdown clearable options={tagOptions} multiple fluid selection value={formData.tagIds} />
+            <Button onClick={() => setShowCreateNewTagForm(true)}>Create New Tag?</Button>
+            {showCreateNewTagForm && <NewTagForm newTag={initialNewTagData} />}
+            <label>How would you rate your experience?</label>
+            <Dropdown clearable options={dropdownOptions} selection fluid value={formData.stars} />
         </Container>
     )
+};
+
+const mapStateToProps = (state: RootState) => ({
+    tags: state.tag.data,
+    error: state.tag.error
+});
+
+const mapDispatchToProps = {
+    sendNewReviewData,
+    fetchTagData
 }
+
+export default connect(mapStateToProps, mapDispatchToProps)(ReviewForm)

@@ -1,16 +1,17 @@
-import { SEND_LOGIN_DATA_FAILURE, SEND_LOGIN_DATA_REQUEST, SEND_LOGIN_DATA_SUCCESS, LoginData } from "../types/userTypes";
+import { SEND_LOGIN_DATA_FAILURE, SEND_LOGIN_DATA_REQUEST, SEND_LOGIN_DATA_SUCCESS, SET_TOKEN, LoginDataReturn } from "../types/userTypes";
 
 interface LoginState {
-    data: LoginData | null;
+    data: LoginDataReturn | null;
     loading: boolean;
     error: string | null;
+    token: string | null
 }
 
 const initialState: LoginState = {
     data: null,
     loading: false,
-    error: null
-
+    error: null,
+    token: null
 } 
 
 const loginReducer = ( state = initialState, action: any ) => {
@@ -33,6 +34,11 @@ const loginReducer = ( state = initialState, action: any ) => {
                 loading: false,
                 error: action.payload
             };
+        case SET_TOKEN:
+            return {
+                ...state,
+                token: action.payload
+            }
 
         default:
             return state;

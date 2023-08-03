@@ -21,8 +21,7 @@ import {    ReviewData,
             DeleteReview } from "../types/reviewTypes";
 
 export const sendNewReviewDataRequest = (
-                            userId: string, 
-                            username: string,
+                            userId: string,
                             skiAreaSlug: string, 
                             header: string,
                             body: string, 
@@ -115,8 +114,7 @@ export const deleteReviewFailure = (error: string) => ({
 });
 
 export const sendNewReviewData = (
-        userId: string, 
-        username: string,
+        userId: string,
         skiAreaSlug: string, 
         header: string,
         body: string, 
@@ -124,12 +122,11 @@ export const sendNewReviewData = (
         photos: string[],
         tagIds: string[]) => {
             return async (dispatch: Dispatch) => {
-                dispatch(sendNewReviewDataRequest(userId, username, skiAreaSlug, header, body, stars, photos, tagIds));
+                dispatch(sendNewReviewDataRequest(userId, skiAreaSlug, header, body, stars, photos, tagIds));
 
                 try {
                     const response = await axios.post(`${URL}/api/ski-areas/${skiAreaSlug}/review`,
                         {   userId: userId,
-                            username: username,
                             skiAreaSlug: skiAreaSlug,
                             header: header,
                             body: body,
