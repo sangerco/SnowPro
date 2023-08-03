@@ -3,8 +3,10 @@ import { ReviewReplyData } from "./reviewReplyTypes";
 export interface ReviewData {
     id: string;
     userId: string;
+    username: string;
     skiAreaSlug: string;
     skiAreaName: string;
+    header: string;
     body: string;
     stars: number;
     photos: string[];
@@ -19,7 +21,9 @@ export interface ReviewDataReturn {
 
 export interface NewReviewData {
     userId: string;
+    username: string;
     skiAreaSlug: string;
+    header: string;
     body: string;
     stars: number;
     photos: string[];
@@ -29,7 +33,9 @@ export interface NewReviewData {
 export interface NewReviewDataReturn {
     id: string;
     userId: string;
+    username: string;
     skiAreaSlug: string;
+    header: string;
     body: string;
     stars: number;
     photos: string[];
@@ -40,8 +46,10 @@ export interface NewReviewDataReturn {
 export interface UpdateReviewData {
     id?: string;
     userId?: string;
+    username?: string;
     skiAreaSlug?: string;
     skiAreaName?: string;
+    header?: string;
     body?: string;
     stars?: number;
     photos?: string[];
@@ -51,8 +59,10 @@ export interface UpdateReviewData {
 export interface UpdateReviewDataReturn {
     id: string;
     userId: string;
+    username: string;
     skiAreaSlug: string;
     skiAreaName: string;
+    header: string;
     body: string;
     stars: number;
     photos: string[];

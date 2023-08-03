@@ -2,6 +2,7 @@ export interface ReviewReplyData {
     id: string;
     reviewId: string;
     userId: string;
+    username: string;
     body: string,
     slug: string,
     createdAt: Date;
@@ -18,6 +19,7 @@ export interface NewReviewReplyDataReturn {
     id: string;
     reviewId: string;
     userId: string;
+    username: string;
     body: string;
     slug: string;
 };

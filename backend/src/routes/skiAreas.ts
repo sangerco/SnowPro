@@ -15,6 +15,7 @@ import { checkIfUserOrAdmin, ensureLoggedIn } from '../middleware/auth';
 interface ReviewData {
     userId: string;
     skiAreaSlug: string;
+    header: string;
     body: string;
     stars: number;
     photos: string[];
@@ -104,8 +105,8 @@ router.post('/api/ski-areas/:slug/review', ensureLoggedIn, checkIfUserOrAdmin, a
             const errors: string | string[] = validator.errors.map(e => e.stack);
             throw new BadRequestError(errors);
         }
-        const { userId, skiAreaSlug, body, stars, photos, tagIds }: ReviewData = req.body;
-        const review = await Review.createReview(userId, skiAreaSlug, body, stars, photos, tagIds);
+        const { userId, skiAreaSlug, header, body, stars, photos, tagIds }: ReviewData = req.body;
+        const review = await Review.createReview(userId, skiAreaSlug, header, body, stars, photos, tagIds);
         return res.status(201).json({ review });
     } catch (e) {
         return next(e);

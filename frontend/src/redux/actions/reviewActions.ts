@@ -6,7 +6,6 @@ import {    ReviewData,
             SEND_NEW_REVIEW_DATA_REQUEST,
             SEND_NEW_REVIEW_DATA_SUCCESS,
             SEND_NEW_REVIEW_DATA_FAILURE,
-            FetchReviewDataById,
             FETCH_REVIEW_DATA_REQUEST,
             FETCH_REVIEW_DATA_BY_ID_REQUEST,
             FETCH_REVIEW_DATA_SUCCESS,
@@ -23,7 +22,9 @@ import {    ReviewData,
 
 export const sendNewReviewDataRequest = (
                             userId: string, 
+                            username: string,
                             skiAreaSlug: string, 
+                            header: string,
                             body: string, 
                             stars: number,
                             photos: string[],
@@ -32,6 +33,7 @@ export const sendNewReviewDataRequest = (
                                 payload: {
                                     userId,
                                     skiAreaSlug,
+                                    header,
                                     body,
                                     stars,
                                     photos,
@@ -54,7 +56,7 @@ export const fetchReviewDataBySkiAreaRequest = (skiAreaSlug: string) => ({
     payload: skiAreaSlug
 });
 
-export const fetchReviewDataBySkiAreaSuccess = (reviewData: ReviewData[]) => ({
+export const fetchReviewDataBySkiAreaSuccess = (reviewData: ReviewDataReturn[]) => ({
     type: FETCH_REVIEW_DATA_SUCCESS,
     payload: reviewData
 });
@@ -64,12 +66,15 @@ export const fetchReviewDataBySkiAreaFailure = (error: string) => ({
     payload: error
 });
 
-export const fetchReviewDataByIdRequest = (fetchReviewDataById: FetchReviewDataById) => ({
+export const fetchReviewDataByIdRequest = (slug: string, id: string) => ({
     type: FETCH_REVIEW_DATA_BY_ID_REQUEST,
-    payload: fetchReviewDataById
+    payload: {
+        slug,
+        id
+    }
 });
 
-export const fetchReviewDataByIdSuccess = (reviewData: ReviewData) => ({
+export const fetchReviewDataByIdSuccess = (reviewData: ReviewDataReturn) => ({
     type: FETCH_REVIEW_DATA_SUCCESS,
     payload: reviewData
 });
@@ -111,18 +116,22 @@ export const deleteReviewFailure = (error: string) => ({
 
 export const sendNewReviewData = (
         userId: string, 
+        username: string,
         skiAreaSlug: string, 
+        header: string,
         body: string, 
         stars: number,
         photos: string[],
         tagIds: string[]) => {
             return async (dispatch: Dispatch) => {
-                dispatch(sendNewReviewDataRequest(userId, skiAreaSlug, body, stars, photos, tagIds));
+                dispatch(sendNewReviewDataRequest(userId, username, skiAreaSlug, header, body, stars, photos, tagIds));
 
                 try {
                     const response = await axios.post(`${URL}/api/ski-areas/${skiAreaSlug}/review`,
                         {   userId: userId,
+                            username: username,
                             skiAreaSlug: skiAreaSlug,
+                            header: header,
                             body: body,
                             stars: stars,
                             photos: photos,
@@ -140,7 +149,7 @@ export const fetchReviewDataBySkiArea = (skiAreaSlug: string) => {
 
         try {
             const response = await axios.get(`${URL}/ski-areas/${skiAreaSlug}/reviews`);
-            const responseData: ReviewData[] = response.data.reviews;
+            const responseData: ReviewDataReturn[] = response.data.review;
             dispatch(fetchReviewDataBySkiAreaSuccess(responseData));
         } catch (error: any) {
             dispatch(fetchReviewDataBySkiAreaFailure(error.message));
@@ -148,15 +157,12 @@ export const fetchReviewDataBySkiArea = (skiAreaSlug: string) => {
     }
 };
 
-export const fetchReviewDataById = (fetchReviewDataById: FetchReviewDataById) => {
+export const fetchReviewDataById = (slug: string, id: string) => {
     return async (dispatch: Dispatch) => {
-        dispatch(fetchReviewDataByIdRequest(fetchReviewDataById));
-        const slug = fetchReviewDataById.skiAreaSlug
-        const id = fetchReviewDataById.id
-
+        dispatch(fetchReviewDataByIdRequest(slug, id));
         try {
             const response = await axios.get(`${URL}/ski-areas/${slug}/reviews/${id}`);
-            const responseData: ReviewData = response.data.review;
+            const responseData: ReviewDataReturn = response.data.review;
             dispatch(fetchReviewDataByIdSuccess(responseData));
         } catch (error: any) {
             dispatch(fetchReviewDataByIdFailure(error.message));

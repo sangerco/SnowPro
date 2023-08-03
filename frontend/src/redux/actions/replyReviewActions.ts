@@ -37,9 +37,12 @@ export const sendNewReviewReplyDataFailure = (error: string) => ({
     payload: error
 });
 
-export const fetchNewReviewReplyDataRequest = (reviewId: string) => ({
+export const fetchNewReviewReplyDataRequest = (slug: string, reviewId: string) => ({
     type: FETCH_REVIEW_REPLY_DATA_REQUEST,
-    payload: reviewId
+    payload: {
+        slug,
+        reviewId
+    }
 });
 
 export const fetchNewReviewReplyDataSuccess = (reviewReplyDataReturn: NewReviewReplyData[]) => ({
@@ -115,6 +118,20 @@ export const sendNewReviewReplyData = (newReplyReviewData: NewReviewReplyData) =
             dispatch(sendNewReviewReplyDataSuccess(responseData));
         } catch (error: any) {
             dispatch(sendNewReviewReplyDataFailure(error.message))
+        }
+    }
+};
+
+export const fetchNewReviewReplyDataByReviewId = (slug: string, reviewId: string) => {
+    return async (dispatch: Dispatch) => {
+        dispatch(fetchNewReviewReplyDataRequest(slug, reviewId));
+
+        try {
+            const response = await axios.get(`${URL}/ski-areas/${slug}/reviews/${reviewId}`);
+            const responseData = response.data.review.replyData;
+            dispatch(fetchNewReviewReplyDataSuccess(responseData));
+        } catch (error: any) {
+            dispatch(fetchNewReviewReplyDataFailure(error.message));
         }
     }
 };

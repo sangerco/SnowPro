@@ -6,8 +6,10 @@ import { v4 as uuidv4 } from 'uuid';
 interface ReviewData {
     id: string;
     userId: string;
+    username: string;
     skiAreaSlug: string;
-    skiAreaName: string;
+    skiAreaName: string | null;
+    header: string;
     body: string;
     stars: number;
     photos: string[];
@@ -20,6 +22,7 @@ interface ReviewDataReturn {
     username: string;
     skiAreaSlug: string;
     skiAreaName: string;
+    header: string;
     body: string;
     stars: number;
     photos: string[];
@@ -30,6 +33,7 @@ class Review {
     static async createReview(
         userId: string,
         skiAreaSlug: string,
+        header: string,
         body: string,
         stars: number,
         photos: string[],
@@ -44,9 +48,9 @@ class Review {
                 (id,
                    user_id,
                    ski_area_slug,
+                   header,
                    body,
                    stars,
-                   photos,
                    tag_ids,
                    created_at)
             VALUES ($1, $2, $3, $4, $5, $6, $7)
@@ -54,31 +58,83 @@ class Review {
                 id,
                 user_id AS "userId", 
                 ski_area_slug AS "skiAreaSlug", 
+                header,
                 body, 
-                stars, 
-                photos,
+                stars,
                 tag_ids AS "tagIds",
                 created_at AS "createdAt"`,
             [   id,
                 userId,
                 skiAreaSlug,
+                header,
                 body,
                 stars,
-                photos,
                 tagIds,
                 createdAt
             ]
         )
 
-        const review = result.rows[0];
+        const reviewData = result.rows[0];
         
         for (let tagId of tagIds) {
             await db.query(`
                 INSERT INTO review_tags (review_id, tag_id)
                 VALUES ($1, $2)`,
-            [review.id, tagId])
+            [reviewData.id, tagId])
 
-            review.tagIds.push(tagId);
+            reviewData.tagIds.push(tagId);
+        }
+
+        for (let photo of photos) {
+            const photoId = uuidv4();
+            const photoCreatedAt = new Date()
+
+            const photoResult = await db.query(`
+                INSERT INTO photos (
+                    id,
+                    user_id,
+                    link,
+                    created_at)
+                VALUES ($1, $2, $3, $4)
+                RETURNING
+                    id,
+                    user_id AS "userId",
+                    link,
+                    created_at AS "createdAt"`,
+                [   photoId,
+                    userId,
+                    photo,
+                    photoCreatedAt]);
+            
+            await db.query(`
+                INSERT INTO reviews_photos (review_id, photo_id)
+                VALUES ($1, $2)`,
+                [reviewData.id, photoId]);
+            
+            reviewData.photos.push(photoId);
+        }
+
+        const skiAreaName = await db.query(`
+            SELECT name AS "skiAreaName" FROM ski_areas WHERE slug = $1`, [skiAreaSlug]);
+
+        reviewData.skiAreaName = skiAreaName;
+
+        const username = await db.query(`
+            SELECT username FROM users WHERE id = $1`, [userId]);
+
+        reviewData.username = username;
+
+        const review: ReviewData = {
+            id: reviewData.id,
+            userId: reviewData.userId,
+            username: reviewData.username,
+            skiAreaSlug: reviewData.skiAreaSlug,
+            skiAreaName: reviewData.skiAreaName,
+            header: reviewData.header,
+            body: reviewData.body,
+            stars: reviewData.stars,
+            photos: reviewData.photos,
+            tagIds: reviewData.tagIds
         }
 
         return review;
@@ -97,6 +153,7 @@ class Review {
                             WHERE id = ${id}
                             RETURNING user_id AS "userId",
                             ski_area_slug AS "skiAreaSlug",
+                            header,
                             body,
                             stars,
                             photos,
@@ -114,9 +171,10 @@ class Review {
             SELECT r.id,
                 r.user_id AS "userId",
                 r.ski_area_slug AS "skiAreaSlug",
+                r.header,
                 r.body,
                 r.stars,
-                r.photos,
+                p.link,
                 u.username,
                 s.name AS "skiAreaName",
                 t.tag
@@ -125,8 +183,10 @@ class Review {
             LEFT JOIN ski_areas s ON r.ski_area_slug = s.slug
             LEFT JOIN review_tags rt ON r.tag_ids = rt.tag_id
             LEFT JOIN tags t ON rt.tag_id = t.id
+            LEFT JOIN reviews_photos rp ON r.photo = rp.photo_id
+            LEFT JOIN photos p ON rp.photo_id = p.id
             WHERE s.name = $1
-            ORDER BY r.created_at`,
+            // ORDER BY r.created_at`,
             [skiAreaName]);
 
         const reviews = result.rows;
@@ -143,17 +203,20 @@ class Review {
             SELECT r.id,
                 r.user_id AS "userId",
                 r.ski_area_slug AS "skiAreaSlug",
+                r.header,
                 r.body,
                 r.stars,
-                r.photos,
+                p.link AS "photos",
                 u.username,
                 s.name AS "skiAreaName",
-                t.tag
+                t.tag AS "tags"
             FROM reviews r
             LEFT JOIN users u ON r.user_id = u.id
             LEFT JOIN ski_areas s ON r.ski_area_slug = s.slug
             LEFT JOIN review_tags rt ON r.tag_ids = rt.tag_id
             LEFT JOIN tags t ON rt.tag_id = t.id
+            LEFT JOIN reviews_photos rp ON r.photos = rp.photo_id
+            LEFT JOIN photos p ON rp.photo_id = p.id
             WHERE r.id = $1
             ORDER BY r.created_at`,
             [id]);

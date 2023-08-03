@@ -68,9 +68,10 @@ var auth_1 = require("../middleware/auth");
 var expressError_1 = require("../expressError");
 var photo_1 = __importDefault(require("../models/photo"));
 var photoLinkNew_json_1 = __importDefault(require("../schemas/photoLinkNew.json"));
+var photoUpdate_json_1 = __importDefault(require("../schemas/photoUpdate.json"));
 var router = express_1.default.Router();
 router.post('/api/photos', auth_1.ensureLoggedIn, auth_1.checkIfUserOrAdmin, function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var validator, errors, _a, userId, link, about, tagIds, photo, e_1;
+    var validator, errors, _a, username, link, about, tagIds, photo, e_1;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
@@ -80,8 +81,8 @@ router.post('/api/photos', auth_1.ensureLoggedIn, auth_1.checkIfUserOrAdmin, fun
                     errors = validator.errors.map(function (e) { return e.stack; });
                     throw new expressError_1.BadRequestError(errors);
                 }
-                _a = req.body, userId = _a.userId, link = _a.link, about = _a.about, tagIds = _a.tagIds;
-                return [4 /*yield*/, photo_1.default.createPhoto(userId, link, about, tagIds)];
+                _a = req.body, username = _a.username, link = _a.link, about = _a.about, tagIds = _a.tagIds;
+                return [4 /*yield*/, photo_1.default.createPhoto(username, link, about, tagIds)];
             case 1:
                 photo = _b.sent();
                 return [2 /*return*/, res.status(201).json({ photo: photo })];
@@ -109,8 +110,48 @@ router.get('/photo/:id', function (req, res, next) { return __awaiter(void 0, vo
         }
     });
 }); });
+router.get('/users/:username/photos', function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+    var photos, e_3;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                return [4 /*yield*/, photo_1.default.getPhotosByUsername(req.params.username)];
+            case 1:
+                photos = _a.sent();
+                return [2 /*return*/, res.json({ photos: photos })];
+            case 2:
+                e_3 = _a.sent();
+                return [2 /*return*/, next(e_3)];
+            case 3: return [2 /*return*/];
+        }
+    });
+}); });
+router.patch('/api/photo/:id', auth_1.ensureLoggedIn, auth_1.checkIfUserOrAdmin, function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+    var validator, errors, photo, e_4;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                validator = jsonschema.validate(req.body, photoUpdate_json_1.default);
+                if (!validator.valid) {
+                    errors = validator.errors.map(function (e) { return e.stack; });
+                    throw new expressError_1.BadRequestError(errors);
+                }
+                return [4 /*yield*/, photo_1.default.updatePhoto(req.params.id, req.body)];
+            case 1:
+                photo = _a.sent();
+                return [2 /*return*/, res.json({ photo: photo })];
+            case 2:
+                e_4 = _a.sent();
+                next(e_4);
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
+        }
+    });
+}); });
 router.delete('/api/photo/:id', auth_1.ensureLoggedIn, auth_1.checkIfUserOrAdmin, function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var e_3;
+    var e_5;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -120,8 +161,8 @@ router.delete('/api/photo/:id', auth_1.ensureLoggedIn, auth_1.checkIfUserOrAdmin
                 _a.sent();
                 return [2 /*return*/, res.json({ deleted: "Photo removed ".concat(req.params.id) })];
             case 2:
-                e_3 = _a.sent();
-                return [2 /*return*/, next(e_3)];
+                e_5 = _a.sent();
+                return [2 /*return*/, next(e_5)];
             case 3: return [2 /*return*/];
         }
     });

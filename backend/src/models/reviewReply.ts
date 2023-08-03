@@ -6,17 +6,21 @@ import { v4 as uuidv4 } from 'uuid';
 interface ReviewReplyData {
     id: string;
     userId: string;
+    username: string;
     reviewId: string;
     body: string;
     slug: string;
+    createdAt: Date;
 }
 
 interface ReviewReplyRow {
     id: string;
     userId: string;
+    username: string;
     reviewId: string;
     body: string;
     slug: string;
+    createdAt: Date;
   }
 
 class ReviewReply {
@@ -61,7 +65,22 @@ class ReviewReply {
             ]
         );
 
-        const reviewReply = result.rows[0];
+        const username = await db.query(`
+            SELECT username FROM users WHERE id = $1`, [userId]);
+
+        const reviewReplyData = result.rows[0];
+
+        reviewReplyData.username = username;
+
+        const reviewReply: ReviewReplyData = {
+            id: reviewReplyData.id,
+            userId: reviewReplyData.userId,
+            username: reviewReplyData.username,
+            reviewId: reviewReplyData.reviewId,
+            slug: reviewReplyData.slug,
+            body: reviewReplyData.body,
+            createdAt: reviewReplyData.createdAt
+        }
 
         return reviewReply;
     };
@@ -81,9 +100,11 @@ class ReviewReply {
         const reviewReply: ReviewReplyData = {
             id: result.rows[0].id,
             userId: result.rows[0].userId,
+            username: result.rows[0].username,
             reviewId: result.rows[0].reviewId,
             slug: result.rows[0].slug,
-            body: result.rows[0].body
+            body: result.rows[0].body,
+            createdAt: result.rows[0].createdAt
           };;
 
         if(!reviewReply) throw new NotFoundError('Review Reply Not Found!');
@@ -93,13 +114,15 @@ class ReviewReply {
 
     static async fetchRepliesByReviewId(reviewId: string): Promise<ReviewReplyData[]> {
         const result = await db.query(`
-            SELECT id,
-                review_id AS "reviewId",
-                user_id AS "userId",
-                body,
-                ski_area_slug AS "slug"
-                created_at AS "createdAt"
-            FROM review_replies
+            SELECT r.id,
+                r.review_id AS "reviewId",
+                r.user_id AS "userId",
+                u.username,
+                r.body,
+                r.ski_area_slug AS "slug",
+                r.created_at AS "createdAt"
+            FROM review_replies r
+            LEFT JOIN users u ON r.user_id = u.id
             WHERE review_id = $1`,
             [reviewId]
             );
@@ -113,13 +136,15 @@ class ReviewReply {
 
     static async fetchReplyId(id: string): Promise<ReviewReplyData> {
         const result = await db.query(`
-            SELECT id,
-                review_id AS "reviewId",
-                user_id AS "userId",
-                body,
-                ski_area_slug AS "slug",
-                created_at AS "createdAt"
-            FROM review_replies
+            SELECT r.id,
+                r.review_id AS "reviewId",
+                r.user_id AS "userId",
+                u.username,
+                r.body,
+                r.ski_area_slug AS "slug",
+                r.created_at AS "createdAt"
+            FROM review_replies r
+            LEFT JOIN users u ON r.user_id = u.id
             WHERE id = $1`,
             [id]
             );

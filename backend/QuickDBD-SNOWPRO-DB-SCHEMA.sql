@@ -10,6 +10,8 @@ DROP DATABASE snowpro;
 
 CREATE DATABASE snowpro;
 
+\c snowpro;
+
 CREATE TABLE "users" (
     "id" text   NOT NULL UNIQUE,
     "username" varchar(25)   NOT NULL,
@@ -34,6 +36,7 @@ CREATE TABLE "reviews" (
     "id" text   NOT NULL,
     "user_id" text   NOT NULL,
     "ski_area_slug" text  NOT NULL,
+    "header" text  NOT NULL,
     "body" varchar(500)   NULL,
     "stars" int   NOT NULL,
     "photos" text   NULL,
@@ -46,7 +49,7 @@ CREATE TABLE "review_replies" (
     "id" text   NOT NULL,
     "review_id" text   NOT NULL,
     "user_id" text   NOT NULL,
-    "ski_slug_name" text   NOT NULL,
+    "ski_area_slug" text   NOT NULL,
     "body" varchar(500)   NOT NULL,
     "created_at" TIMESTAMP NOT NULL,
     CONSTRAINT "pk_review_replies" PRIMARY KEY ("id")
@@ -95,7 +98,7 @@ CREATE TABLE "videos" (
     "link" text   NULL,
     "about" text NULL,
     "tag_ids" text NULL,
-    "created_at" TIMESTAMP NOT NULL,s
+    "created_at" TIMESTAMP NOT NULL,
     CONSTRAINT "pk_videos" PRIMARY KEY ("id")
 );
 

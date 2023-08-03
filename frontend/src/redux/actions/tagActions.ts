@@ -29,6 +29,20 @@ export const sendNewTagDataFailure = ( error: string ) => ({
     payload: error
 });
 
+export const fetchAllTagDataRequest = () => ({
+    type: FETCH_TAG_DATA_REQUEST
+});
+
+export const fetchAllTagDataSuccess = ( tagData: TagData[] ) => ({
+    type: FETCH_TAG_DATA_SUCCESS,
+    payload: tagData
+});
+
+export const fetchAllTagDataFailure = ( error: string ) => ({
+    type: FETCH_TAG_DATA_FAILURE,
+    payload: error
+});
+
 export const fetchTagDatabyIdRequest = ( id: string ) => ({
     type: FETCH_TAG_DATA_REQUEST,
     payload: id
@@ -65,12 +79,25 @@ export const sendNewTagData = ( tag: string ) => {
 
         try {
             const response = await axios.post(`${URL}/api/tags`, {tag: tag});
-            dispatch(sendNewTagDataSuccess(response.data));
+            dispatch(sendNewTagDataSuccess(response.data.tags));
         } catch (error: any) {
             dispatch(sendNewTagDataFailure(error.message));
         }
     }
 };
+
+export const fetchTagData = () => {
+    return async (dispatch: Dispatch) => {
+        dispatch(fetchAllTagDataRequest());
+
+        try {
+            const response = await axios.get(`${URL}/tags`);
+            dispatch(fetchAllTagDataSuccess(response.data.tags));
+        } catch (error: any) {
+            dispatch(fetchAllTagDataFailure(error.message));
+        }
+    }
+}
 
 export const fetchTagDataById = (id: string) => {
     return async (dispatch: Dispatch) => {

@@ -174,7 +174,7 @@ router.get('/ski-areas/:slug', function (req, res, next) { return __awaiter(void
             case 2:
                 response = _a.sent();
                 skiAreaData = response.data.data;
-                return [4 /*yield*/, skiArea_1.default.returnReviewDataBySlug(slug)];
+                return [4 /*yield*/, skiArea_1.default.fetchReviewsBySkiAreaSlug(slug)];
             case 3:
                 getReviewData = _a.sent();
                 return [4 /*yield*/, skiArea_1.default.returnUsersFavoritedBy(slug)];
@@ -195,7 +195,7 @@ router.get('/ski-areas/:slug', function (req, res, next) { return __awaiter(void
     });
 }); });
 router.post('/api/ski-areas/:slug/review', auth_1.ensureLoggedIn, auth_1.checkIfUserOrAdmin, function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var validator, errors, _a, userId, skiAreaSlug, body, stars, photos, tagIds, review, e_3;
+    var validator, errors, _a, userId, skiAreaSlug, header, body, stars, photos, tagIds, review, e_3;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
@@ -205,8 +205,8 @@ router.post('/api/ski-areas/:slug/review', auth_1.ensureLoggedIn, auth_1.checkIf
                     errors = validator.errors.map(function (e) { return e.stack; });
                     throw new expressError_1.BadRequestError(errors);
                 }
-                _a = req.body, userId = _a.userId, skiAreaSlug = _a.skiAreaSlug, body = _a.body, stars = _a.stars, photos = _a.photos, tagIds = _a.tagIds;
-                return [4 /*yield*/, review_1.default.createReview(userId, skiAreaSlug, body, stars, photos, tagIds)];
+                _a = req.body, userId = _a.userId, skiAreaSlug = _a.skiAreaSlug, header = _a.header, body = _a.body, stars = _a.stars, photos = _a.photos, tagIds = _a.tagIds;
+                return [4 /*yield*/, review_1.default.createReview(userId, skiAreaSlug, header, body, stars, photos, tagIds)];
             case 1:
                 review = _b.sent();
                 return [2 /*return*/, res.status(201).json({ review: review })];

@@ -41,6 +41,20 @@ export interface sendNewTagDataFailureAction {
     payload: string;
 };
 
+export interface fetchAllTagDataRequestAction {
+    type: typeof FETCH_TAG_DATA_REQUEST;
+};
+
+export interface fetchAllTagDataSuccessAction {
+    type: typeof FETCH_TAG_DATA_SUCCESS;
+    payload: TagData[];
+};
+
+export interface fetchAllTagDataFailureAction {
+    type: typeof FETCH_TAG_DATA_FAILURE;
+    payload: string;
+};
+
 export interface fetchTagDataRequestAction {
     type: typeof FETCH_TAG_DATA_REQUEST;
     payload: string;

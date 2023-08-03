@@ -68,9 +68,10 @@ var auth_1 = require("../middleware/auth");
 var expressError_1 = require("../expressError");
 var video_1 = __importDefault(require("../models/video"));
 var videoLinkNew_json_1 = __importDefault(require("../schemas/videoLinkNew.json"));
+var updateVideo_json_1 = __importDefault(require("../schemas/updateVideo.json"));
 var router = express_1.default.Router();
 router.post('/api/videos', auth_1.ensureLoggedIn, auth_1.checkIfUserOrAdmin, function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var validator, errors, _a, userId, link, about, tagIds, video, e_1;
+    var validator, errors, _a, username, link, about, tagIds, video, e_1;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
@@ -80,8 +81,8 @@ router.post('/api/videos', auth_1.ensureLoggedIn, auth_1.checkIfUserOrAdmin, fun
                     errors = validator.errors.map(function (e) { return e.stack; });
                     throw new expressError_1.BadRequestError(errors);
                 }
-                _a = req.body, userId = _a.userId, link = _a.link, about = _a.about, tagIds = _a.tagIds;
-                return [4 /*yield*/, video_1.default.createVideo(userId, link, about, tagIds)];
+                _a = req.body, username = _a.username, link = _a.link, about = _a.about, tagIds = _a.tagIds;
+                return [4 /*yield*/, video_1.default.createVideo(username, link, about, tagIds)];
             case 1:
                 video = _b.sent();
                 return [2 /*return*/, res.status(201).json({ video: video })];
@@ -109,8 +110,48 @@ router.get('/video/:id', function (req, res, next) { return __awaiter(void 0, vo
         }
     });
 }); });
+router.get('/users/:username/videos', function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+    var videos, e_3;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                return [4 /*yield*/, video_1.default.getVideosByUsername(req.params.username)];
+            case 1:
+                videos = _a.sent();
+                return [2 /*return*/, res.json({ videos: videos })];
+            case 2:
+                e_3 = _a.sent();
+                return [2 /*return*/, next(e_3)];
+            case 3: return [2 /*return*/];
+        }
+    });
+}); });
+router.patch('/api/video/:id', auth_1.ensureLoggedIn, auth_1.checkIfUserOrAdmin, function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+    var validator, errors, video, e_4;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                validator = jsonschema.validate(req.body, updateVideo_json_1.default);
+                if (!validator.valid) {
+                    errors = validator.errors.map(function (e) { return e.stack; });
+                    throw new expressError_1.BadRequestError(errors);
+                }
+                return [4 /*yield*/, video_1.default.updateVideo(req.params.id, req.body)];
+            case 1:
+                video = _a.sent();
+                return [2 /*return*/, res.json({ video: video })];
+            case 2:
+                e_4 = _a.sent();
+                next(e_4);
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
+        }
+    });
+}); });
 router.delete('/api/video/:id', function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var e_3;
+    var e_5;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -120,8 +161,8 @@ router.delete('/api/video/:id', function (req, res, next) { return __awaiter(voi
                 _a.sent();
                 return [2 /*return*/, res.json({ deleted: "Video removed ".concat(req.params.id) })];
             case 2:
-                e_3 = _a.sent();
-                return [2 /*return*/, next(e_3)];
+                e_5 = _a.sent();
+                return [2 /*return*/, next(e_5)];
             case 3: return [2 /*return*/];
         }
     });

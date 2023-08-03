@@ -32,6 +32,15 @@ class Tag {
         return newTag;
     };
 
+    static async getTags(): Promise<TagData[]> {
+        const result = await db.query(`
+            SELECT * FROM tags`)
+
+        const tags = result.rows;
+
+        return tags;
+    }
+
 // method to get all reviews, photos, and videos associated with that tag
 
     static async getAssociatedItems(id:string): Promise<AssociatedData> {

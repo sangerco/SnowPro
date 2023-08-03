@@ -55,32 +55,35 @@ var uuid_1 = require("uuid");
 var Video = /** @class */ (function () {
     function Video() {
     }
-    Video.createVideo = function (userId, link, about, tagIds) {
+    Video.createVideo = function (username, link, about, tagIds) {
         return __awaiter(this, void 0, void 0, function () {
-            var id, createdAt, result, video, _i, tagIds_1, tagId;
+            var id, createdAt, userId, result, video, _i, tagIds_1, tagId;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         id = (0, uuid_1.v4)();
                         createdAt = new Date();
-                        return [4 /*yield*/, db_1.default.query("\n            INSERT INTO videos\n                (   id,\n                    user_id,\n                    link,\n                    about,\n                    created_at)\n            VALUES ($1, $2, $3, $4, $5, $6)\n            RETURNING \n                    id,\n                    user_id AS \"userId\",\n                    link,\n                    about,\n                    created_at AS \"createdAt\"", [id, userId, link, about, createdAt])];
+                        return [4 /*yield*/, db_1.default.query("\n            SELECT id\n                FROM users\n                WHERE username = $1", [username])];
                     case 1:
+                        userId = _a.sent();
+                        return [4 /*yield*/, db_1.default.query("\n            INSERT INTO videos\n                (   id,\n                    user_id,\n                    link,\n                    about,\n                    created_at)\n            VALUES ($1, $2, $3, $4, $5, $6)\n            RETURNING \n                    id,\n                    user_id AS \"userId\",\n                    link,\n                    about,\n                    created_at AS \"createdAt\"", [id, userId, link, about, createdAt])];
+                    case 2:
                         result = _a.sent();
                         video = result.rows[0];
                         _i = 0, tagIds_1 = tagIds;
-                        _a.label = 2;
-                    case 2:
-                        if (!(_i < tagIds_1.length)) return [3 /*break*/, 5];
-                        tagId = tagIds_1[_i];
-                        return [4 /*yield*/, db_1.default.query("\n                INSERT INTO review_tags (review_id, tag_id)\n                VALUES ($1, $2)", [video.id, tagId])];
+                        _a.label = 3;
                     case 3:
+                        if (!(_i < tagIds_1.length)) return [3 /*break*/, 6];
+                        tagId = tagIds_1[_i];
+                        return [4 /*yield*/, db_1.default.query("\n                INSERT INTO videos_tags (videos_id, tag_id)\n                VALUES ($1, $2)", [video.id, tagId])];
+                    case 4:
                         _a.sent();
                         video.tagIds.push(tagId);
-                        _a.label = 4;
-                    case 4:
+                        _a.label = 5;
+                    case 5:
                         _i++;
-                        return [3 /*break*/, 2];
-                    case 5: return [2 /*return*/, video];
+                        return [3 /*break*/, 3];
+                    case 6: return [2 /*return*/, video];
                 }
             });
         });
@@ -91,7 +94,7 @@ var Video = /** @class */ (function () {
             var result, video;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, db_1.default.query("SELECT v.id,\n                v.user_id AS \"userId\",\n                v.link,\n                v.about,\n                v.tag_id AS \"tagId\",\n                v.created_at AS \"createdAt\",\n                t.tag\n                FROM videos v\n                LEFT JOIN videos_tags vt ON v.tag_id = vt.tag_id\n                LEFT JOIN tags t ON vt.tag_id = t.id\n                WHERE v.id = $1\n                ORDER BY v.created_at", [id])];
+                    case 0: return [4 /*yield*/, db_1.default.query("SELECT v.id,\n                v.user_id AS \"userId\",\n                v.link,\n                v.about,\n                v.tag_id AS \"tagId\",\n                v.created_at AS \"createdAt\",\n                u.username,\n                t.tag\n                FROM videos v\n                LEFT JOIN users u ON v.user_id = u.id\n                LEFT JOIN videos_tags vt ON v.tag_id = vt.tag_id\n                LEFT JOIN tags t ON vt.tag_id = t.id\n                WHERE v.id = $1\n                ORDER BY v.created_at", [id])];
                     case 1:
                         result = _a.sent();
                         video = result.rows[0];
@@ -103,7 +106,24 @@ var Video = /** @class */ (function () {
         });
     };
     ;
-    Video.updatePhoto = function (id, data) {
+    Video.getVideosByUsername = function (username) {
+        return __awaiter(this, void 0, void 0, function () {
+            var result, videos;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, db_1.default.query("SELECT u.id AS \"userId\",\n                u.username,\n                v.id,\n                v.user_id,\n                v.link,\n                v.about,\n                v.tag_id AS \"tagId\",\n                v.created_at AS \"createdAt\",\n                t.tag\n                FROM users u\n                LEFT JOIN videos v ON u.id = v.user_id\n                LEFT JOIN videos_tags vt ON v.tag_id = vt.tag_id\n                LEFT JOIN tags t ON vt.tag_id = t.id\n                WHERE u.username = $1\n                ORDER BY v.created_at", [username])];
+                    case 1:
+                        result = _a.sent();
+                        videos = result.rows;
+                        if (videos.length === 0)
+                            throw new expressError_1.NotFoundError('No videos yet.');
+                        return [2 /*return*/, videos];
+                }
+            });
+        });
+    };
+    ;
+    Video.updateVideo = function (id, data) {
         return __awaiter(this, void 0, void 0, function () {
             var _a, setCols, values, sqlQuery, result, video;
             return __generator(this, function (_b) {

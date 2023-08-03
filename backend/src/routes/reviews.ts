@@ -53,11 +53,11 @@ router.get('/ski-areas/:slug/reviews/:id', async (req: Request, res: Response, n
 
         const getReviewReplyData: ReplyReviewData[] = await ReviewReply.fetchRepliesByReviewId(req.params.id);
 
-        const combinedData = {
+        const review = {
             ...reviewData,
-            replyReplyData: getReviewReplyData
+            replyData: getReviewReplyData
         }
-        return res.json({ combinedData });
+        return res.json({ review });
     } catch (e) {
         next(e);
     }

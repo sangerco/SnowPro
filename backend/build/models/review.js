@@ -55,39 +55,77 @@ var uuid_1 = require("uuid");
 var Review = /** @class */ (function () {
     function Review() {
     }
-    Review.createReview = function (userId, skiAreaSlug, body, stars, photos, tagIds) {
+    Review.createReview = function (userId, skiAreaSlug, header, body, stars, photos, tagIds) {
         return __awaiter(this, void 0, void 0, function () {
-            var id, createdAt, result, review, _i, tagIds_1, tagId;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
+            var id, createdAt, result, reviewData, _i, tagIds_1, tagId, _a, photos_1, photo, photoId, photoCreatedAt, photoResult, skiAreaName, review;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
                     case 0:
                         id = (0, uuid_1.v4)();
                         createdAt = new Date();
-                        return [4 /*yield*/, db_1.default.query("INSERT INTO reviews\n                (id,\n                   user_id,\n                   ski_area_slug,\n                   body,\n                   stars,\n                   photos,\n                   created_at)\n            VALUES ($1, $2, $3, $4, $5, $6, $7)\n            RETURNING\n                id,\n                user_id AS \"userId\", \n                ski_area_slug AS \"skiAreaSlug\", \n                body, \n                stars, \n                photos,\n                created_at AS \"createdAt\"", [id,
+                        return [4 /*yield*/, db_1.default.query("INSERT INTO reviews\n                (id,\n                   user_id,\n                   ski_area_slug,\n                   header,\n                   body,\n                   stars,\n                   tag_ids,\n                   created_at)\n            VALUES ($1, $2, $3, $4, $5, $6, $7)\n            RETURNING\n                id,\n                user_id AS \"userId\", \n                ski_area_slug AS \"skiAreaSlug\", \n                header,\n                body, \n                stars,\n                tag_ids AS \"tagIds\",\n                created_at AS \"createdAt\"", [id,
                                 userId,
                                 skiAreaSlug,
+                                header,
                                 body,
                                 stars,
-                                photos,
+                                tagIds,
                                 createdAt
                             ])];
                     case 1:
-                        result = _a.sent();
-                        review = result.rows[0];
+                        result = _b.sent();
+                        reviewData = result.rows[0];
                         _i = 0, tagIds_1 = tagIds;
-                        _a.label = 2;
+                        _b.label = 2;
                     case 2:
                         if (!(_i < tagIds_1.length)) return [3 /*break*/, 5];
                         tagId = tagIds_1[_i];
-                        return [4 /*yield*/, db_1.default.query("\n                INSERT INTO review_tags (review_id, tag_id)\n                VALUES ($1, $2)", [review.id, tagId])];
+                        return [4 /*yield*/, db_1.default.query("\n                INSERT INTO review_tags (review_id, tag_id)\n                VALUES ($1, $2)", [reviewData.id, tagId])];
                     case 3:
-                        _a.sent();
-                        review.tagIds.push(tagId);
-                        _a.label = 4;
+                        _b.sent();
+                        reviewData.tagIds.push(tagId);
+                        _b.label = 4;
                     case 4:
                         _i++;
                         return [3 /*break*/, 2];
-                    case 5: return [2 /*return*/, review];
+                    case 5:
+                        _a = 0, photos_1 = photos;
+                        _b.label = 6;
+                    case 6:
+                        if (!(_a < photos_1.length)) return [3 /*break*/, 10];
+                        photo = photos_1[_a];
+                        photoId = (0, uuid_1.v4)();
+                        photoCreatedAt = new Date();
+                        return [4 /*yield*/, db_1.default.query("\n                INSERT INTO photos (\n                    id,\n                    user_id,\n                    link,\n                    created_at)\n                VALUES ($1, $2, $3, $4)\n                RETURNING\n                    id,\n                    user_id AS \"userId\",\n                    link,\n                    created_at AS \"createdAt\"", [photoId,
+                                userId,
+                                photo,
+                                photoCreatedAt])];
+                    case 7:
+                        photoResult = _b.sent();
+                        return [4 /*yield*/, db_1.default.query("\n                INSERT INTO reviews_photos (review_id, photo_id)\n                VALUES ($1, $2)", [reviewData.id, photoId])];
+                    case 8:
+                        _b.sent();
+                        reviewData.photos.push(photoId);
+                        _b.label = 9;
+                    case 9:
+                        _a++;
+                        return [3 /*break*/, 6];
+                    case 10: return [4 /*yield*/, db_1.default.query("\n            SELECT name AS \"skiAreaName\" FROM ski_areas WHERE slug = $1", [skiAreaSlug])];
+                    case 11:
+                        skiAreaName = _b.sent();
+                        reviewData.skiAreaName = skiAreaName;
+                        review = {
+                            id: reviewData.id,
+                            userId: reviewData.userId,
+                            skiAreaSlug: reviewData.skiAreaSlug,
+                            skiAreaName: reviewData.skiAreaName,
+                            header: reviewData.header,
+                            body: reviewData.body,
+                            stars: reviewData.stars,
+                            photos: reviewData.photos,
+                            tagIds: reviewData.tagIds
+                        };
+                        return [2 /*return*/, review];
                 }
             });
         });
@@ -101,13 +139,47 @@ var Review = /** @class */ (function () {
                         _a = (0, sql_1.sqlForPartialUpdate)(data, {
                             tagIds: 'tag_ids'
                         }), setCols = _a.setCols, values = _a.values;
-                        sqlQuery = "UPDATE reviews\n                            SET ".concat(setCols, "\n                            WHERE id = ").concat(id, "\n                            RETURNING user_id AS \"userId\",\n                            ski_area_slug AS \"skiAreaSlug\",\n                            body,\n                            stars,\n                            photos,\n                            created_at AS \"createdAt\"");
+                        sqlQuery = "UPDATE reviews\n                            SET ".concat(setCols, "\n                            WHERE id = ").concat(id, "\n                            RETURNING user_id AS \"userId\",\n                            ski_area_slug AS \"skiAreaSlug\",\n                            header,\n                            body,\n                            stars,\n                            photos,\n                            created_at AS \"createdAt\"");
                         return [4 /*yield*/, db_1.default.query(sqlQuery, __spreadArray(__spreadArray([], values, true), [id], false))];
                     case 1:
                         result = _b.sent();
                         review = result.rows[0];
                         if (!review)
                             throw new expressError_1.NotFoundError('No such review found.');
+                        return [2 /*return*/, review];
+                }
+            });
+        });
+    };
+    Review.fetchReviewsBySkiArea = function (skiAreaName) {
+        return __awaiter(this, void 0, void 0, function () {
+            var result, reviews;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, db_1.default.query("\n            SELECT r.id,\n                r.user_id AS \"userId\",\n                r.ski_area_slug AS \"skiAreaSlug\",\n                r.header,\n                r.body,\n                r.stars,\n                p.link,\n                u.username,\n                s.name AS \"skiAreaName\",\n                t.tag\n            FROM reviews r\n            LEFT JOIN users u ON r.user_id = u.id\n            LEFT JOIN ski_areas s ON r.ski_area_slug = s.slug\n            LEFT JOIN review_tags rt ON r.tag_ids = rt.tag_id\n            LEFT JOIN tags t ON rt.tag_id = t.id\n            LEFT JOIN reviews_photos rp ON r.photo = rp.photo_id\n            LEFT JOIN photos p ON rp.photo_id = p.id\n            WHERE s.name = $1\n            // ORDER BY r.created_at", [skiAreaName])];
+                    case 1:
+                        result = _a.sent();
+                        reviews = result.rows;
+                        if (reviews.length === 0) {
+                            throw new expressError_1.NotFoundError('No reviews found');
+                        }
+                        ;
+                        return [2 /*return*/, reviews];
+                }
+            });
+        });
+    };
+    Review.fetchReviewById = function (id) {
+        return __awaiter(this, void 0, void 0, function () {
+            var result, review;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, db_1.default.query("\n            SELECT r.id,\n                r.user_id AS \"userId\",\n                r.ski_area_slug AS \"skiAreaSlug\",\n                r.header,\n                r.body,\n                r.stars,\n                p.link AS \"photos\",\n                u.username,\n                s.name AS \"skiAreaName\",\n                t.tag AS \"tags\"\n            FROM reviews r\n            LEFT JOIN users u ON r.user_id = u.id\n            LEFT JOIN ski_areas s ON r.ski_area_slug = s.slug\n            LEFT JOIN review_tags rt ON r.tag_ids = rt.tag_id\n            LEFT JOIN tags t ON rt.tag_id = t.id\n            LEFT JOIN reviews_photos rp ON r.photos = rp.photo_id\n            LEFT JOIN photos p ON rp.photo_id = p.id\n            WHERE r.id = $1\n            ORDER BY r.created_at", [id])];
+                    case 1:
+                        result = _a.sent();
+                        review = result.rows[0];
+                        if (!review)
+                            throw new expressError_1.NotFoundError('Review Not Found');
                         return [2 /*return*/, review];
                 }
             });

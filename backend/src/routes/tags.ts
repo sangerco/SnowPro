@@ -26,6 +26,15 @@ router.post('/api/tags', ensureLoggedIn, checkIfUserOrAdmin, async (req: Request
     }
 });
 
+router.get('/tags', ensureLoggedIn, checkIfUserOrAdmin, async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const tags = await Tag.getTags();
+        return res.json({ tags })
+    } catch (e) {
+        return next(e);
+    }
+});
+
 // return all reviews, photos, videos associated with that tag
 
 router.get('/tags/:id', async (req: Request, res: Response, next: NextFunction) => {

@@ -20,11 +20,11 @@ VALUES
     ('3', 'Advanced');
 
 -- Dummy data for reviews table
-INSERT INTO "reviews" ("id", "user_id", "ski_area_slug", "body", "stars", "photos", "tag_ids", "created_at")
+INSERT INTO "reviews" ("id", "user_id", "ski_area_slug", "header", "body", "stars", "photos", "tag_ids", "created_at")
 VALUES
-    ('101', '1', 'alpine', 'Great resort!', 5, NULL, NULL, '2023-07-26 12:34:56'),
-    ('102', '2', 'snowy', 'Nice slopes.', 4, NULL, '1', '2023-07-25 10:11:12'),
-    ('103', '1', 'powder', 'Amazing powder!', 5, NULL, '2', '2023-07-24 08:09:10');
+    ('101', '1', 'alpine', 'Alpine Visit', 'Great resort!', 5, NULL, NULL, '2023-07-26 12:34:56'),
+    ('102', '2', 'snowy', 'Great Day!', 'Nice slopes.', 4, NULL, '1', '2023-07-25 10:11:12'),
+    ('103', '1', 'powder', 'Pow Pow', 'Amazing powder!', 5, NULL, '2', '2023-07-24 08:09:10');
 
 -- Dummy data for review_replies table
 INSERT INTO "review_replies" ("id", "review_id", "user_id", "ski_area_slug", "body", "created_at")

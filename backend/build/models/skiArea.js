@@ -40,6 +40,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var db_1 = __importDefault(require("../db"));
+var expressError_1 = require("../expressError");
 var SkiArea = /** @class */ (function () {
     function SkiArea() {
     }
@@ -72,15 +73,20 @@ var SkiArea = /** @class */ (function () {
             });
         });
     };
-    SkiArea.returnReviewDataBySlug = function (slug) {
+    SkiArea.fetchReviewsBySkiAreaSlug = function (slug) {
         return __awaiter(this, void 0, void 0, function () {
-            var result;
+            var result, reviews;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, db_1.default.query("SELECT s.slug,\n                s.name,\n                r.user_id AS \"userId\",\n                r.ski_area_slug AS \"skiAreaSlug\",\n                r.body,\n                r.stars,\n                r.photos,\n                r.tag_ids AS \"tagIds\",\n                t.tag AS \"tags\"\n                FROM ski_areas s\n                LEFT JOIN reviews r ON s.slug = r.ski_area_slug\n                LEFT JOIN review_tags rt ON r.tag_ids = rt.tag_id\n                LEFT JOIN tags t ON rt.tag_id = t.id\n                WHERE s.slug = $1", [slug])];
+                    case 0: return [4 /*yield*/, db_1.default.query("\n            SELECT r.id,\n                r.user_id AS \"userId\",\n                r.ski_area_slug AS \"skiAreaSlug\",\n                r.body,\n                r.stars,\n                r.photos,\n                u.username,\n                s.name AS \"skiAreaName\",\n                t.tag\n            FROM reviews r\n            LEFT JOIN users u ON r.user_id = u.id\n            LEFT JOIN ski_areas s ON r.ski_area_slug = s.slug\n            LEFT JOIN review_tags rt ON r.tag_ids = rt.tag_id\n            LEFT JOIN tags t ON rt.tag_id = t.id\n            WHERE r.ski_area_slug = $1\n            ORDER BY r.created_at", [slug])];
                     case 1:
                         result = _a.sent();
-                        return [2 /*return*/, result.rows];
+                        reviews = result.rows;
+                        if (reviews.length === 0) {
+                            throw new expressError_1.NotFoundError('No reviews found');
+                        }
+                        ;
+                        return [2 /*return*/, reviews];
                 }
             });
         });
