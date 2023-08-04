@@ -39,6 +39,7 @@ export interface LoginDataReturn {
 }
 
 export interface UpdateUserData {
+    username?: string;
     firstName?: string;
     lastName?: string;
     password?: string;

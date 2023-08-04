@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import { userReducer, deleteUserReducer, makeUserAdminReducer } from './userReducer';
+import { userReducer, deleteUserReducer, makeUserAdminReducer, updateUserReducer} from './userReducer';
 import newUserReducer from './createUserReducer';
 import loginReducer from './loginReducer';
 import { messageReducer, newMessageReducer, deleteMessageReducer } from './messageReducer';
@@ -26,6 +26,7 @@ const rootReducer = combineReducers({
   user: userReducer,
   newUser: newUserReducer,
   deleteUser: deleteUserReducer,
+  updateUser: updateUserReducer,
   makeUserAdmin: makeUserAdminReducer,
   login: loginReducer,
   message: messageReducer,

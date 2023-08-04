@@ -12,8 +12,10 @@ const SkiArea: React.FC<SkiAreaProps> = ({ slug, name, country, region, lat, lon
             try {
                 const response: SkiAreaData = await axios.get(`${URL}/ski-areas/${slug}`);
                 setSkiAreaDataObject(response.data)
-            } catch (e) {
-                console.error(e)
+            } catch (e: any) {
+                const errorMessage = e.message;
+                console.error(e);
+                throw new Error(`Error Loading Ski Area! ${errorMessage}`)
             }
         };
 

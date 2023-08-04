@@ -56,7 +56,7 @@ class SkiArea {
         const reviews = result.rows;
 
         if(reviews.length === 0) {
-            throw new NotFoundError('No reviews found')
+            console.error('No reviews found')
         };
 
         return reviews;

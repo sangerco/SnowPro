@@ -20,9 +20,10 @@ const SkiAreaPage = () => {
                 const responseData: SkiAreaData = response.data;
                 setSkiAreaData(responseData);
                 setLoading(false);
-            } catch (e) {
-                console.error(e);
+            } catch (e: any) {
+                const errorMessage = e.message;
                 setLoading(false);
+                console.error(`Error Loading Ski Area! Error: ${errorMessage}`);
             }
         };
 

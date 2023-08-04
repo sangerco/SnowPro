@@ -1,9 +1,10 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { fetchReviewDataById } from '../../redux/actions/reviewActions';
 import { connect } from 'react-redux';
-import { Container, Dimmer, Loader, Header, Divider, Image, Label } from 'semantic-ui-react';
+import { Container, Dimmer, Loader, Header, Divider, Image, Label, Button } from 'semantic-ui-react';
 import { ReviewReplyData } from "../../redux/types/reviewReplyTypes";
 import ReviewReply from "./ReviewReply";
+import ReviewReplyForm from "./ReviewReplyForm";
 
 interface ReviewData {
     id: string;
@@ -30,6 +31,8 @@ interface ReviewProps {
 };
 
 const Review: React.FC<ReviewProps> = ({ id, slug, review, loading, error, fetchReviewDataById }) => {
+    const [ showReviewReplyForm, setShowReviewReplyForm ] = useState(false);
+
     useEffect(() => {
         fetchReviewDataById(id, slug);
     }, [id, slug, fetchReviewDataById]);
@@ -82,6 +85,9 @@ const Review: React.FC<ReviewProps> = ({ id, slug, review, loading, error, fetch
                         slug={reviewReply.slug}
                         reviewReply={reviewReply} 
                     /> ) : <Divider /> }
+
+                <Button onClick={() => setShowReviewReplyForm(true)}>Reply to this review?</Button>
+                {showReviewReplyForm && <ReviewReplyForm />}
             </div>
         )
 

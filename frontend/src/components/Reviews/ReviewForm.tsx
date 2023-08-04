@@ -115,7 +115,7 @@ const ReviewForm: React.FC<NewReviewProps> = ({ newReview, error, sendNewReviewD
 
     const initialNewTagData: NewTagData = {
         tag: 'New Tag'
-    }
+    };
 
     return (
         <Container fluid>
@@ -163,7 +163,9 @@ const ReviewForm: React.FC<NewReviewProps> = ({ newReview, error, sendNewReviewD
 
 const mapStateToProps = (state: RootState) => ({
     tags: state.tag.data,
-    error: state.tag.error
+    tagError: state.tag.error,
+    newReview: state.newReview.data,
+    reviewError: state.newReview.error
 });
 
 const mapDispatchToProps = {

@@ -19,6 +19,7 @@ export interface NewPhotoDataReturn {
     link: string;
     username: string;
     about: string;
+    tags: string[];
     createdAt: Date;
 };
 

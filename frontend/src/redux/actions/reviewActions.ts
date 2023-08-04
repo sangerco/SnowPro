@@ -1,8 +1,7 @@
 import axios from "axios";
 import { Dispatch } from "redux";
 import { URL } from "../../config";
-import {    ReviewData,
-            ReviewDataReturn,
+import {    ReviewDataReturn,
             SEND_NEW_REVIEW_DATA_REQUEST,
             SEND_NEW_REVIEW_DATA_SUCCESS,
             SEND_NEW_REVIEW_DATA_FAILURE,
@@ -10,7 +9,6 @@ import {    ReviewData,
             FETCH_REVIEW_DATA_BY_ID_REQUEST,
             FETCH_REVIEW_DATA_SUCCESS,
             FETCH_REVIEW_DATA_FAILURE,
-            UpdateReviewData,
             UpdateReviewDataReturn,
             UPDATE_REVIEW_DATA_REQUEST,
             UPDATE_REVIEW_DATA_SUCCESS,
@@ -83,9 +81,29 @@ export const fetchReviewDataByIdFailure = (error: string) => ({
     payload: error
 });
 
-export const updateReviewDataRequest = (id: string, updateReviewData: UpdateReviewData) => ({
+export const updateReviewDataRequest = (id: string,
+                                            userId: string,
+                                            username: string,
+                                            skiAreaSlug: string,
+                                            skiAreaName: string,
+                                            header: string,
+                                            body: string,
+                                            stars: number,
+                                            photos: string[],
+                                            tags: string[]) => ({
     type: UPDATE_REVIEW_DATA_REQUEST,
-    payload: updateReviewData
+    payload: {
+        id,
+        userId,
+        username,
+        skiAreaSlug,
+        skiAreaName,
+        header,
+        body,
+        stars,
+        photos,
+        tags
+    }
 });
 
 export const updateReviewDataSuccess = (updateReviewDataReturn: UpdateReviewDataReturn) => ({
@@ -167,9 +185,40 @@ export const fetchReviewDataById = (slug: string, id: string) => {
     }
 };
 
-export const updateReview = (id: string, data: UpdateReviewData) => {
+export const updateReview = (id: string, 
+                                userId: string,
+                                username: string,
+                                skiAreaSlug: string,
+                                skiAreaName: string,
+                                header: string,
+                                body: string,
+                                stars: number,
+                                photos: string[],
+                                tags: string[]) => {
     return async (dispatch: Dispatch) => {
-        dispatch(updateReviewDataRequest(id, data));
+        dispatch(updateReviewDataRequest(id, 
+                                            userId,
+                                            username,
+                                            skiAreaSlug,
+                                            skiAreaName,
+                                            header,
+                                            body,
+                                            stars,
+                                            photos,
+                                            tags));
+
+        const data = {
+            id, 
+            userId,
+            username,
+            skiAreaSlug,
+            skiAreaName,
+            header,
+            body,
+            stars,
+            photos,
+            tags
+        }
 
         try {
             const response = await axios.patch(`${URL}/api/reviews/${id}`, data);

@@ -57,7 +57,7 @@ var Review = /** @class */ (function () {
     }
     Review.createReview = function (userId, skiAreaSlug, header, body, stars, photos, tagIds) {
         return __awaiter(this, void 0, void 0, function () {
-            var id, createdAt, result, reviewData, _i, tagIds_1, tagId, _a, photos_1, photo, photoId, photoCreatedAt, photoResult, skiAreaName, review;
+            var id, createdAt, result, reviewData, _i, tagIds_1, tagId, _a, photos_1, photo, photoId, photoCreatedAt, photoResult, skiAreaName, username, review;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
@@ -114,9 +114,14 @@ var Review = /** @class */ (function () {
                     case 11:
                         skiAreaName = _b.sent();
                         reviewData.skiAreaName = skiAreaName;
+                        return [4 /*yield*/, db_1.default.query("\n            SELECT username FROM users WHERE id = $1", [userId])];
+                    case 12:
+                        username = _b.sent();
+                        reviewData.username = username;
                         review = {
                             id: reviewData.id,
                             userId: reviewData.userId,
+                            username: reviewData.username,
                             skiAreaSlug: reviewData.skiAreaSlug,
                             skiAreaName: reviewData.skiAreaName,
                             header: reviewData.header,

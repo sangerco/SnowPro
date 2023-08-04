@@ -14,7 +14,7 @@ const App: React.FC = () => {
   return (
     <Provider store={store}>
       <>
-        <SkiAreaData />
+        {/* <SkiAreaData /> */}
         <CreateNewUser />
         <User username='user1'/>
         <UserList />

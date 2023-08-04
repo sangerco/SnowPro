@@ -57,7 +57,7 @@ var ReviewReply = /** @class */ (function () {
     }
     ReviewReply.replyToReview = function (userId, reviewId, body, slug) {
         return __awaiter(this, void 0, void 0, function () {
-            var reviewCheck, review, id, createdAt, result, reviewReply;
+            var reviewCheck, review, id, createdAt, result, username, reviewReplyData, reviewReply;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, db_1.default.query("SELECT id\n            FROM reviews\n            WHERE id = $1", [reviewId])];
@@ -77,7 +77,20 @@ var ReviewReply = /** @class */ (function () {
                             ])];
                     case 2:
                         result = _a.sent();
-                        reviewReply = result.rows[0];
+                        return [4 /*yield*/, db_1.default.query("\n            SELECT username FROM users WHERE id = $1", [userId])];
+                    case 3:
+                        username = _a.sent();
+                        reviewReplyData = result.rows[0];
+                        reviewReplyData.username = username;
+                        reviewReply = {
+                            id: reviewReplyData.id,
+                            userId: reviewReplyData.userId,
+                            username: reviewReplyData.username,
+                            reviewId: reviewReplyData.reviewId,
+                            slug: reviewReplyData.slug,
+                            body: reviewReplyData.body,
+                            createdAt: reviewReplyData.createdAt
+                        };
                         return [2 /*return*/, reviewReply];
                 }
             });
@@ -98,9 +111,11 @@ var ReviewReply = /** @class */ (function () {
                         reviewReply = {
                             id: result.rows[0].id,
                             userId: result.rows[0].userId,
+                            username: result.rows[0].username,
                             reviewId: result.rows[0].reviewId,
                             slug: result.rows[0].slug,
-                            body: result.rows[0].body
+                            body: result.rows[0].body,
+                            createdAt: result.rows[0].createdAt
                         };
                         ;
                         if (!reviewReply)

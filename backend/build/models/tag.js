@@ -51,7 +51,7 @@ var Tag = /** @class */ (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        id = uuid_1.v4;
+                        id = (0, uuid_1.v4)();
                         return [4 /*yield*/, db_1.default.query("\n                INSERT INTO tags (id, tag),\n                    VALUES ($1, $2)\n                    RETURNING id, tag", [id, tag])];
                     case 1:
                         result = _a.sent();
@@ -62,6 +62,20 @@ var Tag = /** @class */ (function () {
         });
     };
     ;
+    Tag.getTags = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var result, tags;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, db_1.default.query("\n            SELECT * FROM tags")];
+                    case 1:
+                        result = _a.sent();
+                        tags = result.rows;
+                        return [2 /*return*/, tags];
+                }
+            });
+        });
+    };
     // method to get all reviews, photos, and videos associated with that tag
     Tag.getAssociatedItems = function (id) {
         return __awaiter(this, void 0, void 0, function () {

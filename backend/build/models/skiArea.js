@@ -40,7 +40,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var db_1 = __importDefault(require("../db"));
-var expressError_1 = require("../expressError");
 var SkiArea = /** @class */ (function () {
     function SkiArea() {
     }
@@ -83,7 +82,7 @@ var SkiArea = /** @class */ (function () {
                         result = _a.sent();
                         reviews = result.rows;
                         if (reviews.length === 0) {
-                            throw new expressError_1.NotFoundError('No reviews found');
+                            console.error('No reviews found');
                         }
                         ;
                         return [2 /*return*/, reviews];

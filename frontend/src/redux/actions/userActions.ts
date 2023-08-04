@@ -1,15 +1,15 @@
 import axios from "axios";
 import { Dispatch } from "redux";
 import { URL } from "../../config";
-import { UserData } from "../types/userTypes";
+import type { UserData } from "../types/userTypes";
 import { FETCH_USER_DATA_FAILURE, FETCH_USER_DATA_REQUEST, FETCH_USER_DATA_SUCCESS } from "../types/userTypes";
-import { NewUserDataReturn } from "../types/userTypes";
+import type { NewUserDataReturn } from "../types/userTypes";
 import { SEND_NEW_USER_DATA_REQUEST, SEND_NEW_USER_DATA_SUCCESS, SEND_NEW_USER_DATA_FAILURE } from "../types/userTypes";
-import { LoginData, LoginDataReturn } from "../types/userTypes";
+import type { LoginData, LoginDataReturn } from "../types/userTypes";
 import { SEND_LOGIN_DATA_REQUEST, SEND_LOGIN_DATA_FAILURE, SEND_LOGIN_DATA_SUCCESS } from "../types/userTypes";
 import { MAKE_ADMIN_DATA_REQUEST, MAKE_ADMIN_DATA_SUCCESS, MAKE_ADMIN_DATA_FAILURE } from "../types/userTypes";
 import { UPDATE_USER_DATA_REQUEST, UPDATE_USER_DATA_SUCCESS, UPDATE_USER_DATA_FAILURE } from "../types/userTypes";
-import { UpdateUserData, UpdateUserDataReturn } from "../types/userTypes";
+import type { UpdateUserData, UpdateUserDataReturn } from "../types/userTypes";
 import { DELETE_USER_REQUEST, DELETE_USER_SUCCESS, DELETE_USER_FAILURE } from "../types/userTypes";
 import { SET_TOKEN } from "../types/userTypes";
 
@@ -48,9 +48,29 @@ export const sendNewUserDataFailure = (error: string) => ({
     payload: error
 });
 
-export const updateUserDataRequest = (username: string, updateUserData: UpdateUserData) => ({
+export const updateUserDataRequest = (
+            username: string,
+            firstName: string,
+            lastName: string,
+            password: string,
+            email: string,
+            avatar: string,
+            bio: string,
+            videos: string[],
+            photos: string[],
+            favMountains: string[]) => ({
     type: UPDATE_USER_DATA_REQUEST,
-    payload: updateUserData
+    payload: {
+        username,
+        firstName,
+        lastName,
+        password,
+        email,
+        avatar,
+        bio,
+        videos,
+        photos,
+        favMountains}
 });
 
 export const updateUserDataSuccess = (updateUserDataReturn: UpdateUserDataReturn) => ({
@@ -123,20 +143,18 @@ export const makeUserAdminFailure = (error: string) => ({
     payload: error
 });
 
-export const fetchUserData = (username: string) => {
-    return async (dispatch: Dispatch) => {
+export const fetchUserData = (username: string) => async (dispatch: Dispatch) => {
         dispatch(fetchUserDataRequest());
-
         try {
             const response = await axios.get(`${URL}/users/${username}`);
             const responseData: UserData = response.data.user;
             dispatch(fetchUserDataSuccess(responseData));
+            return responseData;
         } catch (error: any) {
             const errorMessage = `Fetch user failed! Error: ${error.message}`;
             dispatch(fetchUserDataFailure(error.message));
             throw new Error(errorMessage);
         }
-    };
 };
 
 export const sendNewUserData = (username: string, password: string, first_name: string, last_name: string, email: string) => {
@@ -159,19 +177,38 @@ export const sendNewUserData = (username: string, password: string, first_name: 
     }
 };
 
-export const updateUserData = (username: string, data: UpdateUserData) => {
-    return async (dispatch: Dispatch) => {
-        dispatch(updateUserDataRequest(username, data));
+export const updateUserData = (
+                        username: string,
+                        firstName: string,
+                        lastName: string,
+                        password: string,
+                        email: string,
+                        avatar: string,
+                        bio: string,
+                        videos: string[],
+                        photos: string[],
+                        favMountains: string[]
+) => async (dispatch: Dispatch) => {
+        dispatch(updateUserDataRequest(
+                        username,
+                        firstName,
+                        lastName,
+                        password,
+                        email,
+                        avatar,
+                        bio,
+                        videos,
+                        photos,
+                        favMountains));
 
         try {
-            const response = await axios.patch(`${URL}/api/users/${username}`, data);
+            const response = await axios.patch(`${URL}/api/users/${username}`, updateUserData);
             dispatch(updateUserDataSuccess(response.data));
         } catch (error: any) {
             const errorMessage = `Update failed! Error: ${error.message}`;
             dispatch(updateUserDataFailure(error.message));
             throw new Error(errorMessage);
         }
-    }
 };
 
 export const makeUserAdmin = (username: string, isAdmin: boolean) => {

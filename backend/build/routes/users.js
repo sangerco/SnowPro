@@ -143,6 +143,17 @@ router.get('/users/all-users', auth_1.ensureLoggedIn, auth_1.checkIfAdmin, funct
         }
     });
 }); });
+// return a user's data from their token
+router.get('/api/user', auth_1.ensureLoggedIn, function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+    var user, userId, username;
+    return __generator(this, function (_a) {
+        user = res.locals.user;
+        if (!user)
+            throw new expressError_1.UnauthorizedError('Please log in before attempting this action.');
+        userId = user.userId, username = user.username;
+        return [2 /*return*/, res.json({ userId: userId, username: username })];
+    });
+}); });
 // return a single user's profile
 router.get('/users/:username', auth_1.ensureLoggedIn, auth_1.checkIfUserOrAdmin, function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
     var user, e_4;

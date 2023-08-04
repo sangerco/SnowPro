@@ -1,6 +1,7 @@
 import { FETCH_USER_DATA_FAILURE, FETCH_USER_DATA_REQUEST, FETCH_USER_DATA_SUCCESS, UserData } from "../types/userTypes";
 import { DELETE_USER_REQUEST, DELETE_USER_SUCCESS, DELETE_USER_FAILURE } from "../types/userTypes";
 import { MAKE_ADMIN_DATA_REQUEST, MAKE_ADMIN_DATA_SUCCESS, MAKE_ADMIN_DATA_FAILURE, MakeUserAdmin } from "../types/userTypes";
+import { UPDATE_USER_DATA_REQUEST, UPDATE_USER_DATA_SUCCESS, UPDATE_USER_DATA_FAILURE, UpdateUserData } from "../types/userTypes";
 
 interface UserState {
     data: UserData | null;
@@ -34,6 +35,16 @@ const initialMakeUserAdminState: MakeUserAdminState = {
     error: null
 }
 
+interface UpdateUserState {
+    data: UpdateUserData | null,
+    error: string | null
+}
+
+const initialUpdateUserState: UpdateUserState = {
+    data: null,
+    error: null
+}
+ 
 export const userReducer = ( state = initialState, action: any ) => {
     switch (action.type) {
         case DELETE_USER_REQUEST:
@@ -99,6 +110,29 @@ export const makeUserAdminReducer = ( state = initialMakeUserAdminState, action:
             return {
                 ...state,
                 error: action.payload
+            };
+
+        default:
+            return state;
+    }
+};
+
+export const updateUserReducer = ( state = initialUpdateUserState, action: any) => {
+    switch (action.type) {
+        case UPDATE_USER_DATA_REQUEST:
+            return {
+                ...state,
+                error: null
+            };
+        case UPDATE_USER_DATA_SUCCESS:
+            return {
+                ...state,
+                data: action.payload
+            };
+        case UPDATE_USER_DATA_FAILURE:
+            return {
+                ...state,
+                data: action.payload
             };
 
         default:

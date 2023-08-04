@@ -3,8 +3,8 @@ export interface ReviewReplyData {
     reviewId: string;
     userId: string;
     username: string;
-    body: string,
-    slug: string,
+    body: string;
+    slug: string;
     createdAt: Date;
 };
 
@@ -12,7 +12,6 @@ export interface NewReviewReplyData {
     reviewId: string;
     userId: string;
     body: string;
-    slug: string;
 };
 
 export interface NewReviewReplyDataReturn {
@@ -21,7 +20,6 @@ export interface NewReviewReplyDataReturn {
     userId: string;
     username: string;
     body: string;
-    slug: string;
 };
 
 export interface FetchReviewReplyById {

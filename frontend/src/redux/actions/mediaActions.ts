@@ -40,9 +40,9 @@ import {    PhotoData,
             UpdateVideoData,
             DeleteVideo} from '../types/mediaTypes';
 
-export const sendNewPhotoDataRequest = (link: string, about: string, tags: string[], username: string) => ({
+export const sendNewPhotoDataRequest = (username: string, link: string, about: string, tags: string[]) => ({
     type: SEND_NEW_PHOTO_DATA_REQUEST,
-    payload: { link, about, tags, username }
+    payload: { username, link, about, tags }
 });
 
 export const sendNewPhotoDataSuccess = (sendNewPhotoDataReturn: NewPhotoDataReturn) => ({
@@ -115,9 +115,9 @@ export const deletePhotoFailure = (error: string) => ({
     payload: error
 });
 
-export const sendNewPhoto = (link: string, about: string, tags: string[], username: string) => {
+export const sendNewPhoto = (username: string, link: string, about: string, tags: string[]) => {
     return async (dispatch: Dispatch) => {
-        dispatch(sendNewPhotoDataRequest(link, about, tags, username));
+        dispatch(sendNewPhotoDataRequest(username, link, about, tags));
 
         try {
             const response = await axios.post(`${URL}/api/photos`, 
@@ -189,9 +189,9 @@ export const deletePhotoById = (deletePhoto: DeletePhoto) => {
     }
 };
 
-export const sendNewVideoDataRequest = (link: string, about: string, tags: string[], username: string) => ({
+export const sendNewVideoDataRequest = (username: string, link: string, about: string, tags: string[]) => ({
     type: SEND_NEW_VIDEO_DATA_REQUEST,
-    payload: { link, about, tags, username }
+    payload: { username, link, about, tags }
 });
 
 export const sendNewVideoDataSuccess = (sendNewVideoDataReturn: NewVideoDataReturn) => ({
@@ -265,9 +265,9 @@ export const deleteVideoFailure = (error: string) => ({
     payload: error
 });
 
-export const sendNewVideo = (link: string, about: string, tags: string[], username: string) => {
+export const sendNewVideo = (username: string, link: string, about: string, tags: string[]) => {
     return async (dispatch: Dispatch) => {
-        dispatch(sendNewVideoDataRequest(link, about, tags, username));
+        dispatch(sendNewVideoDataRequest(username, link, about, tags));
 
         try {
             const response = await axios.post(`${URL}/api/videos`, 
