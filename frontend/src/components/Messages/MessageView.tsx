@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react';
 import { fetchMessageDataById } from '../../redux/actions/messageActions';
 import { connect } from 'react-redux';
-import { Dimmer, Loader } from "semantic-ui-react";
+import { useParams } from 'react-router';
+import { Dimmer, Loader, Button } from "semantic-ui-react";
 import MessageReplyView from './messageReplyView';
 
 interface MessageData {
@@ -37,16 +38,17 @@ interface ReplyData {
 };
 
 interface MessageProps {
-    id: string;
     message: MessageData | null;
     loading: boolean;
     error: string | null;
     fetchMessageDataById: (id: string) => void;
 };
 
-const MessageView: React.FC<MessageProps> = ({ id, message, loading, error, fetchMessageDataById }) => {
+const MessageView: React.FC<MessageProps> = ({ message, loading, error, fetchMessageDataById }) => {
+    const { id } = useParams();
+
     useEffect(() => {
-        fetchMessageDataById(id);
+        fetchMessageDataById(id as string);
     }, [id, fetchMessageDataById]);
 
     if(loading) {
@@ -73,6 +75,7 @@ const MessageView: React.FC<MessageProps> = ({ id, message, loading, error, fetc
                 <h6>{message.subject}</h6>
                 <p>{message.body}</p>
                 {message.replies.length > 0 ? message.replies.map(reply => <MessageReplyView key={reply.id} reply={reply} />) : null}
+                <Button>Reply to this message?</Button>
             </>
         )
     }

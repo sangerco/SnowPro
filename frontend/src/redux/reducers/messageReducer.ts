@@ -9,7 +9,8 @@ import { SEND_NEW_MESSAGE_DATA_REQUEST,
         DELETE_MESSAGE_REQUEST,
         DELETE_MESSAGE_SUCCESS,
         DELETE_MESSAGE_FAILURE,
-        DeleteMessage } from "../types/messageTypes";
+        DeleteMessage,
+        UserWithMessages } from "../types/messageTypes";
 
 interface MessageState {
     data: MessageData | null;
@@ -19,6 +20,11 @@ interface MessageState {
 interface NewMessageState {
     data: NewMessageData | null;
     error: string | null
+};
+
+interface UserWithMessagesState {
+    data: UserWithMessages | null;
+    error: string | null;
 };
 
 interface DeleteMessageState {
@@ -32,6 +38,11 @@ const initialMessageState: MessageState = {
 };
 
 const initialNewMessageState: NewMessageState = {
+    data: null,
+    error: null
+};
+
+const initialUserWithMessagesState: UserWithMessagesState = {
     data: null,
     error: null
 }
@@ -65,6 +76,29 @@ export const messageReducer = (state = initialMessageState, action: any) => {
 };
 
 export const newMessageReducer = (state = initialNewMessageState, action: any) => {
+    switch(action.type) {
+        case SEND_NEW_MESSAGE_DATA_REQUEST:
+            return {
+                ...state, 
+                error: null
+            };
+        case SEND_NEW_MESSAGE_DATA_SUCCESS:
+            return {
+                ...state,
+                data: action.payload
+            };
+        case SEND_NEW_MESSAGE_DATA_FAILURE:
+            return {
+                ...state,
+                error: action.payload
+            };
+
+        default: 
+            return state;
+    }
+};
+
+export const userWithMessagesReducer = (state = initialUserWithMessagesState, action: any) => {
     switch(action.type) {
         case SEND_NEW_MESSAGE_DATA_REQUEST:
             return {

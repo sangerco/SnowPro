@@ -92,8 +92,48 @@ router.post('/api/fav_mountain', auth_1.ensureLoggedIn, auth_1.checkIfUserOrAdmi
         }
     });
 }); });
+router.get('/users/:user_id/fav-mountains', function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+    var favMountains, e_2;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                return [4 /*yield*/, favMountain_1.default.fetchFavMountainDataByUserId(req.params.user_id)];
+            case 1:
+                favMountains = _a.sent();
+                return [2 /*return*/, res.json({ favMountains: favMountains })];
+            case 2:
+                e_2 = _a.sent();
+                next(e_2);
+                return [3 /*break*/, 3];
+            case 3:
+                ;
+                return [2 /*return*/];
+        }
+    });
+}); });
+router.get('/ski-areas/:slug/fav-mountains', function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+    var favMountains, e_3;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                return [4 /*yield*/, favMountain_1.default.fetchFavMountainDataBySkiAreaSlug(req.params.slug)];
+            case 1:
+                favMountains = _a.sent();
+                return [2 /*return*/, res.json({ favMountains: favMountains })];
+            case 2:
+                e_3 = _a.sent();
+                next(e_3);
+                return [3 /*break*/, 3];
+            case 3:
+                ;
+                return [2 /*return*/];
+        }
+    });
+}); });
 router.delete('/api/fav_mountain/:id', auth_1.ensureLoggedIn, auth_1.checkIfUserOrAdmin, function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var e_2;
+    var e_4;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -103,8 +143,8 @@ router.delete('/api/fav_mountain/:id', auth_1.ensureLoggedIn, auth_1.checkIfUser
                 _a.sent();
                 return [2 /*return*/, res.json({ deleted: "Favorite ".concat(req.params.id) })];
             case 2:
-                e_2 = _a.sent();
-                return [2 /*return*/, next(e_2)];
+                e_4 = _a.sent();
+                return [2 /*return*/, next(e_4)];
             case 3: return [2 /*return*/];
         }
     });

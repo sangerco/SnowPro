@@ -147,6 +147,34 @@ class Message {
         return result.rows;
     }
     
+    static async markMessageAsRead(id: string): Promise<void> {
+        const result = await db.query(`
+            UPDATE messages
+            SET is_read = true
+            WHERE id = $1
+            RETURNING id`,
+            [id]
+        );
+        const message = result.rows[0];
+
+        if(!message) throw new NotFoundError('Message does not exist!')
+         
+    };
+
+    static async markMessageAsUnread(id: string): Promise<void> {
+        const result = await db.query(`
+            UPDATE messages
+            SET is_read = false
+            WHERE id = $1
+            RETURNING id`,
+            [id]
+        );
+
+        const message = result.rows[0];
+
+        if(!message) throw new NotFoundError('Message does not exist!')
+    };
+
     static async removeMessage(id: string): Promise<void> {
         const result = await db.query(
             `DELETE FROM messages

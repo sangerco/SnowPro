@@ -53,7 +53,7 @@ var Message = /** @class */ (function () {
                     case 0:
                         id = (0, uuid_1.v4)();
                         createdAt = new Date();
-                        return [4 /*yield*/, db_1.default.query("\n            INSERT INTO messages\n            (   id,\n                sender_id,\n                recipient_id,\n                subject,\n                body, \n                created_at)\n            VALUES ($1, $2, $3, $4, $5, $6)\n            RETURNING\n                id,\n                sender_id AS \"senderId\",\n                recipient_id AS \"recipientId\",\n                subject,\n                body\n                created_at AS \"createdAt\"", [id,
+                        return [4 /*yield*/, db_1.default.query("\n            INSERT INTO messages\n            (   id,\n                sender_id,\n                recipient_id,\n                subject,\n                body, \n                created_at,\n                is_read)\n            VALUES ($1, $2, $3, $4, $5, $6, false)\n            RETURNING\n                id,\n                sender_id AS \"senderId\",\n                recipient_id AS \"recipientId\",\n                subject,\n                body,\n                is_read AS \"isRead\",\n                created_at AS \"createdAt\"", [id,
                                 senderId,
                                 recipientId,
                                 subject,
@@ -74,7 +74,7 @@ var Message = /** @class */ (function () {
             var result, message;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, db_1.default.query("SELECT \n                m.id,\n                m.sender_id AS \"senderId\",\n                m.recipient_id AS \"recipientId\",\n                m.subject,\n                m.body,\n                m.created_at AS \"createdAt\",\n                sender.username AS \"senderUsername\",\n                sender.first_name AS \"senderFirstName\",\n                sender.last_name AS \"senderLastName\",\n                recipient.username AS \"recipientUsername\",\n                recipient.first_name AS \"recipientFirstName\",\n                recipient.last_name AS \"recipientLastName\"              \n            FROM messages m\n            JOIN users sender ON m.sender_id = sender.id\n            JOIN users recipient ON m.recipient_id = recipient.id\n            WHERE m.id = $1\n            ORDER BY created_at", [id])];
+                    case 0: return [4 /*yield*/, db_1.default.query("SELECT \n                m.id,\n                m.sender_id AS \"senderId\",\n                m.recipient_id AS \"recipientId\",\n                m.subject,\n                m.body,\n                m.is_read AS \"isRead\",\n                m.created_at AS \"createdAt\",\n                sender.username AS \"senderUsername\",\n                sender.first_name AS \"senderFirstName\",\n                sender.last_name AS \"senderLastName\",\n                recipient.username AS \"recipientUsername\",\n                recipient.first_name AS \"recipientFirstName\",\n                recipient.last_name AS \"recipientLastName\"              \n            FROM messages m\n            JOIN users sender ON m.sender_id = sender.id\n            JOIN users recipient ON m.recipient_id = recipient.id\n            WHERE m.id = $1\n            ORDER BY created_at", [id])];
                     case 1:
                         result = _a.sent();
                         message = result.rows[0];
@@ -88,7 +88,7 @@ var Message = /** @class */ (function () {
             var result;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, db_1.default.query("SELECT \n                m.id,\n                m.sender_id AS \"senderId\",\n                m.recipient_id AS \"recipientId\",\n                m.subject,\n                m.body,\n                m.created_at AS \"createdAt\",\n                sender.username AS \"senderUsername\",\n                sender.first_name AS \"senderFirstName\",\n                sender.last_name AS \"senderLastName\",\n                recipient.username AS \"recipientUsername\",\n                recipient.first_name AS \"recipientFirstName\",\n                recipient.last_name AS \"recipientLastName\"              \n            FROM messages m\n            JOIN users sender ON m.sender_id = sender.id\n            JOIN users recipient ON m.recipient_id = recipient.id\n            WHERE recipient.username = $1\n            ORDER BY m.created_at", [username])];
+                    case 0: return [4 /*yield*/, db_1.default.query("SELECT \n                m.id,\n                m.sender_id AS \"senderId\",\n                m.recipient_id AS \"recipientId\",\n                m.subject,\n                m.body,\n                m.is_read AS \"isRead\",\n                m.created_at AS \"createdAt\",\n                sender.username AS \"senderUsername\",\n                sender.first_name AS \"senderFirstName\",\n                sender.last_name AS \"senderLastName\",\n                recipient.username AS \"recipientUsername\",\n                recipient.first_name AS \"recipientFirstName\",\n                recipient.last_name AS \"recipientLastName\"              \n            FROM messages m\n            JOIN users sender ON m.sender_id = sender.id\n            JOIN users recipient ON m.recipient_id = recipient.id\n            WHERE recipient.username = $1\n            ORDER BY m.created_at", [username])];
                     case 1:
                         result = _a.sent();
                         return [2 /*return*/, result.rows];
@@ -101,7 +101,7 @@ var Message = /** @class */ (function () {
             var result;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, db_1.default.query("SELECT \n                m.id,\n                m.sender_id AS \"senderId\",\n                m.recipient_id AS \"recipientId\",\n                m.subject,\n                m.body,\n                m.created_at AS \"createdAt\",\n                sender.username AS \"senderUsername\",\n                sender.first_name AS \"senderFirstName\",\n                sender.last_name AS \"senderLastName\",\n                recipient.username AS \"recipientUsername\",\n                recipient.first_name AS \"recipientFirstName\",\n                recipient.last_name AS \"recipientLastName\"              \n            FROM messages m\n            JOIN users sender ON m.sender_id = sender.id\n            JOIN users recipient ON m.recipient_id = recipient.id\n            WHERE sender.username = $1\n            ORDER BY m.created_at", [username])];
+                    case 0: return [4 /*yield*/, db_1.default.query("SELECT \n                m.id,\n                m.sender_id AS \"senderId\",\n                m.recipient_id AS \"recipientId\",\n                m.subject,\n                m.body,\n                m.is_read AS \"isRead\",\n                m.created_at AS \"createdAt\",\n                sender.username AS \"senderUsername\",\n                sender.first_name AS \"senderFirstName\",\n                sender.last_name AS \"senderLastName\",\n                recipient.username AS \"recipientUsername\",\n                recipient.first_name AS \"recipientFirstName\",\n                recipient.last_name AS \"recipientLastName\"              \n            FROM messages m\n            JOIN users sender ON m.sender_id = sender.id\n            JOIN users recipient ON m.recipient_id = recipient.id\n            WHERE sender.username = $1\n            ORDER BY m.created_at", [username])];
                     case 1:
                         result = _a.sent();
                         return [2 /*return*/, result.rows];
@@ -109,6 +109,40 @@ var Message = /** @class */ (function () {
             });
         });
     };
+    Message.markMessageAsRead = function (id) {
+        return __awaiter(this, void 0, void 0, function () {
+            var result, message;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, db_1.default.query("\n            UPDATE messages\n            SET is_read = true\n            WHERE id = $1\n            RETURNING id", [id])];
+                    case 1:
+                        result = _a.sent();
+                        message = result.rows[0];
+                        if (!message)
+                            throw new expressError_1.NotFoundError('Message does not exist!');
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    ;
+    Message.markMessageAsUnread = function (id) {
+        return __awaiter(this, void 0, void 0, function () {
+            var result, message;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, db_1.default.query("\n            UPDATE messages\n            SET is_read = false\n            WHERE id = $1\n            RETURNING id", [id])];
+                    case 1:
+                        result = _a.sent();
+                        message = result.rows[0];
+                        if (!message)
+                            throw new expressError_1.NotFoundError('Message does not exist!');
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    ;
     Message.removeMessage = function (id) {
         return __awaiter(this, void 0, void 0, function () {
             var result, message;

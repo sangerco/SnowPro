@@ -12,7 +12,13 @@ import {    ReplyData,
             DELETE_REPLY_SUCCESS,
             DELETE_REPLY_FAILURE,
             DeleteReply, 
-            NewReplyData} from "../types/messageReplyTypes";
+            NewReplyData,
+            MARK_REPLY_READ_REQUEST,
+            MARK_REPLY_READ_SUCCESS,
+            MARK_REPLY_READ_FAILURE,
+            MARK_REPLY_UNREAD_REQUEST,
+            MARK_REPLY_UNREAD_SUCCESS,
+            MARK_REPLY_UNREAD_FAILURE} from "../types/messageReplyTypes";
 
 export const sendNewReplyDataRequest = (
     message_id: string,
@@ -67,6 +73,36 @@ export const fetchReplyDataByMessageIdSuccess = (replyData: ReplyData[]) => ({
 
 export const fetchReplyDataByMessageIdFailure = (error: string) => ({
     type: FETCH_REPLY_DATA_FAILURE,
+    payload: error
+});
+
+export const markReplyReadRequest = (id: string) => ({
+    type: MARK_REPLY_READ_REQUEST,
+    payload: id
+});
+
+export const markReplyReadSuccess = (success: string) => ({
+    type: MARK_REPLY_READ_SUCCESS,
+    payload: success
+});
+
+export const markReplyReadFailure = (error: string) => ({
+    type: MARK_REPLY_READ_FAILURE,
+    payload: error
+});
+
+export const markReplyUnreadRequest = (id: string) => ({
+    type: MARK_REPLY_UNREAD_REQUEST,
+    payload: id
+});
+
+export const markReplyUnreadSuccess = (success: string) => ({
+    type: MARK_REPLY_UNREAD_SUCCESS,
+    payload: success
+});
+
+export const markReplyUnreadFailure = (error: string) => ({
+    type: MARK_REPLY_UNREAD_FAILURE,
     payload: error
 });
 
@@ -132,6 +168,34 @@ export const fetchReplyDataByMessageId = (message_id: string) => {
             dispatch(fetchReplyDataByMessageIdSuccess(responseData));
         } catch (error: any) {
             dispatch(fetchReplyDataByMessageIdFailure(error.message))
+        }
+    }
+};
+
+export const markReplyRead = (id: string) => {
+    return async (dispatch: Dispatch) => {
+        dispatch(markReplyReadRequest(id));
+
+        try {
+            const response = await axios.patch(`${URL}/messages/replies/${id}`);
+            const responseData: string = response.data.id;
+            dispatch(markReplyReadSuccess(responseData));
+        } catch (error: any) {
+            dispatch(markReplyReadFailure(error.message));
+        }
+    }
+};
+
+export const markReplyUnread = (id: string) => {
+    return async (dispatch: Dispatch) => {
+        dispatch(markReplyUnreadRequest(id));
+
+        try {
+            const response = await axios.patch(`${URL}/messages/replies/${id}`);
+            const responseData: string = response.data.id;
+            dispatch(markReplyUnreadSuccess(responseData));
+        } catch (error: any) {
+            dispatch(markReplyUnreadFailure(error.message));
         }
     }
 };

@@ -2,7 +2,7 @@ import { combineReducers } from 'redux';
 import { userReducer, deleteUserReducer, makeUserAdminReducer, updateUserReducer} from './userReducer';
 import newUserReducer from './createUserReducer';
 import loginReducer from './loginReducer';
-import { messageReducer, newMessageReducer, deleteMessageReducer } from './messageReducer';
+import { messageReducer, newMessageReducer, deleteMessageReducer, userWithMessagesReducer } from './messageReducer';
 import { replyReducer, newReplyReducer, deleteReplyReducer } from './messageReplyReducer';
 import { tagReducer, newTagReducer, deleteTagReducer } from './tagReducer';
 import {  deletePhotoReducer, 
@@ -33,6 +33,7 @@ const rootReducer = combineReducers({
   makeUserAdmin: makeUserAdminReducer,
   login: loginReducer,
   message: messageReducer,
+  userWithMessages: userWithMessagesReducer,
   newMessage: newMessageReducer,
   deleteMessage: deleteMessageReducer,
   messageReply: replyReducer,

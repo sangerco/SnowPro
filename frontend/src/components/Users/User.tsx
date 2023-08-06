@@ -6,6 +6,7 @@ import ShowPhotos from '../Media/ShowPhotos';
 import ShowVideos from '../Media/ShowVideos';
 import { Container, Header, Grid, Image } from 'semantic-ui-react';
 import FavMountain from '../SkiAreas/FavMountain';
+import { useParams } from 'react-router';
 
 interface UserData {
     id: string;
@@ -21,16 +22,17 @@ interface UserData {
 }
 
 interface UserProps {
-    username: string;
     user: UserData | null;
     loading: boolean;
     error: string | null;
     fetchUserData: ( username: string) => void;
 }
 
-const User: React.FC<UserProps> = ({ username, user, loading, error, fetchUserData }) => {
+const User: React.FC<UserProps> = ({ user, loading, error, fetchUserData }) => {
+    const { username } = useParams();
+
     useEffect(() => {
-        fetchUserData(username);
+        fetchUserData(username as string);
     }, [username, fetchUserData]);
 
     if(loading) {
@@ -78,12 +80,12 @@ const User: React.FC<UserProps> = ({ username, user, loading, error, fetchUserDa
                     </Grid.Row>
                     <Grid.Row>
                         <Grid.Column width={2}></Grid.Column>
-                        <Grid.Column width={12}><ShowPhotos username={username} /></Grid.Column>
+                        <Grid.Column width={12}><ShowPhotos username={username as string} /></Grid.Column>
                         <Grid.Column width={2}></Grid.Column>
                     </Grid.Row>
                     <Grid.Row>
                         <Grid.Column width={2}></Grid.Column>
-                        <Grid.Column width={12}><ShowVideos username={username} /></Grid.Column>
+                        <Grid.Column width={12}><ShowVideos username={username as string} /></Grid.Column>
                         <Grid.Column width={2}></Grid.Column>
                     </Grid.Row>
                 </Grid>

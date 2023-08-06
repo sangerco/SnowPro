@@ -67,6 +67,28 @@ router.get('/messages/:username/sent', ensureLoggedIn, checkIfUserOrAdmin, async
     };
 });
 
+// mark a message as read
+
+router.patch('/messages/:id', ensureLoggedIn, checkIfUserOrAdmin, async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        await Message.markMessageAsRead(req.params.id);
+        return res.json({ markedAsRead: req.params.id });
+    } catch (e) {
+        next(e)
+    };
+});
+
+// mark a message as unread
+
+router.patch('/messages/:id', ensureLoggedIn, checkIfUserOrAdmin, async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        await Message.markMessageAsUnread(req.params.id);
+        return res.json({ markedAsUnread: req.params.id });
+    } catch (e) {
+        next(e)
+    };
+});
+
 // delete a message
 
 router.delete('/api/messages/:id', ensureLoggedIn, checkIfUserOrAdmin, async (req: Request, res: Response, next: NextFunction) => {

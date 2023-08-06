@@ -183,6 +183,34 @@ class Reply {
 
         return replies;
     };
+    
+    static async markMessageReplyAsRead(id: string): Promise<void> {
+        const result = await db.query(`
+            UPDATE message_replies
+            SET is_read = true
+            WHERE id = $1
+            RETURNING id`,
+            [id]
+        );
+        const reply = result.rows[0];
+
+        if(!reply) throw new NotFoundError('Message does not exist!')
+         
+    };
+
+    static async markMessageReplyAsUnread(id: string): Promise<void> {
+        const result = await db.query(`
+            UPDATE message_replies
+            SET is_read = false
+            WHERE id = $1
+            RETURNING id`,
+            [id]
+        );
+
+        const reply = result.rows[0];
+
+        if(!reply) throw new NotFoundError('Message does not exist!')
+    };
 
     static async deleteReply(id: string): Promise<void> {
         const result = await db.query(`

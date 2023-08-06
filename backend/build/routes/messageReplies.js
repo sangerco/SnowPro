@@ -69,6 +69,7 @@ var expressError_1 = require("../expressError");
 var messageReply_1 = __importDefault(require("../models/messageReply"));
 var messageReply_json_1 = __importDefault(require("../schemas/messageReply.json"));
 var router = express_1.default.Router();
+// create new message reply
 router.post('/api/messages/:id/reply', auth_1.ensureLoggedIn, function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
     var validator, errors, _a, messageId, senderId, recipientId, subject, body, reply, e_1;
     return __generator(this, function (_b) {
@@ -94,6 +95,7 @@ router.post('/api/messages/:id/reply', auth_1.ensureLoggedIn, function (req, res
         }
     });
 }); });
+// get meassage reply by id
 router.get('/messages/replies/:id', auth_1.ensureLoggedIn, auth_1.checkIfUserOrAdmin, function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
     var reply, e_2;
     return __generator(this, function (_a) {
@@ -114,6 +116,7 @@ router.get('/messages/replies/:id', auth_1.ensureLoggedIn, auth_1.checkIfUserOrA
         }
     });
 }); });
+// get all replies to a message
 router.get('/messages/:id/replies', auth_1.ensureLoggedIn, auth_1.checkIfUserOrAdmin, function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
     var replies, e_3;
     return __generator(this, function (_a) {
@@ -133,8 +136,51 @@ router.get('/messages/:id/replies', auth_1.ensureLoggedIn, auth_1.checkIfUserOrA
         }
     });
 }); });
-router.delete('/api/messages/:id/replies/:replyId', auth_1.ensureLoggedIn, auth_1.checkIfUserOrAdmin, function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+// mark a reply as read
+router.patch('/messages/replies/:id', auth_1.ensureLoggedIn, auth_1.checkIfUserOrAdmin, function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
     var e_4;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                return [4 /*yield*/, messageReply_1.default.markMessageReplyAsRead(req.params.id)];
+            case 1:
+                _a.sent();
+                return [2 /*return*/, res.json({ markedAsRead: req.params.id })];
+            case 2:
+                e_4 = _a.sent();
+                next(e_4);
+                return [3 /*break*/, 3];
+            case 3:
+                ;
+                return [2 /*return*/];
+        }
+    });
+}); });
+// mark a reply as unread
+router.patch('/messages/replies/:id', auth_1.ensureLoggedIn, auth_1.checkIfUserOrAdmin, function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+    var e_5;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                return [4 /*yield*/, messageReply_1.default.markMessageReplyAsUnread(req.params.id)];
+            case 1:
+                _a.sent();
+                return [2 /*return*/, res.json({ markedAsUnread: req.params.id })];
+            case 2:
+                e_5 = _a.sent();
+                next(e_5);
+                return [3 /*break*/, 3];
+            case 3:
+                ;
+                return [2 /*return*/];
+        }
+    });
+}); });
+// delete reply
+router.delete('/api/messages/:id/replies/:replyId', auth_1.ensureLoggedIn, auth_1.checkIfUserOrAdmin, function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+    var e_6;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -144,8 +190,8 @@ router.delete('/api/messages/:id/replies/:replyId', auth_1.ensureLoggedIn, auth_
                 _a.sent();
                 return [2 /*return*/, res.json({ deleted: req.params.replyId })];
             case 2:
-                e_4 = _a.sent();
-                return [2 /*return*/, next(e_4)];
+                e_6 = _a.sent();
+                return [2 /*return*/, next(e_6)];
             case 3:
                 ;
                 return [2 /*return*/];

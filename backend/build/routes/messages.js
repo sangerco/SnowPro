@@ -169,9 +169,51 @@ router.get('/messages/:username/sent', auth_1.ensureLoggedIn, auth_1.checkIfUser
         }
     });
 }); });
+// mark a message as read
+router.patch('/messages/:id', auth_1.ensureLoggedIn, auth_1.checkIfUserOrAdmin, function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+    var e_5;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                return [4 /*yield*/, message_1.default.markMessageAsRead(req.params.id)];
+            case 1:
+                _a.sent();
+                return [2 /*return*/, res.json({ markedAsRead: req.params.id })];
+            case 2:
+                e_5 = _a.sent();
+                next(e_5);
+                return [3 /*break*/, 3];
+            case 3:
+                ;
+                return [2 /*return*/];
+        }
+    });
+}); });
+// mark a message as unread
+router.patch('/messages/:id', auth_1.ensureLoggedIn, auth_1.checkIfUserOrAdmin, function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+    var e_6;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                return [4 /*yield*/, message_1.default.markMessageAsUnread(req.params.id)];
+            case 1:
+                _a.sent();
+                return [2 /*return*/, res.json({ markedAsUnread: req.params.id })];
+            case 2:
+                e_6 = _a.sent();
+                next(e_6);
+                return [3 /*break*/, 3];
+            case 3:
+                ;
+                return [2 /*return*/];
+        }
+    });
+}); });
 // delete a message
 router.delete('/api/messages/:id', auth_1.ensureLoggedIn, auth_1.checkIfUserOrAdmin, function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var e_5;
+    var e_7;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -181,8 +223,8 @@ router.delete('/api/messages/:id', auth_1.ensureLoggedIn, auth_1.checkIfUserOrAd
                 _a.sent();
                 return [2 /*return*/, res.json({ deleted: req.params.id })];
             case 2:
-                e_5 = _a.sent();
-                return [2 /*return*/, next(e_5)];
+                e_7 = _a.sent();
+                return [2 /*return*/, next(e_7)];
             case 3: return [2 /*return*/];
         }
     });

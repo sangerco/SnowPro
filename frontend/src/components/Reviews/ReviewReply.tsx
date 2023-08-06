@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { fetchNewReviewReplyDataByReviewId } from '../../redux/actions/replyReviewActions';
 import { connect } from 'react-redux';
+import { useParams } from 'react-router';
 import { RootState } from '../../redux/store';
 import { Container, Header } from 'semantic-ui-react';
 
@@ -15,16 +16,16 @@ interface ReviewReplyData {
 };
 
 interface ReviewReplyProps {
-    id: string;
-    slug: string;
     reviewReply: ReviewReplyData | null;
     error: string | null;
     fetchNewReviewReplyDataByReviewId: (slug: string, id: string) => void;
 }
 
-const ReviewReply: React.FC<ReviewReplyProps> = ({ id, slug, reviewReply, error, fetchNewReviewReplyDataByReviewId }) => {
+const ReviewReply: React.FC<ReviewReplyProps> = ({ reviewReply, error, fetchNewReviewReplyDataByReviewId }) => {
+    const { slug, id } = useParams();
+
     useEffect(() => {
-        fetchNewReviewReplyDataByReviewId(id, slug);
+        fetchNewReviewReplyDataByReviewId(id as string, slug as string);
     }, [id, slug, fetchNewReviewReplyDataByReviewId]);
 
     const formatDate = (date: Date) => {

@@ -58,8 +58,7 @@ interface UpdateReviewProps {
 
 const UpdateReview: React.FC<UpdateReviewProps> = ({review, error, updateReview, fetchTagData}) => {
     const navigate = useNavigate();
-    const { id } = useParams<{ id: string }>();
-    const { slug } = useParams<{ slug: string }>();
+    const { slug, id } = useParams<{ slug: string, id: string }>();
     const { userId } = useAuth();
     const { username } = useAuth();
 

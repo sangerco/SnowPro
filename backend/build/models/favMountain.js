@@ -61,6 +61,36 @@ var FavMountain = /** @class */ (function () {
             });
         });
     };
+    FavMountain.fetchFavMountainDataByUserId = function (userId) {
+        return __awaiter(this, void 0, void 0, function () {
+            var result, favMountains;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, db_1.default.query("\n            SELECT u.username,\n                    s.slug AS \"skiAreaSlug\",\n                    s.name AS \"skiAreaName\"\n            FROM users u\n            LEFT JOIN fav_mountains fm ON u.id = fm.user_id\n            LEFT JOIN ski_areas s ON fm.ski_area_slug = s.slug\n            WHERE user_id = $1", [userId])];
+                    case 1:
+                        result = _a.sent();
+                        favMountains = result.rows;
+                        return [2 /*return*/, favMountains];
+                }
+            });
+        });
+    };
+    ;
+    FavMountain.fetchFavMountainDataBySkiAreaSlug = function (skiAreaSlug) {
+        return __awaiter(this, void 0, void 0, function () {
+            var result, favMountains;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, db_1.default.query("\n            SELECT s.slug AS \"skiAreaSlug\",\n                    u.user_id AS \"userId\",\n                    u.username,\n            FROM ski_areas s\n            LEFT JOIN fav_mountains fm ON s.slug = fm.ski_area_slug\n            LEFT JOIN users u ON fm.user_id = u.id\n            WHERE slug = $1", [skiAreaSlug])];
+                    case 1:
+                        result = _a.sent();
+                        favMountains = result.rows;
+                        return [2 /*return*/, favMountains];
+                }
+            });
+        });
+    };
+    ;
     FavMountain.remove = function (id) {
         return __awaiter(this, void 0, void 0, function () {
             var result, favMountain;

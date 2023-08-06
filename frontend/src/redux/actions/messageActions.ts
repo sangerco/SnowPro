@@ -13,7 +13,14 @@ import {    MessageData,
             DELETE_MESSAGE_REQUEST,
             DELETE_MESSAGE_SUCCESS,
             DELETE_MESSAGE_FAILURE,
-            DeleteMessage } from "../types/messageTypes";
+            DeleteMessage,
+            MARK_MESSAGE_READ_REQUEST,
+            MARK_MESSAGE_READ_SUCCESS,
+            MARK_MESSAGE_READ_FAILURE,
+            MARK_MESSAGE_UNREAD_REQUEST,
+            MARK_MESSAGE_UNREAD_SUCCESS,
+            MARK_MESSAGE_UNREAD_FAILURE,
+            UserWithMessages } from "../types/messageTypes";
 
 export const sendNewMessageDataRequest = ( sender_id: string, recipient_id: string, subject: string, body: string ) => ({
     type: SEND_NEW_MESSAGE_DATA_REQUEST,
@@ -39,7 +46,7 @@ export const fetchAllUsersMessagesDataRequest = (recipient_id: string) => ({
     type: FETCH_MESSAGE_DATA_REQUEST
 });
 
-export const fetchAllUsersMessagesDataSuccess = (messageData: MessageData[]) => ({
+export const fetchAllUsersMessagesDataSuccess = (messageData: UserWithMessages[]) => ({
     type: FETCH_MESSAGE_DATA_SUCCESS,
     payload: messageData
 });
@@ -75,6 +82,36 @@ export const fetchMessageDataByIdSuccess = (messageData: MessageDataReturn) => (
 
 export const fetchMessageDataByIdFailure = (error: string) => ({
     type: FETCH_MESSAGE_DATA_FAILURE,
+    payload: error
+});
+
+export const markMessageReadRequest = (id: string) => ({
+    type: MARK_MESSAGE_READ_REQUEST,
+    payload: id
+});
+
+export const markMessageReadSuccess = (success: string) => ({
+    type: MARK_MESSAGE_READ_SUCCESS,
+    payload: success
+});
+
+export const markMessageReadFailure = (error: string) => ({
+    type: MARK_MESSAGE_READ_FAILURE,
+    payload: error
+});
+
+export const markMessageUnreadRequest = (id: string) => ({
+    type: MARK_MESSAGE_UNREAD_REQUEST,
+    payload: id
+});
+
+export const markMessageUnreadSuccess = (success: string) => ({
+    type: MARK_MESSAGE_UNREAD_SUCCESS,
+    payload: success
+});
+
+export const markMessageUnreadFailure = (error: string) => ({
+    type: MARK_MESSAGE_UNREAD_FAILURE,
     payload: error
 });
 
@@ -116,7 +153,7 @@ export const fetchAllUsersMessagesData = (username: string) => {
 
         try {
             const response = await axios.get(`${URL}/messages/${username}`);
-            const responseData: MessageData[] = response.data.messages;
+            const responseData: UserWithMessages[] = response.data.messages;
             dispatch(fetchAllUsersMessagesDataSuccess(responseData));
         } catch (error: any) {
             dispatch(fetchAllUsersMessagesDataFailure(error.message))
@@ -148,6 +185,34 @@ export const fetchMessageDataById = (id: string) => {
             dispatch(fetchMessageDataByIdSuccess(responseData));
         } catch (error: any) {
             dispatch(fetchMessageDataByIdFailure(error.message))
+        }
+    }
+};
+
+export const markMessageRead = (id: string) => {
+    return async (dispatch: Dispatch) => {
+        dispatch(markMessageReadRequest(id));
+
+        try {
+            const response = await axios.patch(`${URL}/messages/${id}`);
+            const responseData: string = response.data.id;
+            dispatch(markMessageReadSuccess(responseData));
+        } catch (error: any) {
+            dispatch(markMessageReadFailure(error.message));
+        }
+    }
+};
+
+export const markMessageUnread = (id: string) => {
+    return async (dispatch: Dispatch) => {
+        dispatch(markMessageUnreadRequest(id));
+
+        try {
+            const response = await axios.patch(`${URL}/messages/${id}`);
+            const responseData: string = response.data.id;
+            dispatch(markMessageUnreadSuccess(responseData));
+        } catch (error: any) {
+            dispatch(markMessageUnreadFailure(error.message));
         }
     }
 };

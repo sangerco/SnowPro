@@ -15,6 +15,8 @@ interface ReplyData {
     body: string;
 }
 
+// create new message reply
+
 router.post('/api/messages/:id/reply', ensureLoggedIn, async (req: Request, res: Response, next: NextFunction) => {
     try {
         const validator: jsonschema.ValidatorResult = jsonschema.validate(req.body, replyNewSchema);
@@ -30,6 +32,8 @@ router.post('/api/messages/:id/reply', ensureLoggedIn, async (req: Request, res:
     };
 });
 
+// get meassage reply by id
+
 router.get('/messages/replies/:id', ensureLoggedIn, checkIfUserOrAdmin, async (req: Request, res: Response, next: NextFunction) => {
     try {
         console.log(req.params.id);
@@ -40,6 +44,8 @@ router.get('/messages/replies/:id', ensureLoggedIn, checkIfUserOrAdmin, async (r
     };
 });
 
+// get all replies to a message
+
 router.get('/messages/:id/replies', ensureLoggedIn, checkIfUserOrAdmin, async (req: Request, res: Response, next: NextFunction) => {
     try {
         const replies = await Reply.getRepliesByMessageId(req.params.id);
@@ -48,6 +54,30 @@ router.get('/messages/:id/replies', ensureLoggedIn, checkIfUserOrAdmin, async (r
         return next(e);
     };
 });
+
+// mark a reply as read
+
+router.patch('/messages/replies/:id', ensureLoggedIn, checkIfUserOrAdmin, async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        await Reply.markMessageReplyAsRead(req.params.id);
+        return res.json({ markedAsRead: req.params.id });
+    } catch (e) {
+        next(e)
+    };
+});
+
+// mark a reply as unread
+
+router.patch('/messages/replies/:id', ensureLoggedIn, checkIfUserOrAdmin, async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        await Reply.markMessageReplyAsUnread(req.params.id);
+        return res.json({ markedAsUnread: req.params.id });
+    } catch (e) {
+        next(e)
+    };
+});
+
+// delete reply
 
 router.delete('/api/messages/:id/replies/:replyId', ensureLoggedIn, checkIfUserOrAdmin, async (req: Request, res: Response, next: NextFunction) => {
     try {

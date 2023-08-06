@@ -13,14 +13,13 @@ interface LoginData {
 };
 
 interface LoginProps {
-    user: LoginData | null;
     loading: boolean;
     error: string;
     token: string | null;
     sendLoginData: ( loginData: LoginData ) => Promise<string>
 };
 
-const LoginForm: React.FC<LoginProps> = ({ user, loading, error, token, sendLoginData }) => {
+const LoginForm: React.FC<LoginProps> = ({ loading, error, token, sendLoginData }) => {
     const [ formData, setFormData ] = useState<LoginData>({
         username: '',
         password: ''
@@ -61,11 +60,11 @@ const LoginForm: React.FC<LoginProps> = ({ user, loading, error, token, sendLogi
     return (
         <Form onSubmit={handleSubmit} error>
             <Form.Field>
-                <label>username</label>
+                <label>Username</label>
                 <input placeholder='username' name='username' value={formData.username} onChange={handleChange}/>
             </Form.Field>
             <Form.Field>
-                <label>Choose Password</label>
+                <label>Password</label>
                 <Input type='password' name='password' value={formData.password} onChange={handleChange}/>
             </Form.Field>
             <Button type='submit'>Login</Button>

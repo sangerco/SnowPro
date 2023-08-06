@@ -38,6 +38,12 @@ export const SEND_NEW_REPLY_DATA_FAILURE = 'SEND_NEW_REPLY_DATA_FAILURE';
 export const FETCH_REPLY_DATA_REQUEST = 'FETCH_REPLY_DATA_REQUEST';
 export const FETCH_REPLY_DATA_SUCCESS = 'FETCH_REPLY_DATA_SUCCESS';
 export const FETCH_REPLY_DATA_FAILURE = 'FETCH_REPLY_DATA_FAILURE';
+export const MARK_REPLY_READ_REQUEST = 'MARK_REPLY_READ_REQUEST';
+export const MARK_REPLY_READ_SUCCESS = 'MARK_REPLY_READ_SUCCESS';
+export const MARK_REPLY_READ_FAILURE = 'MARK_REPLY_READ_FAILURE';
+export const MARK_REPLY_UNREAD_REQUEST = 'MARK_REPLY_UNREAD_REQUEST';
+export const MARK_REPLY_UNREAD_SUCCESS = 'MARK_REPLY_UNREAD_SUCCESS';
+export const MARK_REPLY_UNREAD_FAILURE = 'MARK_REPLY_UNREAD_FAILURE';
 export const DELETE_REPLY_REQUEST = 'DELETE_REPLY_REQUEST';
 export const DELETE_REPLY_SUCCESS = 'DELETE_REPLY_SUCCESS';
 export const DELETE_REPLY_FAILURE = 'DELETE_REPLY_FAILURE';
@@ -69,7 +75,37 @@ export interface fetchReplyDataSuccessAction {
 export interface fetchReplyDataFailureAction {
     type: typeof FETCH_REPLY_DATA_FAILURE;
     payload: string;
-}
+};
+
+export interface markReplyReadRequestAction {
+    type: typeof MARK_REPLY_READ_REQUEST;
+    payload: string;
+};
+
+export interface markReplyReadSuccessAction {
+    type: typeof MARK_REPLY_READ_SUCCESS;
+    payload: string;
+};
+
+export interface markReplyReadFailureAction {
+    type: typeof MARK_REPLY_READ_FAILURE;
+    payload: string;
+};
+
+export interface markReplyUnreadRequestAction {
+    type: typeof MARK_REPLY_UNREAD_REQUEST;
+    payload: string;
+};
+
+export interface markReplyUnreadSuccessAction {
+    type: typeof MARK_REPLY_UNREAD_SUCCESS;
+    payload: string;
+};
+
+export interface markReplyUnreadFailureAction {
+    type: typeof MARK_REPLY_UNREAD_FAILURE;
+    payload: string;
+};
 
 export interface deleteReplyRequestAction {
     type: typeof DELETE_REPLY_REQUEST;
