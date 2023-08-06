@@ -21,6 +21,9 @@ import {  newReviewReplyReducer,
           reviewReplyReducer,
           updateReviewReplyReducer,
           deleteReviewReplyReducer } from './reviewReplyReducer';
+import {  favMountainReducer,
+          newFavMountainReducer,
+          deleteFavMountainReducer } from './favMountainReducer';
 
 const rootReducer = combineReducers({
   user: userReducer,
@@ -53,7 +56,10 @@ const rootReducer = combineReducers({
   reviewReply: reviewReplyReducer,
   newReviewReply: newReviewReplyReducer,
   updateReviewReply: updateReviewReplyReducer,
-  deleteReviewReply: deleteReviewReplyReducer
+  deleteReviewReply: deleteReviewReplyReducer,
+  favMountain: favMountainReducer,
+  newFavMountain: newFavMountainReducer,
+  deleteFavMountain: deleteFavMountainReducer
 });
 
 export default rootReducer;

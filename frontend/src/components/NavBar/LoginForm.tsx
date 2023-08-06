@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useAuth } from '../AuthProvider';
 import { connect } from 'react-redux';
 import { sendLoginData } from '../../redux/actions/userActions';
 import { RootState } from '../../redux/store';
@@ -25,6 +26,8 @@ const LoginForm: React.FC<LoginProps> = ({ user, loading, error, token, sendLogi
         password: ''
     });
 
+    const { setToken, setUserData } = useAuth();
+
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
@@ -32,13 +35,12 @@ const LoginForm: React.FC<LoginProps> = ({ user, loading, error, token, sendLogi
             const token = await sendLoginData(formData)
 
             if (token) {
-                localStorage.setItem('token', JSON.stringify(token));
+                setToken(token);
 
                 const userDetails = await fetchUserDetails(token);
                 if(userDetails) {
                     const { userId, username } = userDetails.data;
-                    localStorage.setItem('userId', userId);
-                    localStorage.setItem('username', username);
+                    setUserData(userId, username)
                 }
             }
     

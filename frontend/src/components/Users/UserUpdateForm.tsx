@@ -3,12 +3,14 @@ import { useParams } from 'react-router-dom';
 import axios, { AxiosResponse } from 'axios';
 import { URL } from '../../config'
 import { connect } from 'react-redux';
+import { useAuth } from '../AuthProvider';
 import { updateUserData } from '../../redux/actions/userActions';
 import { RootState } from '../../redux/store';
 import { Button, Input, Form, Message, Dimmer, Loader } from 'semantic-ui-react';
 import { UpdateUserData } from '../../redux/types/userTypes';
 
 interface UpdateData {
+    id: string;
     username: string;
     password: string;
     first_name: string;
@@ -33,10 +35,12 @@ interface UpdateDataProps {
 
 const UserUpdateForm: React.FC<UpdateDataProps> = ({ user, updateUserData }) => {
     const { username } = useParams();
+    const { userId } = useAuth();
 
     const [ loading, setLoading ] = useState(true);
     const [ error, setError ] = useState('');
     const [formData, setFormData] = useState<UpdateData>({
+        id: userId ?? '',
         username: "",
         password: "",
         first_name: "",
@@ -168,9 +172,11 @@ const UserUpdateForm: React.FC<UpdateDataProps> = ({ user, updateUserData }) => 
 };
 
 const mapStateToProps = (state: RootState) => ({
-    newUser: state.user.data,
+    user: state.user.data,
     loading: state.user.loading,
     error: state.user.error
 });
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
 export default connect(mapStateToProps, { updateUserData })(UserUpdateForm);

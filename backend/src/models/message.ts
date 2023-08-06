@@ -1,5 +1,4 @@
 import db from '../db';
-import { sqlForPartialUpdate } from '../helpers/sql';
 import { NotFoundError } from '../expressError';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -10,6 +9,7 @@ interface MessageData {
     subject: string;
     body: string;
     createdId: Date;
+    isRead: boolean;
     senderUsername: string;
     senderFirstName: string;
     senderLastName: string;
@@ -39,14 +39,16 @@ class Message {
                 recipient_id,
                 subject,
                 body, 
-                created_at)
-            VALUES ($1, $2, $3, $4, $5, $6)
+                created_at,
+                is_read)
+            VALUES ($1, $2, $3, $4, $5, $6, false)
             RETURNING
                 id,
                 sender_id AS "senderId",
                 recipient_id AS "recipientId",
                 subject,
-                body
+                body,
+                is_read AS "isRead",
                 created_at AS "createdAt"`,
             [   id,
                 senderId,
@@ -70,6 +72,7 @@ class Message {
                 m.recipient_id AS "recipientId",
                 m.subject,
                 m.body,
+                m.is_read AS "isRead",
                 m.created_at AS "createdAt",
                 sender.username AS "senderUsername",
                 sender.first_name AS "senderFirstName",
@@ -98,6 +101,7 @@ class Message {
                 m.recipient_id AS "recipientId",
                 m.subject,
                 m.body,
+                m.is_read AS "isRead",
                 m.created_at AS "createdAt",
                 sender.username AS "senderUsername",
                 sender.first_name AS "senderFirstName",
@@ -124,6 +128,7 @@ class Message {
                 m.recipient_id AS "recipientId",
                 m.subject,
                 m.body,
+                m.is_read AS "isRead",
                 m.created_at AS "createdAt",
                 sender.username AS "senderUsername",
                 sender.first_name AS "senderFirstName",

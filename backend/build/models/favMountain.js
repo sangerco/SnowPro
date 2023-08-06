@@ -45,14 +45,14 @@ var uuid_1 = require("uuid");
 var FavMountain = /** @class */ (function () {
     function FavMountain() {
     }
-    FavMountain.createFavMountain = function (userId, skiAreaId) {
+    FavMountain.createFavMountain = function (userId, skiAreaSlug) {
         return __awaiter(this, void 0, void 0, function () {
             var id, result, favMountain;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         id = (0, uuid_1.v4)();
-                        return [4 /*yield*/, db_1.default.query("\n            INSERT INTO fav_mountains\n            (   id,\n                user_id,\n                ski_area_id)\n            VALUES ($1, $2, $3)\n            RETURNING id, user_id AS \"userId, ski_area_id AS \"skiAreaId", [id, userId, skiAreaId])];
+                        return [4 /*yield*/, db_1.default.query("\n            INSERT INTO fav_mountains\n            (   id,\n                user_id,\n                ski_area_slug)\n            VALUES ($1, $2, $3)\n            RETURNING id, user_id AS \"userId, ski_area_slug AS \"skiAreaSlug", [id, userId, skiAreaSlug])];
                     case 1:
                         result = _a.sent();
                         favMountain = result.rows[0];

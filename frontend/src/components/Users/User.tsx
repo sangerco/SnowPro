@@ -2,8 +2,13 @@ import React, { useEffect } from 'react';
 import { Dimmer, Loader } from "semantic-ui-react";
 import { connect } from 'react-redux';
 import { fetchUserData } from '../../redux/actions/userActions';
+import ShowPhotos from '../Media/ShowPhotos';
+import ShowVideos from '../Media/ShowVideos';
+import { Container, Header, Grid, Image } from 'semantic-ui-react';
+import FavMountain from '../SkiAreas/FavMountain';
 
 interface UserData {
+    id: string;
     username: string;
     firstName: string;
     lastName: string;
@@ -46,16 +51,48 @@ const User: React.FC<UserProps> = ({ username, user, loading, error, fetchUserDa
 
     if(user) {
         return (
-            <div>
-                <p>{user.username}</p>
-                <p>{user.firstName}</p>
-                <p>{user.lastName}</p>
-                <p>{user.avatar}</p>
-                <p>{user.bio}</p>
-                {user.videos.length > 0 ? user.videos.map(video => <p key={video}>{video}</p>) : <p>No videos found.</p>}
-                {user.photos.length > 0 ? user.photos.map(photo => <p key={photo}>{photo}</p>) : <p>No photos found.</p>}
-                {user.favMountains.length > 0 ? user.favMountains.map(fm => <p key={fm}>{fm}</p>) : <p>No favorite mountains yet.</p>}
-            </div>
+            <Container>
+                <Grid relaxed>
+                    <Grid.Row>
+                        <Grid.Column width={4}>
+                            <Image src={user.avatar} size='small' />
+                        </Grid.Column>
+                        <Grid.Column width={8}>
+                            <Header as='h2' textAlign='right'>{user.username}</Header>
+                            <Header.Subheader>
+                                {user.firstName && user.firstName !== '' ? user.firstName : ''}
+                                {user.lastName && user.lastName !== '' ? user.lastName : ''}
+                            </Header.Subheader>
+                        </Grid.Column>
+                        <Grid.Column width={4}></Grid.Column>
+                    </Grid.Row>
+                    <Grid.Row>
+                        <Grid.Column width={4}></Grid.Column>
+                        <Grid.Column width={8}><p>{user.bio}</p>
+                        </Grid.Column>
+                        <Grid.Column width={4}>
+                            {user.favMountains.length > 0 ? 
+                                <FavMountain userId={user.id} /> :
+                                <p>This user has no favorited mountains yet!</p>}
+                        </Grid.Column>
+                    </Grid.Row>
+                    <Grid.Row>
+                        <Grid.Column width={2}></Grid.Column>
+                        <Grid.Column width={12}><ShowPhotos username={username} /></Grid.Column>
+                        <Grid.Column width={2}></Grid.Column>
+                    </Grid.Row>
+                    <Grid.Row>
+                        <Grid.Column width={2}></Grid.Column>
+                        <Grid.Column width={12}><ShowVideos username={username} /></Grid.Column>
+                        <Grid.Column width={2}></Grid.Column>
+                    </Grid.Row>
+                </Grid>
+
+            </Container>
+
+
+             //     {user.favMountains.length > 0 ? user.favMountains.map(fm => <p key={fm}>{fm}</p>) : <p>No favorite mountains yet.</p>}
+            // </div>
         )
     }
 

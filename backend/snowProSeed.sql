@@ -34,16 +34,16 @@ VALUES
     ('203', '103', '2', 'powder' ,'Powder days are the best!', '2023-07-24 08:11:00');
 
 -- Dummy data for messages table
-INSERT INTO "messages" ("id", "sender_id", "recipient_id", "subject", "body", "created_at")
+INSERT INTO "messages" ("id", "sender_id", "recipient_id", "subject", "body", "is_read", "created_at")
 VALUES
-    ('301', '1', '2', 'Hello!', 'Let''s plan a ski trip.', '2023-07-26 12:40:00'),
-    ('302', '2', '1', 'Re: Hello!', 'Sure, when do you want to go?', '2023-07-26 12:42:00');
+    ('301', '1', '2', 'Hello!', 'Let''s plan a ski trip.', false, '2023-07-26 12:40:00'),
+    ('302', '2', '1', 'Re: Hello!', 'Sure, when do you want to go?', true, '2023-07-26 12:42:00');
 
 -- Dummy data for message_replies table
-INSERT INTO "message_replies" ("id", "message_id", "sender_id", "recipient_id", "subject", "body", "created_at")
+INSERT INTO "message_replies" ("id", "message_id", "sender_id", "recipient_id", "subject", "body", "is_read", "created_at")
 VALUES
-    ('401', '301', '2', '1', 'Re: Hello!', 'Sounds good! How about next weekend?', '2023-07-26 12:43:00'),
-    ('402', '302', '1', '2', 'Re: Re: Hello!', 'Next weekend works for me.', '2023-07-26 12:45:00');
+    ('401', '301', '2', '1', 'Re: Hello!', 'Sounds good! How about next weekend?', false, '2023-07-26 12:43:00'),
+    ('402', '302', '1', '2', 'Re: Re: Hello!', 'Next weekend works for me.', true, '2023-07-26 12:45:00');
 
 -- Dummy data for photos table
 INSERT INTO "photos" ("id", "user_id", "link", "about", "tag_ids", "created_at")
@@ -58,7 +58,7 @@ VALUES
     ('602', '2', 'https://example.com/video2.mp4', 'Skiing in powder.', NULL, '2023-07-26 12:58:00');
 
 -- Dummy data for fav_mountains table
-INSERT INTO "fav_mountains" ("user_id", "ski_areas_slug")
+INSERT INTO "fav_mountains" ("user_id", "ski_area_slug")
 VALUES
     ('1', 'alpine'),
     ('2', 'powder'),

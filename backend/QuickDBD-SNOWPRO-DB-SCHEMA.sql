@@ -105,9 +105,9 @@ CREATE TABLE "videos" (
 CREATE TABLE "fav_mountains" (
     "user_id" TEXT
         REFERENCES "users" ("id") ON DELETE CASCADE,
-    "ski_areas_slug" TEXT
+    "ski_area_slug" TEXT
         REFERENCES "ski_areas" ("slug") ON DELETE CASCADE,
-    PRIMARY KEY ("user_id", "ski_areas_slug")
+    PRIMARY KEY ("user_id", "ski_area_slug")
 );
 
 CREATE TABLE review_tags (
@@ -196,3 +196,7 @@ REFERENCES "users" ("id");
 
 ALTER TABLE "fav_mountains" ADD CONSTRAINT "fk_fav_mountains_ski_areas_slug" FOREIGN KEY("ski_areas_slug")
 REFERENCES "ski_areas" ("slug");
+
+ALTER TABLE "messages" ADD COLUMN "is_read" BOOLEAN DEFAULT false;
+
+ALTER TABLE "message_replies" ADD COLUMN "is_read" BOOLEAN DEFAULT false;

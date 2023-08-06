@@ -27,6 +27,24 @@ router.post('/api/fav_mountain', ensureLoggedIn, checkIfUserOrAdmin, async (req:
     }
 });
 
+router.get('/users/:user_id/fav-mountains', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const favMountains = await FavMountain.fetchFavMountainDataByUserId(req.params.user_id);
+        return res.json({ favMountains });
+    } catch (e) {
+        next(e);
+    };
+});
+
+router.get('/ski-areas/:slug/fav-mountains', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const favMountains = await FavMountain.fetchFavMountainDataBySkiAreaSlug(req.params.slug);
+        return res.json({ favMountains });
+    } catch (e) {
+        next(e);
+    };
+});
+
 router.delete('/api/fav_mountain/:id', ensureLoggedIn, checkIfUserOrAdmin, async (req: Request, res: Response, next: NextFunction) => {
     try {
         await FavMountain.remove(req.params.id);

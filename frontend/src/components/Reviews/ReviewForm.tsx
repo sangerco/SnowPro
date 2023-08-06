@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { connect } from 'react-redux';
+import { useAuth } from "../AuthProvider";
 import { sendNewReviewData } from "../../redux/actions/reviewActions";
 import { fetchTagData } from "../../redux/actions/tagActions";
 import NewTagForm from "../Tags/NewTagForm";
@@ -34,8 +35,8 @@ interface NewReviewProps {
 
 const ReviewForm: React.FC<NewReviewProps> = ({ newReview, error, sendNewReviewData, fetchTagData }) => {
     const { skiAreaSlug } = useParams<{ skiAreaSlug: string }>();
-    const userId = localStorage.getItem('userId') ?? '';
-    const initialReviewState = { userId: userId,
+    const { userId } = useAuth();
+    const initialReviewState = { userId: userId ?? '',
                                     skiAreaSlug: skiAreaSlug,
                                     header: '',
                                     body: '',

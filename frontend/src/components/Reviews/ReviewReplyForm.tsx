@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
+import { useAuth } from '../AuthProvider';
 import { sendNewReviewReplyData } from '../../redux/actions/replyReviewActions';
 import { RootState } from '../../redux/store';
 import { Button, Container, Form, Message } from 'semantic-ui-react';
@@ -21,8 +22,8 @@ interface NewReviewReplyProps {
 
 const ReviewReplyForm: React.FC<NewReviewReplyProps> = ({ newReviewReply, error, sendNewReviewReplyData }) => {
     const { reviewId } = useParams<{ reviewId: string }>();
-    const userId = localStorage.getItem('userId') ?? '';
-    const initialReviewReplyState = {   userId: userId,
+    const { userId } = useAuth();
+    const initialReviewReplyState = {   userId: userId ?? '',
                                         reviewId: reviewId,
                                         body: '' };
 
@@ -73,4 +74,6 @@ const mapDispatchToProps = {
     sendNewReviewReplyData
 };
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
 export default connect(mapStateToProps, mapDispatchToProps)(ReviewReplyForm)

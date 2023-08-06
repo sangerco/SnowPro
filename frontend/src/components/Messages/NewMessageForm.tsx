@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
+import { useAuth } from './../AuthProvider';
 import { sendNewMessageData } from '../../redux/actions/messageActions';
 import { RootState } from '../../redux/store';
 import { Button, Form, Message } from 'semantic-ui-react'
@@ -23,8 +24,9 @@ interface NewMessageProps {
 };
 
 const NewMessageForm: React.FC<NewMessageProps> = ({ newMessage, error, sendNewMessageData }) => {
+    const { userId } = useAuth();
     const [formData, setFormData] = useState<NewMessageData>({
-        sender_id: '',
+        sender_id: userId ?? '',
         recipient_id: '',
         subject: '',
         body: ''
@@ -36,7 +38,7 @@ const NewMessageForm: React.FC<NewMessageProps> = ({ newMessage, error, sendNewM
         await sendNewMessageData(formData.sender_id, formData.recipient_id, formData.subject, formData.body);
 
         setFormData({
-            sender_id: '',
+            sender_id: userId ?? '',
             recipient_id: '',
             subject: '',
             body: ''

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { URL } from '../../config';
 import { connect } from 'react-redux';
+import { useAuth } from '../AuthProvider';
 import { updateReview, fetchReviewDataById } from '../../redux/actions/reviewActions';
 import { fetchTagData } from '../../redux/actions/tagActions';
 import NewTagForm from '../Tags/NewTagForm';
@@ -59,13 +60,13 @@ const UpdateReview: React.FC<UpdateReviewProps> = ({review, error, updateReview,
     const navigate = useNavigate();
     const { id } = useParams<{ id: string }>();
     const { slug } = useParams<{ slug: string }>();
-    const userId = localStorage.getItem('userId') ?? '';
-    const username = localStorage.getItem('username') ?? '';
+    const { userId } = useAuth();
+    const { username } = useAuth();
 
     const initialUpdateReviewState: UpdateReviewData = {
         id: id || '',
-        userId: userId,
-        username: username,
+        userId: userId ?? '',
+        username: username ?? '',
         skiAreaSlug: slug || '',
         skiAreaName: '',
         header: '',
@@ -131,8 +132,8 @@ const UpdateReview: React.FC<UpdateReviewProps> = ({review, error, updateReview,
         e.preventDefault();
 
         await updateReview( id || '',
-                            userId,
-                            username,
+                            userId ?? '',
+                            username ?? '',
                             slug || '',
                             formData.skiAreaName || '',
                             formData.header || '',

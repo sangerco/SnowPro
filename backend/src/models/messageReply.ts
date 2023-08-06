@@ -10,6 +10,7 @@ interface ReplyData {
     recipientId: string;
     subject: string;
     body: string;
+    isRead: boolean;
     createdId: Date;
     senderUsername: string;
     senderFirstName: string;
@@ -36,8 +37,9 @@ class Reply {
                 recipient_id,
                 subject,
                 body,
-                created_at)
-            VALUES ($1, $2, $3, $4, $5, $6)
+                created_at,
+                is_read)
+            VALUES ($1, $2, $3, $4, $5, $6, false)
             RETURNING 
                 id,
                 message_id AS "messageId",
@@ -45,6 +47,7 @@ class Reply {
                 recipient_id AS "recipientId",
                 subject,
                 body,
+                is_read AS "isRead",
                 created_at AS "createdAt"`,
             [   id,
                 messageId,
@@ -70,6 +73,7 @@ class Reply {
                 r.recipient_id AS "recipientId",
                 r.subject,
                 r.body,
+                r.is_read AS "isRead",
                 r.created_at AS "createdAt",
                 sender.username AS "senderUsername",
                 sender.first_name AS "senderFirstName",
@@ -99,6 +103,7 @@ class Reply {
                 r.recipient_id AS "recipientId",
                 r.subject,
                 r.body,
+                r.is_read AS "isRead",
                 r.created_at AS "createdAt",
                 sender.username AS "senderUsername",
                 sender.first_name AS "senderFirstName",
@@ -128,6 +133,7 @@ class Reply {
                 r.recipient_id AS "recipientId",
                 r.subject,
                 r.body,
+                r.is_read AS "isRead",
                 r.created_at AS "createdAt",
                 sender.username AS "senderUsername",
                 sender.first_name AS "senderFirstName",
@@ -157,6 +163,7 @@ class Reply {
                 r.recipient_id AS "recipientId",
                 r.subject,
                 r.body,
+                r.is_read AS "isRead",
                 r.created_at AS "createdAt",
                 sender.username AS "senderUsername",
                 sender.first_name AS "senderFirstName",

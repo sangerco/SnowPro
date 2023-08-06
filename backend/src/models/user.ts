@@ -6,6 +6,7 @@ import { BCRYPT_WORK_FACTOR } from '../config';
 import { v4 as uuidv4 } from 'uuid';
 
 interface UserData {
+    id: string;
     username: string;
     firstName: string;
     lastName: string;
@@ -135,7 +136,8 @@ class User {
 
         static async getUser(username: string): Promise<UserData> {
             const result = await db.query(
-                `SELECT u.username,
+                `SELECT u.id,
+                    u.username,
                     u.first_name AS "firstName",
                     u.last_name AS "lastName",
                     u.email,
@@ -161,6 +163,7 @@ class User {
             if (rows.length === 0) throw new NotFoundError('User not found.')
 
             const user: UserData = {
+                id: rows[0].id,
                 username: rows[0].username,
                 firstName: rows[0].firstName,
                 lastName: rows[0].lastName,

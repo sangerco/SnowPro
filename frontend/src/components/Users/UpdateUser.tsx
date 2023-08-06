@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
+import { useAuth } from '../AuthProvider';
 import { updateUserData } from '../../redux/actions/userActions';
 import { fetchUserData } from '../../redux/actions/userActions';
 import { RootState } from '../../redux/store';
@@ -51,10 +52,10 @@ interface UpdateUserProps {
 };
 
 const UpdateUser: React.FC<UpdateUserProps> = ({ updateUser, loading, error, fetchUserData, updateUserData }) => {
-    const username: string = localStorage.getItem('username') ?? '';
+    const { username } = useAuth();
 
     const initialUserState: UserData = {
-        username: username,
+        username: username ?? '',
         firstName: '',
         lastName: '',
         password: '',
@@ -72,7 +73,11 @@ const UpdateUser: React.FC<UpdateUserProps> = ({ updateUser, loading, error, fet
     useEffect(() => {
         const fetchData = async () => {
             try {
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
                 const data = await fetchUserData(username);
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
                 setUserData(data)
             } catch (e: any) {
                 return `Can't retrieve user data. Error: ${error}`
@@ -254,4 +259,7 @@ const mapDispatchToProps = {
     updateUserData
 };
 
+
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 export default connect(mapStateToProps, mapDispatchToProps)(UpdateUser)

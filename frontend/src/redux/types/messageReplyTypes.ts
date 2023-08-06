@@ -5,6 +5,7 @@ export interface ReplyData {
     recipientId: string;
     subject: string;
     body: string;
+    isRead: boolean;
     createdAt: Date;
 }
 
@@ -23,6 +24,7 @@ export interface NewReplyDataReturn {
     recipient_id: string;
     subject: string;
     body: string;
+    isRead: boolean;
 }
 
 export interface DeleteReply {

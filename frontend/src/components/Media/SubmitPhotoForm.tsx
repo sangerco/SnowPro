@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
+import { useAuth } from '../AuthProvider';
 import { sendNewPhoto } from '../../redux/actions/mediaActions';
 import { RootState } from '../../redux/store';
 import { Button, Form, Message, Dropdown } from 'semantic-ui-react';
@@ -29,10 +30,10 @@ interface NewPhotoProps {
 };
 
 const SubmitPhotoForm: React.FC<NewPhotoProps> = ({ newPhoto, error, sendNewPhoto, fetchTagData }) => {
-    const username = localStorage.getItem('username') ?? '';
+    const { username } = useAuth();
 
     const initialPhotoState = {
-            username: username,
+            username: username ?? '',
             link: '',
             about: '',
             tags: []
