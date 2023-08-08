@@ -11,8 +11,8 @@ import {    SEND_NEW_TAG_DATA_REQUEST,
             DELETE_TAG_DATA_FAILURE,
             DeleteTag } from "../types/tagTypes";
 
-interface TagState {
-    data: TagData | null;
+export interface TagState {
+    data: TagData[] | null;
     error: string | null
 };
             

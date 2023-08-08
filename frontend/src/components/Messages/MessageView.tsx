@@ -1,9 +1,11 @@
 import React, { useEffect } from 'react';
-import { fetchMessageDataById } from '../../redux/actions/messageActions';
+import { fetchMessageDataById, deleteMessage } from '../../redux/actions/messageActions';
 import { connect } from 'react-redux';
 import { useParams } from 'react-router';
-import { Dimmer, Loader, Button } from "semantic-ui-react";
+import { Link } from 'react-router-dom';
+import { Dimmer, Loader, Button, Icon, Card } from "semantic-ui-react";
 import MessageReplyView from './messageReplyView';
+import { sendNewReplyData } from '../../redux/actions/messageReplyActions';
 
 interface MessageData {
     id: string;
@@ -42,14 +44,27 @@ interface MessageProps {
     loading: boolean;
     error: string | null;
     fetchMessageDataById: (id: string) => void;
+    deleteMessage: (id: string) => void;
 };
 
-const MessageView: React.FC<MessageProps> = ({ message, loading, error, fetchMessageDataById }) => {
+const MessageView: React.FC<MessageProps> = ({ message, loading, error, fetchMessageDataById, deleteMessage }) => {
     const { id } = useParams();
 
     useEffect(() => {
         fetchMessageDataById(id as string);
     }, [id, fetchMessageDataById]);
+
+    const handleDelete = () => {
+        if(message) {
+            deleteMessage(message.id);
+        }
+    }
+
+    const formatDate = (date: Date) => {
+        const newDate = new Date(date);
+        const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' };
+        return newDate.toLocaleDateString('en-US', options);
+    }
 
     if(loading) {
         return (
@@ -69,14 +84,25 @@ const MessageView: React.FC<MessageProps> = ({ message, loading, error, fetchMes
 
     if(message) {
         return (
-            <>
-                <h3>{message.subject}</h3>
-                <h6>From: {message.senderFirstName} {message.senderFirstName}</h6>
-                <h6>{message.subject}</h6>
-                <p>{message.body}</p>
+            <Card fluid>
+                <Card.Content>
+                    <Card.Header>{message.subject}</Card.Header>
+                    <Card.Meta>{message.senderFirstName} {message.senderLastName}</Card.Meta>
+                    <Card.Meta textAlign='right'>{formatDate(message.createdAt)}</Card.Meta>
+                    <Card.Description>{message.body}</Card.Description>
+                </Card.Content>
+                <Card.Content extra>
+                    <div className='ui two buttons'>
+                        <Button basic color='red' onClick={handleDelete}>
+                            <Icon name='trash' />
+                        </Button>
+                        <Button basic color='blue'>
+                            <Link to={`/messages/${message.id}/reply`}></Link>
+                        </Button>
+                    </div>
+                </Card.Content>
                 {message.replies.length > 0 ? message.replies.map(reply => <MessageReplyView key={reply.id} reply={reply} />) : null}
-                <Button>Reply to this message?</Button>
-            </>
+            </Card>
         )
     }
 
@@ -90,7 +116,8 @@ const mapStateToProps = (state: any) => ({
 })
 
 const matchDispatchToProps = {
-    fetchMessageDataById
+    fetchMessageDataById,
+    deleteMessage
 }
 
 export default connect(mapStateToProps, matchDispatchToProps)(MessageView);

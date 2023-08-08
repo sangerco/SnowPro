@@ -115,7 +115,7 @@ export const markMessageUnreadFailure = (error: string) => ({
     payload: error
 });
 
-export const deleteMessageRequest = (deleteMessage: DeleteMessage) => ({
+export const deleteMessageRequest = (id: string) => ({
     type: DELETE_MESSAGE_REQUEST,
     payload: deleteMessage
 });
@@ -217,10 +217,9 @@ export const markMessageUnread = (id: string) => {
     }
 };
 
-export const deleteMessage = (deleteMessage: DeleteMessage) => {
+export const deleteMessage = (id: string) => {
     return async (dispatch: Dispatch) => {
-        dispatch(deleteMessageRequest(deleteMessage));
-        const id = deleteMessage.id
+        dispatch(deleteMessageRequest(id));
 
     try {
         const response = await axios.delete(`${URL}/api/messages/${id}`)

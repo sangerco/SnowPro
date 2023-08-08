@@ -83,6 +83,7 @@ export const SEND_LOGIN_DATA_REQUEST = 'SEND_LOGIN_DATA_REQUEST';
 export const SEND_LOGIN_DATA_SUCCESS = 'SEND_LOGIN_DATA_SUCCESS';
 export const SEND_LOGIN_DATA_FAILURE = 'SEND_LOGIN_DATA_FAILURE';
 export const SET_TOKEN = 'SET_TOKEN';
+export const LOGOUT_USER = 'LOGOUT_USER';
 export const MAKE_ADMIN_DATA_REQUEST = 'MAKE_ADMIN_DATA_REQUEST';
 export const MAKE_ADMIN_DATA_SUCCESS = 'MAKE_ADMIN_DATA_SUCCESS';
 export const MAKE_ADMIN_DATA_FAILURE = 'MAKE_ADMIN_DATA_FAILURE';
@@ -164,7 +165,7 @@ export interface SendLoginDataFailureAction {
 export interface SetTokenAction {
     type: typeof SET_TOKEN;
     payload: string;
-}
+};
 
 export interface MakeUserAdminRequestAction {
     type: typeof MAKE_ADMIN_DATA_REQUEST;

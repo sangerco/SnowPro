@@ -52,7 +52,7 @@ var Tag = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         id = (0, uuid_1.v4)();
-                        return [4 /*yield*/, db_1.default.query("\n                INSERT INTO tags (id, tag),\n                    VALUES ($1, $2)\n                    RETURNING id, tag", [id, tag])];
+                        return [4 /*yield*/, db_1.default.query("\n                INSERT INTO tags (id, tag)\n                    VALUES ($1, $2)\n                    RETURNING id, tag", [id, tag])];
                     case 1:
                         result = _a.sent();
                         newTag = result.rows[0];

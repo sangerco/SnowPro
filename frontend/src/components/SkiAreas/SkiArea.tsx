@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { URL } from '../../config';
+import { Link } from 'react-router-dom';
 import { Container, Header, Icon } from "semantic-ui-react";
 import { SkiAreaProps, SkiAreaData } from '../../interfaces/skiAreaInterfaces';
 
@@ -24,9 +25,13 @@ const SkiArea: React.FC<SkiAreaProps> = ({ slug, name, country, region, lat, lon
 
     const href = skiAreaDataObject.href;
 
+    console.log(slug);
+
     return (
         <Container text>
-            <Header size="huge"><a href={href}>{ name }</a></Header>
+            <Header size="huge">
+                <Link to={`/ski-areas/${slug}`}>{name}</Link>
+            </Header>
             <Container textAlign='right'>
                 <p style={{ color: "royalblue" }}>{ country }</p>
                 <p style={{ color: "royalblue" }}>{ region }</p>

@@ -37,7 +37,7 @@ const AppRoutes: React.FC = () => {
         <Routes>
             <Route path='/' element={<Home />} />
             <Route path='/login' element={<LoginForm />} />
-            <Route path='/create-user' element={<CreateNewUser />} />
+            <Route path='/register' element={<CreateNewUser />} />
             <Route path='/ski-areas' element={<SkiAreaData />} />
             <Route path='/ski-areas/:slug' element={<SkiAreaPage />} />
             <Route path='/users/:username' element={<User />} />

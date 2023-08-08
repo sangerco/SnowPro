@@ -58,7 +58,7 @@ router.post('/login', async (req: Request, res: Response, next: NextFunction) =>
     } catch (e) {
         return next(e);
     }
-})
+});
 
 // get a list of all users
 

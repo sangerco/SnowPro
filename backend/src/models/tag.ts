@@ -22,7 +22,7 @@ class Tag {
         const id = uuidv4();
 
         const result = await db.query(`
-                INSERT INTO tags (id, tag),
+                INSERT INTO tags (id, tag)
                     VALUES ($1, $2)
                     RETURNING id, tag`,
                 [id, tag]);

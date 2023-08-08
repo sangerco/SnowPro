@@ -6,7 +6,7 @@ import { fetchTagData } from "../../redux/actions/tagActions";
 import NewTagForm from "../Tags/NewTagForm";
 import { NewTagData } from "../../redux/types/tagTypes";
 import { RootState } from "../../redux/store";
-import { Button, Container, Dropdown, Form, Message } from 'semantic-ui-react';
+import { Button, Container, Divider, Dropdown, Form, Message, TextArea } from 'semantic-ui-react';
 import { TagData } from "../../redux/types/tagTypes";
 import { useParams } from "react-router";
 
@@ -23,6 +23,7 @@ interface NewReviewData {
 interface NewReviewProps {
     newReview: NewReviewData | null;
     error: string;
+    tags: TagData[] | null;
     sendNewReviewData: ( userId: string,
                             skiAreaSlug: string,
                             header: string,
@@ -33,19 +34,19 @@ interface NewReviewProps {
     fetchTagData: () => Promise<void>
 };
 
-const ReviewForm: React.FC<NewReviewProps> = ({ newReview, error, sendNewReviewData, fetchTagData }) => {
+const ReviewForm: React.FC<NewReviewProps> = ({ newReview, error, tags, sendNewReviewData, fetchTagData }) => {
     const { skiAreaSlug } = useParams<{ skiAreaSlug: string }>();
     const { userId } = useAuth();
     const initialReviewState = { userId: userId ?? '',
                                     skiAreaSlug: skiAreaSlug,
                                     header: '',
                                     body: '',
-                                    stars: 3,
+                                    stars: 0,
                                     photos: [],
                                     tagIds: []}
 
     const [formData, setFormData] = useState(initialReviewState);
-    const [tags, setTags] = useState<TagData[]>([]);
+    // const [tags, setTags] = useState<TagData[]>([]);
     const [photoLinks, setPhotoLinks] = useState<string[]>(['']);
     const [showCreateNewTagForm, setShowCreateNewTagForm] = useState<boolean>(false);
     
@@ -60,12 +61,6 @@ const ReviewForm: React.FC<NewReviewProps> = ({ newReview, error, sendNewReviewD
         fetchData();
     }, [fetchTagData]);
 
-    useEffect(() => {
-        if(tags.length > 0) {
-            setTags(tags);
-        }
-    }, [tags])
-
     const dropdownOptions = [
         { key: 1, text: '1', value: 1 },
         { key: 2, text: '2', value: 2 },
@@ -74,7 +69,9 @@ const ReviewForm: React.FC<NewReviewProps> = ({ newReview, error, sendNewReviewD
         { key: 5, text: '5', value: 5 },
     ]
 
-    const tagOptions = tags.map((tag) => ({ key: tag.id, text: tag.tag, value: tag.id}))
+    const tagOptions = (tags || []).map((tag) => ({ key: tag.id, text: tag.tag, value: tag.id}))
+
+    console.log(tagOptions);
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -125,10 +122,15 @@ const ReviewForm: React.FC<NewReviewProps> = ({ newReview, error, sendNewReviewD
                     <label>Header</label>
                     <input name="header" value={formData.header} onChange={handleChange} />
                 </Form.Field>
-                <Form.TextArea>
-                    <label>Review</label>
-                    <input placeholder="How Was It?" name="body" value={formData.body} onChange={handleChange} />
-                </Form.TextArea>
+                <Form.Field
+                    id='form-textarea-control-review'
+                    control={TextArea}
+                    label='Review'
+                    placeholder='How Was It?'
+                    name='body'
+                    value={formData.body}
+                    onChange={handleChange}
+                />
                 {photoLinks.map((photoLink, index) => (
                     <Form.Field key={index}>
                         <label>Photo Links</label>
@@ -152,12 +154,15 @@ const ReviewForm: React.FC<NewReviewProps> = ({ newReview, error, sendNewReviewD
                     content={error}
                 />
             </Form>
+            <Divider />
             <label>Tags</label>
             <Dropdown clearable options={tagOptions} multiple fluid selection value={formData.tagIds} />
-            <Button onClick={() => setShowCreateNewTagForm(true)}>Create New Tag?</Button>
+            <Button onClick={() => setShowCreateNewTagForm(true)} size="small">Create New Tag?</Button>
             {showCreateNewTagForm && <NewTagForm newTag={initialNewTagData} />}
+            <Divider />
             <label>How would you rate your experience?</label>
             <Dropdown clearable options={dropdownOptions} selection fluid value={formData.stars} />
+            <Divider />
         </Container>
     )
 };

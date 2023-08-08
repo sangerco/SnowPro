@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Dispatch } from "redux";
+import { Dispatch, Action } from "redux";
 import { URL } from "../../config";
 import type { UserData } from "../types/userTypes";
 import { FETCH_USER_DATA_FAILURE, FETCH_USER_DATA_REQUEST, FETCH_USER_DATA_SUCCESS } from "../types/userTypes";
@@ -11,7 +11,7 @@ import { MAKE_ADMIN_DATA_REQUEST, MAKE_ADMIN_DATA_SUCCESS, MAKE_ADMIN_DATA_FAILU
 import { UPDATE_USER_DATA_REQUEST, UPDATE_USER_DATA_SUCCESS, UPDATE_USER_DATA_FAILURE } from "../types/userTypes";
 import type { UpdateUserData, UpdateUserDataReturn } from "../types/userTypes";
 import { DELETE_USER_REQUEST, DELETE_USER_SUCCESS, DELETE_USER_FAILURE } from "../types/userTypes";
-import { SET_TOKEN } from "../types/userTypes";
+import { SET_TOKEN, LOGOUT_USER } from "../types/userTypes";
 
 export const fetchUserDataRequest = () => ({
     type: FETCH_USER_DATA_REQUEST
@@ -123,7 +123,15 @@ export const sendLoginDataFailure = (error: string) => ({
 export const setToken = (token: string) => ({
     type: SET_TOKEN,
     payload: token
-})
+});
+
+interface LogoutUserAction extends Action<typeof LOGOUT_USER> {}
+
+export const logoutUser = (): LogoutUserAction => {
+    return {
+        type: LOGOUT_USER
+    }
+};
 
 export const makeUserAdminRequest = (username: string, isAdmin: boolean) => ({
     type: MAKE_ADMIN_DATA_REQUEST,

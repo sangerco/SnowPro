@@ -8,7 +8,7 @@ import { Header } from 'semantic-ui-react';
 
 
 const SkiAreaPage = () => {
-    const slug = useParams();
+    const { slug } = useParams();
 
     const [skiAreaData, setSkiAreaData] = useState<SkiAreaData | null>(null);
     const [loading, setLoading] = useState(true);
@@ -16,6 +16,7 @@ const SkiAreaPage = () => {
     useEffect(() => {
         const fetchSkiAreaData = async () => {
             try {
+                console.log(slug);
                 const response = await axios.get(`${skiAreaDataUrl}/${slug}`);
                 const responseData: SkiAreaData = response.data;
                 setSkiAreaData(responseData);
