@@ -1,4 +1,4 @@
-import { GOOGLE_MAP_API } from "./config"
+import { GOOGLE_MAP_API } from '../../../backend/src/vault/secret';
 
 export const loadMapApi = () => {
     const mapsUrl = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAP_API}&libraries=places&v=weekly`;

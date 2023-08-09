@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Dimmer, Loader, Container, Grid, Divider } from 'semantic-ui-react';
+import { Dimmer, Loader, Container, Grid, Divider, List } from 'semantic-ui-react';
 import { URL } from '../../utils/config';
 import axios from 'axios';
 import { SkiAreaPageData } from '../../interfaces/skiAreaInterfaces';
@@ -80,12 +80,20 @@ const SkiAreaPage = () => {
 
         const stats = Object.keys(statsWithoutPercentObject).map((key) => {
             const value = statsObject[key as keyof LiftStats];
-            return <p key={key}>{key}: {value}</p>
+            return ( 
+                <List.Item key={key} style={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <span>{key}: </span>
+                    <span>{value}</span>
+                </List.Item>)
         });
 
         const percent = Object.keys(percentageObject).map((key) => {
             const value = percentageObject[key as keyof PercentageStats];
-            return <p key={key}>{key}: {value}%</p>
+            return (
+                    <List.Item key={key} style={{ display: 'flex', justifyContent: 'space-between' }}>
+                        <span>{key}: </span>
+                        <span>{value}%</span>
+                    </List.Item>)
         })
 
         const liftsObject = skiAreaData.lifts.status;
@@ -94,9 +102,10 @@ const SkiAreaPage = () => {
             const liftStatus = liftsObject[liftName];
             const color = statusColor(liftStatus as LiftStatus)
             return (
-                <p key={liftName}>
-                    {liftName}: <span style={{ color }}>{liftStatus}</span>
-                </p>
+                <List.Item key={liftName} style={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <span>{liftName}</span>
+                    <span style={{ color }}>{liftStatus}</span>
+                </List.Item>
             );
         });
         
@@ -112,11 +121,17 @@ const SkiAreaPage = () => {
                             <Header as='h4' textAlign='right'>Region: {skiAreaData.region}</Header>
                             <Divider />
                             <Header as='h2'>Lift Status</Header>
-                            <b>{ stats }</b>
+                            <List divided relaxed>
+                                { stats }
+                            </List>
                             <br />
-                            <b>{ percent }</b>
+                            <List divided relaxed>
+                                { percent }
+                            </List>
                             <Header as='h3'>Lifts</Header>
-                            { lifts }
+                            <List divided relaxed>
+                                { lifts }
+                            </List>
                         </Grid.Column>
                         <Grid.Column width={6}>
                             <SkiAreaMap skiAreaPageData={skiAreaData} />
