@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { fetchPhotoById } from '../../redux/actions/mediaActions';
 import axios from 'axios';
 import { useNavigate } from 'react-router'
-import { URL } from '../../config';
+import { URL } from '../../utils/config';
 
 interface PhotoData {
     id: string;
@@ -83,13 +83,13 @@ const Photo: React.FC<PhotoProps> = ({ id, photo, loading, error, fetchPhotoById
                     <Link to={'madeuplinkfornow'}>
                         <Icon name='edit' style={{ cursor: 'pointer' }} />
                     </Link>
-                    <Icon name='trash' style={{ cursor: 'pointer' }} onClick={handleShowDeleteModal(photo.id)} />
+                    <Icon name='trash' style={{ cursor: 'pointer' }} onClick={() => handleShowDeleteModal(photo.id)} />
                 </Container>
 
                 <Modal open={showDeleteModal} onClose={handleCancelDelete}>
                     <Modal.Content>Are You Sure You Want To Delete This Picture?</Modal.Content>
                     <Modal.Actions>
-                        <Button negative onClick={handleDelete}>Yes</Button>
+                        <Button negative onClick={() => handleDelete()}>Yes</Button>
                         <Button onClick={handleCancelDelete}>Cancel</Button>
                     </Modal.Actions>
                 </Modal>

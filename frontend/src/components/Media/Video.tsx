@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { fetchVideoById } from '../../redux/actions/mediaActions';
 import axios from 'axios';
 import { useNavigate } from 'react-router'
-import { URL } from '../../config';
+import { URL } from '../../utils/config';
 
 interface VideoData {
     id: string;
@@ -83,13 +83,13 @@ const Video: React.FC<VideoProps> = ({ id, video, loading, error, fetchVideoById
                     <Link to={'madeuplinkfornow'}>
                         <Icon name='edit' style={{ cursor: 'pointer' }} />
                     </Link>
-                    <Icon name='trash' style={{ cursor: 'pointer' }} onClick={handleShowDeleteModal(video.id)} />
+                    <Icon name='trash' style={{ cursor: 'pointer' }} onClick={() => handleShowDeleteModal(video.id)} />
                 </Container>
 
                 <Modal open={showDeleteModal} onClose={handleCancelDelete}>
                     <Modal.Content>Are You Sure You Want To Delete This Video?</Modal.Content>
                     <Modal.Actions>
-                        <Button negative onClick={handleDelete}>Yes</Button>
+                        <Button negative onClick={() => handleDelete()}>Yes</Button>
                         <Button onClick={handleCancelDelete}>Cancel</Button>
                     </Modal.Actions>
                 </Modal>

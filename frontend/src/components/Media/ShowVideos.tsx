@@ -3,7 +3,7 @@ import { Dimmer, Loader, Card, Image, Label, Icon, Button, Modal } from "semanti
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { fetchVideosByUsername } from '../../redux/actions/mediaActions';
-import { URL } from '../../config';
+import { URL } from '../../utils/config';
 
 import axios from 'axios';
 

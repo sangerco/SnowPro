@@ -119,7 +119,6 @@ router.get('/ski-areas', function (req, res, next) { return __awaiter(void 0, vo
                 return [4 /*yield*/, axios_1.default.request(options)];
             case 3:
                 response = _a.sent();
-                console.log(response);
                 data = response.data.data;
                 allSkiAreas = __spreadArray(__spreadArray([], allSkiAreas, true), data, true);
                 currentPage++;
@@ -130,7 +129,6 @@ router.get('/ski-areas', function (req, res, next) { return __awaiter(void 0, vo
             case 5:
                 if (!(_i < allSkiAreas_1.length)) return [3 /*break*/, 8];
                 skiArea = allSkiAreas_1[_i];
-                console.log(skiArea.slug, skiArea.name);
                 return [4 /*yield*/, skiArea_1.default.createSkiArea(skiArea.slug, skiArea.name)];
             case 6:
                 _a.sent();
@@ -173,6 +171,7 @@ router.get('/ski-areas/:slug', function (req, res, next) { return __awaiter(void
                 return [4 /*yield*/, axios_1.default.request(options)];
             case 2:
                 response = _a.sent();
+                console.log(response);
                 skiAreaData = response.data.data;
                 return [4 /*yield*/, skiArea_1.default.fetchReviewsBySkiAreaSlug(slug)];
             case 3:

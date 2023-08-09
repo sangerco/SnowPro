@@ -5,7 +5,7 @@ import { sendLoginData } from '../../redux/actions/userActions';
 import { RootState } from '../../redux/store';
 import { Button, Input, Form, Message } from 'semantic-ui-react'
 import axios from 'axios';
-import { URL } from '../../config';
+import { URL } from '../../utils/config';
 
 interface LoginData {
     username: string,

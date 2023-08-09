@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { URL } from '../../config';
+import { URL } from '../../utils/config';
 import { connect } from 'react-redux';
 import { useAuth } from '../AuthProvider';
 import { updateReview, fetchReviewDataById } from '../../redux/actions/reviewActions';

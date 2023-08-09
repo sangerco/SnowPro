@@ -1,24 +1,43 @@
 import React, { useState, useEffect } from 'react';
-import { Dimmer, Loader } from 'semantic-ui-react';
-import { skiAreaDataUrl } from '../../config';
+import { Dimmer, Loader, Container, Grid, Divider } from 'semantic-ui-react';
+import { URL } from '../../utils/config';
 import axios from 'axios';
-import { SkiAreaData } from '../../interfaces/skiAreaInterfaces';
+import { SkiAreaPageData } from '../../interfaces/skiAreaInterfaces';
 import { useParams } from 'react-router-dom';
 import { Header } from 'semantic-ui-react';
+import SkiAreaMap from './SkiAreaMap';
 
+type LiftStats = {
+    open: number;
+    hold: number;
+    scheduled: number;
+    closed: number;
+};
+
+type PercentageStats = {
+    open: number;
+    hold: number;
+    scheduled: number;
+    closed: number;
+};
+
+type Stats = {
+    stats: LiftStats & { percentage: PercentageStats };
+};
+
+type LiftStatus = 'closed' | 'open' | 'hold' | 'scheduled';
 
 const SkiAreaPage = () => {
     const { slug } = useParams();
 
-    const [skiAreaData, setSkiAreaData] = useState<SkiAreaData | null>(null);
+    const [skiAreaData, setSkiAreaData] = useState<SkiAreaPageData | null>(null);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchSkiAreaData = async () => {
             try {
-                console.log(slug);
-                const response = await axios.get(`${skiAreaDataUrl}/${slug}`);
-                const responseData: SkiAreaData = response.data;
+                const response = await axios.get(`${URL}/ski-areas/${slug}`);
+                const responseData = response.data;
                 setSkiAreaData(responseData);
                 setLoading(false);
             } catch (e: any) {
@@ -31,6 +50,8 @@ const SkiAreaPage = () => {
         fetchSkiAreaData();
     }, [slug]);
 
+
+
     if(loading) {
         return (
             <div>
@@ -40,13 +61,70 @@ const SkiAreaPage = () => {
             </div>
         )
     } else if (skiAreaData !== null) {
+        const statsObject = skiAreaData.lifts.stats;
+        const { percentage, ...statsWithoutPercentObject } = statsObject
+        const percentageObject = statsObject.percentage
+
+        const statusColor = (status: LiftStatus): string => {
+            switch (status) {
+                case "closed":
+                    return 'red';
+                case "open":
+                    return 'green';
+                case "hold":
+                    return 'yellow';
+                case "scheduled":
+                    return 'blue'
+            }
+        }
+
+        const stats = Object.keys(statsWithoutPercentObject).map((key) => {
+            const value = statsObject[key as keyof LiftStats];
+            return <p key={key}>{key}: {value}</p>
+        });
+
+        const percent = Object.keys(percentageObject).map((key) => {
+            const value = percentageObject[key as keyof PercentageStats];
+            return <p key={key}>{key}: {value}%</p>
+        })
+
+        const liftsObject = skiAreaData.lifts.status;
+
+        const lifts = Object.keys(liftsObject).map((liftName) => {
+            const liftStatus = liftsObject[liftName];
+            const color = statusColor(liftStatus as LiftStatus)
+            return (
+                <p key={liftName}>
+                    {liftName}: <span style={{ color }}>{liftStatus}</span>
+                </p>
+            );
+        });
+        
         return (
-            <div>
-                <Header>
-                    {skiAreaData.data.name}
-                </Header>
-                <p>{skiAreaData.data.slug}</p>
-            </div>
+            <Container fluid>
+                <Grid>
+                    <Grid.Row>
+                        <Grid.Column width={3}></Grid.Column>
+                        <Grid.Column width={6}>
+                            <a href={skiAreaData.href}><Header as='h1' color='green'>{skiAreaData.name}</Header></a>
+                            <Divider />
+                            <Header as='h4' textAlign='right'>Country: {skiAreaData.country}</Header>
+                            <Header as='h4' textAlign='right'>Region: {skiAreaData.region}</Header>
+                            <Divider />
+                            <Header as='h2'>Lift Status</Header>
+                            <b>{ stats }</b>
+                            <br />
+                            <b>{ percent }</b>
+                            <Header as='h3'>Lifts</Header>
+                            { lifts }
+                        </Grid.Column>
+                        <Grid.Column width={6}>
+                            <SkiAreaMap skiAreaPageData={skiAreaData} />
+                        </Grid.Column>
+                        <Grid.Column width={1}></Grid.Column>
+                    </Grid.Row>
+                </Grid>
+            </Container>
         )
     }
 

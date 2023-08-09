@@ -1,6 +1,6 @@
 import axios from "axios";
 import { Dispatch } from "redux";
-import { URL } from "../../config";
+import { URL } from "../../utils/config";
 import {    ReviewDataReturn,
             SEND_NEW_REVIEW_DATA_REQUEST,
             SEND_NEW_REVIEW_DATA_SUCCESS,

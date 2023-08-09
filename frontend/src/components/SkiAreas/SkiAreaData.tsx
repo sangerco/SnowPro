@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Dimmer, Loader } from "semantic-ui-react";
-import { URL } from "../../config";
+import { URL } from "../../utils/config";
 import SkiArea from "./SkiArea";
 import axios from "axios";
 import { SkiResort, SkiResortDataResponse } from "../../interfaces/skiAreaInterfaces";

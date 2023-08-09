@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { URL } from '../../config';
+import { URL } from '../../utils/config';
 import { Link } from 'react-router-dom';
 import { Container, Header, Icon } from "semantic-ui-react";
 import { SkiAreaProps, SkiAreaData } from '../../interfaces/skiAreaInterfaces';

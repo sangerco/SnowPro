@@ -1,6 +1,6 @@
 import axios from "axios";
 import { Dispatch } from "redux";
-import { URL } from "../../config";
+import { URL } from "../../utils/config";
 import {  NewFavMountainData,
             FavMountainDataReturn,
             SEND_NEW_FAV_MOUNTAIN_DATA_REQUEST,

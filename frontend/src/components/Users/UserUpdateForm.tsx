@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios, { AxiosResponse } from 'axios';
-import { URL } from '../../config'
+import { URL } from '../../utils/config'
 import { connect } from 'react-redux';
 import { useAuth } from '../AuthProvider';
 import { updateUserData } from '../../redux/actions/userActions';

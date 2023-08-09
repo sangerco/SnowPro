@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { sendNewReplyData } from '../../redux/actions/messageReplyActions'
 import { RootState } from '../../redux/store';
 import { Button, Form, Message } from 'semantic-ui-react';
-import { URL } from '../../config';
+import { URL } from '../../utils/config';
 
 interface MessageData {
     message_id: string;

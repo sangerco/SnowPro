@@ -44,7 +44,6 @@ router.get('/ski-areas', async (req: Request, res: Response, next: NextFunction)
             };
     
             const response = await axios.request(options);
-            console.log(response)
             const { data } = response.data;
             
             allSkiAreas = [ ...allSkiAreas, ...data ];
@@ -52,7 +51,6 @@ router.get('/ski-areas', async (req: Request, res: Response, next: NextFunction)
         }
         
         for (let skiArea of allSkiAreas) {
-            console.log(skiArea.slug, skiArea.name);
             await SkiArea.createSkiArea(skiArea.slug, skiArea.name)
         }
 
@@ -79,6 +77,7 @@ router.get('/ski-areas/:slug', async (req: Request, res: Response, next: NextFun
         };
 
         const response = await axios.request(options);
+        console.log(response)
         const skiAreaData: SkiAreaData = response.data.data;
 
         const getReviewData: SkiAreaReviewDataReturn[] = await SkiArea.fetchReviewsBySkiAreaSlug(slug);

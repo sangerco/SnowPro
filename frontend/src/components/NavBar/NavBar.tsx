@@ -1,5 +1,5 @@
 import React from 'react';
-import { connect, useDispatch } from 'react-redux';
+import { connect, useDispatch, useSelector } from 'react-redux';
 import { logoutUser } from '../../redux/actions/userActions';
 import { Link } from 'react-router-dom';
 import { Menu, Dropdown } from 'semantic-ui-react';
@@ -7,13 +7,14 @@ import { RootState } from '../../redux/store';
 import { useAuth } from '../AuthProvider';
 
 interface NavBarProps {
-    isAuthenticated: boolean;
     logoutUser: () => void;
 }
 
-const NavBar: React.FC<NavBarProps> = ({ isAuthenticated, logoutUser }) => {
+const NavBar: React.FC<NavBarProps> = ({ logoutUser }) => {
     const dispatch = useDispatch();
     const { username } = useAuth();
+
+    const isAuthenticated = useSelector((state: RootState) => state.login.token)
 
     const handleLogout = () => {
         dispatch(logoutUser() as any);

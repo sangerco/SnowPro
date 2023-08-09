@@ -1,6 +1,6 @@
 import axios from "axios";
 import { Dispatch, Action } from "redux";
-import { URL } from "../../config";
+import { URL } from "../../utils/config";
 import type { UserData } from "../types/userTypes";
 import { FETCH_USER_DATA_FAILURE, FETCH_USER_DATA_REQUEST, FETCH_USER_DATA_SUCCESS } from "../types/userTypes";
 import type { NewUserDataReturn } from "../types/userTypes";
