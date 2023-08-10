@@ -171,7 +171,6 @@ router.get('/ski-areas/:slug', function (req, res, next) { return __awaiter(void
                 return [4 /*yield*/, axios_1.default.request(options)];
             case 2:
                 response = _a.sent();
-                console.log(response);
                 skiAreaData = response.data.data;
                 return [4 /*yield*/, skiArea_1.default.fetchReviewsBySkiAreaSlug(slug)];
             case 3:

@@ -34,6 +34,15 @@ router.patch('/api/reviews/:id', ensureLoggedIn, checkIfUserOrAdmin,async (req: 
     }
 });
 
+router.get('/ski-areas/reviews', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const reviews = await Review.getAllReviews();
+        return res.json({ reviews });
+    } catch (e) {
+        next(e);
+    }
+});
+
 // get reviews by ski area name
 
 router.get('/ski-areas/:slug/reviews', async (req: Request, res: Response, next: NextFunction) => {

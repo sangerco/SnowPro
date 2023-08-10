@@ -5,6 +5,9 @@ import {    ReviewDataReturn,
             SEND_NEW_REVIEW_DATA_REQUEST,
             SEND_NEW_REVIEW_DATA_SUCCESS,
             SEND_NEW_REVIEW_DATA_FAILURE,
+            FETCH_ALL_REVIEWS_DATA_REQUEST,
+            FETCH_ALL_REVIEWS_DATA_SUCCESS,
+            FETCH_ALL_REVIEWS_DATA_FAILURE,
             FETCH_REVIEW_DATA_REQUEST,
             FETCH_REVIEW_DATA_BY_ID_REQUEST,
             FETCH_REVIEW_DATA_SUCCESS,
@@ -16,7 +19,8 @@ import {    ReviewDataReturn,
             DELETE_REVIEW_REQUEST,
             DELETE_REVIEW_SUCCESS,
             DELETE_REVIEW_FAILURE,
-            DeleteReview } from "../types/reviewTypes";
+            DeleteReview, 
+            ReviewData} from "../types/reviewTypes";
 
 export const sendNewReviewDataRequest = (
                             userId: string,
@@ -45,6 +49,20 @@ export const sendNewReviewDataSuccess = (sendReviewDataReturn: ReviewDataReturn)
 
 export const sendNewReviewDataFailure = (error: string) => ({
     type: SEND_NEW_REVIEW_DATA_FAILURE,
+    payload: error
+});
+
+export const fetchAllReviewsDataRequest = () => ({
+    type: FETCH_ALL_REVIEWS_DATA_REQUEST
+});
+
+export const fetchAllReviewsDataSuccess = (reviewData: ReviewData[]) => ({
+    type: FETCH_ALL_REVIEWS_DATA_SUCCESS,
+    payload: reviewData
+});
+
+export const fetchAllReviewsDataFailure = (error: string) => ({
+    type: FETCH_ALL_REVIEWS_DATA_FAILURE,
     payload: error
 });
 
@@ -157,6 +175,21 @@ export const sendNewReviewData = (
                 }
             }
         };
+
+export const fetchAllReviewsData = () => {
+    return async (dispatch: Dispatch) => {
+        dispatch(fetchAllReviewsDataRequest());
+
+        try {
+            const response = await axios.get(`${URL}/ski-areas/reviews`);
+            const responseData: ReviewData[] = response.data.reviews;
+            dispatch(fetchAllReviewsDataSuccess(responseData));
+        } catch (error: any) {
+            dispatch(fetchAllReviewsDataFailure(error.message));
+        }
+    }
+}
+
 
 export const fetchReviewDataBySkiArea = (skiAreaSlug: string) => {
     return async (dispatch: Dispatch) => {

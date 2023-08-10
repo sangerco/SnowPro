@@ -29,17 +29,20 @@ import UpdateUser from './components/Users/UpdateUser';
 import User from './components/Users/User';
 import UserList from './components/Users/UserList';
 import UserUpdateForm from './components/Users/UserUpdateForm';
-import Home from './components/Home'
+import Home from './components/Home/Home'
 
 
 const AppRoutes: React.FC = () => {
     return (
         <Routes>
-            <Route path='/' element={<Home />} />
+            <Route path='/' element={<Home user={null} fetchUserData={function (username: string): void {
+                throw new Error('Function not implemented.');
+            } } />} />
             <Route path='/login' element={<LoginForm />} />
             <Route path='/register' element={<CreateNewUser />} />
             <Route path='/ski-areas' element={<SkiAreaData />} />
             <Route path='/ski-areas/:slug' element={<SkiAreaPage />} />
+            <Route path='/users/' element={<UserList />} />
             <Route path='/users/:username' element={<User />} />
             <Route path='/users/:username/update' element={<UserUpdateForm />} />
             <Route path='/ski-areas/:slug/review' element={<ReviewForm error={''} />} />

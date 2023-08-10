@@ -54,7 +54,11 @@ const Review: React.FC<ReviewProps> = ({ review, loading, error, fetchReviewData
         )
     }
 
-    if(error) return `Error! ${error}`
+    if(error) {
+        return (
+            <div>{`Error! ${error}`}</div>
+        )
+    }
 
     if(review) {
         const date = formatDate(review.createdAt)
@@ -70,12 +74,14 @@ const Review: React.FC<ReviewProps> = ({ review, loading, error, fetchReviewData
                     <p>{review.body}</p>
                     <Divider />
                     {review.tags.length > 0 ? review.tags.map(tag => 
-                    <Label.Group green>
-                            <Label as='a'>{tag}</Label>
-                    </Label.Group>) : <Divider />}
+                        <div>
+                            <Label.Group green>
+                                    <Label as='a'>{tag}</Label>
+                            </Label.Group>
+                        </div>) : <Divider />}
                     <Divider />
                     {review.photos.length > 0 ? review.photos.map(photo => 
-                    <Image src={photo} fluid />) : <p>No photos yet.</p>}
+                    <div><Image src={photo} fluid /></div>) : <p>No photos yet.</p>}
                 </Container>
 
 

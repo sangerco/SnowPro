@@ -2,6 +2,7 @@ import db from '../db';
 import { sqlForPartialUpdate } from '../helpers/sql';
 import { NotFoundError } from '../expressError';
 import { v4 as uuidv4 } from 'uuid';
+import axios from 'axios';
 
 interface ReviewData {
     id: string;
@@ -226,6 +227,33 @@ class Review {
             if(!review) throw new NotFoundError('Review Not Found');
 
             return review;
+    }
+
+    static async getAllReviews(): Promise<ReviewDataReturn[]> {
+            const result = await db.query(`
+                SELECT r.id,
+                    r.user_id AS "userId",
+                    r.ski_area_slug AS "skiAreaSlug",
+                    r.header,
+                    r.body,
+                    r.stars,
+                    p.link AS "photos",
+                    u.username,
+                    s.name AS "skiAreaName",
+                    t.tag AS "tags"
+                FROM reviews r
+                LEFT JOIN users u ON r.user_id = u.id
+                LEFT JOIN ski_areas s ON r.ski_area_slug = s.slug
+                LEFT JOIN review_tags rt ON r.tag_ids = rt.tag_id
+                LEFT JOIN tags t ON rt.tag_id = t.id
+                LEFT JOIN reviews_photos rp ON r.photos = rp.photo_id
+                LEFT JOIN photos p ON rp.photo_id = p.id
+                ORDER BY r.created_at
+                `);
+
+            const reviews = result.rows;
+
+            return reviews;
     }
 
     static async removeReview(id: string): Promise<void> {

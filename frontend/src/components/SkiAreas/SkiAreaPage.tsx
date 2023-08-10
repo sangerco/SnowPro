@@ -6,6 +6,7 @@ import { SkiAreaPageData } from '../../interfaces/skiAreaInterfaces';
 import { useParams } from 'react-router-dom';
 import { Header } from 'semantic-ui-react';
 import SkiAreaMap from './SkiAreaMap';
+import SkiAreaReviewView from './SkiAreaReviewView';
 
 type LiftStats = {
     open: number;
@@ -109,6 +110,12 @@ const SkiAreaPage = () => {
             );
         });
         
+        const reviews = skiAreaData.reviewData.map(review => {
+            return (
+                <SkiAreaReviewView review={review}  />
+            )
+        })
+
         return (
             <Container fluid>
                 <Grid>
@@ -119,6 +126,11 @@ const SkiAreaPage = () => {
                             <Divider />
                             <Header as='h4' textAlign='right'>Country: {skiAreaData.country}</Header>
                             <Header as='h4' textAlign='right'>Region: {skiAreaData.region}</Header>
+                            <Divider />
+                            { reviews }
+                        </Grid.Column>
+                        <Grid.Column width={6}>
+                            <SkiAreaMap skiAreaPageData={skiAreaData} />
                             <Divider />
                             <Header as='h2'>Lift Status</Header>
                             <List divided relaxed>
@@ -133,15 +145,14 @@ const SkiAreaPage = () => {
                                 { lifts }
                             </List>
                         </Grid.Column>
-                        <Grid.Column width={6}>
-                            <SkiAreaMap skiAreaPageData={skiAreaData} />
-                        </Grid.Column>
                         <Grid.Column width={1}></Grid.Column>
                     </Grid.Row>
                 </Grid>
             </Container>
         )
     }
+
+    return null;
 
 };
 

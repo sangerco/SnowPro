@@ -68,6 +68,8 @@ const SkiAreaMap: React.FC<SkiAreaMapProps> = ({ skiAreaPageData }) => {
                                     padding: '10px' }}></div>
         )
     }
+
+    return null;
  };
 
  export default SkiAreaMap;

@@ -17,7 +17,7 @@ interface PhotoData {
 
 interface PhotoProps {
     id: string;
-    photo: PhotoData | null;
+    photo: PhotoData;
     loading: boolean;
     error: string | null;
     fetchPhotoById: (id: string) => void;
@@ -25,7 +25,6 @@ interface PhotoProps {
 
 const Photo: React.FC<PhotoProps> = ({ id, photo, loading, error, fetchPhotoById }) => {
     const navigate = useNavigate();
-    const username = photo?.username;
 
     const [photoToDelete, setPhotoToDelete] = useState('');
     const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -44,6 +43,8 @@ const Photo: React.FC<PhotoProps> = ({ id, photo, loading, error, fetchPhotoById
 
         await axios.delete(`${URL}/api/photo/${id}`);
         setPhotoToDelete('');
+        // Check for photo
+        const username = photo.username;
 
         navigate(`${URL}/users/${username}`);
     }
@@ -96,6 +97,8 @@ const Photo: React.FC<PhotoProps> = ({ id, photo, loading, error, fetchPhotoById
             </div>
         )
     }
+
+    return null;
 };
 
 const mapStateToProps = (state: any) => ({

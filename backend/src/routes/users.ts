@@ -95,7 +95,7 @@ router.get('/users/:username', ensureLoggedIn, checkIfUserOrAdmin,async (req: Re
 
 // make a user an admin
 
-router.patch('/admin/:username', ensureLoggedIn, checkIfAdmin, async (req: Request, res: Response, next: NextFunction) => {
+router.patch('/api/admin/:username', ensureLoggedIn, checkIfAdmin, async (req: Request, res: Response, next: NextFunction) => {
     try{
         const validator: jsonschema.ValidatorResult = jsonschema.validate(req.body, makeAdminSchema);
         if(!validator.valid) {

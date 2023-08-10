@@ -96,6 +96,8 @@ const Video: React.FC<VideoProps> = ({ id, video, loading, error, fetchVideoById
             </div>
         )
     }
+
+    return null;
 };
 
 const mapStateToProps = (state: any) => ({

@@ -77,7 +77,6 @@ router.get('/ski-areas/:slug', async (req: Request, res: Response, next: NextFun
         };
 
         const response = await axios.request(options);
-        console.log(response)
         const skiAreaData: SkiAreaData = response.data.data;
 
         const getReviewData: SkiAreaReviewDataReturn[] = await SkiArea.fetchReviewsBySkiAreaSlug(slug);

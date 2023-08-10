@@ -190,6 +190,20 @@ var Review = /** @class */ (function () {
             });
         });
     };
+    Review.getAllReviews = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var result, reviews;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, db_1.default.query("\n                SELECT r.id,\n                    r.user_id AS \"userId\",\n                    r.ski_area_slug AS \"skiAreaSlug\",\n                    r.header,\n                    r.body,\n                    r.stars,\n                    p.link AS \"photos\",\n                    u.username,\n                    s.name AS \"skiAreaName\",\n                    t.tag AS \"tags\"\n                FROM reviews r\n                LEFT JOIN users u ON r.user_id = u.id\n                LEFT JOIN ski_areas s ON r.ski_area_slug = s.slug\n                LEFT JOIN review_tags rt ON r.tag_ids = rt.tag_id\n                LEFT JOIN tags t ON rt.tag_id = t.id\n                LEFT JOIN reviews_photos rp ON r.photos = rp.photo_id\n                LEFT JOIN photos p ON rp.photo_id = p.id\n                ORDER BY r.created_at\n                ")];
+                    case 1:
+                        result = _a.sent();
+                        reviews = result.rows;
+                        return [2 /*return*/, reviews];
+                }
+            });
+        });
+    };
     Review.removeReview = function (id) {
         return __awaiter(this, void 0, void 0, function () {
             var result, review;

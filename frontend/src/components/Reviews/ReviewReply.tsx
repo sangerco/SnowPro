@@ -34,7 +34,7 @@ const ReviewReply: React.FC<ReviewReplyProps> = ({ reviewReply, error, fetchNewR
         return newDate.toLocaleDateString('en-US', options);
     }
 
-    if(error) return `Error retrieving this reply! ${error}`;
+    if(error) return <div>`Error retrieving this reply! ${error}`</div>;
 
     if(reviewReply) {
         const date = formatDate(reviewReply.createdAt)

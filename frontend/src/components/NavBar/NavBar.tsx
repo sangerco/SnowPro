@@ -23,6 +23,7 @@ const NavBar: React.FC<NavBarProps> = ({ logoutUser }) => {
     const userMenuOptions = [
         { key: 'profile', text: 'Profile Page', icon: 'user', as: Link, to: `/users/${username}` },
         { key: 'inbox', text: 'Messages', icon: 'envelope', as: Link, to: `/users/${username}/inbox`},
+        { key: 'userlist', text: 'Users', icon: 'users', as: Link, to: `/users` },
         { key: 'logout', text: 'Logout', icon: 'sign-out', onClick: handleLogout},
     ];
 

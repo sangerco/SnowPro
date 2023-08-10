@@ -117,15 +117,18 @@ export interface SkiAreaPageData {
     };
 
     reviewData: {
-        slug: string;
-        name: string;
-        userId: string | null;
-        skiAreaSlug: string | null;
+        id: string;
+        username: string;
+        userId: string;
+        skiAreaSlug: string;
+        skiAreaName: string;
+        header: string | null;
         body: string | null;
         stars: number | null;
         photos: string[] | null; 
         tagIds: string[] | null; 
         tags: string[] | null; 
+        createdAt: Date;
     }[];
 
     usersFavoritedBy: {
@@ -133,4 +136,19 @@ export interface SkiAreaPageData {
         userId: string | null;
         username: string | null;
     }[];
-}
+};
+
+export interface ReviewViewData {
+    id: string;
+    username: string;
+    userId: string;
+    skiAreaSlug: string;
+    skiAreaName: string;
+    header: string | null;
+    body: string | null;
+    stars: number | null;
+    photos: string[] | null; 
+    tagIds: string[] | null; 
+    tags: string[] | null; 
+    createdAt: Date;
+};

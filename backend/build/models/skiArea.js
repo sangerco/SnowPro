@@ -77,7 +77,7 @@ var SkiArea = /** @class */ (function () {
             var result, reviews;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, db_1.default.query("\n            SELECT r.id,\n                r.user_id AS \"userId\",\n                r.ski_area_slug AS \"skiAreaSlug\",\n                r.body,\n                r.stars,\n                r.photos,\n                u.username,\n                s.name AS \"skiAreaName\",\n                t.tag\n            FROM reviews r\n            LEFT JOIN users u ON r.user_id = u.id\n            LEFT JOIN ski_areas s ON r.ski_area_slug = s.slug\n            LEFT JOIN review_tags rt ON r.tag_ids = rt.tag_id\n            LEFT JOIN tags t ON rt.tag_id = t.id\n            WHERE r.ski_area_slug = $1\n            ORDER BY r.created_at", [slug])];
+                    case 0: return [4 /*yield*/, db_1.default.query("\n            SELECT r.id,\n                r.user_id AS \"userId\",\n                r.ski_area_slug AS \"skiAreaSlug\",\n                r.header,\n                r.body,\n                r.stars,\n                r.photos,\n                r.created_at AS \"createdAt\",\n                u.username,\n                s.name AS \"skiAreaName\",\n                t.tag\n            FROM reviews r\n            LEFT JOIN users u ON r.user_id = u.id\n            LEFT JOIN ski_areas s ON r.ski_area_slug = s.slug\n            LEFT JOIN review_tags rt ON r.tag_ids = rt.tag_id\n            LEFT JOIN tags t ON rt.tag_id = t.id\n            WHERE r.ski_area_slug = $1\n            ORDER BY r.created_at", [slug])];
                     case 1:
                         result = _a.sent();
                         reviews = result.rows;

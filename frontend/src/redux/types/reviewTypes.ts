@@ -82,6 +82,9 @@ export interface DeleteReview {
 export const SEND_NEW_REVIEW_DATA_REQUEST = 'SEND_NEW_REVIEW_DATA_REQUEST';
 export const SEND_NEW_REVIEW_DATA_SUCCESS = 'SEND_NEW_REVIEW_DATA_SUCCESS';
 export const SEND_NEW_REVIEW_DATA_FAILURE = 'SEND_NEW_REVIEW_DATA_FAILURE';
+export const FETCH_ALL_REVIEWS_DATA_REQUEST = 'FETCH_ALL_REVIEWS_DATA_REQUEST';
+export const FETCH_ALL_REVIEWS_DATA_SUCCESS = 'FETCH_ALL_REVIEWS_DATA_SUCCESS';
+export const FETCH_ALL_REVIEWS_DATA_FAILURE = 'FETCH_ALL_REVIEWS_DATA_FAILURE';
 export const FETCH_REVIEW_DATA_REQUEST = 'FETCH_REVIEW_DATA_REQUEST';
 export const FETCH_REVIEW_DATA_BY_ID_REQUEST = 'FETCH_REVIEW_DATA_BY_ID_REQUEST';
 export const FETCH_REVIEW_DATA_SUCCESS = 'FETCH_REVIEW_DATA_SUCCESS';
@@ -105,6 +108,20 @@ export interface sendNewReviewDataSuccessAction {
 
 export interface sendNewReviewDataFailureAction {
     type: typeof SEND_NEW_REVIEW_DATA_FAILURE,
+    payload: string
+};
+
+export interface fetchAllReviewsDataRequestAction {
+    type: typeof FETCH_ALL_REVIEWS_DATA_REQUEST
+};
+
+export interface fetchAllReviewsDataSuccessAction {
+    type: typeof FETCH_ALL_REVIEWS_DATA_SUCCESS,
+    payload: ReviewData[]
+};
+
+export interface fetchAllReviewsDataFailureAction {
+    type: typeof FETCH_ALL_REVIEWS_DATA_FAILURE,
     payload: string
 };
 

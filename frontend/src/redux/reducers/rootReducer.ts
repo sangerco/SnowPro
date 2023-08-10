@@ -18,6 +18,7 @@ import {  deletePhotoReducer,
           updatePhotoReducer,
           updateVideoReducer } from './mediaReducer';
 import {  reviewReducer,
+          allReviewsReducer,
           newReviewReducer,
           updateReviewReducer,
           deleteReviewReducer } from './reviewReducer';
@@ -56,6 +57,7 @@ const rootReducer = combineReducers({
   updateVideo: updateVideoReducer,
   deleteVideo: deleteVideoReducer,
   review: reviewReducer,
+  reviews: allReviewsReducer,
   newReview: newReviewReducer,
   updateReview: updateReviewReducer,
   deleteReview: deleteReviewReducer,

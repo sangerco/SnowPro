@@ -175,7 +175,7 @@ router.get('/users/:username', auth_1.ensureLoggedIn, auth_1.checkIfUserOrAdmin,
     });
 }); });
 // make a user an admin
-router.patch('/admin/:username', auth_1.ensureLoggedIn, auth_1.checkIfAdmin, function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+router.patch('/api/admin/:username', auth_1.ensureLoggedIn, auth_1.checkIfAdmin, function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
     var validator, errors, user, e_5;
     return __generator(this, function (_a) {
         switch (_a.label) {

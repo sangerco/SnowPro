@@ -3,6 +3,9 @@ import {    SEND_NEW_REVIEW_DATA_REQUEST,
             SEND_NEW_REVIEW_DATA_FAILURE,
             ReviewData,
             NewReviewData,
+            FETCH_ALL_REVIEWS_DATA_REQUEST,
+            FETCH_ALL_REVIEWS_DATA_SUCCESS,
+            FETCH_ALL_REVIEWS_DATA_FAILURE,
             FETCH_REVIEW_DATA_BY_ID_REQUEST,
             FETCH_REVIEW_DATA_SUCCESS,
             FETCH_REVIEW_DATA_FAILURE,
@@ -68,6 +71,29 @@ export const reviewReducer = (state = initialReviewState, action: any) => {
                 data: action.payload
             };
         case FETCH_REVIEW_DATA_FAILURE:
+            return {
+                ...state,
+                error: action.payload
+            };
+
+        default:
+            return state
+    }
+};
+
+export const allReviewsReducer = (state = initialReviewState, action: any) => {
+    switch(action.type) {
+        case FETCH_ALL_REVIEWS_DATA_REQUEST:
+            return {
+                ...state,
+                error: null
+            };
+        case FETCH_ALL_REVIEWS_DATA_SUCCESS:
+            return {
+                ...state,
+                data: action.payload
+            };
+        case FETCH_ALL_REVIEWS_DATA_FAILURE:
             return {
                 ...state,
                 error: action.payload

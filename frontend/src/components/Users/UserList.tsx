@@ -1,6 +1,8 @@
+import React from 'react';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Dimmer, Loader } from 'semantic-ui-react';
+import { Card, Dimmer, Grid, Image, Loader } from 'semantic-ui-react';
+import { URL } from '../../utils/config';
 
 interface User {
     id: string;
@@ -27,7 +29,7 @@ const UserList = () => {
     useEffect(() => {
         const fetchUserListData = async () => {
             try {
-                const response: UserListDataResponse = await axios.get('http://localhost:5000/users/all-users');
+                const response: UserListDataResponse = await axios.get(`${URL}/users/all-users`);
                 setUserList(response.data.users);
             } catch (e) {
                 console.error(e)
@@ -39,17 +41,28 @@ const UserList = () => {
     
     if(userList.length > 0) {
         return (
-            <div>
-                {userList.map((user) => (
-                    <div key={user.id}>
-                        <h3>{user.firstName} {user.lastName}</h3>
-                        <p>{user.username}</p>
-                        <p>{user.email}</p>
-                        {user.avatar && <img src={user.avatar} alt="user avatar" />}
-                        <p>{user.bio}</p>
-                    </div>
-                ))}
-            </div>
+            <Grid>
+                <Grid.Row>
+                    <Grid.Column width={1}></Grid.Column>
+                    <Grid.Column width={14}>
+                        <Card.Group>
+                            {userList.map((user) => (
+                                <Card key={user.id}>
+                                    {user.avatar && <Image 
+                                        size='small'
+                                        floated='right'
+                                        src={user.avatar} alt="user avatar" />}
+                                    <Card.Header>{user.firstName} {user.lastName}</Card.Header>
+                                    <Card.Meta color='green'><strong>{user.username}</strong></Card.Meta>
+                                    <Card.Meta>{user.email}</Card.Meta>
+                                    <Card.Description>{user.bio}</Card.Description>
+                                </Card>
+                            ))}
+                        </Card.Group>
+                    </Grid.Column>
+                    <Grid.Column width={1}></Grid.Column>
+                </Grid.Row>
+            </Grid>
         )
     } else {
         return (

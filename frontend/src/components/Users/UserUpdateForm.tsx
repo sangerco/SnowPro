@@ -178,5 +178,5 @@ const mapStateToProps = (state: RootState) => ({
 });
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-nocheck
+// @ts-ignore
 export default connect(mapStateToProps, { updateUserData })(UserUpdateForm);

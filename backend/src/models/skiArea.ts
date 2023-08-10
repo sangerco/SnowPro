@@ -38,9 +38,11 @@ class SkiArea {
             SELECT r.id,
                 r.user_id AS "userId",
                 r.ski_area_slug AS "skiAreaSlug",
+                r.header,
                 r.body,
                 r.stars,
                 r.photos,
+                r.created_at AS "createdAt",
                 u.username,
                 s.name AS "skiAreaName",
                 t.tag
