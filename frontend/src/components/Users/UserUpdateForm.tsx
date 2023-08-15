@@ -4,10 +4,10 @@ import axios, { AxiosResponse } from 'axios';
 import { URL } from '../../utils/config'
 import { connect } from 'react-redux';
 import { useAuth } from '../AuthProvider';
-import { updateUserData } from '../../redux/actions/userActions';
-import { RootState } from '../../redux/store';
+import { updateUserData } from '../../oldRedux/actions/userActions';
+import { RootState } from '../../oldRedux/store';
 import { Button, Input, Form, Message, Dimmer, Loader } from 'semantic-ui-react';
-import { UpdateUserData } from '../../redux/types/userTypes';
+import { UpdateUserData } from '../../oldRedux/types/userTypes';
 
 interface UpdateData {
     id: string;

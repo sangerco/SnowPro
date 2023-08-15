@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Dimmer, Loader, Card, Image, Label, Icon, Button, Modal } from "semantic-ui-react";
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { fetchPhotosByUsername } from '../../redux/actions/mediaActions';
+import { fetchPhotosByUsername } from '../../oldRedux/actions/mediaActions';
 import { URL } from '../../utils/config';
 
 import axios from 'axios';

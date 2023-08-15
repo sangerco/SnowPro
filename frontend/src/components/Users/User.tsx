@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Dimmer, Loader } from "semantic-ui-react";
 import { connect } from 'react-redux';
-import { fetchUserData } from '../../redux/actions/userActions';
+import { fetchUserData } from '../../oldRedux/actions/userActions';
 import ShowPhotos from '../Media/ShowPhotos';
 import ShowVideos from '../Media/ShowVideos';
 import { Container, Header, Grid, Image } from 'semantic-ui-react';

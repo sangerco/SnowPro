@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Container, Dimmer, Loader, Image, Divider, Label,Button, Icon, Modal } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { fetchVideoById } from '../../redux/actions/mediaActions';
+import { fetchVideoById } from '../../oldRedux/actions/mediaActions';
 import axios from 'axios';
 import { useNavigate } from 'react-router'
 import { URL } from '../../utils/config';

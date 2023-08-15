@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import './Home.css';
 import { useAuth } from '../AuthProvider';
-import { RootState } from '../../redux/store'
-import { fetchUserData } from '../../redux/actions/userActions';
+import { RootState } from '../../oldRedux/store'
+import { fetchUserData } from '../../oldRedux/actions/userActions';
 import { useSelector } from 'react-redux';
 
 interface UserData {

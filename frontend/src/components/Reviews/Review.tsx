@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { fetchReviewDataById } from '../../redux/actions/reviewActions';
+import { fetchReviewDataById } from '../../oldRedux/actions/reviewActions';
 import { connect } from 'react-redux';
 import { useParams } from "react-router";
 import { Container, Dimmer, Loader, Header, Divider, Image, Label, Button } from 'semantic-ui-react';
-import { ReviewReplyData } from "../../redux/types/reviewReplyTypes";
+import { ReviewReplyData } from "../../oldRedux/types/reviewReplyTypes";
 import ReviewReply from "./ReviewReply";
 import ReviewReplyForm from "./ReviewReplyForm";
 

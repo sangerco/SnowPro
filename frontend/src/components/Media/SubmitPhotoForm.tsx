@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { useAuth } from '../AuthProvider';
-import { sendNewPhoto } from '../../redux/actions/mediaActions';
-import { RootState } from '../../redux/store';
+import { sendNewPhoto } from '../../oldRedux/actions/mediaActions';
+import { RootState } from '../../oldRedux/store';
 import { Button, Form, Message, Dropdown } from 'semantic-ui-react';
 import NewTagForm from '../Tags/NewTagForm';
-import { NewTagData } from "../../redux/types/tagTypes";
-import { TagData } from "../../redux/types/tagTypes";
-import { fetchTagData } from "../../redux/actions/tagActions";
+import { NewTagData } from "../../oldRedux/types/tagTypes";
+import { TagData } from "../../oldRedux/types/tagTypes";
+import { fetchTagData } from "../../oldRedux/actions/tagActions";
 
 
 interface NewPhotoData {

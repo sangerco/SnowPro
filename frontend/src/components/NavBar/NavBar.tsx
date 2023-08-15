@@ -1,9 +1,9 @@
 import React from 'react';
 import { connect, useDispatch, useSelector } from 'react-redux';
-import { logoutUser } from '../../redux/actions/userActions';
+import { logoutUser } from '../../oldRedux/actions/userActions';
 import { Link } from 'react-router-dom';
 import { Menu, Dropdown } from 'semantic-ui-react';
-import { RootState } from '../../redux/store';
+import { RootState } from '../../oldRedux/store';
 import { useAuth } from '../AuthProvider';
 
 interface NavBarProps {

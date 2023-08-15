@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { connect } from 'react-redux'
-import { sendNewUserData } from '../../redux/actions/userActions'
-import { RootState } from '../../redux/store'
+import { sendNewUserData } from '../../oldRedux/actions/userActions'
+import { RootState } from '../../oldRedux/store'
 import { Button, Input, Form, Message } from 'semantic-ui-react'
 
 interface NewUserData {

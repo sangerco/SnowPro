@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
-import { fetchNewReviewReplyDataByReviewId } from '../../redux/actions/replyReviewActions';
+import { fetchNewReviewReplyDataByReviewId } from '../../oldRedux/actions/replyReviewActions';
 import { connect } from 'react-redux';
 import { useParams } from 'react-router';
-import { RootState } from '../../redux/store';
+import { RootState } from '../../oldRedux/store';
 import { Container, Header } from 'semantic-ui-react';
 
 interface ReviewReplyData {

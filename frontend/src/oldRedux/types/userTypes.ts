@@ -4,13 +4,12 @@ export interface UserData {
     firstName: string;
     lastName: string;
     email: string;
-    avatar?: string;
-    bio?: string;
-    isAdmin?: boolean;
-    videos?: string[];
-    photos?: string[];
-    favMountains?: string[];
-};
+    avatar: string;
+    bio: string;
+    videos: string[];
+    photos: string[];
+    favMountains: string[];
+  }
 
 export interface NewUserData {
     username: string;
@@ -18,11 +17,26 @@ export interface NewUserData {
     firstName: string;
     lastName: string;
     email: string;
-};
+}
+
+export interface NewUserDataReturn {
+    username: string;
+    firstName: string;
+    lastName: string;
+    email: string;    
+}
 
 export interface LoginData {
     username: string;
     password: string;
+}
+
+export interface LoginDataReturn {
+    username: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    token: string;
 }
 
 export interface UpdateUserData {
@@ -38,10 +52,20 @@ export interface UpdateUserData {
     favMountains?: string[];
 };
 
+export interface UpdateUserDataReturn {
+    username: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    avatar: string;
+    bio: string;
+}
+
 export interface MakeUserAdmin {
     username: string;
     isAdmin: boolean;
 }
+
 
 export const FETCH_USER_DATA_REQUEST = 'FETCH_USER_DATA_REQUEST';
 export const FETCH_USER_DATA_SUCCESS = 'FETCH_USER_DATA_SUCCESS';
@@ -85,7 +109,7 @@ export interface SendNewUserDataRequestAction {
 
 export interface SendNewUserDataSuccessAction {
     type: typeof SEND_NEW_USER_DATA_SUCCESS;
-    payload: NewUserData;
+    payload: NewUserDataReturn;
 }
 
 export interface SendNewUserDataFailureAction {
@@ -100,7 +124,7 @@ export interface UpdateUserDataRequestAction {
 
 export interface UpdateUserDataSuccessAction {
     type: typeof UPDATE_USER_DATA_SUCCESS;
-    payload: UpdateUserData;
+    payload: UpdateUserDataReturn;
 }
 
 export interface UpdateUserDataFailureAction {
@@ -130,7 +154,7 @@ export interface SendLoginDataRequestAction {
 
 export interface SendLoginDataSuccessAction {
     type: typeof SEND_LOGIN_DATA_SUCCESS;
-    payload: string;
+    payload: LoginDataReturn;
 }
 
 export interface SendLoginDataFailureAction {

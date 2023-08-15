@@ -3,11 +3,11 @@ import axios from 'axios';
 import { URL } from '../../utils/config';
 import { connect } from 'react-redux';
 import { useAuth } from '../AuthProvider';
-import { updateReview, fetchReviewDataById } from '../../redux/actions/reviewActions';
-import { fetchTagData } from '../../redux/actions/tagActions';
+import { updateReview, fetchReviewDataById } from '../../oldRedux/actions/reviewActions';
+import { fetchTagData } from '../../oldRedux/actions/tagActions';
 import NewTagForm from '../Tags/NewTagForm';
-import { NewTagData, TagData } from '../../redux/types/tagTypes';
-import { RootState } from '../../redux/store'
+import { NewTagData, TagData } from '../../oldRedux/types/tagTypes';
+import { RootState } from '../../oldRedux/store'
 import { Button, Container, Dropdown, Divider, Form, Message, Header, Label } from 'semantic-ui-react';
 import { useNavigate, useParams } from 'react-router';
 

@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { connect } from 'react-redux';
-import { sendNewReplyData } from '../../redux/actions/messageReplyActions'
-import { RootState } from '../../redux/store';
+import { sendNewReplyData } from '../../oldRedux/actions/messageReplyActions'
+import { RootState } from '../../oldRedux/store';
 import { Button, Form, Message } from 'semantic-ui-react';
 import { URL } from '../../utils/config';
 

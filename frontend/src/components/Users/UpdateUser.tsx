@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { useAuth } from '../AuthProvider';
-import { updateUserData } from '../../redux/actions/userActions';
-import { fetchUserData } from '../../redux/actions/userActions';
-import { RootState } from '../../redux/store';
+import { updateUserData } from '../../oldRedux/actions/userActions';
+import { fetchUserData } from '../../oldRedux/actions/userActions';
+import { RootState } from '../../oldRedux/store';
 import { Container, Button, Form, Message } from 'semantic-ui-react';
 
 interface UserData {

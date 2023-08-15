@@ -133,17 +133,17 @@ const SkiAreaPage = () => {
                             <SkiAreaMap skiAreaPageData={skiAreaData} />
                             <Divider />
                             <Header as='h2'>Lift Status</Header>
-                            <List divided relaxed>
+                            {/* <List divided relaxed> */}
                                 { stats }
-                            </List>
+                            {/* </List> */}
                             <br />
-                            <List divided relaxed>
+                            {/* <List divided relaxed> */}
                                 { percent }
-                            </List>
+                            {/* </List> */}
                             <Header as='h3'>Lifts</Header>
-                            <List divided relaxed>
+                            {/* <List divided relaxed> */}
                                 { lifts }
-                            </List>
+                            {/* </List> */}
                         </Grid.Column>
                         <Grid.Column width={1}></Grid.Column>
                     </Grid.Row>

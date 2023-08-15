@@ -3,19 +3,6 @@ export interface TagData {
     tag: string;
 };
 
-export interface NewTagData {
-    tag: string;
-};
-
-export interface NewTagDataReturn {
-    id: string;
-    tag: string;
-};
-
-export interface DeleteTag {
-    id: string
-};
-
 export const SEND_NEW_TAG_DATA_REQUEST = 'SEND_NEW_TAG_DATA_REQUEST';
 export const SEND_NEW_TAG_DATA_SUCCESS = 'SEND_NEW_TAG_DATA_SUCCESS';
 export const SEND_NEW_TAG_DATA_FAILURE = 'SEND_NEW_TAG_DATA_FAILURE';
@@ -28,12 +15,12 @@ export const DELETE_TAG_DATA_FAILURE = 'DELETE_TAG_DATA_FAILURE';
 
 export interface sendNewTagDataRequestAction {
     type: typeof SEND_NEW_TAG_DATA_REQUEST;
-    payload: NewTagData;
+    payload: TagData;
 };
 
 export interface sendNewTagDataSuccessAction {
     type: typeof SEND_NEW_TAG_DATA_SUCCESS;
-    payload: NewTagDataReturn;
+    payload: TagData;
 };
 
 export interface sendNewTagDataFailureAction {
@@ -72,7 +59,7 @@ export interface fetchTagDataFailureAction {
 
 export interface deleteTagRequestAction {
     type: typeof DELETE_TAG_DATA_REQUEST;
-    payload: DeleteTag;
+    payload: string;
 };
 
 export interface deleteTagSuccessAction {
@@ -84,3 +71,4 @@ export interface deleteTagFailureAction {
     type: typeof DELETE_TAG_DATA_FAILURE;
     payload: string;
 }
+

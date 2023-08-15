@@ -1,145 +1,149 @@
-import { SEND_NEW_MESSAGE_DATA_REQUEST,
-        SEND_NEW_MESSAGE_DATA_SUCCESS,
-        SEND_NEW_MESSAGE_DATA_FAILURE,
-        MessageData,
-        FETCH_MESSAGE_DATA_REQUEST,
-        FETCH_MESSAGE_DATA_SUCCESS,
-        FETCH_MESSAGE_DATA_FAILURE,
-        NewMessageData,
-        DELETE_MESSAGE_REQUEST,
-        DELETE_MESSAGE_SUCCESS,
-        DELETE_MESSAGE_FAILURE,
-        DeleteMessage,
-        UserWithMessages } from "../types/messageTypes";
+import {
+  MessageData,
+  UserMessages,
+  SEND_NEW_MESSAGE_DATA_REQUEST,
+  SEND_NEW_MESSAGE_DATA_SUCCESS,
+  SEND_NEW_MESSAGE_DATA_FAILURE,
+  FETCH_MESSAGE_DATA_REQUEST,
+  FETCH_MESSAGE_DATA_SUCCESS,
+  FETCH_MESSAGE_DATA_FAILURE,
+  FETCH_USER_MESSAGES_REQUEST,
+  FETCH_USER_MESSAGES_SUCCESS,
+  FETCH_USER_MESSAGES_FAILURE,
+  MARK_MESSAGE_READ_REQUEST,
+  MARK_MESSAGE_READ_SUCCESS,
+  MARK_MESSAGE_READ_FAILURE,
+  MARK_MESSAGE_UNREAD_REQUEST,
+  MARK_MESSAGE_UNREAD_SUCCESS,
+  MARK_MESSAGE_UNREAD_FAILURE,
+  DELETE_MESSAGE_REQUEST,
+  DELETE_MESSAGE_SUCCESS,
+  DELETE_MESSAGE_FAILURE,
+} from "../types/messageTypes";
 
 interface MessageState {
-    data: MessageData | null;
-    error: string | null
-};
-
-interface NewMessageState {
-    data: NewMessageData | null;
-    error: string | null
-};
-
-interface UserWithMessagesState {
-    data: UserWithMessages | null;
-    error: string | null;
-};
-
-interface DeleteMessageState {
-    data: DeleteMessage | null;
-    error: string | null;
-};
+  data: MessageData | null;
+  userMessages: UserMessages | null;
+  error: string | null;
+  loading: true;
+}
 
 const initialMessageState: MessageState = {
-    data: null,
-    error: null
+  data: null,
+  userMessages: null,
+  error: null,
+  loading: true,
 };
-
-const initialNewMessageState: NewMessageState = {
-    data: null,
-    error: null
-};
-
-const initialUserWithMessagesState: UserWithMessagesState = {
-    data: null,
-    error: null
-}
-
-const initialDeleteMessageState: DeleteMessageState = {
-    data: null,
-    error: null
-}
 
 export const messageReducer = (state = initialMessageState, action: any) => {
-    switch(action.type) {
-        case FETCH_MESSAGE_DATA_REQUEST:
-            return {
-                ...state,
-                error: null
-            };
-        case FETCH_MESSAGE_DATA_SUCCESS:
-            return {
-                ...state,
-                data: action.payload
-            };
-        case FETCH_MESSAGE_DATA_FAILURE:
-            return {
-                ...state,
-                error: action.payload
-            }
-
-        default:
-            return state;
-    }
+  switch (action.type) {
+    case SEND_NEW_MESSAGE_DATA_REQUEST:
+      return {
+        ...state,
+        error: null,
+        loading: true,
+      };
+    case SEND_NEW_MESSAGE_DATA_SUCCESS:
+      return {
+        ...state,
+        data: action.payload,
+        loading: false,
+      };
+    case SEND_NEW_MESSAGE_DATA_FAILURE:
+      return {
+        ...state,
+        error: action.payload,
+        loading: false,
+      };
+    case FETCH_MESSAGE_DATA_REQUEST:
+      return {
+        ...state,
+        error: null,
+        loading: true,
+      };
+    case FETCH_MESSAGE_DATA_SUCCESS:
+      return {
+        ...state,
+        data: action.payload,
+        loading: false,
+      };
+    case FETCH_MESSAGE_DATA_FAILURE:
+      return {
+        ...state,
+        error: action.payload,
+        loading: false,
+      };
+    case FETCH_USER_MESSAGES_REQUEST:
+      return {
+        ...state,
+        error: null,
+        loading: true,
+      };
+    case FETCH_USER_MESSAGES_SUCCESS:
+      return {
+        ...state,
+        userMessages: action.payload,
+        loading: false,
+      };
+    case FETCH_USER_MESSAGES_FAILURE:
+      return {
+        ...state,
+        error: action.payload,
+        loading: false,
+      };
+    case MARK_MESSAGE_READ_REQUEST:
+      return {
+        ...state,
+        error: null,
+        loading: true,
+      };
+    case MARK_MESSAGE_READ_SUCCESS:
+      return {
+        ...state,
+        data: action.payload,
+        loading: false,
+      };
+    case MARK_MESSAGE_READ_FAILURE:
+      return {
+        ...state,
+        error: action.payload,
+        loading: false,
+      };
+    case MARK_MESSAGE_UNREAD_REQUEST:
+      return {
+        ...state,
+        error: null,
+        loading: true,
+      };
+    case MARK_MESSAGE_UNREAD_SUCCESS:
+      return {
+        ...state,
+        data: action.payload,
+        loading: false,
+      };
+    case MARK_MESSAGE_UNREAD_FAILURE:
+      return {
+        ...state,
+        error: action.payload,
+        loading: false,
+      };
+    case DELETE_MESSAGE_REQUEST:
+      return {
+        ...state,
+        error: null,
+        loading: true,
+      };
+    case DELETE_MESSAGE_SUCCESS:
+      return {
+        ...state,
+        data: action.payload,
+        loading: false,
+      };
+    case DELETE_MESSAGE_FAILURE:
+      return {
+        ...state,
+        error: action.payload,
+        loading: false,
+      };
+  }
 };
-
-export const newMessageReducer = (state = initialNewMessageState, action: any) => {
-    switch(action.type) {
-        case SEND_NEW_MESSAGE_DATA_REQUEST:
-            return {
-                ...state, 
-                error: null
-            };
-        case SEND_NEW_MESSAGE_DATA_SUCCESS:
-            return {
-                ...state,
-                data: action.payload
-            };
-        case SEND_NEW_MESSAGE_DATA_FAILURE:
-            return {
-                ...state,
-                error: action.payload
-            };
-
-        default: 
-            return state;
-    }
-};
-
-export const userWithMessagesReducer = (state = initialUserWithMessagesState, action: any) => {
-    switch(action.type) {
-        case SEND_NEW_MESSAGE_DATA_REQUEST:
-            return {
-                ...state, 
-                error: null
-            };
-        case SEND_NEW_MESSAGE_DATA_SUCCESS:
-            return {
-                ...state,
-                data: action.payload
-            };
-        case SEND_NEW_MESSAGE_DATA_FAILURE:
-            return {
-                ...state,
-                error: action.payload
-            };
-
-        default: 
-            return state;
-    }
-};
-
-export const deleteMessageReducer = (state = initialDeleteMessageState, action: any) => {
-    switch(action.type) {
-        case DELETE_MESSAGE_REQUEST:
-            return {
-                ...state,
-                error: null
-            };
-        case DELETE_MESSAGE_SUCCESS:
-            return {
-                ...state,
-                data: action.payload
-            };
-        case DELETE_MESSAGE_FAILURE:
-            return {
-                ...state,
-                error: action.payload
-            };
-        default:
-            return state;
-        }
-};
-

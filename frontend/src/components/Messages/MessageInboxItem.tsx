@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { List } from 'semantic-ui-react';
-import { UserWithMessages } from '../../redux/types/messageTypes';
+import { UserWithMessages } from '../../oldRedux/types/messageTypes';
 
 interface MessageInboxItemProps {
     message: UserWithMessages;

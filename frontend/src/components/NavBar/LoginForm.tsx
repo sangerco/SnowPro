@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useAuth } from '../AuthProvider';
 import { connect } from 'react-redux';
-import { sendLoginData } from '../../redux/actions/userActions';
-import { RootState } from '../../redux/store';
+import { sendLoginData } from '../../oldRedux/actions/userActions';
+import { RootState } from '../../oldRedux/store';
 import { Button, Input, Form, Message } from 'semantic-ui-react'
 import axios from 'axios';
 import { URL } from '../../utils/config';

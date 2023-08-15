@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { fetchFavMountainData, deleteFavMountain } from '../../redux/actions/favMountainActions';
+import { fetchFavMountainData, deleteFavMountain } from '../../oldRedux/actions/favMountainActions';
 import { Container, Card, Button, Icon } from 'semantic-ui-react';
-import { RootState } from '../../redux/store';
+import { RootState } from '../../oldRedux/store';
 
 interface FavMountainData {
     id: string;

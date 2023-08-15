@@ -1,115 +1,139 @@
 import {
-  SEND_NEW_REPLY_DATA_REQUEST,
-  SEND_NEW_REPLY_DATA_SUCCESS,
-  SEND_NEW_REPLY_DATA_FAILURE,
-  ReplyData,
-  FETCH_REPLY_DATA_REQUEST,
-  FETCH_REPLY_DATA_SUCCESS,
-  FETCH_REPLY_DATA_FAILURE,
-  NewReplyData,
-  DELETE_REPLY_REQUEST,
-  DELETE_REPLY_SUCCESS,
-  DELETE_REPLY_FAILURE,
-  DeleteReply,
+  SEND_MESSAGE_REPLY_DATA_REQUEST,
+  SEND_MESSAGE_REPLY_DATA_SUCCESS,
+  SEND_MESSAGE_REPLY_DATA_FAILURE,
+  FETCH_MESSAGE_REPLY_DATA_BY_ID_REQUEST,
+  FETCH_MESSAGE_REPLY_DATA_BY_ID_SUCCESS,
+  FETCH_MESSAGE_REPLY_DATA_BY_ID_FAILURE,
+  FETCH_MESSAGE_REPLY_DATA_BY_MESSAGE_ID_REQUEST,
+  FETCH_MESSAGE_REPLY_DATA_BY_MESSAGE_ID_SUCCESS,
+  FETCH_MESSAGE_REPLY_DATA_BY_MESSAGE_ID_FAILURE,
+  MARK_MESSAGE_REPLY_READ_REQUEST,
+  MARK_MESSAGE_REPLY_READ_SUCCESS,
+  MARK_MESSAGE_REPLY_READ_FAILURE,
+  MARK_MESSAGE_REPLY_UNREAD_REQUEST,
+  MARK_MESSAGE_REPLY_UNREAD_SUCCESS,
+  MARK_MESSAGE_REPLY_UNREAD_FAILURE,
+  DELETE_MESSAGE_REPLY_REQUEST,
+  DELETE_MESSAGE_REPLY_SUCCESS,
+  DELETE_MESSAGE_REPLY_FAILURE,
 } from "../types/messageReplyTypes";
 
-interface ReplyState {
-  data: ReplyData | null;
+interface MessageReplyData {
+  id?: string;
+  messageId: string;
+  senderId: string;
+  recipientId: string;
+  subject: string;
+  body: string;
+  isRead?: string;
+  createdAt?: string;
+}
+
+interface MessageReplyState {
+  data: MessageReplyData | null;
   error: string | null;
 }
 
-interface NewReplyState {
-  data: NewReplyData | null;
-  error: string | null;
-}
-
-interface DeleteReplyState {
-  data: DeleteReply | null;
-  error: string | null;
-}
-
-const initialReplyState: ReplyState = {
+const initialMessageReplyState: MessageReplyState = {
   data: null,
   error: null,
 };
 
-const initialNewReplyState: NewReplyState = {
-  data: null,
-  error: null,
-};
-
-const initialDeleteReplyState: DeleteReplyState = {
-  data: null,
-  error: null,
-};
-
-export const replyReducer = (state = initialReplyState, action: any) => {
-  switch (action.type) {
-    case FETCH_REPLY_DATA_REQUEST:
-      return {
-        ...state,
-        error: null,
-      };
-    case FETCH_REPLY_DATA_SUCCESS:
-      return {
-        ...state,
-        data: action.payload,
-      };
-    case FETCH_REPLY_DATA_FAILURE:
-      return {
-        ...state,
-        error: action.payload,
-      };
-
-    default:
-      return state;
-  }
-};
-
-export const newReplyReducer = (state = initialNewReplyState, action: any) => {
-  switch (action.type) {
-    case SEND_NEW_REPLY_DATA_REQUEST:
-      return {
-        ...state,
-        error: null,
-      };
-    case SEND_NEW_REPLY_DATA_SUCCESS:
-      return {
-        ...state,
-        data: action.payload,
-      };
-    case SEND_NEW_REPLY_DATA_FAILURE:
-      return {
-        ...state,
-        error: action.payload,
-      };
-
-    default:
-      return state;
-  }
-};
-
-export const deleteReplyReducer = (
-  state = initialDeleteReplyState,
+export const messageReplyReducer = (
+  state = initialMessageReplyState,
   action: any
 ) => {
   switch (action.type) {
-    case DELETE_REPLY_REQUEST:
+    case SEND_MESSAGE_REPLY_DATA_REQUEST:
       return {
         ...state,
         error: null,
       };
-    case DELETE_REPLY_SUCCESS:
+    case SEND_MESSAGE_REPLY_DATA_SUCCESS:
       return {
         ...state,
         data: action.payload,
       };
-    case DELETE_REPLY_FAILURE:
+    case SEND_MESSAGE_REPLY_DATA_FAILURE:
       return {
         ...state,
         error: action.payload,
       };
-    default:
-      return state;
+    case FETCH_MESSAGE_REPLY_DATA_BY_ID_REQUEST:
+      return {
+        ...state,
+        error: null,
+      };
+    case FETCH_MESSAGE_REPLY_DATA_BY_ID_SUCCESS:
+      return {
+        ...state,
+        data: action.payload,
+      };
+    case FETCH_MESSAGE_REPLY_DATA_BY_ID_FAILURE:
+      return {
+        ...state,
+        error: action.payload,
+      };
+    case FETCH_MESSAGE_REPLY_DATA_BY_MESSAGE_ID_REQUEST:
+      return {
+        ...state,
+        error: null,
+      };
+    case FETCH_MESSAGE_REPLY_DATA_BY_MESSAGE_ID_SUCCESS:
+      return {
+        ...state,
+        data: action.payload,
+      };
+    case FETCH_MESSAGE_REPLY_DATA_BY_MESSAGE_ID_FAILURE:
+      return {
+        ...state,
+        error: action.payload,
+      };
+    case MARK_MESSAGE_REPLY_READ_REQUEST:
+      return {
+        ...state,
+        error: null,
+      };
+    case MARK_MESSAGE_REPLY_READ_SUCCESS:
+      return {
+        ...state,
+        data: action.payload,
+      };
+    case MARK_MESSAGE_REPLY_READ_FAILURE:
+      return {
+        ...state,
+        error: action.payload,
+      };
+    case MARK_MESSAGE_REPLY_UNREAD_REQUEST:
+      return {
+        ...state,
+        error: null,
+      };
+    case MARK_MESSAGE_REPLY_UNREAD_SUCCESS:
+      return {
+        ...state,
+        data: action.payload,
+      };
+    case MARK_MESSAGE_REPLY_UNREAD_FAILURE:
+      return {
+        ...state,
+        error: action.payload,
+      };
+    case DELETE_MESSAGE_REPLY_REQUEST:
+      return {
+        ...state,
+        error: null,
+      };
+    case DELETE_MESSAGE_REPLY_SUCCESS:
+      return {
+        ...state,
+        data: action.payload,
+      };
+    case DELETE_MESSAGE_REPLY_FAILURE:
+      return {
+        ...state,
+        error: action.payload,
+      };
   }
 };

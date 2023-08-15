@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { connect } from 'react-redux';
 import { useAuth } from "../AuthProvider";
-import { sendNewReviewData } from "../../redux/actions/reviewActions";
-import { fetchTagData } from "../../redux/actions/tagActions";
+import { sendNewReviewData } from "../../oldRedux/actions/reviewActions";
+import { fetchTagData } from "../../oldRedux/actions/tagActions";
 import NewTagForm from "../Tags/NewTagForm";
-import { NewTagData } from "../../redux/types/tagTypes";
-import { RootState } from "../../redux/store";
+import { NewTagData } from "../../oldRedux/types/tagTypes";
+import { RootState } from "../../oldRedux/store";
 import { Button, Container, Divider, Dropdown, Form, Message, TextArea } from 'semantic-ui-react';
-import { TagData } from "../../redux/types/tagTypes";
+import { TagData } from "../../oldRedux/types/tagTypes";
 import { useParams } from "react-router";
 
 interface NewReviewData {

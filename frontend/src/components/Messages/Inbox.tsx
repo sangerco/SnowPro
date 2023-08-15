@@ -1,9 +1,9 @@
 import React, {useEffect} from 'react';
 import { connect } from 'react-redux';
 import { useParams } from 'react-router';
-import { RootState } from '../../redux/store';
-import { fetchAllUsersMessagesData, markMessageRead, markMessageUnread } from '../../redux/actions/messageActions';
-import { UserWithMessages } from '../../redux/types/messageTypes';
+import { RootState } from '../../oldRedux/store';
+import { fetchAllUsersMessagesData, markMessageRead, markMessageUnread } from '../../oldRedux/actions/messageActions';
+import { UserWithMessages } from '../../oldRedux/types/messageTypes';
 import { Container, Header, Segment, List, Button } from 'semantic-ui-react';
 import MessageInboxItem from './MessageInboxItem';
 

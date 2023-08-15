@@ -1,38 +1,44 @@
-import db from '../db';
-import { NotFoundError } from '../expressError';
-import { v4 as uuidv4 } from 'uuid';
+import db from "../db";
+import { NotFoundError } from "../expressError";
+import { v4 as uuidv4 } from "uuid";
 
 interface MessageData {
-    id: string;
-    senderId: string;
-    recipientId: string;
-    subject: string;
-    body: string;
-    createdId: Date;
-    isRead: boolean;
-    senderUsername: string;
-    senderFirstName: string;
-    senderLastName: string;
-    recipientUsername: string;
-    recipientFirstName: string;
-    recipientLastName: string;
+  id: string;
+  senderId: string;
+  recipientId: string;
+  subject: string;
+  body: string;
+  createdId: Date;
+  isRead: boolean;
+  senderUsername: string;
+  senderFirstName: string;
+  senderLastName: string;
+  recipientUsername: string;
+  recipientFirstName: string;
+  recipientLastName: string;
 }
 
 export interface UsernameWithId {
-    id: string;
-    username: string;
+  id: string;
+  username: string;
 }
 
 interface UserWithMessages extends MessageData {
-    usernameWithId: UsernameWithId;
+  usernameWithId: UsernameWithId;
 }
 
 class Message {
-    static async createMessage(senderId: string, recipientId:string, subject: string, body: string): Promise<MessageData> {
-        const id = uuidv4();
-        const createdAt = new Date();
+  static async createMessage(
+    senderId: string,
+    recipientId: string,
+    subject: string,
+    body: string
+  ): Promise<MessageData> {
+    const id = uuidv4();
+    const createdAt = new Date();
 
-        const result = await db.query(`
+    const result = await db.query(
+      `
             INSERT INTO messages
             (   id,
                 sender_id,
@@ -50,23 +56,17 @@ class Message {
                 body,
                 is_read AS "isRead",
                 created_at AS "createdAt"`,
-            [   id,
-                senderId,
-                recipientId,
-                subject,
-                body,
-                createdAt
-            ]
-        );
+      [id, senderId, recipientId, subject, body, createdAt]
+    );
 
-        const message = result.rows[0];
+    const message = result.rows[0];
 
-        return message;
-    };
+    return message;
+  }
 
-    static async getMessage(id: string): Promise<MessageData> {
-        const result = await db.query(
-            `SELECT 
+  static async getMessage(id: string): Promise<MessageData> {
+    const result = await db.query(
+      `SELECT 
                 m.id,
                 m.sender_id AS "senderId",
                 m.recipient_id AS "recipientId",
@@ -85,17 +85,17 @@ class Message {
             JOIN users recipient ON m.recipient_id = recipient.id
             WHERE m.id = $1
             ORDER BY created_at`,
-                [id]
-        );
+      [id]
+    );
 
-        const message = result.rows[0];
+    const message = result.rows[0];
 
-        return message;
-    }
+    return message;
+  }
 
-    static async getUsersMessages(username: string): Promise<UserWithMessages[]> {
-        const result = await db.query(
-            `SELECT 
+  static async getUsersMessages(username: string): Promise<UserWithMessages[]> {
+    const result = await db.query(
+      `SELECT 
                 m.id,
                 m.sender_id AS "senderId",
                 m.recipient_id AS "recipientId",
@@ -114,15 +114,15 @@ class Message {
             JOIN users recipient ON m.recipient_id = recipient.id
             WHERE recipient.username = $1
             ORDER BY m.created_at`,
-                [username]
-        );
+      [username]
+    );
 
-        return result.rows;
-    }
+    return result.rows;
+  }
 
-    static async getSentMessages(username: string): Promise<UserWithMessages[]> {
-        const result = await db.query(
-            `SELECT 
+  static async getSentMessages(username: string): Promise<UserWithMessages[]> {
+    const result = await db.query(
+      `SELECT 
                 m.id,
                 m.sender_id AS "senderId",
                 m.recipient_id AS "recipientId",
@@ -141,51 +141,52 @@ class Message {
             JOIN users recipient ON m.recipient_id = recipient.id
             WHERE sender.username = $1
             ORDER BY m.created_at`,
-                [username]
-        );
+      [username]
+    );
 
-        return result.rows;
-    }
-    
-    static async markMessageAsRead(id: string): Promise<void> {
-        const result = await db.query(`
+    return result.rows;
+  }
+
+  static async markMessageAsRead(id: string): Promise<void> {
+    const result = await db.query(
+      `
             UPDATE messages
             SET is_read = true
             WHERE id = $1
             RETURNING id`,
-            [id]
-        );
-        const message = result.rows[0];
+      [id]
+    );
+    const message = result.rows[0];
 
-        if(!message) throw new NotFoundError('Message does not exist!')
-         
-    };
+    if (!message) throw new NotFoundError("Message does not exist!");
+  }
 
-    static async markMessageAsUnread(id: string): Promise<void> {
-        const result = await db.query(`
+  static async markMessageAsUnread(id: string): Promise<void> {
+    const result = await db.query(
+      `
             UPDATE messages
             SET is_read = false
             WHERE id = $1
             RETURNING id`,
-            [id]
-        );
+      [id]
+    );
 
-        const message = result.rows[0];
+    const message = result.rows[0];
 
-        if(!message) throw new NotFoundError('Message does not exist!')
-    };
+    if (!message) throw new NotFoundError("Message does not exist!");
+  }
 
-    static async removeMessage(id: string): Promise<void> {
-        const result = await db.query(
-            `DELETE FROM messages
+  static async removeMessage(id: string): Promise<void> {
+    const result = await db.query(
+      `DELETE FROM messages
                 WHERE id = $1
                 RETURNING id`,
-                [id]
-        );
-        const message = result.rows[0];
+      [id]
+    );
+    const message = result.rows[0];
 
-        if (!message) throw new NotFoundError('Message does not exist!');
-    }
+    if (!message) throw new NotFoundError("Message does not exist!");
+  }
 }
 
 export default Message;

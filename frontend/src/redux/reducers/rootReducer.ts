@@ -1,73 +1,25 @@
-import { combineReducers } from 'redux';
-import {  userReducer, 
-          deleteUserReducer, 
-          makeUserAdminReducer, 
-          updateUserReducer, 
-          logoutReducer, 
-          newUserReducer,
-          loginReducer } from './userReducer';
-import { messageReducer, newMessageReducer, deleteMessageReducer, userWithMessagesReducer } from './messageReducer';
-import { replyReducer, newReplyReducer, deleteReplyReducer } from './messageReplyReducer';
-import { tagReducer, newTagReducer, deleteTagReducer } from './tagReducer';
-import {  deletePhotoReducer, 
-          deleteVideoReducer, 
-          newPhotoReducer, 
-          newVideoReducer, 
-          photoReducer, 
-          videoReducer,
-          updatePhotoReducer,
-          updateVideoReducer } from './mediaReducer';
-import {  reviewReducer,
-          allReviewsReducer,
-          newReviewReducer,
-          updateReviewReducer,
-          deleteReviewReducer } from './reviewReducer';
-import {  newReviewReplyReducer,
-          reviewReplyReducer,
-          updateReviewReplyReducer,
-          deleteReviewReplyReducer } from './reviewReplyReducer';
-import {  favMountainReducer,
-          newFavMountainReducer,
-          deleteFavMountainReducer } from './favMountainReducer';
+import { combineReducers } from "redux";
+import { userReducer } from "./userReducer";
+import { tagReducer } from "./tagReducer";
+import { reviewReplyReducer } from "./reviewReplyReducer";
+import { reviewReducer } from "./reviewReducer";
+import { messageReplyReducer } from "./messageReplyReducer";
+import { messageReducer } from "./messageReducer";
+import { photoReducer, videoReducer } from "./mediaReducer";
+import { favMountainReducer } from "./favMountainReducer";
+import { authReducer } from "./authReducer";
 
 const rootReducer = combineReducers({
   user: userReducer,
-  newUser: newUserReducer,
-  deleteUser: deleteUserReducer,
-  updateUser: updateUserReducer,
-  makeUserAdmin: makeUserAdminReducer,
-  logout: logoutReducer,
-  login: loginReducer,
-  message: messageReducer,
-  userWithMessages: userWithMessagesReducer,
-  newMessage: newMessageReducer,
-  deleteMessage: deleteMessageReducer,
-  messageReply: replyReducer,
-  newMessageReply: newReplyReducer,
-  deleteMessageReply: deleteReplyReducer,
   tag: tagReducer,
-  newTag: newTagReducer,
-  deleteTag: deleteTagReducer,
-  photo: photoReducer,
-  newPhoto: newPhotoReducer,
-  updatePhoto: updatePhotoReducer,
-  deletePhoto: deletePhotoReducer,
-  video: videoReducer,
-  newVideo: newVideoReducer,
-  updateVideo: updateVideoReducer,
-  deleteVideo: deleteVideoReducer,
-  review: reviewReducer,
-  reviews: allReviewsReducer,
-  newReview: newReviewReducer,
-  updateReview: updateReviewReducer,
-  deleteReview: deleteReviewReducer,
   reviewReply: reviewReplyReducer,
-  newReviewReply: newReviewReplyReducer,
-  updateReviewReply: updateReviewReplyReducer,
-  deleteReviewReply: deleteReviewReplyReducer,
+  review: reviewReducer,
+  messageReply: messageReplyReducer,
+  message: messageReducer,
+  photo: photoReducer,
+  video: videoReducer,
   favMountain: favMountainReducer,
-  newFavMountain: newFavMountainReducer,
-  deleteFavMountain: deleteFavMountainReducer
+  auth: authReducer,
 });
 
 export default rootReducer;

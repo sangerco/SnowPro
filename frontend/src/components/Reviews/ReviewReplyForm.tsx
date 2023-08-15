@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { useAuth } from '../AuthProvider';
-import { sendNewReviewReplyData } from '../../redux/actions/replyReviewActions';
-import { RootState } from '../../redux/store';
+import { sendNewReviewReplyData } from '../../oldRedux/actions/replyReviewActions';
+import { RootState } from '../../oldRedux/store';
 import { Button, Container, Form, Message } from 'semantic-ui-react';
 import { useParams } from 'react-router';
 

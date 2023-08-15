@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import { sendNewTagData } from '../../redux/actions/tagActions';
-import { RootState } from '../../redux/store';
+import { sendNewTagData } from '../../oldRedux/actions/tagActions';
+import { RootState } from '../../oldRedux/store';
 import { Button, Form, Message } from 'semantic-ui-react';
 
 interface NewTagData {

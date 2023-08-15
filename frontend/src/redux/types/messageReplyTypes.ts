@@ -1,123 +1,142 @@
-export interface ReplyData {
-    id: string;
-    messageId: string;
-    senderId: string;
-    recipientId: string;
-    subject: string;
-    body: string;
-    isRead: boolean;
-    createdAt: Date;
+export interface MessageReplyData {
+  id: string;
+  messageId: string;
+  senderId: string;
+  recipientId: string;
+  subject: string;
+  body: string;
+  isRead: boolean;
+  createdAt: Date;
 }
 
-export interface NewReplyData {
-    sender_id: string;
-    message_id: string;
-    recipient_id: string;
-    subject: string;
-    body: string;
+export interface NewMessageReplyData {
+  messageId: string;
+  senderId: string;
+  recipientId: string;
+  subject: string;
+  body: string;
+  isRead: boolean;
 }
 
-export interface NewReplyDataReturn {
-    id: string;
-    message_id: string;
-    sender_id: string;
-    recipient_id: string;
-    subject: string;
-    body: string;
-    isRead: boolean;
+export const SEND_MESSAGE_REPLY_DATA_REQUEST =
+  "SEND_MESSAGE_REPLY_DATA_REQUEST";
+export const SEND_MESSAGE_REPLY_DATA_SUCCESS =
+  "SEND_MESSAGE_REPLY_DATA_SUCCESS";
+export const SEND_MESSAGE_REPLY_DATA_FAILURE =
+  "SEND_MESSAGE_REPLY_DATA_FAILURE";
+export const FETCH_MESSAGE_REPLY_DATA_BY_MESSAGE_ID_REQUEST =
+  "FETCH_MESSAGE_REPLY_DATA_BY_MESSAGE_ID_REQUEST";
+export const FETCH_MESSAGE_REPLY_DATA_BY_MESSAGE_ID_SUCCESS =
+  "FETCH_MESSAGE_REPLY_DATA_BY_MESSAGE_ID_SUCCESS";
+export const FETCH_MESSAGE_REPLY_DATA_BY_MESSAGE_ID_FAILURE =
+  "FETCH_MESSAGE_REPLY_DATA_BY_MESSAGE_ID_FAILURE";
+export const FETCH_MESSAGE_REPLY_DATA_BY_ID_REQUEST =
+  "FETCH_MESSAGE_REPLY_DATA_BY_ID_REQUEST";
+export const FETCH_MESSAGE_REPLY_DATA_BY_ID_SUCCESS =
+  "FETCH_MESSAGE_REPLY_DATA_BY_ID_SUCCESS";
+export const FETCH_MESSAGE_REPLY_DATA_BY_ID_FAILURE =
+  "FETCH_MESSAGE_REPLY_DATA_BY_ID_FAILURE";
+export const MARK_MESSAGE_REPLY_READ_REQUEST =
+  "MARK_MESSAGE_REPLY_READ_REQUEST";
+export const MARK_MESSAGE_REPLY_READ_SUCCESS =
+  "MARK_MESSAGE_REPLY_READ_SUCCESS";
+export const MARK_MESSAGE_REPLY_READ_FAILURE =
+  "MARK_MESSAGE_REPLY_READ_FAILURE";
+export const MARK_MESSAGE_REPLY_UNREAD_REQUEST =
+  "MARK_MESSAGE_REPLY_UNREAD_REQUEST";
+export const MARK_MESSAGE_REPLY_UNREAD_SUCCESS =
+  "MARK_MESSAGE_REPLY_UNREAD_SUCCESS";
+export const MARK_MESSAGE_REPLY_UNREAD_FAILURE =
+  "MARK_MESSAGE_REPLY_UNREAD_FAILURE";
+export const DELETE_MESSAGE_REPLY_REQUEST = "DELETE_MESSAGE_REPLY_REQUEST";
+export const DELETE_MESSAGE_REPLY_SUCCESS = "DELETE_MESSAGE_REPLY_SUCCESS";
+export const DELETE_MESSAGE_REPLY_FAILURE = "DELETE_MESSAGE_REPLY_FAILURE";
+
+export interface sendMessageReplyDataRequest {
+  type: typeof SEND_MESSAGE_REPLY_DATA_REQUEST;
+  payload: NewMessageReplyData;
 }
 
-export interface DeleteReply {
-    id: string;
-    message_id: string;
+export interface sendMessageReplyDataSuccess {
+  type: typeof SEND_MESSAGE_REPLY_DATA_SUCCESS;
+  payload: MessageReplyData;
 }
 
-export const SEND_NEW_REPLY_DATA_REQUEST = 'SEND_NEW_REPLY_DATA_REQUEST';
-export const SEND_NEW_REPLY_DATA_SUCCESS = 'SEND_NEW_REPLY_DATA_SUCCESS';
-export const SEND_NEW_REPLY_DATA_FAILURE = 'SEND_NEW_REPLY_DATA_FAILURE';
-export const FETCH_REPLY_DATA_REQUEST = 'FETCH_REPLY_DATA_REQUEST';
-export const FETCH_REPLY_DATA_SUCCESS = 'FETCH_REPLY_DATA_SUCCESS';
-export const FETCH_REPLY_DATA_FAILURE = 'FETCH_REPLY_DATA_FAILURE';
-export const MARK_REPLY_READ_REQUEST = 'MARK_REPLY_READ_REQUEST';
-export const MARK_REPLY_READ_SUCCESS = 'MARK_REPLY_READ_SUCCESS';
-export const MARK_REPLY_READ_FAILURE = 'MARK_REPLY_READ_FAILURE';
-export const MARK_REPLY_UNREAD_REQUEST = 'MARK_REPLY_UNREAD_REQUEST';
-export const MARK_REPLY_UNREAD_SUCCESS = 'MARK_REPLY_UNREAD_SUCCESS';
-export const MARK_REPLY_UNREAD_FAILURE = 'MARK_REPLY_UNREAD_FAILURE';
-export const DELETE_REPLY_REQUEST = 'DELETE_REPLY_REQUEST';
-export const DELETE_REPLY_SUCCESS = 'DELETE_REPLY_SUCCESS';
-export const DELETE_REPLY_FAILURE = 'DELETE_REPLY_FAILURE';
+export interface sendMessageReplyDataFailure {
+  type: typeof SEND_MESSAGE_REPLY_DATA_FAILURE;
+  payload: string;
+}
 
-export interface sendNewReplyDataRequestAction {
-    type: typeof SEND_NEW_REPLY_DATA_REQUEST;
-    payload: NewReplyData;
-};
+export interface fetchMessageReplyDataByMessageIdRequest {
+  type: typeof FETCH_MESSAGE_REPLY_DATA_BY_MESSAGE_ID_REQUEST;
+  payload: string;
+}
 
-export interface sendNewReplyDataSuccessAction {
-    type: typeof SEND_NEW_REPLY_DATA_SUCCESS;
-    payload: NewReplyDataReturn;
-};
+export interface fetchMessageReplyDataByMessageIdSuccess {
+  type: typeof FETCH_MESSAGE_REPLY_DATA_BY_MESSAGE_ID_SUCCESS;
+  payload: MessageReplyData[];
+}
 
-export interface sendNewReplyDataFailureAction {
-    type: typeof SEND_NEW_REPLY_DATA_FAILURE;
-    payload: string;
-};
+export interface fetchMessageReplyDataByMessageIdFailure {
+  type: typeof FETCH_MESSAGE_REPLY_DATA_BY_MESSAGE_ID_FAILURE;
+  payload: string;
+}
 
-export interface fetchReplyDataRequestAction {
-    type: typeof FETCH_REPLY_DATA_REQUEST;
-};
+export interface fetchMessageReplyDataByIdRequest {
+  type: typeof FETCH_MESSAGE_REPLY_DATA_BY_ID_REQUEST;
+  payload: string;
+}
 
-export interface fetchReplyDataSuccessAction {
-    type: typeof FETCH_REPLY_DATA_SUCCESS;
-    payload: ReplyData;
-};
+export interface fetchMessageReplyDataByIdSuccess {
+  type: typeof FETCH_MESSAGE_REPLY_DATA_BY_ID_SUCCESS;
+  payload: MessageReplyData;
+}
 
-export interface fetchReplyDataFailureAction {
-    type: typeof FETCH_REPLY_DATA_FAILURE;
-    payload: string;
-};
+export interface fetchMessageReplyDataByIdFailure {
+  type: typeof FETCH_MESSAGE_REPLY_DATA_BY_ID_FAILURE;
+  payload: string;
+}
 
-export interface markReplyReadRequestAction {
-    type: typeof MARK_REPLY_READ_REQUEST;
-    payload: string;
-};
+export interface markMessageReplyReadRequest {
+  type: typeof MARK_MESSAGE_REPLY_READ_REQUEST;
+  payload: string;
+}
 
-export interface markReplyReadSuccessAction {
-    type: typeof MARK_REPLY_READ_SUCCESS;
-    payload: string;
-};
+export interface markMessageReplyReadSuccess {
+  type: typeof MARK_MESSAGE_REPLY_READ_SUCCESS;
+  payload: string;
+}
 
-export interface markReplyReadFailureAction {
-    type: typeof MARK_REPLY_READ_FAILURE;
-    payload: string;
-};
+export interface markMessageReplyReadFailure {
+  type: typeof MARK_MESSAGE_REPLY_READ_FAILURE;
+  payload: string;
+}
+export interface markMessageReplyUnreadRequest {
+  type: typeof MARK_MESSAGE_REPLY_UNREAD_REQUEST;
+  payload: string;
+}
 
-export interface markReplyUnreadRequestAction {
-    type: typeof MARK_REPLY_UNREAD_REQUEST;
-    payload: string;
-};
+export interface markMessageReplyUnreadSuccess {
+  type: typeof MARK_MESSAGE_REPLY_UNREAD_SUCCESS;
+  payload: string;
+}
 
-export interface markReplyUnreadSuccessAction {
-    type: typeof MARK_REPLY_UNREAD_SUCCESS;
-    payload: string;
-};
+export interface markMessageReplyUnreadFailure {
+  type: typeof MARK_MESSAGE_REPLY_UNREAD_FAILURE;
+  payload: string;
+}
 
-export interface markReplyUnreadFailureAction {
-    type: typeof MARK_REPLY_UNREAD_FAILURE;
-    payload: string;
-};
+export interface deleteMessageReplyRequest {
+  type: typeof DELETE_MESSAGE_REPLY_REQUEST;
+  payload: string;
+}
 
-export interface deleteReplyRequestAction {
-    type: typeof DELETE_REPLY_REQUEST;
-    payload: DeleteReply;
-};
+export interface deleteMessageReplySuccess {
+  type: typeof DELETE_MESSAGE_REPLY_SUCCESS;
+  payload: string;
+}
 
-export interface deleteReplySuccessAction {
-    type: typeof DELETE_REPLY_SUCCESS;
-    payload: string;
-};
-
-export interface deleteReplyFailureAction {
-    type: typeof DELETE_REPLY_FAILURE;
-    payload: string;
+export interface deleteMessageReplyFailure {
+  type: typeof DELETE_MESSAGE_REPLY_FAILURE;
+  payload: string;
 }

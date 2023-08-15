@@ -14,6 +14,20 @@ export interface NewReviewReplyData {
     body: string;
 };
 
+export interface NewReviewReplyDataReturn {
+    id: string;
+    reviewId: string;
+    userId: string;
+    username: string;
+    body: string;
+};
+
+export interface FetchReviewReplyById {
+    slug: string;
+    id: string;
+    reviewId: string;
+};
+
 export interface UpdateReviewReplyData {
     id?: string;
     reviewId?: string;
@@ -21,6 +35,11 @@ export interface UpdateReviewReplyData {
     body?: string,
     slug?: string;
     createdAt?: Date;
+};
+
+export interface DeleteReviewReply {
+    id: string;
+    reviewId: string
 };
 
 export const SEND_NEW_REVIEW_REPLY_DATA_REQUEST = 'SEND_NEW_REVIEW_REPLY_DATA_REQUEST';
@@ -37,62 +56,67 @@ export const DELETE_REVIEW_REPLY_REQUEST = 'DELETE_REVIEW_REPLY_REQUEST';
 export const DELETE_REVIEW_REPLY_SUCCESS = 'DELETE_REVIEW_REPLY_SUCCESS';
 export const DELETE_REVIEW_REPLY_FAILURE = 'DELETE_REVIEW_REPLY_FAILURE';
 
-export interface SendNewReviewReplyDataRequest {
+export interface sendNewReviewReplyDataRequestAction {
     type: typeof SEND_NEW_REVIEW_REPLY_DATA_REQUEST,
     payload: NewReviewReplyData
 };
 
-export interface SendNewReviewReplyDataSuccess {
+export interface sendNewReviewReplyDataSuccessAction {
     type: typeof SEND_NEW_REVIEW_REPLY_DATA_SUCCESS,
-    payload: ReviewReplyData
+    payload: NewReviewReplyDataReturn
 };
 
-export interface SendNewReviewReplyDataFailure {
+export interface sendNewReviewReplyDataFailureAction {
     type: typeof SEND_NEW_REVIEW_REPLY_DATA_FAILURE,
     payload: string
 };
 
-export interface FetchReviewReplyDataRequest {
+export interface fetchNewReviewReplyDataRequestAction {
     type: typeof FETCH_REVIEW_REPLY_DATA_REQUEST,
     payload: string
 };
 
-export interface FetchReviewReplyDataSuccess {
-    type: typeof FETCH_REVIEW_REPLY_DATA_FAILURE,
+export interface fetchNewReviewReplyDataByIdRequestAction {
+    type: typeof FETCH_REVIEW_REPLY_DATA_BY_ID_REQUEST,
+    payload: FetchReviewReplyById
+}
+
+export interface fetchNewReviewReplyDataSuccessAction {
+    type: typeof FETCH_REVIEW_REPLY_DATA_SUCCESS,
     payload: ReviewReplyData
 };
 
-export interface FetchReviewReplyDataFailure {
+export interface fetchNewReviewReplyDataFailureAction {
     type: typeof FETCH_REVIEW_REPLY_DATA_FAILURE,
     payload: string
 };
 
-export interface UpdateReviewReplyDataRequest {
+export interface updateReviewReplyDataRequestAction {
     type: typeof UPDATE_REVIEW_REPLY_DATA_REQUEST,
     payload: UpdateReviewReplyData
 };
 
-export interface UpdateReviewReplyDataSuccess {
+export interface updateReviewReplyDataSuccessAction {
     type: typeof UPDATE_REVIEW_REPLY_DATA_SUCCESS,
-    payload: ReviewReplyData
+    payload: NewReviewReplyDataReturn
 };
 
-export interface UpdateReviewReplyDataFailure {
+export interface updateReviewReplyDataFailureAction {
     type: typeof UPDATE_REVIEW_REPLY_DATA_FAILURE,
     payload: string
 };
 
-export interface DeleteReviewReplyRequest {
+export interface deleteReviewReplyRequestAction {
     type: typeof DELETE_REVIEW_REPLY_REQUEST,
-    payload: string
+    payload: DeleteReviewReply
 };
 
-export interface DeleteReviewReplySuccess {
+export interface deleteReviewReplySuccessAction {
     type: typeof DELETE_REVIEW_REPLY_SUCCESS,
     payload: string
 };
 
-export interface DeleteReviewReplyFailure {
+export interface deleteReviewReplyFailureAction {
     type: typeof DELETE_REVIEW_REPLY_FAILURE,
     payload: string
-}
+};

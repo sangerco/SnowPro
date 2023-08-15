@@ -1,101 +1,146 @@
 import axios from "axios";
-import { Dispatch } from "redux";
 import { URL } from "../../utils/config";
-import {  NewFavMountainData,
-            FavMountainDataReturn,
-            SEND_NEW_FAV_MOUNTAIN_DATA_REQUEST,
-            SEND_NEW_FAV_MOUNTAIN_DATA_SUCCESS,
-            SEND_NEW_FAV_MOUNTAIN_DATA_FAILURE,
-            FETCH_FAV_MOUNTAIN_DATA_REQUEST,
-            FETCH_FAV_MOUNTAIN_DATA_SUCCESS,
-            FETCH_FAV_MOUNTAIN_DATA_FAILURE,
-            DELETE_FAV_MOUNTAIN_REQUEST,
-            DELETE_FAV_MOUNTAIN_SUCCESS,
-            DELETE_FAV_MOUNTAIN_FAILURE } from "../types/favMountainTypes";
-;
+import { Dispatch } from "redux";
+import {
+  FavMountainData,
+  FavMountainDataReturn,
+  SEND_NEW_FAV_MOUNTAIN_DATA_REQUEST,
+  SEND_NEW_FAV_MOUNTAIN_DATA_SUCCESS,
+  SEND_NEW_FAV_MOUNTAIN_DATA_FAILURE,
+  FETCH_FAV_MOUNTAIN_DATA_REQUEST,
+  FETCH_FAV_MOUNTAIN_DATA_SUCCESS,
+  FETCH_FAV_MOUNTAIN_DATA_FAILURE,
+  DELETE_FAV_MOUNTAIN_DATA_REQUEST,
+  DELETE_FAV_MOUNTAIN_DATA_SUCCESS,
+  DELETE_FAV_MOUNTAIN_DATA_FAILURE,
+} from "../types/favMountainsTypes";
 
-export const sendNewFavMountainRequest = (userId: string, skiAreaSlug: string) => ({
-    type: SEND_NEW_FAV_MOUNTAIN_DATA_REQUEST,
-    payload: { userId, skiAreaSlug }
+export const sendNewFavMountainDataRequest = (
+  favMountainData: FavMountainData
+) => ({
+  type: SEND_NEW_FAV_MOUNTAIN_DATA_REQUEST,
+  payload: favMountainData,
 });
 
-export const sendNewFavMountainSuccess = (sendNewFavMountainData: NewFavMountainData) => ({
-    type: SEND_NEW_FAV_MOUNTAIN_DATA_SUCCESS,
-    payload: sendNewFavMountainData
+export const sendNewFavMountainDataSuccess = (
+  favMountainDataReturn: FavMountainDataReturn
+) => ({
+  type: SEND_NEW_FAV_MOUNTAIN_DATA_SUCCESS,
+  payload: favMountainDataReturn,
 });
 
-export const sendNewFavMountainFailure = (error: string) => ({
-    type: SEND_NEW_FAV_MOUNTAIN_DATA_FAILURE,
-    payload: error
+export const sendNewFavMountainDataFailure = (error: string) => ({
+  type: SEND_NEW_FAV_MOUNTAIN_DATA_FAILURE,
+  payload: error,
 });
 
-export const fetchFavMountainDataRequest = (userId: string) => ({
-    type: FETCH_FAV_MOUNTAIN_DATA_REQUEST,
-    payload: { userId }
+export const fetchFavMountainDataByUserIdRequest = (userId: string) => ({
+  type: FETCH_FAV_MOUNTAIN_DATA_REQUEST,
+  payload: userId,
 });
 
-export const fetchFavMountainDataSuccess = (favMountains: FavMountainDataReturn[]) => ({
-    type: FETCH_FAV_MOUNTAIN_DATA_SUCCESS,
-    payload: favMountains
+export const fetchFavMountainDataByUserIdSuccess = (
+  favMountainDataReturn: FavMountainDataReturn[]
+) => ({
+  type: FETCH_FAV_MOUNTAIN_DATA_SUCCESS,
+  payload: favMountainDataReturn,
 });
 
-export const fetchFavMountainDataFailure = (error: string) => ({
-    type: FETCH_FAV_MOUNTAIN_DATA_FAILURE,
-    payload: error
+export const fetchFavMountainDataByUserIdFailure = (error: string) => ({
+  type: FETCH_FAV_MOUNTAIN_DATA_FAILURE,
+  payload: error,
 });
 
-export const deleteFavMountainRequest = (id: string) => ({
-    type: DELETE_FAV_MOUNTAIN_REQUEST,
-    payload: id
+export const fetchFavMountainDataBySkiAreaSlugRequest = (
+  skiAreaSlug: string
+) => ({
+  type: FETCH_FAV_MOUNTAIN_DATA_REQUEST,
+  payload: skiAreaSlug,
 });
 
-export const deleteFavMountainSuccess = (success: string) => ({
-    type: DELETE_FAV_MOUNTAIN_SUCCESS,
-    payload: success
+export const fetchFavMountainDataBySkiAreaSlugSuccess = (
+  favMountainDataReturn: FavMountainDataReturn[]
+) => ({
+  type: FETCH_FAV_MOUNTAIN_DATA_SUCCESS,
+  payload: favMountainDataReturn,
 });
 
-export const deleteFavMountainFailure = (error: string) => ({
-    type: DELETE_FAV_MOUNTAIN_FAILURE,
-    payload: error
+export const fetchFavMountainDataBySkiAreaSlugFailure = (error: string) => ({
+  type: FETCH_FAV_MOUNTAIN_DATA_FAILURE,
+  payload: error,
 });
 
-export const sendNewFavMountainData = (userId: string, skiAreaSlug: string) => {
-    return async (dispatch: Dispatch) => {
-        dispatch(sendNewFavMountainRequest(userId, skiAreaSlug));
+export const deleteFavMountainDataRequest = (id: string) => ({
+  type: DELETE_FAV_MOUNTAIN_DATA_REQUEST,
+  payload: id,
+});
 
-        try {
-            const response = await axios.post(`${URL}/fav_mountain`, 
-                {userId: userId, skiAreaSlug: skiAreaSlug});
-            dispatch(sendNewFavMountainSuccess(response.data));
-        } catch (error: any) {
-            dispatch(sendNewFavMountainFailure(error.message));
-        }
+export const deleteFavMountainDataSuccess = (success: string) => ({
+  type: DELETE_FAV_MOUNTAIN_DATA_SUCCESS,
+  payload: success,
+});
+
+export const deleteFavMountainDataFailure = (error: string) => ({
+  type: DELETE_FAV_MOUNTAIN_DATA_FAILURE,
+  payload: error,
+});
+
+export const sendNewFavMountainData = (favMountainData: FavMountainData) => {
+  return async (dispatch: Dispatch) => {
+    dispatch(sendNewFavMountainDataRequest(favMountainData));
+
+    try {
+      const response = await axios.post(`${URL}/api/fav-mountain`, {
+        userId: favMountainData.userId,
+        skiAreaSlug: favMountainData.skiAreaSlug,
+      });
+      const responseData = response.data.favMountain;
+      dispatch(sendNewFavMountainDataSuccess(responseData));
+    } catch (error: any) {
+      dispatch(sendNewFavMountainDataFailure(error.message));
     }
+  };
 };
 
-export const fetchFavMountainData = (userId: string) => {
-    return async (dispatch: Dispatch) => {
-        dispatch(fetchFavMountainDataRequest(userId));
+export const fetchFavMountainDataByUserId = (userId: string) => {
+  return async (dispatch: Dispatch) => {
+    dispatch(fetchFavMountainDataByUserIdRequest(userId));
 
-        try {
-            const response = await axios.get(`${URL}/users/${userId}/fav-mountains`);
-            const responseData: FavMountainDataReturn[] = response.data.favMountains;
-            dispatch(fetchFavMountainDataSuccess(responseData));
-        } catch (error: any) {
-            dispatch(fetchFavMountainDataFailure(error.message));
-        }
+    try {
+      const response = await axios.get(`${URL}/users/${userId}/fav-mountains`);
+      const responseData = response.data.favMountains;
+      dispatch(fetchFavMountainDataByUserIdSuccess(responseData));
+    } catch (error: any) {
+      dispatch(fetchFavMountainDataByUserIdFailure(error.message));
     }
+  };
 };
 
-export const deleteFavMountain = (id: string) => {
-    return async (dispatch: Dispatch) => {
-        dispatch(deleteFavMountainRequest(id));
+export const fetchFavMountainDataBySkiAreaSlug = (skiAreaSlug: string) => {
+  return async (dispatch: Dispatch) => {
+    dispatch(fetchFavMountainDataBySkiAreaSlugRequest(skiAreaSlug));
 
-        try {
-            const response = await axios.delete(`${URL}/api/fav_mountain/${id}`);
-            dispatch(fetchFavMountainDataSuccess(response.data));
-        } catch (error: any) {
-            dispatch(deleteFavMountainFailure(error.message));
-        }
+    try {
+      const response = await axios.get(
+        `${URL}/ski-areas/${skiAreaSlug}/users-favorited-by`
+      );
+      const responseData = response.data.favMountains;
+      dispatch(fetchFavMountainDataByUserIdSuccess(responseData));
+    } catch (error: any) {
+      dispatch(fetchFavMountainDataBySkiAreaSlugFailure(error.message));
     }
+  };
+};
+
+export const deleteFavMountainData = (id: string) => {
+  return async (dispatch: Dispatch) => {
+    dispatch(deleteFavMountainDataRequest(id));
+
+    try {
+      const response = await axios.delete(`${URL}/api/fav-mountain/${id}`);
+      dispatch(deleteFavMountainDataSuccess(response.data));
+    } catch (error: any) {
+      dispatch(deleteFavMountainDataFailure(error.message));
+    }
+  };
 };

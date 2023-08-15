@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { makeUserAdmin } from '../../redux/actions/userActions'
-import { RootState } from '../../redux/store'
+import { makeUserAdmin } from '../../oldRedux/actions/userActions'
+import { RootState } from '../../oldRedux/store'
 import { Checkbox, Form, Message } from 'semantic-ui-react'
 
 interface MakeUserAdmin {

@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
-import { fetchMessageDataById, deleteMessage } from '../../redux/actions/messageActions';
+import { fetchMessageDataById, deleteMessage } from '../../oldRedux/actions/messageActions';
 import { connect } from 'react-redux';
 import { useParams } from 'react-router';
 import { Link } from 'react-router-dom';
 import { Dimmer, Loader, Button, Icon, Card } from "semantic-ui-react";
 import MessageReplyView from './messageReplyView';
-import { sendNewReplyData } from '../../redux/actions/messageReplyActions';
+import { sendNewReplyData } from '../../oldRedux/actions/messageReplyActions';
 
 interface MessageData {
     id: string;

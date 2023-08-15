@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { useAuth } from './../AuthProvider';
-import { sendNewMessageData } from '../../redux/actions/messageActions';
-import { RootState } from '../../redux/store';
+import { sendNewMessageData } from '../../oldRedux/actions/messageActions';
+import { RootState } from '../../oldRedux/store';
 import { Button, Form, Message } from 'semantic-ui-react'
 
 interface NewMessageData {
