@@ -110,5 +110,7 @@ export const reviewReplyReducer = (
         ...state,
         error: action.payload,
       };
+    default:
+      return state;
   }
 };

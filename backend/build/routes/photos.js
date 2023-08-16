@@ -70,7 +70,7 @@ var photo_1 = __importDefault(require("../models/photo"));
 var photoLinkNew_json_1 = __importDefault(require("../schemas/photoLinkNew.json"));
 var photoUpdate_json_1 = __importDefault(require("../schemas/photoUpdate.json"));
 var router = express_1.default.Router();
-router.post('/api/photos', auth_1.ensureLoggedIn, auth_1.checkIfUserOrAdmin, function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+router.post("/api/photos", auth_1.ensureLoggedIn, auth_1.checkIfUserOrAdmin, function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
     var validator, errors, _a, username, link, about, tagIds, photo, e_1;
     return __generator(this, function (_b) {
         switch (_b.label) {
@@ -93,7 +93,7 @@ router.post('/api/photos', auth_1.ensureLoggedIn, auth_1.checkIfUserOrAdmin, fun
         }
     });
 }); });
-router.get('/photo/:id', function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+router.get("/photo/:id", function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
     var photo, e_2;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -110,7 +110,7 @@ router.get('/photo/:id', function (req, res, next) { return __awaiter(void 0, vo
         }
     });
 }); });
-router.get('/users/:username/photos', function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+router.get("/users/:username/photos", function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
     var photos, e_3;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -127,7 +127,7 @@ router.get('/users/:username/photos', function (req, res, next) { return __await
         }
     });
 }); });
-router.patch('/api/photo/:id', auth_1.ensureLoggedIn, auth_1.checkIfUserOrAdmin, function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+router.patch("/api/photo/:id", auth_1.ensureLoggedIn, auth_1.checkIfUserOrAdmin, function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
     var validator, errors, photo, e_4;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -150,7 +150,7 @@ router.patch('/api/photo/:id', auth_1.ensureLoggedIn, auth_1.checkIfUserOrAdmin,
         }
     });
 }); });
-router.delete('/api/photo/:id', auth_1.ensureLoggedIn, auth_1.checkIfUserOrAdmin, function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+router.delete("/api/photo/:id", auth_1.ensureLoggedIn, auth_1.checkIfUserOrAdmin, function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
     var e_5;
     return __generator(this, function (_a) {
         switch (_a.label) {

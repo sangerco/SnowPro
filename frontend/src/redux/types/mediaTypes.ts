@@ -99,8 +99,8 @@ export interface VideoData {
   id?: string;
   link: string;
   username: string;
-  about?: string;
-  tags?: string[];
+  about: string;
+  tags: string[];
   createdAt?: Date;
 }
 

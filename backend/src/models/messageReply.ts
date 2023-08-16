@@ -1,35 +1,42 @@
 import db from "../db";
 import { NotFoundError } from "../expressError";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 import { UsernameWithId } from "./message";
 
 interface ReplyData {
-    id: string;
-    messageId: string;
-    senderId: string;
-    recipientId: string;
-    subject: string;
-    body: string;
-    isRead: boolean;
-    createdId: Date;
-    senderUsername: string;
-    senderFirstName: string;
-    senderLastName: string;
-    recipientUsername: string;
-    recipientFirstName: string;
-    recipientLastName: string;
+  id: string;
+  messageId: string;
+  senderId: string;
+  recipientId: string;
+  subject: string;
+  body: string;
+  isRead: boolean;
+  createdId: Date;
+  senderUsername: string;
+  senderFirstName: string;
+  senderLastName: string;
+  recipientUsername: string;
+  recipientFirstName: string;
+  recipientLastName: string;
 }
 
 interface UserWithReplies extends ReplyData {
-    usernameWithId: UsernameWithId
+  usernameWithId: UsernameWithId;
 }
 
 class Reply {
-    static async createReply(messageId: string, senderId: string, recipientId: string, subject: string, body: string): Promise<ReplyData> {
-        const id = uuidv4();
-        const created_at = new Date();
+  static async createReply(
+    messageId: string,
+    senderId: string,
+    recipientId: string,
+    subject: string,
+    body: string
+  ): Promise<ReplyData> {
+    const id = uuidv4();
+    const created_at = new Date();
 
-        const result = await db.query(`
+    const result = await db.query(
+      `
             INSERT INTO message_replies
             (   id,
                 message_id,
@@ -49,23 +56,17 @@ class Reply {
                 body,
                 is_read AS "isRead",
                 created_at AS "createdAt"`,
-            [   id,
-                messageId,
-                senderId,
-                recipientId,
-                subject,
-                body,
-                created_at
-            ]
-        );
+      [id, messageId, senderId, recipientId, subject, body, created_at]
+    );
 
-        const reply = result.rows[0];
+    const reply = result.rows[0];
 
-        return reply;
-    };
+    return reply;
+  }
 
-    static async getReplyById(id: string): Promise<ReplyData> {
-        const result = await db.query(`
+  static async getReplyById(id: string): Promise<ReplyData> {
+    const result = await db.query(
+      `
             SELECT 
                 r.id,
                 r.message_id AS "messageId",
@@ -86,16 +87,17 @@ class Reply {
             JOIN users recipient ON r.recipient_id = recipient.id
             WHERE r.id = $1
             ORDER BY r.created_at`,
-            [id]
-            );
+      [id]
+    );
 
-            const reply = result.rows[0];
+    const reply = result.rows[0];
 
-            return reply;
-    };
+    return reply;
+  }
 
-    static async getRepliesByMessageId(messageId: string): Promise<ReplyData[]> {
-        const result = await db.query(`
+  static async getRepliesByMessageId(messageId: string): Promise<ReplyData[]> {
+    const result = await db.query(
+      `
             SELECT 
                 r.id,
                 r.message_id AS "messageId",
@@ -116,16 +118,19 @@ class Reply {
                 JOIN users recipient ON r.recipient_id = recipient.id
                 WHERE r.message_id = $1
                 ORDER BY r.created_at`,
-            [ messageId ]
-        );
+      [messageId]
+    );
 
-        const replies = result.rows;
+    const replies = result.rows;
 
-        return replies;
-    };
+    return replies;
+  }
 
-    static async getReceivedRepliesByUsername(username: string): Promise<UserWithReplies[]> {
-        const result = await db.query(`
+  static async getReceivedRepliesByUsername(
+    username: string
+  ): Promise<UserWithReplies[]> {
+    const result = await db.query(
+      `
             SELECT 
                 r.id,
                 r.message_id AS "messageId",
@@ -146,16 +151,19 @@ class Reply {
             JOIN users recipient on r.recipient_id = recipient.id
             WHERE recipient.username = $1
             ORDER BY r.created_at`,
-            [ username ]
-        );
+      [username]
+    );
 
-        const replies = result.rows;
+    const replies = result.rows;
 
-        return replies;
-    };
+    return replies;
+  }
 
-    static async getSentRepliesByUsername(username: string): Promise<UserWithReplies[]> {
-        const result = await db.query(`
+  static async getSentRepliesByUsername(
+    username: string
+  ): Promise<UserWithReplies[]> {
+    const result = await db.query(
+      `
             SELECT 
                 r.id,
                 r.message_id AS "messageId",
@@ -176,55 +184,56 @@ class Reply {
             JOIN users recipient on r.recipient_id = recipient.id
             WHERE sender.username = $1
             ORDER BY r.created_at`,
-            [ username ]
-        );
+      [username]
+    );
 
-        const replies = result.rows;
+    const replies = result.rows;
 
-        return replies;
-    };
-    
-    static async markMessageReplyAsRead(id: string): Promise<void> {
-        const result = await db.query(`
+    return replies;
+  }
+
+  static async markMessageReplyAsRead(id: string): Promise<void> {
+    const result = await db.query(
+      `
             UPDATE message_replies
             SET is_read = true
             WHERE id = $1
             RETURNING id`,
-            [id]
-        );
-        const reply = result.rows[0];
+      [id]
+    );
+    const reply = result.rows[0];
 
-        if(!reply) throw new NotFoundError('Message does not exist!')
-         
-    };
+    if (!reply) throw new NotFoundError("Message does not exist!");
+  }
 
-    static async markMessageReplyAsUnread(id: string): Promise<void> {
-        const result = await db.query(`
+  static async markMessageReplyAsUnread(id: string): Promise<void> {
+    const result = await db.query(
+      `
             UPDATE message_replies
             SET is_read = false
             WHERE id = $1
             RETURNING id`,
-            [id]
-        );
+      [id]
+    );
 
-        const reply = result.rows[0];
+    const reply = result.rows[0];
 
-        if(!reply) throw new NotFoundError('Message does not exist!')
-    };
+    if (!reply) throw new NotFoundError("Message does not exist!");
+  }
 
-    static async deleteReply(id: string): Promise<void> {
-        const result = await db.query(`
+  static async deleteReply(id: string): Promise<void> {
+    const result = await db.query(
+      `
             DELETE FROM message_replies
                 WHERE id = $1
                 RETURNING id`,
-                [id]
-            );
+      [id]
+    );
 
-        const reply = result.rows[0];
+    const reply = result.rows[0];
 
-        if (!reply) throw new NotFoundError('Message does not exist!');
-    };
-
-};
+    if (!reply) throw new NotFoundError("Message does not exist!");
+  }
+}
 
 export default Reply;

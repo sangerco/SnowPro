@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Dispatch } from "redux";
+import { AppDispatch } from "../store";
 import { URL } from "../../utils/config";
 import {
   ReviewData,
@@ -106,7 +106,7 @@ export const deleteReviewFailure = (error: string) => ({
 });
 
 export const sendNewReviewData = (newReviewData: NewReviewData) => {
-  return async (dispatch: Dispatch) => {
+  return async (dispatch: AppDispatch) => {
     dispatch(sendNewReviewDataRequest(newReviewData));
     const slug = newReviewData.skiAreaSlug;
 
@@ -129,7 +129,7 @@ export const sendNewReviewData = (newReviewData: NewReviewData) => {
 };
 
 export const fetchAllReviewsData = () => {
-  return async (dispatch: Dispatch) => {
+  return async (dispatch: AppDispatch) => {
     dispatch(fetchAllReviewsDataRequest());
 
     try {
@@ -143,7 +143,7 @@ export const fetchAllReviewsData = () => {
 };
 
 export const fetchReviewDataById = (slug: string, id: string) => {
-  return async (dispatch: Dispatch) => {
+  return async (dispatch: AppDispatch) => {
     dispatch(fetchReviewDataByIdRequest(slug, id));
 
     try {
@@ -159,7 +159,7 @@ export const fetchReviewDataById = (slug: string, id: string) => {
 };
 
 export const updateReviewData = (updateReviewData: UpdateReviewData) => {
-  return async (dispatch: Dispatch) => {
+  return async (dispatch: AppDispatch) => {
     dispatch(updateReviewDataRequest(updateReviewData));
     const id = updateReviewData.id;
 
@@ -185,7 +185,7 @@ export const updateReviewData = (updateReviewData: UpdateReviewData) => {
 };
 
 export const deleteReview = (slug: string, id: string) => {
-  return async (dispatch: Dispatch) => {
+  return async (dispatch: AppDispatch) => {
     dispatch(deleteReviewRequest(slug, id));
 
     try {

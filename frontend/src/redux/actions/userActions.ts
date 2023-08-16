@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Dispatch } from "redux";
+import { AppDispatch } from "../store";
 import { URL } from "../../utils/config";
 import {
   UserData,
@@ -132,7 +132,7 @@ export const deleteUserFailure = (error: string) => ({
 });
 
 export const fetchUserData =
-  (username: string) => async (dispatch: Dispatch) => {
+  (username: string) => async (dispatch: AppDispatch) => {
     dispatch(fetchUserDataRequest(username));
 
     try {
@@ -151,7 +151,7 @@ export const sendNewUserData = (
   last_name: string,
   email: string
 ) => {
-  return async (dispatch: Dispatch) => {
+  return async (dispatch: AppDispatch) => {
     dispatch(
       sendNewUserDataRequest(username, password, first_name, last_name, email)
     );
@@ -183,7 +183,7 @@ export const updateUserData = (
   photos: string[],
   favMountains: string[]
 ) => {
-  return async (dispatch: Dispatch) => {
+  return async (dispatch: AppDispatch) => {
     dispatch(
       updateUserDataRequest(
         username,
@@ -211,7 +211,7 @@ export const updateUserData = (
 };
 
 export const makeUserAdmin = (username: string, isAdmin: boolean) => {
-  return async (dispatch: Dispatch) => {
+  return async (dispatch: AppDispatch) => {
     dispatch(makeUserAdminRequest(username, isAdmin));
 
     try {
@@ -227,7 +227,7 @@ export const makeUserAdmin = (username: string, isAdmin: boolean) => {
 };
 
 export const deleteUser = (username: string) => {
-  return async (dispatch: Dispatch) => {
+  return async (dispatch: AppDispatch) => {
     dispatch(deleteUserRequest(username));
 
     try {

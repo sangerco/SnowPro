@@ -66,7 +66,7 @@ var FavMountain = /** @class */ (function () {
             var result, favMountains;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, db_1.default.query("\n            SELECT u.username,\n                    s.slug AS \"skiAreaSlug\",\n                    s.name AS \"skiAreaName\"\n            FROM users u\n            LEFT JOIN fav_mountains fm ON u.id = fm.user_id\n            LEFT JOIN ski_areas s ON fm.ski_area_slug = s.slug\n            WHERE user_id = $1", [userId])];
+                    case 0: return [4 /*yield*/, db_1.default.query("     SELECT u.username,\n                    s.slug AS \"skiAreaSlug\",\n                    s.name AS \"skiAreaName\"\n            FROM users u\n            LEFT JOIN fav_mountains fm ON u.id = fm.user_id\n            LEFT JOIN ski_areas s ON fm.ski_area_slug = s.slug\n            WHERE user_id = $1", [userId])];
                     case 1:
                         result = _a.sent();
                         favMountains = result.rows;
@@ -75,7 +75,6 @@ var FavMountain = /** @class */ (function () {
             });
         });
     };
-    ;
     FavMountain.fetchFavMountainDataBySkiAreaSlug = function (skiAreaSlug) {
         return __awaiter(this, void 0, void 0, function () {
             var result, favMountains;
@@ -90,7 +89,6 @@ var FavMountain = /** @class */ (function () {
             });
         });
     };
-    ;
     FavMountain.remove = function (id) {
         return __awaiter(this, void 0, void 0, function () {
             var result, favMountain;
@@ -101,7 +99,7 @@ var FavMountain = /** @class */ (function () {
                         result = _a.sent();
                         favMountain = result.rows[0];
                         if (!favMountain)
-                            throw new expressError_1.NotFoundError('Favorite not found!');
+                            throw new expressError_1.NotFoundError("Favorite not found!");
                         return [2 /*return*/];
                 }
             });

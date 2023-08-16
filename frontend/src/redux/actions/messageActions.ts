@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Dispatch } from "redux";
+import { AppDispatch } from "../store";
 import { URL } from "../../utils/config";
 import {
   NewMessageData,
@@ -116,7 +116,7 @@ export const deleteMessageFailure = (failure: string) => ({
 });
 
 export const sendNewMessageData = (newMessageData: NewMessageData) => {
-  return async (dispatch: Dispatch) => {
+  return async (dispatch: AppDispatch) => {
     dispatch(sendNewMessageDataRequest(newMessageData));
 
     try {
@@ -136,7 +136,7 @@ export const sendNewMessageData = (newMessageData: NewMessageData) => {
 };
 
 export const fetchMessageData = (id: string) => {
-  return async (dispatch: Dispatch) => {
+  return async (dispatch: AppDispatch) => {
     dispatch(fetchMessageDataRequest(id));
 
     try {
@@ -150,7 +150,7 @@ export const fetchMessageData = (id: string) => {
 };
 
 export const fetchUserMessages = (username: string) => {
-  return async (dispatch: Dispatch) => {
+  return async (dispatch: AppDispatch) => {
     dispatch(fetchUserMessagesRequest(username));
 
     try {
@@ -164,7 +164,7 @@ export const fetchUserMessages = (username: string) => {
 };
 
 export const markMessageRead = (id: string) => {
-  return async (dispatch: Dispatch) => {
+  return async (dispatch: AppDispatch) => {
     dispatch(markMessageReadRequest(id));
 
     try {
@@ -177,7 +177,7 @@ export const markMessageRead = (id: string) => {
 };
 
 export const markMessageUnread = (id: string) => {
-  return async (dispatch: Dispatch) => {
+  return async (dispatch: AppDispatch) => {
     dispatch(markMessageUnreadRequest(id));
 
     try {
@@ -190,7 +190,7 @@ export const markMessageUnread = (id: string) => {
 };
 
 export const deleteMessage = (id: string) => {
-  return async (dispatch: Dispatch) => {
+  return async (dispatch: AppDispatch) => {
     dispatch(deleteMessageRequest(id));
 
     try {

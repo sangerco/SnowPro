@@ -88,7 +88,6 @@ var Photo = /** @class */ (function () {
             });
         });
     };
-    ;
     Photo.getPhoto = function (id) {
         return __awaiter(this, void 0, void 0, function () {
             var result, photo;
@@ -99,13 +98,12 @@ var Photo = /** @class */ (function () {
                         result = _a.sent();
                         photo = result.rows[0];
                         if (!photo)
-                            throw new expressError_1.NotFoundError('Photo Not Found');
+                            throw new expressError_1.NotFoundError("Photo Not Found");
                         return [2 /*return*/, photo];
                 }
             });
         });
     };
-    ;
     Photo.getPhotosByUsername = function (username) {
         return __awaiter(this, void 0, void 0, function () {
             var result, photos;
@@ -116,13 +114,12 @@ var Photo = /** @class */ (function () {
                         result = _a.sent();
                         photos = result.rows;
                         if (photos.length === 0)
-                            throw new expressError_1.NotFoundError('No photos yet.');
+                            throw new expressError_1.NotFoundError("No photos yet.");
                         return [2 /*return*/, photos];
                 }
             });
         });
     };
-    ;
     Photo.updatePhoto = function (id, data) {
         return __awaiter(this, void 0, void 0, function () {
             var _a, setCols, values, sqlQuery, result, photo;
@@ -130,7 +127,7 @@ var Photo = /** @class */ (function () {
                 switch (_b.label) {
                     case 0:
                         _a = (0, sql_1.sqlForPartialUpdate)(data, {
-                            userId: "user_id"
+                            userId: "user_id",
                         }), setCols = _a.setCols, values = _a.values;
                         sqlQuery = "UPDATE photos\n                            SET ".concat(setCols, "\n                            WHERE id = ").concat(id, "\n                            RETURNING id,\n                                user_id AS \"userId\",\n                                link,\n                                about,\n                                created_at as \"createdAt\"");
                         return [4 /*yield*/, db_1.default.query(sqlQuery, __spreadArray(__spreadArray([], values, true), [id], false))];
@@ -138,7 +135,7 @@ var Photo = /** @class */ (function () {
                         result = _b.sent();
                         photo = result.rows[0];
                         if (!photo)
-                            throw new expressError_1.NotFoundError('Photo not found!');
+                            throw new expressError_1.NotFoundError("Photo not found!");
                         return [2 /*return*/, photo];
                 }
             });
@@ -154,7 +151,7 @@ var Photo = /** @class */ (function () {
                         result = _a.sent();
                         photo = result.rows[0];
                         if (!photo)
-                            throw new expressError_1.NotFoundError('Photo not found!');
+                            throw new expressError_1.NotFoundError("Photo not found!");
                         return [2 /*return*/];
                 }
             });
@@ -162,5 +159,4 @@ var Photo = /** @class */ (function () {
     };
     return Photo;
 }());
-;
 exports.default = Photo;

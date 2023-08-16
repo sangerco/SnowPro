@@ -71,5 +71,7 @@ export const favMountainReducer = (
         ...state,
         error: action.payload,
       };
+    default:
+      return state;
   }
 };

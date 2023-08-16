@@ -7,12 +7,10 @@ var sqlForPartialUpdate = function (dataToUpdate, nodeToSql) {
     if (keys.length === 0) {
         throw new expressError_1.BadRequestError("No data");
     }
-    var cols = keys.map(function (colName, idx) {
-        return "\"".concat(nodeToSql[colName] || colName, "\"=$").concat(idx + 1);
-    });
+    var cols = keys.map(function (colName, idx) { return "\"".concat(nodeToSql[colName] || colName, "\"=$").concat(idx + 1); });
     return {
         setCols: cols.join(", "),
-        values: Object.values(dataToUpdate)
+        values: Object.values(dataToUpdate),
     };
 };
 exports.sqlForPartialUpdate = sqlForPartialUpdate;

@@ -145,5 +145,7 @@ export const messageReducer = (state = initialMessageState, action: any) => {
         error: action.payload,
         loading: false,
       };
+    default:
+      return state;
   }
 };

@@ -62,7 +62,7 @@ var reviewReply_1 = __importDefault(require("../models/reviewReply"));
 var skiArea_1 = __importDefault(require("../models/skiArea"));
 var router = express_1.default.Router();
 // update a ski area review
-router.patch('/api/reviews/:id', auth_1.ensureLoggedIn, auth_1.checkIfUserOrAdmin, function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+router.patch("/api/reviews/:id", auth_1.ensureLoggedIn, auth_1.checkIfUserOrAdmin, function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
     var validator, errors, review, e_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -84,7 +84,7 @@ router.patch('/api/reviews/:id', auth_1.ensureLoggedIn, auth_1.checkIfUserOrAdmi
         }
     });
 }); });
-router.get('/ski-areas/reviews', function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+router.get("/ski-areas/reviews", function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
     var reviews, e_2;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -103,7 +103,7 @@ router.get('/ski-areas/reviews', function (req, res, next) { return __awaiter(vo
     });
 }); });
 // get reviews by ski area name
-router.get('/ski-areas/:slug/reviews', function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+router.get("/ski-areas/:slug/reviews", function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
     var reviews, e_3;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -122,7 +122,7 @@ router.get('/ski-areas/:slug/reviews', function (req, res, next) { return __awai
     });
 }); });
 // get review by id
-router.get('/ski-areas/:slug/reviews/:id', function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+router.get("/ski-areas/:slug/reviews/:id", function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
     var reviewData, getReviewReplyData, review, e_4;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -145,7 +145,7 @@ router.get('/ski-areas/:slug/reviews/:id', function (req, res, next) { return __
     });
 }); });
 // delete a ski area review
-router.delete('/api/:slug/reviews/:id', auth_1.ensureLoggedIn, auth_1.checkIfUserOrAdmin, function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+router.delete("/api/:slug/reviews/:id", auth_1.ensureLoggedIn, auth_1.checkIfUserOrAdmin, function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
     var e_5;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -162,8 +162,8 @@ router.delete('/api/:slug/reviews/:id', auth_1.ensureLoggedIn, auth_1.checkIfUse
         }
     });
 }); });
-// create a review reply 
-router.post('/api/reviews/:id/reply', auth_1.ensureLoggedIn, auth_1.checkIfUserOrAdmin, function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+// create a review reply
+router.post("/api/reviews/:id/reply", auth_1.ensureLoggedIn, auth_1.checkIfUserOrAdmin, function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
     var validator, errors, _a, userId, reviewId, body, slug, reply, e_6;
     return __generator(this, function (_b) {
         switch (_b.label) {
@@ -187,7 +187,7 @@ router.post('/api/reviews/:id/reply', auth_1.ensureLoggedIn, auth_1.checkIfUserO
     });
 }); });
 // update a review reply
-router.patch('/api/reviews/reply/:id', auth_1.ensureLoggedIn, auth_1.checkIfUserOrAdmin, function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+router.patch("/api/reviews/reply/:id", auth_1.ensureLoggedIn, auth_1.checkIfUserOrAdmin, function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
     var validator, errors, reply, e_7;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -210,7 +210,7 @@ router.patch('/api/reviews/reply/:id', auth_1.ensureLoggedIn, auth_1.checkIfUser
     });
 }); });
 // fetch a review reply by id
-router.get('/ski-areas/:slug/reviews/:review_id/replies/:id', function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+router.get("/ski-areas/:slug/reviews/:review_id/replies/:id", function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
     var reply, e_8;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -227,9 +227,28 @@ router.get('/ski-areas/:slug/reviews/:review_id/replies/:id', function (req, res
         }
     });
 }); });
+// fetch review replies by review id
+router.get("/ski-areas/:slug/reviews/:id/replies", function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+    var reviewReplyData, e_9;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                return [4 /*yield*/, reviewReply_1.default.fetchRepliesByReviewId(req.params.id)];
+            case 1:
+                reviewReplyData = _a.sent();
+                return [2 /*return*/, res.json({ reviewReplyData: reviewReplyData })];
+            case 2:
+                e_9 = _a.sent();
+                next(e_9);
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
+        }
+    });
+}); });
 // delete a review reply
-router.delete('/api/reviews/reply/:id', auth_1.ensureLoggedIn, auth_1.checkIfUserOrAdmin, function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var e_9;
+router.delete("/api/reviews/reply/:id", auth_1.ensureLoggedIn, auth_1.checkIfUserOrAdmin, function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+    var e_10;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -240,8 +259,8 @@ router.delete('/api/reviews/reply/:id', auth_1.ensureLoggedIn, auth_1.checkIfUse
                 res.json({ deleted: "reply: ".concat(req.params.id) });
                 return [3 /*break*/, 3];
             case 2:
-                e_9 = _a.sent();
-                return [2 /*return*/, next(e_9)];
+                e_10 = _a.sent();
+                return [2 /*return*/, next(e_10)];
             case 3: return [2 /*return*/];
         }
     });

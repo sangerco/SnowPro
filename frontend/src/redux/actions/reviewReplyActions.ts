@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Dispatch } from "redux";
+import { AppDispatch } from "../store";
 import { URL } from "../../utils/config";
 import {
   ReviewReplyData,
@@ -130,7 +130,7 @@ export const deleteReviewReplyFailure = (error: string) => ({
 export const sendNewReviewReplyData = (
   newReviewReplyData: NewReviewReplyData
 ) => {
-  return async (dispatch: Dispatch) => {
+  return async (dispatch: AppDispatch) => {
     dispatch(sendNewReviewReplyDataRequest(newReviewReplyData));
     const reviewId = newReviewReplyData.reviewId;
     try {
@@ -151,7 +151,7 @@ export const fetchReviewReplyDataById = (
   reviewId: string,
   id: string
 ) => {
-  return async (dispatch: Dispatch) => {
+  return async (dispatch: AppDispatch) => {
     dispatch(fetchReviewReplyDataByIdRequest(slug, reviewId, id));
 
     try {
@@ -170,7 +170,7 @@ export const fetchReviewReplyDataByReviewId = (
   slug: string,
   reviewId: string
 ) => {
-  return async (dispatch: Dispatch) => {
+  return async (dispatch: AppDispatch) => {
     dispatch(fetchReviewReplyDataByReviewIdRequest(slug, reviewId));
 
     try {
@@ -188,7 +188,7 @@ export const fetchReviewReplyDataByReviewId = (
 export const updateReviewReplyData = (
   updateReviewReplyData: UpdateReviewReplyData
 ) => {
-  return async (dispatch: Dispatch) => {
+  return async (dispatch: AppDispatch) => {
     dispatch(updateReviewReplyDataRequest(updateReviewReplyData));
     const id = updateReviewReplyData.id;
 
@@ -205,7 +205,7 @@ export const updateReviewReplyData = (
 };
 
 export const deleteReviewReply = (id: string) => {
-  return async (dispatch: Dispatch) => {
+  return async (dispatch: AppDispatch) => {
     dispatch(deleteReviewReplyRequest(id));
 
     try {

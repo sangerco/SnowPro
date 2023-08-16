@@ -5,7 +5,13 @@ import {
   SEND_LOGOUT_USER,
 } from "../types/authTypes";
 
-const initialState = {
+interface AuthState {
+  token: string | null;
+  isAuthenticated: boolean;
+  error: any;
+}
+
+const initialState: AuthState = {
   token: null,
   isAuthenticated: false,
   error: null,

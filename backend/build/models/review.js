@@ -63,15 +63,7 @@ var Review = /** @class */ (function () {
                     case 0:
                         id = (0, uuid_1.v4)();
                         createdAt = new Date();
-                        return [4 /*yield*/, db_1.default.query("INSERT INTO reviews\n                (id,\n                   user_id,\n                   ski_area_slug,\n                   header,\n                   body,\n                   stars,\n                   tag_ids,\n                   created_at)\n            VALUES ($1, $2, $3, $4, $5, $6, $7)\n            RETURNING\n                id,\n                user_id AS \"userId\", \n                ski_area_slug AS \"skiAreaSlug\", \n                header,\n                body, \n                stars,\n                tag_ids AS \"tagIds\",\n                created_at AS \"createdAt\"", [id,
-                                userId,
-                                skiAreaSlug,
-                                header,
-                                body,
-                                stars,
-                                tagIds,
-                                createdAt
-                            ])];
+                        return [4 /*yield*/, db_1.default.query("INSERT INTO reviews\n                (id,\n                   user_id,\n                   ski_area_slug,\n                   header,\n                   body,\n                   stars,\n                   tag_ids,\n                   created_at)\n            VALUES ($1, $2, $3, $4, $5, $6, $7)\n            RETURNING\n                id,\n                user_id AS \"userId\", \n                ski_area_slug AS \"skiAreaSlug\", \n                header,\n                body, \n                stars,\n                tag_ids AS \"tagIds\",\n                created_at AS \"createdAt\"", [id, userId, skiAreaSlug, header, body, stars, tagIds, createdAt])];
                     case 1:
                         result = _b.sent();
                         reviewData = result.rows[0];
@@ -96,10 +88,7 @@ var Review = /** @class */ (function () {
                         photo = photos_1[_a];
                         photoId = (0, uuid_1.v4)();
                         photoCreatedAt = new Date();
-                        return [4 /*yield*/, db_1.default.query("\n                INSERT INTO photos (\n                    id,\n                    user_id,\n                    link,\n                    created_at)\n                VALUES ($1, $2, $3, $4)\n                RETURNING\n                    id,\n                    user_id AS \"userId\",\n                    link,\n                    created_at AS \"createdAt\"", [photoId,
-                                userId,
-                                photo,
-                                photoCreatedAt])];
+                        return [4 /*yield*/, db_1.default.query("\n                INSERT INTO photos (\n                    id,\n                    user_id,\n                    link,\n                    created_at)\n                VALUES ($1, $2, $3, $4)\n                RETURNING\n                    id,\n                    user_id AS \"userId\",\n                    link,\n                    created_at AS \"createdAt\"", [photoId, userId, photo, photoCreatedAt])];
                     case 7:
                         photoResult = _b.sent();
                         return [4 /*yield*/, db_1.default.query("\n                INSERT INTO reviews_photos (review_id, photo_id)\n                VALUES ($1, $2)", [reviewData.id, photoId])];
@@ -128,7 +117,7 @@ var Review = /** @class */ (function () {
                             body: reviewData.body,
                             stars: reviewData.stars,
                             photos: reviewData.photos,
-                            tagIds: reviewData.tagIds
+                            tagIds: reviewData.tagIds,
                         };
                         return [2 /*return*/, review];
                 }
@@ -142,7 +131,7 @@ var Review = /** @class */ (function () {
                 switch (_b.label) {
                     case 0:
                         _a = (0, sql_1.sqlForPartialUpdate)(data, {
-                            tagIds: 'tag_ids'
+                            tagIds: "tag_ids",
                         }), setCols = _a.setCols, values = _a.values;
                         sqlQuery = "UPDATE reviews\n                            SET ".concat(setCols, "\n                            WHERE id = ").concat(id, "\n                            RETURNING user_id AS \"userId\",\n                            ski_area_slug AS \"skiAreaSlug\",\n                            header,\n                            body,\n                            stars,\n                            photos,\n                            created_at AS \"createdAt\"");
                         return [4 /*yield*/, db_1.default.query(sqlQuery, __spreadArray(__spreadArray([], values, true), [id], false))];
@@ -150,7 +139,7 @@ var Review = /** @class */ (function () {
                         result = _b.sent();
                         review = result.rows[0];
                         if (!review)
-                            throw new expressError_1.NotFoundError('No such review found.');
+                            throw new expressError_1.NotFoundError("No such review found.");
                         return [2 /*return*/, review];
                 }
             });
@@ -166,9 +155,8 @@ var Review = /** @class */ (function () {
                         result = _a.sent();
                         reviews = result.rows;
                         if (reviews.length === 0) {
-                            throw new expressError_1.NotFoundError('No reviews found');
+                            throw new expressError_1.NotFoundError("No reviews found");
                         }
-                        ;
                         return [2 /*return*/, reviews];
                 }
             });
@@ -184,7 +172,7 @@ var Review = /** @class */ (function () {
                         result = _a.sent();
                         review = result.rows[0];
                         if (!review)
-                            throw new expressError_1.NotFoundError('Review Not Found');
+                            throw new expressError_1.NotFoundError("Review Not Found");
                         return [2 /*return*/, review];
                 }
             });
@@ -214,7 +202,7 @@ var Review = /** @class */ (function () {
                         result = _a.sent();
                         review = result.rows[0];
                         if (!review)
-                            throw new expressError_1.NotFoundError('No such review found.');
+                            throw new expressError_1.NotFoundError("No such review found.");
                         return [2 /*return*/];
                 }
             });

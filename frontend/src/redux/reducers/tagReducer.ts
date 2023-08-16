@@ -68,5 +68,7 @@ export const tagReducer = (state = initialTagState, action: any) => {
         ...state,
         error: action.payload,
       };
+    default:
+      return state;
   }
 };

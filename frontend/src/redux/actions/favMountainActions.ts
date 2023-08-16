@@ -1,6 +1,6 @@
 import axios from "axios";
 import { URL } from "../../utils/config";
-import { Dispatch } from "redux";
+import { AppDispatch } from "../store";
 import {
   FavMountainData,
   FavMountainDataReturn,
@@ -86,7 +86,7 @@ export const deleteFavMountainDataFailure = (error: string) => ({
 });
 
 export const sendNewFavMountainData = (favMountainData: FavMountainData) => {
-  return async (dispatch: Dispatch) => {
+  return async (dispatch: AppDispatch) => {
     dispatch(sendNewFavMountainDataRequest(favMountainData));
 
     try {
@@ -103,7 +103,7 @@ export const sendNewFavMountainData = (favMountainData: FavMountainData) => {
 };
 
 export const fetchFavMountainDataByUserId = (userId: string) => {
-  return async (dispatch: Dispatch) => {
+  return async (dispatch: AppDispatch) => {
     dispatch(fetchFavMountainDataByUserIdRequest(userId));
 
     try {
@@ -117,7 +117,7 @@ export const fetchFavMountainDataByUserId = (userId: string) => {
 };
 
 export const fetchFavMountainDataBySkiAreaSlug = (skiAreaSlug: string) => {
-  return async (dispatch: Dispatch) => {
+  return async (dispatch: AppDispatch) => {
     dispatch(fetchFavMountainDataBySkiAreaSlugRequest(skiAreaSlug));
 
     try {
@@ -133,7 +133,7 @@ export const fetchFavMountainDataBySkiAreaSlug = (skiAreaSlug: string) => {
 };
 
 export const deleteFavMountainData = (id: string) => {
-  return async (dispatch: Dispatch) => {
+  return async (dispatch: AppDispatch) => {
     dispatch(deleteFavMountainDataRequest(id));
 
     try {

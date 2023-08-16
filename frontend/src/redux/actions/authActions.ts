@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Dispatch } from "redux";
+import { AppDispatch } from "../store";
 import { URL } from "../../utils/config";
 import {
   LoginData,
@@ -29,7 +29,7 @@ export const sendLogoutUser = () => ({
 });
 
 export const sendLogin = (loginData: LoginData) => {
-  return async (dispatch: Dispatch) => {
+  return async (dispatch: AppDispatch) => {
     dispatch(sendLoginRequest(loginData));
 
     try {
@@ -43,7 +43,7 @@ export const sendLogin = (loginData: LoginData) => {
 };
 
 export const sendLogout = () => {
-  return async (dispatch: Dispatch) => {
+  return async (dispatch: AppDispatch) => {
     dispatch(sendLogoutUser());
   };
 };

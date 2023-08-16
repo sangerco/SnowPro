@@ -74,7 +74,7 @@ var userLogin_json_1 = __importDefault(require("../schemas/userLogin.json"));
 var makeAdminSchema_json_1 = __importDefault(require("../schemas/makeAdminSchema.json"));
 var router = express_1.default.Router();
 // create a new user
-router.post('/api/new-user', function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+router.post("/api/new-user", function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
     var validator, errors, _a, username, password, first_name, last_name, email, user, token, e_1;
     return __generator(this, function (_b) {
         switch (_b.label) {
@@ -99,7 +99,7 @@ router.post('/api/new-user', function (req, res, next) { return __awaiter(void 0
     });
 }); });
 // login a user
-router.post('/login', function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+router.post("/login", function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
     var validator, errors, _a, username, password, user, token, e_2;
     return __generator(this, function (_b) {
         switch (_b.label) {
@@ -124,7 +124,7 @@ router.post('/login', function (req, res, next) { return __awaiter(void 0, void 
     });
 }); });
 // get a list of all users
-router.get('/users/all-users', auth_1.ensureLoggedIn, auth_1.checkIfAdmin, function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+router.get("/users/all-users", auth_1.ensureLoggedIn, auth_1.checkIfAdmin, function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
     var users, e_3;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -137,25 +137,23 @@ router.get('/users/all-users', auth_1.ensureLoggedIn, auth_1.checkIfAdmin, funct
             case 2:
                 e_3 = _a.sent();
                 return [2 /*return*/, next(e_3)];
-            case 3:
-                ;
-                return [2 /*return*/];
+            case 3: return [2 /*return*/];
         }
     });
 }); });
 // return a user's data from their token
-router.get('/api/user', auth_1.ensureLoggedIn, function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+router.get("/api/user", auth_1.ensureLoggedIn, function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
     var user, userId, username;
     return __generator(this, function (_a) {
         user = res.locals.user;
         if (!user)
-            throw new expressError_1.UnauthorizedError('Please log in before attempting this action.');
+            throw new expressError_1.UnauthorizedError("Please log in before attempting this action.");
         userId = user.userId, username = user.username;
         return [2 /*return*/, res.json({ userId: userId, username: username })];
     });
 }); });
 // return a single user's profile
-router.get('/users/:username', auth_1.ensureLoggedIn, auth_1.checkIfUserOrAdmin, function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+router.get("/users/:username", auth_1.ensureLoggedIn, auth_1.checkIfUserOrAdmin, function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
     var user, e_4;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -168,14 +166,12 @@ router.get('/users/:username', auth_1.ensureLoggedIn, auth_1.checkIfUserOrAdmin,
             case 2:
                 e_4 = _a.sent();
                 return [2 /*return*/, next(e_4)];
-            case 3:
-                ;
-                return [2 /*return*/];
+            case 3: return [2 /*return*/];
         }
     });
 }); });
 // make a user an admin
-router.patch('/api/admin/:username', auth_1.ensureLoggedIn, auth_1.checkIfAdmin, function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+router.patch("/api/admin/:username", auth_1.ensureLoggedIn, auth_1.checkIfAdmin, function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
     var validator, errors, user, e_5;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -193,14 +189,12 @@ router.patch('/api/admin/:username', auth_1.ensureLoggedIn, auth_1.checkIfAdmin,
             case 2:
                 e_5 = _a.sent();
                 return [2 /*return*/, next(e_5)];
-            case 3:
-                ;
-                return [2 /*return*/];
+            case 3: return [2 /*return*/];
         }
     });
 }); });
 // update a user's profile
-router.patch('/api/users/:username', auth_1.ensureLoggedIn, auth_1.checkIfUserOrAdmin, function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+router.patch("/api/users/:username", auth_1.ensureLoggedIn, auth_1.checkIfUserOrAdmin, function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
     var validator, errors, user, e_6;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -218,14 +212,12 @@ router.patch('/api/users/:username', auth_1.ensureLoggedIn, auth_1.checkIfUserOr
             case 2:
                 e_6 = _a.sent();
                 return [2 /*return*/, next(e_6)];
-            case 3:
-                ;
-                return [2 /*return*/];
+            case 3: return [2 /*return*/];
         }
     });
 }); });
 // delete a user
-router.delete('/api/users/:username', auth_1.ensureLoggedIn, auth_1.checkIfUserOrAdmin, function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+router.delete("/api/users/:username", auth_1.ensureLoggedIn, auth_1.checkIfUserOrAdmin, function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
     var e_7;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -238,9 +230,7 @@ router.delete('/api/users/:username', auth_1.ensureLoggedIn, auth_1.checkIfUserO
             case 2:
                 e_7 = _a.sent();
                 return [2 /*return*/, next(e_7)];
-            case 3:
-                ;
-                return [2 /*return*/];
+            case 3: return [2 /*return*/];
         }
     });
 }); });

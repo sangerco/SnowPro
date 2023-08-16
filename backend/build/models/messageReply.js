@@ -53,14 +53,7 @@ var Reply = /** @class */ (function () {
                     case 0:
                         id = (0, uuid_1.v4)();
                         created_at = new Date();
-                        return [4 /*yield*/, db_1.default.query("\n            INSERT INTO message_replies\n            (   id,\n                message_id,\n                sender_id,\n                recipient_id,\n                subject,\n                body,\n                created_at,\n                is_read)\n            VALUES ($1, $2, $3, $4, $5, $6, false)\n            RETURNING \n                id,\n                message_id AS \"messageId\",\n                sender_id AS \"senderId\",\n                recipient_id AS \"recipientId\",\n                subject,\n                body,\n                is_read AS \"isRead\",\n                created_at AS \"createdAt\"", [id,
-                                messageId,
-                                senderId,
-                                recipientId,
-                                subject,
-                                body,
-                                created_at
-                            ])];
+                        return [4 /*yield*/, db_1.default.query("\n            INSERT INTO message_replies\n            (   id,\n                message_id,\n                sender_id,\n                recipient_id,\n                subject,\n                body,\n                created_at,\n                is_read)\n            VALUES ($1, $2, $3, $4, $5, $6, false)\n            RETURNING \n                id,\n                message_id AS \"messageId\",\n                sender_id AS \"senderId\",\n                recipient_id AS \"recipientId\",\n                subject,\n                body,\n                is_read AS \"isRead\",\n                created_at AS \"createdAt\"", [id, messageId, senderId, recipientId, subject, body, created_at])];
                     case 1:
                         result = _a.sent();
                         reply = result.rows[0];
@@ -69,7 +62,6 @@ var Reply = /** @class */ (function () {
             });
         });
     };
-    ;
     Reply.getReplyById = function (id) {
         return __awaiter(this, void 0, void 0, function () {
             var result, reply;
@@ -84,7 +76,6 @@ var Reply = /** @class */ (function () {
             });
         });
     };
-    ;
     Reply.getRepliesByMessageId = function (messageId) {
         return __awaiter(this, void 0, void 0, function () {
             var result, replies;
@@ -99,7 +90,6 @@ var Reply = /** @class */ (function () {
             });
         });
     };
-    ;
     Reply.getReceivedRepliesByUsername = function (username) {
         return __awaiter(this, void 0, void 0, function () {
             var result, replies;
@@ -114,7 +104,6 @@ var Reply = /** @class */ (function () {
             });
         });
     };
-    ;
     Reply.getSentRepliesByUsername = function (username) {
         return __awaiter(this, void 0, void 0, function () {
             var result, replies;
@@ -129,7 +118,6 @@ var Reply = /** @class */ (function () {
             });
         });
     };
-    ;
     Reply.markMessageReplyAsRead = function (id) {
         return __awaiter(this, void 0, void 0, function () {
             var result, reply;
@@ -140,13 +128,12 @@ var Reply = /** @class */ (function () {
                         result = _a.sent();
                         reply = result.rows[0];
                         if (!reply)
-                            throw new expressError_1.NotFoundError('Message does not exist!');
+                            throw new expressError_1.NotFoundError("Message does not exist!");
                         return [2 /*return*/];
                 }
             });
         });
     };
-    ;
     Reply.markMessageReplyAsUnread = function (id) {
         return __awaiter(this, void 0, void 0, function () {
             var result, reply;
@@ -157,13 +144,12 @@ var Reply = /** @class */ (function () {
                         result = _a.sent();
                         reply = result.rows[0];
                         if (!reply)
-                            throw new expressError_1.NotFoundError('Message does not exist!');
+                            throw new expressError_1.NotFoundError("Message does not exist!");
                         return [2 /*return*/];
                 }
             });
         });
     };
-    ;
     Reply.deleteReply = function (id) {
         return __awaiter(this, void 0, void 0, function () {
             var result, reply;
@@ -174,14 +160,12 @@ var Reply = /** @class */ (function () {
                         result = _a.sent();
                         reply = result.rows[0];
                         if (!reply)
-                            throw new expressError_1.NotFoundError('Message does not exist!');
+                            throw new expressError_1.NotFoundError("Message does not exist!");
                         return [2 /*return*/];
                 }
             });
         });
     };
-    ;
     return Reply;
 }());
-;
 exports.default = Reply;

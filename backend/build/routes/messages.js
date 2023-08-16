@@ -81,9 +81,8 @@ var message_1 = __importDefault(require("../models/message"));
 var messageReply_1 = __importDefault(require("../models/messageReply"));
 var messageNew_json_1 = __importDefault(require("../schemas/messageNew.json"));
 var router = express_1.default.Router();
-;
 // create a new message
-router.post('/api/new-message', auth_1.ensureLoggedIn, function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+router.post("/api/new-message", auth_1.ensureLoggedIn, function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
     var validator, errors, _a, senderId, recipientId, subject, body, message, e_1;
     return __generator(this, function (_b) {
         switch (_b.label) {
@@ -102,14 +101,12 @@ router.post('/api/new-message', auth_1.ensureLoggedIn, function (req, res, next)
             case 2:
                 e_1 = _b.sent();
                 return [2 /*return*/, next(e_1)];
-            case 3:
-                ;
-                return [2 /*return*/];
+            case 3: return [2 /*return*/];
         }
     });
 }); });
 // get message
-router.get('/messages/:id', auth_1.ensureLoggedIn, auth_1.checkIfUserOrAdmin, function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+router.get("/messages/:id", auth_1.ensureLoggedIn, auth_1.checkIfUserOrAdmin, function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
     var message, replies, e_2;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -130,7 +127,7 @@ router.get('/messages/:id', auth_1.ensureLoggedIn, auth_1.checkIfUserOrAdmin, fu
     });
 }); });
 // get all of the user's received messages
-router.get('/messages/:username', auth_1.ensureLoggedIn, auth_1.checkIfUserOrAdmin, function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+router.get("/messages/:username", auth_1.ensureLoggedIn, auth_1.checkIfUserOrAdmin, function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
     var messages, e_3;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -143,14 +140,12 @@ router.get('/messages/:username', auth_1.ensureLoggedIn, auth_1.checkIfUserOrAdm
             case 2:
                 e_3 = _a.sent();
                 return [2 /*return*/, next(e_3)];
-            case 3:
-                ;
-                return [2 /*return*/];
+            case 3: return [2 /*return*/];
         }
     });
 }); });
 // get all of the user's sent messages
-router.get('/messages/:username/sent', auth_1.ensureLoggedIn, auth_1.checkIfUserOrAdmin, function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+router.get("/messages/:username/sent", auth_1.ensureLoggedIn, auth_1.checkIfUserOrAdmin, function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
     var messages, e_4;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -163,14 +158,12 @@ router.get('/messages/:username/sent', auth_1.ensureLoggedIn, auth_1.checkIfUser
             case 2:
                 e_4 = _a.sent();
                 return [2 /*return*/, next(e_4)];
-            case 3:
-                ;
-                return [2 /*return*/];
+            case 3: return [2 /*return*/];
         }
     });
 }); });
 // mark a message as read
-router.patch('/messages/:id', auth_1.ensureLoggedIn, auth_1.checkIfUserOrAdmin, function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+router.patch("/api/messages/:id/read", auth_1.ensureLoggedIn, auth_1.checkIfUserOrAdmin, function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
     var e_5;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -184,14 +177,12 @@ router.patch('/messages/:id', auth_1.ensureLoggedIn, auth_1.checkIfUserOrAdmin, 
                 e_5 = _a.sent();
                 next(e_5);
                 return [3 /*break*/, 3];
-            case 3:
-                ;
-                return [2 /*return*/];
+            case 3: return [2 /*return*/];
         }
     });
 }); });
 // mark a message as unread
-router.patch('/messages/:id', auth_1.ensureLoggedIn, auth_1.checkIfUserOrAdmin, function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+router.patch("/api/messages/:id/unread", auth_1.ensureLoggedIn, auth_1.checkIfUserOrAdmin, function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
     var e_6;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -205,14 +196,12 @@ router.patch('/messages/:id', auth_1.ensureLoggedIn, auth_1.checkIfUserOrAdmin, 
                 e_6 = _a.sent();
                 next(e_6);
                 return [3 /*break*/, 3];
-            case 3:
-                ;
-                return [2 /*return*/];
+            case 3: return [2 /*return*/];
         }
     });
 }); });
 // delete a message
-router.delete('/api/messages/:id', auth_1.ensureLoggedIn, auth_1.checkIfUserOrAdmin, function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+router.delete("/api/messages/:id", auth_1.ensureLoggedIn, auth_1.checkIfUserOrAdmin, function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
     var e_7;
     return __generator(this, function (_a) {
         switch (_a.label) {

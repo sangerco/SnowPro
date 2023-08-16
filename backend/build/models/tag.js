@@ -61,7 +61,6 @@ var Tag = /** @class */ (function () {
             });
         });
     };
-    ;
     Tag.getTags = function () {
         return __awaiter(this, void 0, void 0, function () {
             var result, tags;
@@ -87,15 +86,19 @@ var Tag = /** @class */ (function () {
                         result = _a.sent();
                         rows = result.rows;
                         if (rows.length === 0)
-                            throw new expressError_1.NotFoundError('Tag Not Found');
+                            throw new expressError_1.NotFoundError("Tag Not Found");
                         tag = {
                             tagId: rows[0].tagId,
                             tag: rows[0].tag,
                             reviewIds: rows.map(function (row) { return row.reviewIds; }).filter(function (id) { return id !== null; }),
                             photoIds: rows.map(function (row) { return row.photoIds; }).filter(function (id) { return id !== null; }),
-                            photoLinks: rows.map(function (row) { return row.photoLinks; }).filter(function (link) { return link !== null; }),
+                            photoLinks: rows
+                                .map(function (row) { return row.photoLinks; })
+                                .filter(function (link) { return link !== null; }),
                             videoIds: rows.map(function (row) { return row.videoIds; }).filter(function (id) { return id !== null; }),
-                            videoLinks: rows.map(function (row) { return row.videoLinks; }).filter(function (link) { return link !== null; })
+                            videoLinks: rows
+                                .map(function (row) { return row.videoLinks; })
+                                .filter(function (link) { return link !== null; }),
                         };
                         return [2 /*return*/, tag];
                 }
@@ -112,14 +115,12 @@ var Tag = /** @class */ (function () {
                         result = _a.sent();
                         tag = result.rows[0];
                         if (!tag)
-                            throw new expressError_1.NotFoundError('Tag not found.');
+                            throw new expressError_1.NotFoundError("Tag not found.");
                         return [2 /*return*/];
                 }
             });
         });
     };
-    ;
     return Tag;
 }());
-;
 exports.default = Tag;

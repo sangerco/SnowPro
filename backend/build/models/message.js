@@ -53,13 +53,7 @@ var Message = /** @class */ (function () {
                     case 0:
                         id = (0, uuid_1.v4)();
                         createdAt = new Date();
-                        return [4 /*yield*/, db_1.default.query("\n            INSERT INTO messages\n            (   id,\n                sender_id,\n                recipient_id,\n                subject,\n                body, \n                created_at,\n                is_read)\n            VALUES ($1, $2, $3, $4, $5, $6, false)\n            RETURNING\n                id,\n                sender_id AS \"senderId\",\n                recipient_id AS \"recipientId\",\n                subject,\n                body,\n                is_read AS \"isRead\",\n                created_at AS \"createdAt\"", [id,
-                                senderId,
-                                recipientId,
-                                subject,
-                                body,
-                                createdAt
-                            ])];
+                        return [4 /*yield*/, db_1.default.query("\n            INSERT INTO messages\n            (   id,\n                sender_id,\n                recipient_id,\n                subject,\n                body, \n                created_at,\n                is_read)\n            VALUES ($1, $2, $3, $4, $5, $6, false)\n            RETURNING\n                id,\n                sender_id AS \"senderId\",\n                recipient_id AS \"recipientId\",\n                subject,\n                body,\n                is_read AS \"isRead\",\n                created_at AS \"createdAt\"", [id, senderId, recipientId, subject, body, createdAt])];
                     case 1:
                         result = _a.sent();
                         message = result.rows[0];
@@ -68,7 +62,6 @@ var Message = /** @class */ (function () {
             });
         });
     };
-    ;
     Message.getMessage = function (id) {
         return __awaiter(this, void 0, void 0, function () {
             var result, message;
@@ -119,13 +112,12 @@ var Message = /** @class */ (function () {
                         result = _a.sent();
                         message = result.rows[0];
                         if (!message)
-                            throw new expressError_1.NotFoundError('Message does not exist!');
+                            throw new expressError_1.NotFoundError("Message does not exist!");
                         return [2 /*return*/];
                 }
             });
         });
     };
-    ;
     Message.markMessageAsUnread = function (id) {
         return __awaiter(this, void 0, void 0, function () {
             var result, message;
@@ -136,13 +128,12 @@ var Message = /** @class */ (function () {
                         result = _a.sent();
                         message = result.rows[0];
                         if (!message)
-                            throw new expressError_1.NotFoundError('Message does not exist!');
+                            throw new expressError_1.NotFoundError("Message does not exist!");
                         return [2 /*return*/];
                 }
             });
         });
     };
-    ;
     Message.removeMessage = function (id) {
         return __awaiter(this, void 0, void 0, function () {
             var result, message;
@@ -153,7 +144,7 @@ var Message = /** @class */ (function () {
                         result = _a.sent();
                         message = result.rows[0];
                         if (!message)
-                            throw new expressError_1.NotFoundError('Message does not exist!');
+                            throw new expressError_1.NotFoundError("Message does not exist!");
                         return [2 /*return*/];
                 }
             });

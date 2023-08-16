@@ -88,7 +88,6 @@ var Video = /** @class */ (function () {
             });
         });
     };
-    ;
     Video.getVideo = function (id) {
         return __awaiter(this, void 0, void 0, function () {
             var result, video;
@@ -99,13 +98,12 @@ var Video = /** @class */ (function () {
                         result = _a.sent();
                         video = result.rows[0];
                         if (!video)
-                            throw new expressError_1.NotFoundError('Photo Not Found');
+                            throw new expressError_1.NotFoundError("Photo Not Found");
                         return [2 /*return*/, video];
                 }
             });
         });
     };
-    ;
     Video.getVideosByUsername = function (username) {
         return __awaiter(this, void 0, void 0, function () {
             var result, videos;
@@ -116,13 +114,12 @@ var Video = /** @class */ (function () {
                         result = _a.sent();
                         videos = result.rows;
                         if (videos.length === 0)
-                            throw new expressError_1.NotFoundError('No videos yet.');
+                            throw new expressError_1.NotFoundError("No videos yet.");
                         return [2 /*return*/, videos];
                 }
             });
         });
     };
-    ;
     Video.updateVideo = function (id, data) {
         return __awaiter(this, void 0, void 0, function () {
             var _a, setCols, values, sqlQuery, result, video;
@@ -130,7 +127,7 @@ var Video = /** @class */ (function () {
                 switch (_b.label) {
                     case 0:
                         _a = (0, sql_1.sqlForPartialUpdate)(data, {
-                            userId: "user_id"
+                            userId: "user_id",
                         }), setCols = _a.setCols, values = _a.values;
                         sqlQuery = "UPDATE videos\n                            SET ".concat(setCols, "\n                            WHERE id = ").concat(id, "\n                            RETURNING id,\n                                user_id AS \"userId\",\n                                link,\n                                about,\n                                created_at");
                         return [4 /*yield*/, db_1.default.query(sqlQuery, __spreadArray(__spreadArray([], values, true), [id], false))];
@@ -138,7 +135,7 @@ var Video = /** @class */ (function () {
                         result = _b.sent();
                         video = result.rows[0];
                         if (!video)
-                            throw new expressError_1.NotFoundError('Video not found!');
+                            throw new expressError_1.NotFoundError("Video not found!");
                         return [2 /*return*/, video];
                 }
             });
@@ -154,7 +151,7 @@ var Video = /** @class */ (function () {
                         result = _a.sent();
                         video = result.rows[0];
                         if (!video)
-                            throw new expressError_1.NotFoundError('Video not found!');
+                            throw new expressError_1.NotFoundError("Video not found!");
                         return [2 /*return*/];
                 }
             });

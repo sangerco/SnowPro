@@ -75,12 +75,11 @@ var User = /** @class */ (function () {
                             return [2 /*return*/, user];
                         }
                         _a.label = 3;
-                    case 3: throw new expressError_1.UnauthorizedError('Invalid username/password');
+                    case 3: throw new expressError_1.UnauthorizedError("Invalid username/password");
                 }
             });
         });
     };
-    ;
     User.register = function (username, password, firstName, lastName, email) {
         return __awaiter(this, void 0, void 0, function () {
             var dupeCheck, hashedPassword, id, result, user;
@@ -96,13 +95,7 @@ var User = /** @class */ (function () {
                     case 2:
                         hashedPassword = _a.sent();
                         id = (0, uuid_1.v4)();
-                        return [4 /*yield*/, db_1.default.query("INSERT INTO users\n                (   id,\n                    username,\n                    password,\n                    first_name,\n                    last_name,\n                    email)\n                    VALUES ($1, $2, $3, $4, $5, $6)\n                    RETURNING username, first_name AS \"firstName\", last_name AS \"lastName\", email", [id,
-                                username,
-                                hashedPassword,
-                                firstName,
-                                lastName,
-                                email
-                            ])];
+                        return [4 /*yield*/, db_1.default.query("INSERT INTO users\n                (   id,\n                    username,\n                    password,\n                    first_name,\n                    last_name,\n                    email)\n                    VALUES ($1, $2, $3, $4, $5, $6)\n                    RETURNING username, first_name AS \"firstName\", last_name AS \"lastName\", email", [id, username, hashedPassword, firstName, lastName, email])];
                     case 3:
                         result = _a.sent();
                         user = result.rows[0];
@@ -134,7 +127,7 @@ var User = /** @class */ (function () {
                         result = _a.sent();
                         rows = result.rows;
                         if (rows.length === 0)
-                            throw new expressError_1.NotFoundError('User not found.');
+                            throw new expressError_1.NotFoundError("User not found.");
                         user = {
                             id: rows[0].id,
                             username: rows[0].username,
@@ -145,8 +138,10 @@ var User = /** @class */ (function () {
                             bio: rows[0].bio,
                             videos: rows.map(function (row) { return row.videos; }).filter(function (link) { return link !== null; }),
                             photos: rows.map(function (row) { return row.photos; }).filter(function (link) { return link !== null; }),
-                            favMountains: rows.map(function (row) { return row.favMountains; }).filter(function (slug) { return slug !== null; }),
-                            isAdmin: rows[0].isAdmin
+                            favMountains: rows
+                                .map(function (row) { return row.favMountains; })
+                                .filter(function (slug) { return slug !== null; }),
+                            isAdmin: rows[0].isAdmin,
                         };
                         return [2 /*return*/, user];
                 }
@@ -167,8 +162,8 @@ var User = /** @class */ (function () {
                         _c.label = 2;
                     case 2:
                         _b = (0, sql_1.sqlForPartialUpdate)(data, {
-                            firstName: 'first_name',
-                            lastName: 'last_name'
+                            firstName: "first_name",
+                            lastName: "last_name",
                         }), setCols = _b.setCols, values = _b.values;
                         usernameVarIdx = "$" + (values.length + 1);
                         sqlQuery = "UPDATE users\n                                SET ".concat(setCols, "\n                                WHERE username = ").concat(usernameVarIdx, "\n                                RETURNING username,\n                                    first_name AS \"firstName\",\n                                    last_name AS \"lastName\",\n                                    email,\n                                    avatar,\n                                    bio");

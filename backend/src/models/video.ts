@@ -1,31 +1,39 @@
-import db from '../db';
-import { sqlForPartialUpdate } from '../helpers/sql';
-import { NotFoundError } from '../expressError';
-import { v4 as uuidv4 } from 'uuid';
+import db from "../db";
+import { sqlForPartialUpdate } from "../helpers/sql";
+import { NotFoundError } from "../expressError";
+import { v4 as uuidv4 } from "uuid";
 
 interface VideoData {
-    id: string;
-    userId: string;
-    username: string;
-    link: string;
-    about: string;
-    tagIds: string[];
-    tags: string[];
-    createdAt: Date;
+  id: string;
+  userId: string;
+  username: string;
+  link: string;
+  about: string;
+  tagIds: string[];
+  tags: string[];
+  createdAt: Date;
 }
 
 class Video {
-    static async createVideo(username: string, link: string, about: string, tagIds: string[]): Promise<VideoData> {
-        const id = uuidv4();
-        const createdAt = new Date();
+  static async createVideo(
+    username: string,
+    link: string,
+    about: string,
+    tagIds: string[]
+  ): Promise<VideoData> {
+    const id = uuidv4();
+    const createdAt = new Date();
 
-        const userId = await db.query(`
+    const userId = await db.query(
+      `
             SELECT id
                 FROM users
                 WHERE username = $1`,
-                [username])
+      [username]
+    );
 
-        const result = await db.query( `
+    const result = await db.query(
+      `
             INSERT INTO videos
                 (   id,
                     user_id,
@@ -39,26 +47,28 @@ class Video {
                     link,
                     about,
                     created_at AS "createdAt"`,
-            [id, userId, link, about, createdAt]
-        );
+      [id, userId, link, about, createdAt]
+    );
 
-        const video = result.rows[0];
+    const video = result.rows[0];
 
-        for (let tagId of tagIds) {
-            await db.query(`
+    for (let tagId of tagIds) {
+      await db.query(
+        `
                 INSERT INTO videos_tags (videos_id, tag_id)
                 VALUES ($1, $2)`,
-            [video.id, tagId])
+        [video.id, tagId]
+      );
 
-            video.tagIds.push(tagId);
-        }
+      video.tagIds.push(tagId);
+    }
 
-        return video;
-    };
+    return video;
+  }
 
-    static async getVideo(id:string): Promise<VideoData> {
-        const result = await db.query(
-            `SELECT v.id,
+  static async getVideo(id: string): Promise<VideoData> {
+    const result = await db.query(
+      `SELECT v.id,
                 v.user_id AS "userId",
                 v.link,
                 v.about,
@@ -72,19 +82,19 @@ class Video {
                 LEFT JOIN tags t ON vt.tag_id = t.id
                 WHERE v.id = $1
                 ORDER BY v.created_at`,
-            [id]
-        )
+      [id]
+    );
 
-        const video = result.rows[0];
+    const video = result.rows[0];
 
-        if(!video) throw new NotFoundError('Photo Not Found');
+    if (!video) throw new NotFoundError("Photo Not Found");
 
-        return video;
-    };
+    return video;
+  }
 
-    static async getVideosByUsername(username:string): Promise<VideoData[]> {
-        const result = await db.query(
-            `SELECT u.id AS "userId",
+  static async getVideosByUsername(username: string): Promise<VideoData[]> {
+    const result = await db.query(
+      `SELECT u.id AS "userId",
                 u.username,
                 v.id,
                 v.user_id,
@@ -99,25 +109,25 @@ class Video {
                 LEFT JOIN tags t ON vt.tag_id = t.id
                 WHERE u.username = $1
                 ORDER BY v.created_at`,
-            [username]
-        )
+      [username]
+    );
 
-        const videos = result.rows;
+    const videos = result.rows;
 
-        if(videos.length === 0) throw new NotFoundError('No videos yet.');
+    if (videos.length === 0) throw new NotFoundError("No videos yet.");
 
-        return videos;
-    };
+    return videos;
+  }
 
-    static async updateVideo(id: string, data: Partial<VideoData>): Promise<VideoData> {
-        const { setCols, values } = sqlForPartialUpdate(
-            data,
-            {
-                userId: "user_id"
-            }
-        );
+  static async updateVideo(
+    id: string,
+    data: Partial<VideoData>
+  ): Promise<VideoData> {
+    const { setCols, values } = sqlForPartialUpdate(data, {
+      userId: "user_id",
+    });
 
-        const sqlQuery = `UPDATE videos
+    const sqlQuery = `UPDATE videos
                             SET ${setCols}
                             WHERE id = ${id}
                             RETURNING id,
@@ -125,25 +135,27 @@ class Video {
                                 link,
                                 about,
                                 created_at`;
-        const result = await db.query(sqlQuery, [...values, id]);
-        const video = result.rows[0];
+    const result = await db.query(sqlQuery, [...values, id]);
+    const video = result.rows[0];
 
-        if(!video) throw new NotFoundError('Video not found!');
+    if (!video) throw new NotFoundError("Video not found!");
 
-        return video;
-    }
+    return video;
+  }
 
-    static async removeVideo(id: string): Promise<void> {
-        const result = await db.query(`
+  static async removeVideo(id: string): Promise<void> {
+    const result = await db.query(
+      `
             DELETE FROM videos
                 WHERE id = $1
                 RETURNING id`,
-                [id]);
+      [id]
+    );
 
-        const video = result.rows[0];
+    const video = result.rows[0];
 
-        if(!video) throw new NotFoundError('Video not found!');
-    }
+    if (!video) throw new NotFoundError("Video not found!");
+  }
 }
 
 export default Video;

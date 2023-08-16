@@ -69,7 +69,7 @@ var expressError_1 = require("../expressError");
 var tag_1 = __importDefault(require("../models/tag"));
 var tagNew_json_1 = __importDefault(require("../schemas/tagNew.json"));
 var router = express_1.default.Router();
-router.post('/api/tags', auth_1.ensureLoggedIn, auth_1.checkIfUserOrAdmin, function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+router.post("/api/tags", auth_1.ensureLoggedIn, auth_1.checkIfUserOrAdmin, function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
     var validator, errors, tag, result, e_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -92,7 +92,7 @@ router.post('/api/tags', auth_1.ensureLoggedIn, auth_1.checkIfUserOrAdmin, funct
         }
     });
 }); });
-router.get('/tags', auth_1.ensureLoggedIn, auth_1.checkIfUserOrAdmin, function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+router.get("/tags", auth_1.ensureLoggedIn, auth_1.checkIfUserOrAdmin, function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
     var tags, e_2;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -110,7 +110,7 @@ router.get('/tags', auth_1.ensureLoggedIn, auth_1.checkIfUserOrAdmin, function (
     });
 }); });
 // return all reviews, photos, videos associated with that tag
-router.get('/tags/:id', function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+router.get("/tags/:id", function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
     var tag, e_3;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -127,7 +127,7 @@ router.get('/tags/:id', function (req, res, next) { return __awaiter(void 0, voi
         }
     });
 }); });
-router.delete('/api/tags/:id', auth_1.ensureLoggedIn, auth_1.checkIfUserOrAdmin, function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+router.delete("/api/tags/:id", auth_1.ensureLoggedIn, auth_1.checkIfUserOrAdmin, function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
     var e_4;
     return __generator(this, function (_a) {
         switch (_a.label) {

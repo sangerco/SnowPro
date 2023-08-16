@@ -69,7 +69,7 @@ var expressError_1 = require("../expressError");
 var favMountain_1 = __importDefault(require("../models/favMountain"));
 var favMountain_json_1 = __importDefault(require("../schemas/favMountain.json"));
 var router = express_1.default.Router();
-router.post('/api/fav_mountain', auth_1.ensureLoggedIn, auth_1.checkIfUserOrAdmin, function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+router.post("/api/fav-mountain", auth_1.ensureLoggedIn, auth_1.checkIfUserOrAdmin, function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
     var validator, errors, _a, userId, skiAreaSlug, favMountain, e_1;
     return __generator(this, function (_b) {
         switch (_b.label) {
@@ -92,7 +92,7 @@ router.post('/api/fav_mountain', auth_1.ensureLoggedIn, auth_1.checkIfUserOrAdmi
         }
     });
 }); });
-router.get('/users/:user_id/fav-mountains', function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+router.get("/users/:user_id/fav-mountains", function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
     var favMountains, e_2;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -106,13 +106,11 @@ router.get('/users/:user_id/fav-mountains', function (req, res, next) { return _
                 e_2 = _a.sent();
                 next(e_2);
                 return [3 /*break*/, 3];
-            case 3:
-                ;
-                return [2 /*return*/];
+            case 3: return [2 /*return*/];
         }
     });
 }); });
-router.get('/ski-areas/:slug/fav-mountains', function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+router.get("/ski-areas/:slug/users-favorited-by", function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
     var favMountains, e_3;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -126,13 +124,11 @@ router.get('/ski-areas/:slug/fav-mountains', function (req, res, next) { return 
                 e_3 = _a.sent();
                 next(e_3);
                 return [3 /*break*/, 3];
-            case 3:
-                ;
-                return [2 /*return*/];
+            case 3: return [2 /*return*/];
         }
     });
 }); });
-router.delete('/api/fav_mountain/:id', auth_1.ensureLoggedIn, auth_1.checkIfUserOrAdmin, function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+router.delete("/api/fav-mountain/:id", auth_1.ensureLoggedIn, auth_1.checkIfUserOrAdmin, function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
     var e_4;
     return __generator(this, function (_a) {
         switch (_a.label) {

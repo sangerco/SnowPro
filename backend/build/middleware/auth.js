@@ -11,7 +11,7 @@ var authenticateJWT = function (req, res, next) {
     try {
         var authHeader = req.headers && req.headers.authorization;
         if (authHeader) {
-            var token = authHeader.replace(/^[Bb]earer /, '').trim();
+            var token = authHeader.replace(/^[Bb]earer /, "").trim();
             res.locals.user = jsonwebtoken_1.default.verify(token, config_1.SECRET_KEY);
         }
         return next();
@@ -24,7 +24,7 @@ exports.authenticateJWT = authenticateJWT;
 var ensureLoggedIn = function (req, res, next) {
     try {
         if (!res.locals.user)
-            throw new expressError_1.UnauthorizedError('Unauthorized');
+            throw new expressError_1.UnauthorizedError("Unauthorized");
         return next();
     }
     catch (e) {
@@ -35,7 +35,7 @@ exports.ensureLoggedIn = ensureLoggedIn;
 var checkIfAdmin = function (req, res, next) {
     try {
         if (res.locals.user.isAdmin === false)
-            throw new expressError_1.UnauthorizedError('Unauthorized');
+            throw new expressError_1.UnauthorizedError("Unauthorized");
         return next();
     }
     catch (e) {
@@ -47,7 +47,7 @@ var checkIfUserOrAdmin = function (req, res, next) {
     try {
         var user = res.locals.user;
         if (user.username !== req.params.username && user.isAdmin === false)
-            throw new expressError_1.UnauthorizedError('Unauthorized');
+            throw new expressError_1.UnauthorizedError("Unauthorized");
         return next();
     }
     catch (e) {

@@ -1,4 +1,4 @@
-import jwt from "jsonwebtoken"
+import jwt from "jsonwebtoken";
 import { SECRET_KEY } from "../config";
 
 interface User {

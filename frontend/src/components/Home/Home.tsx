@@ -1,44 +1,27 @@
-import React, { useEffect } from 'react';
-import './Home.css';
-import { useAuth } from '../AuthProvider';
-import { RootState } from '../../oldRedux/store'
-import { fetchUserData } from '../../oldRedux/actions/userActions';
-import { useSelector } from 'react-redux';
+import React, { useEffect } from "react";
+import "./Home.css";
+import { useAuth } from "../AuthProvider";
+import { fetchUserData } from "../../redux/actions/userActions";
+import { fetchAllReviewsData } from "../../redux/actions/reviewActions";
+import { useAppSelector } from "../../redux/hooks";
+import AnonHome from "./AnonHome";
 
-interface UserData {
-    id: string;
-    username: string;
-    firstName: string;
-    lastName: string;
-    email: string;
-    avatar: string;
-    bio: string;
-    videos: string[];
-    photos: string[];
-    favMountains: string[];
-}
+const Home: React.FC = () => {
+  const { username } = useAuth();
 
-interface HomePageProps {
-    user: UserData | null;
-    fetchUserData: ( username: string) => void;
-}
+  const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
 
-const Home: React.FC<HomePageProps> = ({ user, fetchUserData }) => {
-    const { username } = useAuth();
-
-    const isAuthenticated = useSelector((state: RootState) => state.login.token)
-    
-    useEffect(() => {
-        if(isAuthenticated) { 
-            fetchUserData(username as string);
-            }
-    }, [isAuthenticated, fetchUserData]);
-
-    if(isAuthenticated) {
-        return <p>logged in!</p>
-    } else {
-        return <p>not logged in!</p>
+  useEffect(() => {
+    if (isAuthenticated) {
+      fetchUserData(username as string);
     }
-}
+  }, [isAuthenticated, fetchUserData]);
+
+  if (isAuthenticated) {
+    return <p>logged in!</p>;
+  } else {
+    return <AnonHome fetchAllReviewsData={fetchAllReviewsData} />;
+  }
+};
 
 export default Home;

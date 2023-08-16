@@ -135,5 +135,7 @@ export const messageReplyReducer = (
         ...state,
         error: action.payload,
       };
+    default:
+      return state;
   }
 };

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Dispatch } from "redux";
+import { AppDispatch } from "../store";
 import { URL } from "../../utils/config";
 import {
   MessageReplyData,
@@ -125,7 +125,7 @@ export const deleteMessageReplyFailure = (error: string) => ({
 export const sendNewMessageReplyData = (
   messageReplyData: NewMessageReplyData
 ) => {
-  return async (dispatch: Dispatch) => {
+  return async (dispatch: AppDispatch) => {
     dispatch(sendNewMessageReplyDataRequest(messageReplyData));
     const messageId = messageReplyData.messageId;
     const senderId = messageReplyData.senderId;
@@ -155,7 +155,7 @@ export const sendNewMessageReplyData = (
 };
 
 export const fetchMessageReplyDataById = (id: string) => {
-  return async (dispatch: Dispatch) => {
+  return async (dispatch: AppDispatch) => {
     dispatch(fetchMessageReplyDataByIdRequest(id));
 
     try {
@@ -169,7 +169,7 @@ export const fetchMessageReplyDataById = (id: string) => {
 };
 
 export const fetchMessageReplyDataByMessageId = (messageId: string) => {
-  return async (dispatch: Dispatch) => {
+  return async (dispatch: AppDispatch) => {
     dispatch(fetchMessageReplyDataByMessageIdRequest(messageId));
 
     try {
@@ -183,7 +183,7 @@ export const fetchMessageReplyDataByMessageId = (messageId: string) => {
 };
 
 export const markMessageReplyRead = (id: string) => {
-  return async (dispatch: Dispatch) => {
+  return async (dispatch: AppDispatch) => {
     dispatch(markMessageReplyReadRequest(id));
 
     try {
@@ -198,7 +198,7 @@ export const markMessageReplyRead = (id: string) => {
 };
 
 export const markMessageReplyUnread = (id: string) => {
-  return async (dispatch: Dispatch) => {
+  return async (dispatch: AppDispatch) => {
     dispatch(markMessageReplyUnreadRequest(id));
 
     try {
@@ -213,7 +213,7 @@ export const markMessageReplyUnread = (id: string) => {
 };
 
 export const deleteMessageReply = (id: string) => {
-  return async (dispatch: Dispatch) => {
+  return async (dispatch: AppDispatch) => {
     dispatch(deleteMessageReplyRequest(id));
 
     try {

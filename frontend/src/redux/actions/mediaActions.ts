@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Dispatch } from "redux";
+import { AppDispatch } from "../store";
 import { URL } from "../../utils/config";
 import {
   PhotoData,
@@ -181,7 +181,7 @@ export const deleteVideoFailure = (error: string) => ({
 });
 
 export const sendNewPhotoData = (newPhotoData: PhotoData) => {
-  return async (dispatch: Dispatch) => {
+  return async (dispatch: AppDispatch) => {
     dispatch(sendNewPhotoDataRequest(newPhotoData));
 
     try {
@@ -200,7 +200,7 @@ export const sendNewPhotoData = (newPhotoData: PhotoData) => {
 };
 
 export const sendNewVideoData = (newVideoData: VideoData) => {
-  return async (dispatch: Dispatch) => {
+  return async (dispatch: AppDispatch) => {
     dispatch(sendNewVideoDataRequest(newVideoData));
 
     try {
@@ -219,7 +219,7 @@ export const sendNewVideoData = (newVideoData: VideoData) => {
 };
 
 export const fetchPhotoData = (id: string) => {
-  return async (dispatch: Dispatch) => {
+  return async (dispatch: AppDispatch) => {
     dispatch(fetchPhotoDataRequest(id));
 
     try {
@@ -233,7 +233,7 @@ export const fetchPhotoData = (id: string) => {
 };
 
 export const fetchVideoData = (id: string) => {
-  return async (dispatch: Dispatch) => {
+  return async (dispatch: AppDispatch) => {
     dispatch(fetchVideoDataRequest(id));
 
     try {
@@ -247,7 +247,7 @@ export const fetchVideoData = (id: string) => {
 };
 
 export const fetchPhotoDataByUser = (username: string) => {
-  return async (dispatch: Dispatch) => {
+  return async (dispatch: AppDispatch) => {
     dispatch(fetchPhotoDataByUserRequest(username));
 
     try {
@@ -261,7 +261,7 @@ export const fetchPhotoDataByUser = (username: string) => {
 };
 
 export const fetchVideoDataByUser = (username: string) => {
-  return async (dispatch: Dispatch) => {
+  return async (dispatch: AppDispatch) => {
     dispatch(fetchVideoDataByUserRequest(username));
 
     try {
@@ -275,7 +275,7 @@ export const fetchVideoDataByUser = (username: string) => {
 };
 
 export const updatePhotoData = (data: PhotoData) => {
-  return async (dispatch: Dispatch) => {
+  return async (dispatch: AppDispatch) => {
     dispatch(updatePhotoDataRequest(data));
 
     try {
@@ -291,7 +291,7 @@ export const updatePhotoData = (data: PhotoData) => {
 };
 
 export const updateVideoData = (data: VideoData) => {
-  return async (dispatch: Dispatch) => {
+  return async (dispatch: AppDispatch) => {
     dispatch(updateVideoDataRequest(data));
 
     try {
@@ -307,7 +307,7 @@ export const updateVideoData = (data: VideoData) => {
 };
 
 export const deletePhoto = (id: string) => {
-  return async (dispatch: Dispatch) => {
+  return async (dispatch: AppDispatch) => {
     dispatch(deletePhotoRequest(id));
 
     try {
@@ -320,7 +320,7 @@ export const deletePhoto = (id: string) => {
 };
 
 export const deleteVideo = (id: string) => {
-  return async (dispatch: Dispatch) => {
+  return async (dispatch: AppDispatch) => {
     dispatch(deleteVideoRequest(id));
 
     try {

@@ -65,16 +65,10 @@ var ReviewReply = /** @class */ (function () {
                         reviewCheck = _a.sent();
                         review = reviewCheck.rows[0];
                         if (!review)
-                            throw new expressError_1.NotFoundError('Review does not exist!');
+                            throw new expressError_1.NotFoundError("Review does not exist!");
                         id = (0, uuid_1.v4)();
                         createdAt = new Date();
-                        return [4 /*yield*/, db_1.default.query("INSERT INTO review_replies\n                (id,\n                    user_id,\n                    review_id,\n                    ski_area_slug,\n                    body,\n                    created_at)\n            VALUES ($1, $2, $3, $4, $5, $6)\n            RETURNING \n                id,\n                user_id AS \"userId\",\n                review_id AS \"reviewId\",\n                ski_area_slug AS \"slug\",\n                body,\n                created_at AS \"createdAt\"", [id,
-                                userId,
-                                reviewId,
-                                slug,
-                                body,
-                                createdAt
-                            ])];
+                        return [4 /*yield*/, db_1.default.query("INSERT INTO review_replies\n                (id,\n                    user_id,\n                    review_id,\n                    ski_area_slug,\n                    body,\n                    created_at)\n            VALUES ($1, $2, $3, $4, $5, $6)\n            RETURNING \n                id,\n                user_id AS \"userId\",\n                review_id AS \"reviewId\",\n                ski_area_slug AS \"slug\",\n                body,\n                created_at AS \"createdAt\"", [id, userId, reviewId, slug, body, createdAt])];
                     case 2:
                         result = _a.sent();
                         return [4 /*yield*/, db_1.default.query("\n            SELECT username FROM users WHERE id = $1", [userId])];
@@ -89,14 +83,13 @@ var ReviewReply = /** @class */ (function () {
                             reviewId: reviewReplyData.reviewId,
                             slug: reviewReplyData.slug,
                             body: reviewReplyData.body,
-                            createdAt: reviewReplyData.createdAt
+                            createdAt: reviewReplyData.createdAt,
                         };
                         return [2 /*return*/, reviewReply];
                 }
             });
         });
     };
-    ;
     ReviewReply.replyToReviewUpdate = function (id, data) {
         return __awaiter(this, void 0, void 0, function () {
             var _a, setCols, values, sqlQuery, result, reviewReply;
@@ -115,17 +108,15 @@ var ReviewReply = /** @class */ (function () {
                             reviewId: result.rows[0].reviewId,
                             slug: result.rows[0].slug,
                             body: result.rows[0].body,
-                            createdAt: result.rows[0].createdAt
+                            createdAt: result.rows[0].createdAt,
                         };
-                        ;
                         if (!reviewReply)
-                            throw new expressError_1.NotFoundError('Review Reply Not Found!');
+                            throw new expressError_1.NotFoundError("Review Reply Not Found!");
                         return [2 /*return*/, reviewReply];
                 }
             });
         });
     };
-    ;
     ReviewReply.fetchRepliesByReviewId = function (reviewId) {
         return __awaiter(this, void 0, void 0, function () {
             var result, replies;
@@ -136,13 +127,12 @@ var ReviewReply = /** @class */ (function () {
                         result = _a.sent();
                         replies = result.rows;
                         if (replies.length === 0)
-                            throw new expressError_1.NotFoundError('No Replies to this Review');
+                            throw new expressError_1.NotFoundError("No Replies to this Review");
                         return [2 /*return*/, replies];
                 }
             });
         });
     };
-    ;
     ReviewReply.fetchReplyId = function (id) {
         return __awaiter(this, void 0, void 0, function () {
             var result, reply;
@@ -153,13 +143,12 @@ var ReviewReply = /** @class */ (function () {
                         result = _a.sent();
                         reply = result.rows[0];
                         if (!reply)
-                            throw new expressError_1.NotFoundError('Reply Not Found.');
+                            throw new expressError_1.NotFoundError("Reply Not Found.");
                         return [2 /*return*/, reply];
                 }
             });
         });
     };
-    ;
     ReviewReply.removeReply = function (id) {
         return __awaiter(this, void 0, void 0, function () {
             var result, replyToReview;
@@ -170,7 +159,7 @@ var ReviewReply = /** @class */ (function () {
                         result = _a.sent();
                         replyToReview = result.rows[0];
                         if (!replyToReview)
-                            throw new expressError_1.NotFoundError('Review Reply Not Found!');
+                            throw new expressError_1.NotFoundError("Review Reply Not Found!");
                         return [2 /*return*/];
                 }
             });
@@ -178,5 +167,4 @@ var ReviewReply = /** @class */ (function () {
     };
     return ReviewReply;
 }());
-;
 exports.default = ReviewReply;

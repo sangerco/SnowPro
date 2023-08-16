@@ -92,12 +92,12 @@ var secret_1 = require("../vault/secret");
 var axios_1 = __importDefault(require("axios"));
 var auth_1 = require("../middleware/auth");
 var router = express_1.default.Router();
-router.get('/ski-areas', function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+router.get("/ski-areas", function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
     var baseUrl, currentPage, totalPages, allSkiAreas, url, options, response, data, _i, allSkiAreas_1, skiArea, e_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                baseUrl = 'https://api.skiapi.com/v1/resort';
+                baseUrl = "https://api.skiapi.com/v1/resort";
                 _a.label = 1;
             case 1:
                 _a.trys.push([1, 9, , 10]);
@@ -109,12 +109,12 @@ router.get('/ski-areas', function (req, res, next) { return __awaiter(void 0, vo
                 if (!(currentPage <= totalPages)) return [3 /*break*/, 4];
                 url = "".concat(baseUrl, "?page=").concat(currentPage);
                 options = {
-                    method: 'GET',
+                    method: "GET",
                     url: url,
                     headers: {
-                        'X-RapidAPI-Key': secret_1.Key,
-                        'X-RapidAPI-Host': secret_1.Host
-                    }
+                        "X-RapidAPI-Key": secret_1.Key,
+                        "X-RapidAPI-Host": secret_1.Host,
+                    },
                 };
                 return [4 /*yield*/, axios_1.default.request(options)];
             case 3:
@@ -142,20 +142,18 @@ router.get('/ski-areas', function (req, res, next) { return __awaiter(void 0, vo
             case 9:
                 e_1 = _a.sent();
                 console.error(e_1);
-                res.status(500).json({ error: 'An error occurred while fetching data.' });
+                res.status(500).json({ error: "An error occurred while fetching data." });
                 return [3 /*break*/, 10];
-            case 10:
-                ;
-                return [2 /*return*/];
+            case 10: return [2 /*return*/];
         }
     });
 }); });
-router.get('/ski-areas/:slug', function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+router.get("/ski-areas/:slug", function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
     var url, slug, options, response, skiAreaData, getReviewData, getUsersFavoritedBy, combinedData, e_2;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                url = 'https://ski-resorts-and-conditions.p.rapidapi.com/v1/resort/';
+                url = "https://ski-resorts-and-conditions.p.rapidapi.com/v1/resort/";
                 slug = req.params.slug;
                 _a.label = 1;
             case 1:
@@ -164,9 +162,9 @@ router.get('/ski-areas/:slug', function (req, res, next) { return __awaiter(void
                     method: "GET",
                     url: "".concat(url).concat(slug),
                     headers: {
-                        'X-RapidAPI-Key': secret_1.Key,
-                        'X-RapidAPI-Host': secret_1.Host
-                    }
+                        "X-RapidAPI-Key": secret_1.Key,
+                        "X-RapidAPI-Host": secret_1.Host,
+                    },
                 };
                 return [4 /*yield*/, axios_1.default.request(options)];
             case 2:
@@ -184,15 +182,15 @@ router.get('/ski-areas/:slug', function (req, res, next) { return __awaiter(void
             case 5:
                 e_2 = _a.sent();
                 console.error(e_2);
-                res.status(500).json({ error: 'An error occurred while fetching the data.' });
+                res
+                    .status(500)
+                    .json({ error: "An error occurred while fetching the data." });
                 return [3 /*break*/, 6];
-            case 6:
-                ;
-                return [2 /*return*/];
+            case 6: return [2 /*return*/];
         }
     });
 }); });
-router.post('/api/ski-areas/:slug/review', auth_1.ensureLoggedIn, auth_1.checkIfUserOrAdmin, function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+router.post("/api/ski-areas/:slug/review", auth_1.ensureLoggedIn, auth_1.checkIfUserOrAdmin, function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
     var validator, errors, _a, userId, skiAreaSlug, header, body, stars, photos, tagIds, review, e_3;
     return __generator(this, function (_b) {
         switch (_b.label) {
@@ -211,9 +209,7 @@ router.post('/api/ski-areas/:slug/review', auth_1.ensureLoggedIn, auth_1.checkIf
             case 2:
                 e_3 = _b.sent();
                 return [2 /*return*/, next(e_3)];
-            case 3:
-                ;
-                return [2 /*return*/];
+            case 3: return [2 /*return*/];
         }
     });
 }); });

@@ -70,7 +70,7 @@ var video_1 = __importDefault(require("../models/video"));
 var videoLinkNew_json_1 = __importDefault(require("../schemas/videoLinkNew.json"));
 var updateVideo_json_1 = __importDefault(require("../schemas/updateVideo.json"));
 var router = express_1.default.Router();
-router.post('/api/videos', auth_1.ensureLoggedIn, auth_1.checkIfUserOrAdmin, function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+router.post("/api/videos", auth_1.ensureLoggedIn, auth_1.checkIfUserOrAdmin, function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
     var validator, errors, _a, username, link, about, tagIds, video, e_1;
     return __generator(this, function (_b) {
         switch (_b.label) {
@@ -93,7 +93,7 @@ router.post('/api/videos', auth_1.ensureLoggedIn, auth_1.checkIfUserOrAdmin, fun
         }
     });
 }); });
-router.get('/video/:id', function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+router.get("/video/:id", function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
     var video, e_2;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -110,7 +110,7 @@ router.get('/video/:id', function (req, res, next) { return __awaiter(void 0, vo
         }
     });
 }); });
-router.get('/users/:username/videos', function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+router.get("/users/:username/videos", function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
     var videos, e_3;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -127,7 +127,7 @@ router.get('/users/:username/videos', function (req, res, next) { return __await
         }
     });
 }); });
-router.patch('/api/video/:id', auth_1.ensureLoggedIn, auth_1.checkIfUserOrAdmin, function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+router.patch("/api/video/:id", auth_1.ensureLoggedIn, auth_1.checkIfUserOrAdmin, function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
     var validator, errors, video, e_4;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -150,7 +150,7 @@ router.patch('/api/video/:id', auth_1.ensureLoggedIn, auth_1.checkIfUserOrAdmin,
         }
     });
 }); });
-router.delete('/api/video/:id', function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+router.delete("/api/video/:id", function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
     var e_5;
     return __generator(this, function (_a) {
         switch (_a.label) {

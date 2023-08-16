@@ -48,9 +48,7 @@ var SkiArea = /** @class */ (function () {
             var result;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, db_1.default.query("INSERT INTO ski_areas \n            (   slug,\n                name)\n                VALUES ($1, $2)\n                ON CONFLICT DO NOTHING", [slug,
-                            name
-                        ])];
+                    case 0: return [4 /*yield*/, db_1.default.query("INSERT INTO ski_areas \n            (   slug,\n                name)\n                VALUES ($1, $2)\n                ON CONFLICT DO NOTHING", [slug, name])];
                     case 1:
                         result = _a.sent();
                         return [2 /*return*/];
@@ -58,7 +56,6 @@ var SkiArea = /** @class */ (function () {
             });
         });
     };
-    ;
     SkiArea.returnUsersFavoritedBy = function (slug) {
         return __awaiter(this, void 0, void 0, function () {
             var result;
@@ -82,9 +79,8 @@ var SkiArea = /** @class */ (function () {
                         result = _a.sent();
                         reviews = result.rows;
                         if (reviews.length === 0) {
-                            console.error('No reviews found');
+                            console.error("No reviews found");
                         }
-                        ;
                         return [2 /*return*/, reviews];
                 }
             });
