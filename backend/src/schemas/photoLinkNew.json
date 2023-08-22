@@ -1,0 +1,30 @@
+{
+    "type": "object",
+    "properties": {
+        "username": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 20
+        },
+        "link": {
+            "type": "string",
+            "minLength": 10,
+            "maxLength": 125
+        },
+        "about": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 20
+        },
+        "tags": {
+            "type": "array",
+            "items": {
+                "minLength": 1,
+                "maxLength": 20
+            }
+
+        }
+    },
+    "additionalProperties": false,
+    "required": []
+}

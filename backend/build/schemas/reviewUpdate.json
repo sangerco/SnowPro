@@ -1,0 +1,38 @@
+{
+    "type": "object",
+    "properties": {
+        "header": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 25
+        },
+        "body": {
+            "type": "string",
+            "minLength": 0,
+            "maxLength": 500
+        },
+        "stars": {
+            "type": "integer",
+            "minLength": 1,
+            "maxLength": 1
+        },
+        "photos": {
+            "type": "array",
+            "items": {
+                "type": "string",
+                "minLength": 0,
+                "maxLength": 125
+            }
+        },
+        "tag_ids": {
+            "type": "array",
+            "items": {
+                "type": "string",
+                "minLength": 0,
+                "maxLength": 25
+            }
+        }
+    },
+    "additionalProperties": false,
+    "required": []
+}
