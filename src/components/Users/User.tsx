@@ -1,6 +1,19 @@
 import React from "react";
 
-const User = ({ user }) => {
+interface UserProps {
+  user: {
+    id: string;
+    username: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    bio?: string;
+    avatar?: string;
+    isAdmin: boolean;
+  };
+}
+
+const User: React.FC<UserProps> = ({ user }) => {
   return (
     <li key={user.id}>
       <p>{user.id}</p>
