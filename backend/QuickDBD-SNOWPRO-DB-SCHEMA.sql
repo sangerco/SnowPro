@@ -61,6 +61,7 @@ CREATE TABLE "messages" (
     "recipient_id" text   NOT NULL,
     "subject" text  NULL,
     "body" varchar(500)   NOT NULL,
+    "is_read" boolean NOT NULL,
     "created_at" TIMESTAMP NOT NULL,
     CONSTRAINT "pk_messages" PRIMARY KEY ("id")
 );
@@ -72,6 +73,7 @@ CREATE TABLE "message_replies" (
     "recipient_id" text NOT NULL,
     "subject" text NULL,
     "body" varchar(500)  NOT NULL,
+    "is_read" boolean NOT NULL,
     "created_at" TIMESTAMP NOT NULL,
     CONSTRAINT "pk_message_replies" PRIMARY KEY ("id")
 );

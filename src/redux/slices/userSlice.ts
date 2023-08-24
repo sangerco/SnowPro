@@ -83,7 +83,7 @@ export const deleteUser = createAsyncThunk(
   "user/deleteUser",
   async (username: string) => {
     const response = await axios.delete(`${URL}/api/users/${username}`);
-    return response.data;
+    return null;
   }
 );
 

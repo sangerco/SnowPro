@@ -72,7 +72,6 @@ class Message {
                 m.recipient_id AS "recipientId",
                 m.subject,
                 m.body,
-                m.is_read AS "isRead",
                 m.created_at AS "createdAt",
                 sender.username AS "senderUsername",
                 sender.first_name AS "senderFirstName",

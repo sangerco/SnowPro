@@ -55,7 +55,9 @@ router.get(
       const message = await Message.getMessage(req.params.id);
       const replies = await MessageReply.getRepliesByMessageId(req.params.id);
 
-      return res.json({ ...message, replies: replies });
+      const fullMessage = { message, replies: replies };
+      console.log(fullMessage);
+      return res.json(fullMessage);
     } catch (e) {
       return next(e);
     }
