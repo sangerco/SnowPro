@@ -33,6 +33,8 @@ const MessageReply: React.FC = () => {
     }
   };
 
+  console.log(messageReplies);
+
   const formatDate = (date: Date) => {
     const newDate = new Date(date);
     const options: Intl.DateTimeFormatOptions = {

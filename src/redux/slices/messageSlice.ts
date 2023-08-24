@@ -27,13 +27,15 @@ export interface MessageData {
   replies?: MessageReplyData[];
 }
 interface MessageState {
-  message: MessageData | MessageData[] | null;
+  message: MessageData | null;
+  messages: MessageData[] | null;
   loading: boolean;
   error: string | null;
 }
 
 const initialState: MessageState = {
   message: null,
+  messages: null,
   loading: false,
   error: null,
 };
@@ -61,7 +63,7 @@ export const fetchMessage = createAsyncThunk(
 export const fetchUserMessages = createAsyncThunk(
   "message/fetchUserMessages",
   async (username: string) => {
-    const response = await axios.get(`${URL}/messages/${username}`);
+    const response = await axios.get(`${URL}/messages/users/${username}`);
     const messages = response.data.messages;
     return messages;
   }
@@ -70,7 +72,7 @@ export const fetchUserMessages = createAsyncThunk(
 export const fetchSentMessages = createAsyncThunk(
   "message/fetchSentMessages",
   async (username: string) => {
-    const response = await axios.get(`${URL}/messages/${username}/sent`);
+    const response = await axios.get(`${URL}/messages/users/${username}/sent`);
     const messages = response.data.messages;
     return messages;
   }
@@ -140,7 +142,7 @@ const messageSlice = createSlice({
       .addCase(
         fetchUserMessages.fulfilled,
         (state, action: PayloadAction<MessageData[]>) => {
-          state.message = action.payload;
+          state.messages = action.payload;
           state.loading = false;
         }
       )
@@ -157,7 +159,7 @@ const messageSlice = createSlice({
       .addCase(
         fetchSentMessages.fulfilled,
         (state, action: PayloadAction<MessageData[]>) => {
-          state.message = action.payload;
+          state.messages = action.payload;
           state.loading = false;
         }
       )

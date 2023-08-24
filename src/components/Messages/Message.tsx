@@ -4,6 +4,7 @@ import { Button, Dimmer, Loader, Icon, Card, Modal } from "semantic-ui-react";
 import { Link, useParams } from "react-router-dom";
 import { RootState, AppDispatch } from "../../redux/store";
 import { fetchMessage, deleteMessage } from "../../redux/slices/messageSlice";
+import MessageReplyView from "./MessageReplyView";
 
 const Message: React.FC = () => {
   const { id } = useParams();
@@ -81,11 +82,11 @@ const Message: React.FC = () => {
             </div>
           </Card.Content>
         </Card>
-        {/* {message.replies && message.replies.length > 0
+        {message.replies && message.replies.length > 0
           ? message.replies.map((reply) => (
-              <MessageReply key={reply.id} reply={reply} />
+              <MessageReplyView key={reply.id} messageReply={reply} />
             ))
-          : null} */}
+          : null}
         <Modal open={showDeleteModal} onClose={() => setShowDeleteModal(false)}>
           <Modal.Content>
             Are You Sure You Want To Delete This Message?

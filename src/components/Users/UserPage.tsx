@@ -14,6 +14,7 @@ import {
 import { Link, useParams } from "react-router-dom";
 import { RootState, AppDispatch } from "../../redux/store";
 import { fetchOneUser, deleteUser } from "../../redux/slices/userSlice";
+import Inbox from "../Messages/Inbox";
 
 const UserPage: React.FC = () => {
   const { username } = useParams();
@@ -123,6 +124,7 @@ const UserPage: React.FC = () => {
             <Button onClick={() => setShowDeleteModal(false)}>Cancel</Button>
           </Modal.Actions>
         </Modal>
+        <Inbox username={user.username} />
       </div>
     );
   }

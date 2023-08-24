@@ -44,8 +44,7 @@ class Reply {
                 recipient_id,
                 subject,
                 body,
-                created_at,
-                is_read)
+                created_at)
             VALUES ($1, $2, $3, $4, $5, $6, false)
             RETURNING 
                 id,
@@ -74,7 +73,6 @@ class Reply {
                 r.recipient_id AS "recipientId",
                 r.subject,
                 r.body,
-                r.is_read AS "isRead",
                 r.created_at AS "createdAt",
                 sender.username AS "senderUsername",
                 sender.first_name AS "senderFirstName",
@@ -137,7 +135,6 @@ class Reply {
                 r.recipient_id AS "recipientId",
                 r.subject,
                 r.body,
-                r.is_read AS "isRead",
                 r.created_at AS "createdAt",
                 sender.username AS "senderUsername",
                 sender.first_name AS "senderFirstName",
@@ -170,7 +167,6 @@ class Reply {
                 r.recipient_id AS "recipientId",
                 r.subject,
                 r.body,
-                r.is_read AS "isRead",
                 r.created_at AS "createdAt",
                 sender.username AS "senderUsername",
                 sender.first_name AS "senderFirstName",

@@ -6,6 +6,9 @@ import LoginForm from "./components/Auth/LoginForm";
 import NewUserForm from "./components/Auth/NewUserForm";
 import UserPage from "./components/Users/UserPage";
 import Message from "./components/Messages/Message";
+import MessageReply from "./components/Messages/MessageReply";
+import MessageForm from "./components/Messages/MessageForm";
+import MessageReplyForm from "./components/Messages/MessageReplyForm";
 
 const AppRoutes: React.FC = () => {
   return (
@@ -16,6 +19,9 @@ const AppRoutes: React.FC = () => {
       <Route path="/register" element={<NewUserForm />} />
       <Route path="/users/:username" element={<UserPage />} />
       <Route path="/messages/:id" element={<Message />} />
+      <Route path="/messages/replies/:id" element={<MessageReply />} />
+      <Route path="/messages/create-message" element={<MessageForm />} />
+      <Route path="/messages/:id/reply" element={<MessageReplyForm />} />
     </Routes>
   );
 };

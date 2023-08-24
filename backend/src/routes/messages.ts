@@ -56,7 +56,6 @@ router.get(
       const replies = await MessageReply.getRepliesByMessageId(req.params.id);
 
       const fullMessage = { message, replies: replies };
-      console.log(fullMessage);
       return res.json(fullMessage);
     } catch (e) {
       return next(e);
@@ -67,13 +66,13 @@ router.get(
 // get all of the user's received messages
 
 router.get(
-  "/messages/:username",
+  "/messages/users/:username",
   ensureLoggedIn,
   checkIfUserOrAdmin,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const messages = await Message.getUsersMessages(req.params.username);
-      return res.json({ messages });
+      return res.json(messages);
     } catch (e) {
       return next(e);
     }
@@ -83,7 +82,7 @@ router.get(
 // get all of the user's sent messages
 
 router.get(
-  "/messages/:username/sent",
+  "/messages/users/:username/sent",
   ensureLoggedIn,
   checkIfUserOrAdmin,
   async (req: Request, res: Response, next: NextFunction) => {
