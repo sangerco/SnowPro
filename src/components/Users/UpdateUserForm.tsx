@@ -41,6 +41,10 @@ const UpdateUserForm: React.FC = () => {
     favMountains: [],
   };
 
+  const [formData, setFormData] = useState(initialState);
+  const [photos, setPhotos] = useState(user?.pLinks);
+  const [videos, setVideos] = useState(user?.vLinks);
+
   useEffect(() => {
     if (user) {
       setFormData({
@@ -61,10 +65,6 @@ const UpdateUserForm: React.FC = () => {
       setVideos(user.vLinks || []);
     }
   }, [user]);
-
-  const [formData, setFormData] = useState(initialState);
-  const [photos, setPhotos] = useState(user?.pLinks);
-  const [videos, setVideos] = useState(user?.vLinks);
 
   if (users.loading) {
     return (

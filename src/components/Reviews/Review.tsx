@@ -23,7 +23,6 @@ const Review: React.FC = () => {
   const { id } = useParams();
   const dispatch = useDispatch<AppDispatch>();
   const reviews = useSelector((state: RootState) => state.reviews);
-
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   useEffect(() => {
@@ -144,7 +143,14 @@ const Review: React.FC = () => {
         </Modal>
 
         {review.replies && review.replies.length > 0 ? (
-          review.replies.map((reply) => <p key={reply.id}>Reply goes here</p>)
+          review.replies.map((reply) => (
+            <Container as={Link} to={`/ski-areas/reviews/replies/${reply.id}`}>
+              <Header as="h2">{reply.body}</Header>
+              <Header as="h6" textAlign="right">
+                {formatDate(reply.createdAt)}
+              </Header>
+            </Container>
+          ))
         ) : (
           <p>No replies to this review yet.</p>
         )}

@@ -7,9 +7,20 @@ import {
   fetchReviewReply,
   deleteReviewReply,
 } from "../../redux/slices/reviewReplySlice";
-import { Container, Dimmer, Divider, Header, Loader } from "semantic-ui-react";
+import {
+  Container,
+  Dimmer,
+  Divider,
+  Header,
+  Loader,
+  Icon,
+  Modal,
+  Button,
+} from "semantic-ui-react";
 
 const ReviewReply: React.FC = () => {
+  const auth = useSelector((state: RootState) => state.auth);
+  const authId = auth.data?.id;
   const dispatch = useDispatch<AppDispatch>();
   const { id } = useParams();
 
@@ -39,7 +50,7 @@ const ReviewReply: React.FC = () => {
     setShowDeleteModal(true);
   };
 
-  const handleDeleteReview = () => {
+  const handleDeleteReviewReply = () => {
     if (id) {
       dispatch(deleteReviewReply(id));
     }
@@ -81,21 +92,53 @@ const ReviewReply: React.FC = () => {
     </Dimmer>;
   } else if (reviewReply && review) {
     const date = formatDate(reviewReply.createdAt);
+    const userId = reviewReply.userId;
 
     return (
-      <Container fluid>
-        <Header as="h3">
-          Reply to{" "}
-          {<Link to={`/ski-areas/reviews/${review.id}`}>{review.header}</Link>}
-        </Header>
-        <Divider />
-        <Header as="h4">By {reviewReply.username}</Header>
-        <Header textAlign="right" as="h6">
-          {date}
-        </Header>
-        <Divider />
-        <p>{reviewReply.body}</p>
-      </Container>
+      <div>
+        <Container fluid>
+          <Header as="h3">
+            Reply to{" "}
+            {
+              <Link to={`/ski-areas/reviews/${review.id}`}>
+                {review.header}
+              </Link>
+            }
+          </Header>
+          <Divider />
+          <Header as="h4">By {reviewReply.username}</Header>
+          <Header textAlign="right" as="h6">
+            {date}
+          </Header>
+          <Divider />
+          <p>{reviewReply.body}</p>
+          {authId && authId === userId ? (
+            <Container>
+              <Link to={`/ski-areas/reviews/replies/${reviewReply.id}/update`}>
+                <Icon name="edit" style={{ cursor: "pointer" }} />
+              </Link>
+              <Icon
+                name="trash"
+                style={{ cursor: "pointer" }}
+                onClick={handleShowDeleteModal}
+              />
+            </Container>
+          ) : null}
+        </Container>
+        <Modal open={showDeleteModal} onClose={() => setShowDeleteModal(false)}>
+          <Modal.Content>
+            Are You Sure You Want To Delete This Review?
+          </Modal.Content>
+          <Modal.Actions>
+            <Button negative onClick={handleDeleteReviewReply}>
+              Yes
+            </Button>
+            <Button onClick={() => setShowDeleteModal(false)}>Cancel</Button>
+          </Modal.Actions>
+        </Modal>
+      </div>
     );
   }
 };
+
+export default ReviewReply;
