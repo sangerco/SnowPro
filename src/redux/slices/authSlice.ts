@@ -3,9 +3,19 @@ import axios from "axios";
 import { URL } from "../../utils/config";
 
 interface NewUserData {
+  id?: string;
   username: string;
   password: string;
   email: string;
+  first_name: string;
+  last_name: string;
+}
+
+interface UserData {
+  id: string;
+  username: string;
+  password: string;
+  email?: string;
   first_name: string;
   last_name: string;
 }
@@ -16,7 +26,7 @@ interface LoginData {
 }
 
 interface AuthState {
-  data: NewUserData | null;
+  data: NewUserData | UserData | null;
   token: string | null;
   isAuthenticated: boolean;
   loading: boolean;
@@ -45,8 +55,10 @@ export const loginUser = createAsyncThunk(
   "auth/loginUser",
   async (loginData: LoginData) => {
     const response = await axios.post(`${URL}/login`, loginData);
+    console.log(response);
     const token = response.data.token;
-    return token;
+    const user = response.data.user;
+    return { token, user };
   }
 );
 
@@ -78,7 +90,8 @@ const authSlice = createSlice({
         state.loading = true;
       })
       .addCase(loginUser.fulfilled, (state, action) => {
-        state.token = action.payload;
+        state.data = action.payload.user;
+        state.token = action.payload.token;
         state.loading = false;
         state.isAuthenticated = true;
       })

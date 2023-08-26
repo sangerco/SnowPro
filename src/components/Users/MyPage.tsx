@@ -17,8 +17,6 @@ import { fetchOneUser, deleteUser } from "../../redux/slices/userSlice";
 
 const MyPage = () => {
   const auth = useSelector((state: RootState) => state.auth);
-  const users = useSelector((state: RootState) => state.users);
-  const user = users.user;
   const dispatch = useDispatch<AppDispatch>();
   const username = auth.data?.username;
 
@@ -30,6 +28,8 @@ const MyPage = () => {
     }
   }, [dispatch, username]);
 
+  const user = useSelector((state: RootState) => state.users.user);
+
   const handleShowDeleteModal = () => {
     setShowDeleteModal(true);
   };
@@ -40,7 +40,7 @@ const MyPage = () => {
     }
   };
 
-  if (users.loading) {
+  if (auth.loading) {
     return (
       <div>
         <Dimmer active>
@@ -50,8 +50,8 @@ const MyPage = () => {
     );
   }
 
-  if (users.error) {
-    return <div>Error: {users.error}</div>;
+  if (auth.error) {
+    return <div>Error: {auth.error}</div>;
   }
 
   if (user) {
@@ -73,13 +73,13 @@ const MyPage = () => {
                     : ""}
                   {user.lastName && user.lastName !== "" ? user.lastName : ""}
                 </Header.Subheader>
-                <Link to={"madeuplinkfornow"}>
+                <Link to={`/users/${user.username}/update`}>
                   <Icon name="edit" style={{ cursor: "pointer" }} />
                 </Link>
                 <Icon
                   name="trash"
                   style={{ cursor: "pointer" }}
-                  onClick={handleShowDeleteModal()}
+                  onClick={handleShowDeleteModal}
                 />
               </Grid.Column>
               <Grid.Column width={4}></Grid.Column>

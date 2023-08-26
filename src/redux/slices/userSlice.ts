@@ -57,9 +57,9 @@ export const fetchOneUser = createAsyncThunk(
 
 export const updateUser = createAsyncThunk(
   "user/updateUser",
-  async (username: string, updateData) => {
+  async (updateData: UserData) => {
     const response = await axios.patch(
-      `${URL}/api/users/${username}`,
+      `${URL}/api/users/${updateData.username}`,
       updateData
     );
     const user = response.data.user as UserData;
@@ -82,7 +82,7 @@ export const makeUserAdmin = createAsyncThunk(
 export const deleteUser = createAsyncThunk(
   "user/deleteUser",
   async (username: string) => {
-    const response = await axios.delete(`${URL}/api/users/${username}`);
+    await axios.delete(`${URL}/api/users/${username}`);
     return null;
   }
 );

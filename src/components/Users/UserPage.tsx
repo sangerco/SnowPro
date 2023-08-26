@@ -17,6 +17,8 @@ import { fetchOneUser, deleteUser } from "../../redux/slices/userSlice";
 import Inbox from "../Messages/Inbox";
 
 const UserPage: React.FC = () => {
+  const auth = useSelector((state: RootState) => state.auth);
+  const authId = auth.data?.id;
   const { username } = useParams();
   const users = useSelector((state: RootState) => state.users);
   const user = users.user;
@@ -73,14 +75,18 @@ const UserPage: React.FC = () => {
                     : ""}
                   {user.lastName && user.lastName !== "" ? user.lastName : ""}
                 </Header.Subheader>
-                <Link to={"madeuplinkfornow"}>
-                  <Icon name="edit" style={{ cursor: "pointer" }} />
-                </Link>
-                <Icon
-                  name="trash"
-                  style={{ cursor: "pointer" }}
-                  onClick={handleShowDeleteModal}
-                />
+                {authId && authId === user.id ? (
+                  <div>
+                    <Link to={`/users/${user.username}/update`}>
+                      <Icon name="edit" style={{ cursor: "pointer" }} />
+                    </Link>
+                    <Icon
+                      name="trash"
+                      style={{ cursor: "pointer" }}
+                      onClick={handleShowDeleteModal}
+                    />
+                  </div>
+                ) : null}
               </Grid.Column>
               <Grid.Column width={4}></Grid.Column>
             </Grid.Row>
