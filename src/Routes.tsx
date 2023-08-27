@@ -12,6 +12,8 @@ import MessageReplyForm from "./components/Messages/MessageReplyForm";
 import UpdateUserForm from "./components/Users/UpdateUserForm";
 import Review from "./components/Reviews/Review";
 import ReviewReply from "./components/Reviews/ReviewReply";
+import ReviewForm from "./components/Reviews/ReviewForm";
+import ReviewReplyForm from "./components/Reviews/ReviewReplyForm";
 
 const AppRoutes: React.FC = () => {
   return (
@@ -26,7 +28,12 @@ const AppRoutes: React.FC = () => {
       <Route path="/messages/replies/:id" element={<MessageReply />} />
       <Route path="/messages/create-message" element={<MessageForm />} />
       <Route path="/messages/:id/reply" element={<MessageReplyForm />} />
+      <Route path="/ski-areas/:slug/review" element={<ReviewForm />} />
       <Route path="/ski-areas/reviews/:id" element={<Review />} />
+      <Route
+        path="/ski-areas/reviews/:id/reply"
+        element={<ReviewReplyForm />}
+      />
       <Route path="/ski-areas/reviews/replies/:id" element={<ReviewReply />} />
     </Routes>
   );

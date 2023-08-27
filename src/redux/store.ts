@@ -5,6 +5,7 @@ import messageReducer from "./slices/messageSlice";
 import messageReplyReducer from "./slices/messageReplySlice";
 import reviewReducer from "./slices/reviewSlice";
 import reviewReplyReducer from "./slices/reviewReplySlice";
+import tagReducer from "./slices/tagSlice";
 import storage from "redux-persist/lib/storage";
 import { persistReducer, persistStore } from "redux-persist";
 
@@ -21,6 +22,7 @@ const rootReducer = combineReducers({
   messageReplies: messageReplyReducer,
   reviews: reviewReducer,
   reviewReplies: reviewReplyReducer,
+  tags: tagReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
