@@ -56,7 +56,8 @@ class User {
     password: string
   ): Promise<UserData> {
     const result = await db.query(
-      `SELECT username,
+      `SELECT id,
+                    username,
                     password,
                     first_name AS "firstName",
                     last_name AS "lastName",

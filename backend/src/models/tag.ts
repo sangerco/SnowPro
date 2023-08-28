@@ -43,6 +43,22 @@ class Tag {
     return tags;
   }
 
+  static async getTag(id: string): Promise<TagData> {
+    const result = await db.query(
+      `SELECT id AS "tagId",
+              tag
+            FROM tags
+            WHERE id = $1`,
+      [id]
+    );
+
+    const row = result.rows[0];
+
+    if (!row) throw new NotFoundError("Tag Not Found");
+
+    return row;
+  }
+
   // method to get all reviews, photos, and videos associated with that tag
 
   static async getAssociatedItems(id: string): Promise<AssociatedData> {

@@ -34,14 +34,21 @@ router.post(
   }
 );
 
+router.get("/tags", async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const tags = await Tag.getTags();
+    return res.json({ tags });
+  } catch (e) {
+    return next(e);
+  }
+});
+
 router.get(
-  "/tags",
-  ensureLoggedIn,
-  checkIfUserOrAdmin,
+  "/tags/:id",
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const tags = await Tag.getTags();
-      return res.json({ tags });
+      const tag = await Tag.getTag(req.params.id);
+      return res.json({ tag });
     } catch (e) {
       return next(e);
     }
@@ -51,7 +58,7 @@ router.get(
 // return all reviews, photos, videos associated with that tag
 
 router.get(
-  "/tags/:id",
+  "/tags/:id/assoc-items",
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const tag = await Tag.getAssociatedItems(req.params.id);

@@ -81,7 +81,7 @@ router.post(
       const { username, password }: UserLoginData = req.body;
       const user = await User.authenticate(username, password);
       const token = createToken(user);
-      return res.json({ token });
+      return res.json({ user, token });
     } catch (e) {
       return next(e);
     }

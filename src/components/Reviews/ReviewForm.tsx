@@ -13,6 +13,8 @@ import { RootState, AppDispatch } from "../../redux/store";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 import TagForm from "../Tags/TagForm";
+import PhotoForm from "../Media/PhotoForm";
+import { deletePhoto } from "../../redux/slices/mediaSlices";
 
 const ReviewForm: React.FC = () => {
   const { slug } = useParams();
@@ -64,6 +66,7 @@ const ReviewForm: React.FC = () => {
   const [formData, setFormData] = useState(initialReviewState);
   const [photos, setPhotos] = useState(initialReviewState.photos);
   const [showCreateNewTagForm, setShowCreateNewTagForm] = useState(false);
+  const [showPhotoForm, setShowPhotoForm] = useState(false);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -101,17 +104,12 @@ const ReviewForm: React.FC = () => {
     }
   };
 
-  const handleAddPhotoInput = () => {
-    if (formData.photos) {
-      setPhotos([...formData.photos, ""]);
-    }
-  };
-
   const handleRemovePhotoInput = (index: number) => {
     if (formData.photos) {
       const updatedPhotoLinks = [...formData.photos];
       updatedPhotoLinks.splice(index, 1);
       setPhotos(updatedPhotoLinks);
+      dispatch(deletePhoto(formData.photos[index]));
     }
   };
 
@@ -141,8 +139,9 @@ const ReviewForm: React.FC = () => {
               onChange={(e) => handlePhotoChange(index, e.target.value)}
             />
             {index === photos.length - 1 && (
-              <Button icon="plus" onClick={handleAddPhotoInput} />
+              <Button icon="plus" onClick={() => setShowPhotoForm(true)} />
             )}
+            {showPhotoForm && <PhotoForm />}
             {index > 0 && (
               <Button
                 icon="minus"
@@ -152,31 +151,31 @@ const ReviewForm: React.FC = () => {
           </Form.Field>
         ))}
         <Button type="submit">Send it!</Button>
+        <Divider />
+        <label>Tags</label>
+        <Dropdown
+          clearable
+          options={tagOptions}
+          multiple
+          fluid
+          selection
+          value={formData.tags}
+        />
+        <Button onClick={() => setShowCreateNewTagForm(true)} size="small">
+          Create New Tag?
+        </Button>
+        {showCreateNewTagForm && <TagForm />}
+        <Divider />
+        <label>How would you rate your experience?</label>
+        <Dropdown
+          clearable
+          options={ratingOptions}
+          selection
+          fluid
+          value={formData.stars}
+        />
+        <Divider />
       </Form>
-      <Divider />
-      <label>Tags</label>
-      <Dropdown
-        clearable
-        options={tagOptions}
-        multiple
-        fluid
-        selection
-        value={formData.tags}
-      />
-      <Button onClick={() => setShowCreateNewTagForm(true)} size="small">
-        Create New Tag?
-      </Button>
-      {showCreateNewTagForm && <TagForm />}
-      <Divider />
-      <label>How would you rate your experience?</label>
-      <Dropdown
-        clearable
-        options={ratingOptions}
-        selection
-        fluid
-        value={formData.stars}
-      />
-      <Divider />
     </Container>
   );
 };

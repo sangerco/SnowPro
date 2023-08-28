@@ -155,6 +155,25 @@ class Photo {
 
     if (!photo) throw new NotFoundError("Photo not found!");
   }
+
+  static async deletePhotoByUsernameAndLink(
+    userId: string,
+    link: string
+  ): Promise<PhotoData> {
+    const result = await db.query(
+      `DELETE FROM photos
+              WHERE user_id = $1
+              AND link = $2
+              returning id`,
+      [userId, link]
+    );
+
+    const photo = result.rows[0];
+
+    if (!photo) throw new NotFoundError("Photo not found!");
+
+    return photo;
+  }
 }
 
 export default Photo;

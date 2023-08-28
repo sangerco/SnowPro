@@ -10,10 +10,13 @@ import {
   Modal,
   Button,
   Icon,
+  Embed,
 } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 import { RootState, AppDispatch } from "../../redux/store";
 import { fetchOneUser, deleteUser } from "../../redux/slices/userSlice";
+import PhotoForm from "../Media/PhotoForm";
+import VideoForm from "../Media/VideoForm";
 
 const MyPage = () => {
   const auth = useSelector((state: RootState) => state.auth);
@@ -21,6 +24,8 @@ const MyPage = () => {
   const username = auth.data?.username;
 
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [showNewPhotoForm, setShowNewPhotoForm] = useState(false);
+  const [showNewVideoForm, setShowNewVideoForm] = useState(false);
 
   useEffect(() => {
     if (username) {
@@ -39,6 +44,17 @@ const MyPage = () => {
       dispatch(deleteUser(username));
     }
   };
+
+  let videoLinks: string[] = [];
+
+  if (user && user.videos && user.videos.length > 0) {
+    user.videos.map((link) => {
+      let splitLink = link.split("v=");
+      let id = splitLink[1];
+      let finalId = id.includes("&") ? id.split("&")[0] : id;
+      videoLinks.push(finalId);
+    });
+  }
 
   if (auth.loading) {
     return (
@@ -100,14 +116,41 @@ const MyPage = () => {
             <Grid.Row>
               <Grid.Column width={2}></Grid.Column>
               <Grid.Column width={12}>
-                {/* <ShowPhotos username={username as string} /> */}
+                {user.photos && user.photos.length > 0
+                  ? user.photos.map((link) => (
+                      <Image
+                        src={link}
+                        size="small"
+                        as={Link}
+                        to={`/users/${user.username}/photos/`}
+                      />
+                    ))
+                  : null}
+                <Button color="green" onClick={() => setShowNewPhotoForm(true)}>
+                  Add New Photo?
+                </Button>
+                {showNewPhotoForm && <PhotoForm />}
               </Grid.Column>
               <Grid.Column width={2}></Grid.Column>
             </Grid.Row>
             <Grid.Row>
               <Grid.Column width={2}></Grid.Column>
               <Grid.Column width={12}>
-                {/* <ShowVideos username={username as string} /> */}
+                {videoLinks.length > 0
+                  ? videoLinks.map((link) => (
+                      <Embed
+                        id={link}
+                        source="youtube"
+                        size="small"
+                        as={Link}
+                        to={`/users/${user.username}/videos`}
+                      />
+                    ))
+                  : null}
+                <Button color="green" onClick={() => setShowNewVideoForm(true)}>
+                  Add New Video?
+                </Button>
+                {showNewPhotoForm && <VideoForm />}
               </Grid.Column>
               <Grid.Column width={2}></Grid.Column>
             </Grid.Row>

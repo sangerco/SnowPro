@@ -68,19 +68,18 @@ router.get(
 // get review by id
 
 router.get(
-  "/ski-areas/:slug/reviews/:id",
+  "/ski-areas/reviews/:id",
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const reviewData = await Review.fetchReviewById(req.params.id);
-
-      const getReviewReplyData: ReplyReviewData[] =
+      const review = await Review.fetchReviewById(req.params.id);
+      const replies: ReplyReviewData[] =
         await ReviewReply.fetchRepliesByReviewId(req.params.id);
 
-      const review = {
-        ...reviewData,
-        replyData: getReviewReplyData,
+      const fullReview = {
+        review,
+        replies: replies,
       };
-      return res.json({ review });
+      return res.json(fullReview);
     } catch (e) {
       next(e);
     }
@@ -90,7 +89,7 @@ router.get(
 // delete a ski area review
 
 router.delete(
-  "/api/:slug/reviews/:id",
+  "/api/reviews/:id",
   ensureLoggedIn,
   checkIfUserOrAdmin,
   async (req: Request, res: Response, next: NextFunction) => {
@@ -164,7 +163,7 @@ router.patch(
 // fetch a review reply by id
 
 router.get(
-  "/ski-areas/:slug/reviews/:review_id/replies/:id",
+  "/ski-areas/reviews/replies/:id",
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const reply = await ReviewReply.fetchReplyId(req.params.id);
@@ -178,13 +177,13 @@ router.get(
 // fetch review replies by review id
 
 router.get(
-  "/ski-areas/:slug/reviews/:id/replies",
+  "/ski-areas/reviews/:id/replies",
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const reviewReplyData: ReplyReviewData[] =
+      const reviewReplies: ReplyReviewData[] =
         await ReviewReply.fetchRepliesByReviewId(req.params.id);
 
-      return res.json({ reviewReplyData });
+      return res.json({ reviewReplies });
     } catch (e) {
       next(e);
     }

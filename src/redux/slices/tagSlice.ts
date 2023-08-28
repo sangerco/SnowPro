@@ -46,6 +46,12 @@ export const createTag = createAsyncThunk(
   }
 );
 
+export const fetchTag = createAsyncThunk("tag/fetchTag", async (id: string) => {
+  const response = await axios.get(`${URL}/tags/${id}`);
+  const tag = response.data.tag;
+  return tag;
+});
+
 export const fetchAllTags = createAsyncThunk("tag/fetchAllTags", async () => {
   const response = await axios.get(`${URL}/tags`);
   const tags = response.data.tags;
@@ -55,7 +61,7 @@ export const fetchAllTags = createAsyncThunk("tag/fetchAllTags", async () => {
 export const fetchTagAssocItems = createAsyncThunk(
   "tag/fetchTagAssocItems",
   async (id: string) => {
-    const response = await axios.get(`${URL}/tags/${id}`);
+    const response = await axios.get(`${URL}/tags/${id}/assoc-items`);
     const tagData = response.data.tag;
     return tagData;
   }

@@ -12,8 +12,8 @@ export interface UserData {
   avatar?: string;
   bio?: string;
   isAdmin: boolean;
-  vLinks?: string[];
-  pLinks?: string[];
+  videos?: string[];
+  photos?: string[];
   favMountains?: string[];
 }
 

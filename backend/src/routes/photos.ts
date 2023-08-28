@@ -98,4 +98,23 @@ router.delete(
   }
 );
 
+// delete photo by username and link
+
+router.delete(
+  "photo/:userId/:link",
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      await Photo.deletePhotoByUsernameAndLink(
+        req.params.userId,
+        req.params.link
+      );
+      return res.json({
+        deleted: `Photo removed ${req.params.userId}, ${req.params.link}`,
+      });
+    } catch (e) {
+      return next(e);
+    }
+  }
+);
+
 export default router;

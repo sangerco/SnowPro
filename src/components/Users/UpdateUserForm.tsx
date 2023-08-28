@@ -13,13 +13,17 @@ import {
   Dimmer,
   Loader,
   Header,
+  Image,
+  Embed,
+  Divider,
 } from "semantic-ui-react";
+import PhotoForm from "../Media/PhotoForm";
+import VideoForm from "../Media/VideoForm";
 
 const UpdateUserForm: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const users = useSelector((state: RootState) => state.users);
   const user = users.user;
-
   useEffect(() => {
     if (user) {
       dispatch(fetchOneUser(user.username));
@@ -36,14 +40,14 @@ const UpdateUserForm: React.FC = () => {
     isAdmin: false,
     avatar: "",
     bio: "",
-    vLinks: [],
-    pLinks: [],
+    videos: [],
+    photos: [],
     favMountains: [],
   };
 
   const [formData, setFormData] = useState(initialState);
-  const [photos, setPhotos] = useState(user?.pLinks);
-  const [videos, setVideos] = useState(user?.vLinks);
+  const [showNewPhotoForm, setShowNewPhotoForm] = useState(false);
+  const [showNewVideoForm, setShowNewVideoForm] = useState(false);
 
   useEffect(() => {
     if (user) {
@@ -57,12 +61,10 @@ const UpdateUserForm: React.FC = () => {
         isAdmin: user.isAdmin,
         avatar: user.avatar || "",
         bio: user.bio || "",
-        vLinks: user.vLinks || [],
-        pLinks: user.pLinks || [],
+        videos: user.videos || [],
+        photos: user.photos || [],
         favMountains: user.favMountains || [],
       });
-      setPhotos(user.pLinks || []);
-      setVideos(user.vLinks || []);
     }
   }, [user]);
 
@@ -116,49 +118,16 @@ const UpdateUserForm: React.FC = () => {
     });
   };
 
-  const handlePhotoChange = (index: number, value: string) => {
-    if (formData.pLinks) {
-      const updatedPhotoLinks = [...formData.pLinks];
-      updatedPhotoLinks[index] = value;
-      setPhotos(updatedPhotoLinks);
-    }
-  };
+  let videoIds: string[] = [];
 
-  const handleAddPhotoInput = () => {
-    if (formData.pLinks) {
-      setPhotos([...formData.pLinks, ""]);
-    }
-  };
-
-  const handleRemovePhotoInput = (index: number) => {
-    if (formData.pLinks) {
-      const updatedPhotoLinks = [...formData.pLinks];
-      updatedPhotoLinks.splice(index, 1);
-      setPhotos(updatedPhotoLinks);
-    }
-  };
-
-  const handleVideoChange = (index: number, value: string) => {
-    if (formData.vLinks) {
-      const updatedVideoLinks = [...formData.vLinks];
-      updatedVideoLinks[index] = value;
-      setPhotos(updatedVideoLinks);
-    }
-  };
-
-  const handleAddVideoInput = () => {
-    if (formData.vLinks) {
-      setVideos([...formData.vLinks, ""]);
-    }
-  };
-
-  const handleRemoveVideoInput = (index: number) => {
-    if (formData.vLinks) {
-      const updatedVideoLinks = [...formData.vLinks];
-      updatedVideoLinks.splice(index, 1);
-      setVideos(updatedVideoLinks);
-    }
-  };
+  if (formData.videos) {
+    videoIds = formData.videos.map((videoLink) => {
+      let splitLink = videoLink.split("v=");
+      let id = splitLink[1];
+      let videoId = id.includes("&") ? id.split("&")[0] : id;
+      return videoId;
+    });
+  }
 
   if (user) {
     return (
@@ -231,46 +200,23 @@ const UpdateUserForm: React.FC = () => {
                 onChange={handleChange}
               />
             </Form.Field>
-            {formData.pLinks &&
-              formData.pLinks.map((photo, index) => (
-                <Form.Field key={index}>
-                  <label>Photos</label>
-                  <input
-                    value={photo}
-                    onChange={(e) => handlePhotoChange(index, e.target.value)}
-                  />
-                  {formData.pLinks && index === formData.pLinks.length - 1 && (
-                    <Button icon="plus" onClick={handleAddPhotoInput} />
-                  )}
-                  {index > 0 && (
-                    <Button
-                      icon="minus"
-                      onClick={() => handleRemovePhotoInput(index)}
-                    />
-                  )}
-                </Form.Field>
-              ))}
-            {formData.vLinks &&
-              formData.vLinks.map((video, index) => (
-                <Form.Field key={index}>
-                  <label>Videos</label>
-                  <input
-                    value={video}
-                    onChange={(e) => handleVideoChange(index, e.target.value)}
-                  />
-                  {formData.vLinks && index === formData.vLinks.length - 1 && (
-                    <Button icon="plus" onClick={handleAddVideoInput} />
-                  )}
-                  {index > 0 && (
-                    <Button
-                      icon="minus"
-                      onClick={() => handleRemoveVideoInput(index)}
-                    />
-                  )}
-                </Form.Field>
-              ))}
             <Button type="submit">Submit Changes</Button>
           </Form>
+          {formData.photos &&
+            formData.photos.map((photo) => <Image src={photo} />)}
+          <Button color="green" onClick={() => setShowNewPhotoForm(true)}>
+            Add Photos?
+          </Button>
+          {showNewPhotoForm && <PhotoForm />}
+          <Divider />
+          {videoIds.length > 0
+            ? videoIds.map((id) => <Embed id={id} source="youtube" />)
+            : null}
+          <Button color="green" onClick={() => setShowNewVideoForm(true)}>
+            Add Photos?
+          </Button>
+          {showNewVideoForm && <VideoForm />}
+          <Divider />
         </Container>
       </div>
     );
