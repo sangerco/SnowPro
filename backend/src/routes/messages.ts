@@ -9,8 +9,8 @@ import messageNewSchema from "../schemas/messageNew.json";
 const router = express.Router();
 
 interface MessageData {
-  senderId: string;
-  recipientId: string;
+  sender_id: string;
+  recipient_id: string[];
   subject: string;
   body: string;
 }
@@ -22,6 +22,7 @@ router.post(
   ensureLoggedIn,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
+      console.log(req.body);
       const validator: jsonschema.ValidatorResult = jsonschema.validate(
         req.body,
         messageNewSchema
@@ -30,10 +31,10 @@ router.post(
         const errors: string | string[] = validator.errors.map((e) => e.stack);
         throw new BadRequestError(errors);
       }
-      const { senderId, recipientId, subject, body }: MessageData = req.body;
+      const { sender_id, recipient_id, subject, body }: MessageData = req.body;
       const message = await Message.createMessage(
-        senderId,
-        recipientId,
+        sender_id,
+        recipient_id,
         subject,
         body
       );

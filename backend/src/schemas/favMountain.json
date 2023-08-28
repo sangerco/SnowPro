@@ -4,7 +4,7 @@
         "user_id": {
             "type": "string",
             "minLength": 2,
-            "maxLength": 15
+            "maxLength": 40
         },
         "ski_area_slug": {
             "type": "string",

@@ -4,8 +4,8 @@ import { v4 as uuidv4 } from "uuid";
 
 interface MessageData {
   id: string;
-  senderId: string;
-  recipientId: string;
+  sender_id: string;
+  recipient_id: string[];
   subject: string;
   body: string;
   createdId: Date;
@@ -29,16 +29,19 @@ interface UserWithMessages extends MessageData {
 
 class Message {
   static async createMessage(
-    senderId: string,
-    recipientId: string,
+    sender_id: string,
+    recipient_ids: string[],
     subject: string,
     body: string
-  ): Promise<MessageData> {
-    const id = uuidv4();
+  ): Promise<MessageData[]> {
     const createdAt = new Date();
 
-    const result = await db.query(
-      `
+    const messages = await Promise.all(
+      recipient_ids.map(async (recipient_id) => {
+        const id = uuidv4();
+
+        const result = await db.query(
+          `
             INSERT INTO messages
             (   id,
                 sender_id,
@@ -56,12 +59,14 @@ class Message {
                 body,
                 is_read AS "isRead",
                 created_at AS "createdAt"`,
-      [id, senderId, recipientId, subject, body, createdAt]
+          [id, sender_id, recipient_id, subject, body, createdAt]
+        );
+
+        return result.rows[0];
+      })
     );
 
-    const message = result.rows[0];
-
-    return message;
+    return messages;
   }
 
   static async getMessage(id: string): Promise<MessageData> {

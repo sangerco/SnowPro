@@ -20,7 +20,7 @@
             "type": "array",
             "items": {
                 "minLength": 1,
-                "maxLength": 20
+                "maxLength": 40
             }
 
         }

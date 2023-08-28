@@ -4,7 +4,7 @@
         "review_id": {
             "type": "string",
             "minLength": 1,
-            "maxLength": 20
+            "maxLength": 40
         },
         "user_id": {
             "type": "string",

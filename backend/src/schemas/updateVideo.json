@@ -4,7 +4,7 @@
         "id" : {
             "type": "string",
             "minLength": 1,
-            "maxLength": 20
+            "maxLength": 40
         },
         "username": {
             "type": "string",
@@ -24,6 +24,7 @@
         "tags": {
             "type": "array",
             "items": {
+                "type": "string",
                 "minLength": 1,
                 "maxLength": 20
             }

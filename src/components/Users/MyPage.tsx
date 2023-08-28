@@ -48,7 +48,7 @@ const MyPage = () => {
   let videoLinks: string[] = [];
 
   if (user && user.videos && user.videos.length > 0) {
-    user.videos.map((link) => {
+    user.videos.forEach((link) => {
       let splitLink = link.split("v=");
       let id = splitLink[1];
       let finalId = id.includes("&") ? id.split("&")[0] : id;
@@ -150,7 +150,7 @@ const MyPage = () => {
                 <Button color="green" onClick={() => setShowNewVideoForm(true)}>
                   Add New Video?
                 </Button>
-                {showNewPhotoForm && <VideoForm />}
+                {showNewVideoForm && <VideoForm />}
               </Grid.Column>
               <Grid.Column width={2}></Grid.Column>
             </Grid.Row>

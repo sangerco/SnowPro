@@ -4,8 +4,8 @@ import { URL } from "../../utils/config";
 import { MessageReplyData } from "./messageReplySlice";
 
 export interface NewMessageData {
-  senderId: string;
-  recipientId: string;
+  sender_id: string;
+  recipient_id: string;
   subject: string;
   body: string;
 }

@@ -4,17 +4,22 @@
         "message_id" : {
             "type": "string",
             "minLength": 1,
-            "maxLength": 20
+            "maxLength": 40
         },
         "sender_id": {
             "type": "string",
             "minLength": 1,
-            "maxLength": 20
+            "maxLength": 40
         },
-        "recipient_id": {
-            "type": "string",
-            "minLength": 1,
-            "maxLength": 20
+        "recipient_ids": {
+            "type": "array",
+            "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 40
+            },
+            "minItems": 1,
+            "maxItems": 20
         },
         "subject": {
             "type": "string",

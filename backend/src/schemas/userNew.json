@@ -38,10 +38,25 @@
       "maxLength": 1000,
       "nullable": true
     },
+    "photo_links": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength":1,
+        "maxLength": 255
+      },
+      "minItems": 0,
+      "maxItems": 20
+    },
     "video_links": {
-      "type": "string",
-      "maxLength": 255,
-      "nullable": true
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength":1,
+        "maxLength": 255
+      },
+      "minItems": 0,
+      "maxItems": 20
     }
   },
   "required": [
