@@ -133,6 +133,8 @@ const VideoView: React.FC<VideoViewProps> = ({ id }) => {
       </div>
     );
   }
+
+  return null;
 };
 
 export default VideoView;

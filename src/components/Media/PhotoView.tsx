@@ -125,6 +125,8 @@ const PhotoView: React.FC<PhotoViewProps> = ({ id }) => {
       </div>
     );
   }
+
+  return null;
 };
 
 export default PhotoView;

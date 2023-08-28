@@ -45,6 +45,8 @@ const UserPhotos: React.FC = () => {
       </div>
     );
   }
+
+  return null;
 };
 
 export default UserPhotos;

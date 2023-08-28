@@ -139,6 +139,8 @@ const ReviewReply: React.FC = () => {
       </div>
     );
   }
+
+  return null;
 };
 
 export default ReviewReply;
