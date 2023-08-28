@@ -116,7 +116,7 @@ const ReviewForm: React.FC = () => {
   return (
     <Container fluid>
       <Form onSubmit={handleSubmit}>
-        <Form.Field>
+        <Form.Field required>
           <label>Header</label>
           <input
             name="header"
@@ -125,6 +125,7 @@ const ReviewForm: React.FC = () => {
           />
         </Form.Field>
         <Form.TextArea
+          required={true}
           placeholder="How was it?"
           name="body"
           value={formData.body}

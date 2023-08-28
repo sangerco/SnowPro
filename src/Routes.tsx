@@ -18,8 +18,8 @@ import UpdateReviewForm from "./components/Reviews/UpdateReviewForm";
 import UpdateReviewReplyForm from "./components/Reviews/UpdateReviewReplyForm";
 import UserPhotos from "./components/Media/UserPhotos";
 import UserVideos from "./components/Media/UserVideos";
-import PhotoView from "./components/Media/PhotoView";
-import VideoView from "./components/Media/VideoView";
+import SkiAreaData from "./components/SkiAreas/SkiAreaData";
+import SkiAreaPage from "./components/SkiAreas/SkiAreaPage";
 
 const AppRoutes: React.FC = () => {
   return (
@@ -36,6 +36,8 @@ const AppRoutes: React.FC = () => {
       <Route path="/messages/replies/:id" element={<MessageReply />} />
       <Route path="/messages/create-message" element={<MessageForm />} />
       <Route path="/messages/:id/reply" element={<MessageReplyForm />} />
+      <Route path="/ski-areas" element={<SkiAreaData />} />
+      <Route path="/ski-areas/:slug" element={<SkiAreaPage />} />
       <Route path="/ski-areas/:slug/review" element={<ReviewForm />} />
       <Route path="/ski-areas/reviews/:id" element={<Review />} />
       <Route
