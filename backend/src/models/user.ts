@@ -148,7 +148,7 @@ class User {
                     u.is_admin AS "isAdmin",
                     v.link AS "videos",
                     p.link AS "photos",
-                    s.name AS "favMountains" 
+                    s.slug AS "favMountains" 
                 FROM users u
                 LEFT JOIN users_videos uv ON u.id = uv.user_id
                 LEFT JOIN videos v ON uv.video_id = v.id

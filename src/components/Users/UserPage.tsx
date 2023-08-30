@@ -10,11 +10,15 @@ import {
   Modal,
   Button,
   Icon,
+  Card,
+  Divider,
+  Embed,
 } from "semantic-ui-react";
 import { Link, useParams } from "react-router-dom";
 import { RootState, AppDispatch } from "../../redux/store";
 import { fetchOneUser, deleteUser } from "../../redux/slices/userSlice";
 import Inbox from "../Messages/Inbox";
+import FavMountain from "../SkiAreas/FavMountain";
 
 const UserPage: React.FC = () => {
   const auth = useSelector((state: RootState) => state.auth);
@@ -22,6 +26,7 @@ const UserPage: React.FC = () => {
   const { username } = useParams();
   const users = useSelector((state: RootState) => state.users);
   const user = users.user;
+  console.log(user?.favMountains);
   const dispatch = useDispatch<AppDispatch>();
 
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -41,6 +46,17 @@ const UserPage: React.FC = () => {
       dispatch(deleteUser(username));
     }
   };
+
+  let videoIds = [];
+
+  if (user && user.videos && user.videos.length > 0) {
+    for (let i = 0; i < user.videos.length; i++) {
+      let splitLink = user.videos[i].split("v=");
+      let id = splitLink[1];
+      let videoId = id.includes("&") ? id.split("&")[0] : id;
+      videoIds.push(videoId);
+    }
+  }
 
   if (users.loading) {
     return (
@@ -96,24 +112,52 @@ const UserPage: React.FC = () => {
                 <p>{user.bio}</p>
               </Grid.Column>
               <Grid.Column width={4}>
-                {/* {user.favMountains.length > 0 ? (
-                    <FavMountain userId={user.id} />
+                {user.favMountains &&
+                username &&
+                user.favMountains.length > 0 ? (
+                  user.favMountains.map((fm) => (
+                    <Card.Group>
+                      <FavMountain key={fm} slug={fm} username={username} />
+                    </Card.Group>
+                  ))
                 ) : (
-                    <p>This user has no favorited mountains yet!</p>
-                )} */}
+                  <p>This user has no favorited mountains yet!</p>
+                )}
               </Grid.Column>
             </Grid.Row>
             <Grid.Row>
               <Grid.Column width={2}></Grid.Column>
               <Grid.Column width={12}>
-                {/* <ShowPhotos username={username as string} /> */}
+                <Header as="h3">
+                  <Link to={`/users/${username}/photos`}>
+                    All {username}'s Photos
+                  </Link>
+                </Header>
+                {user.photos && user.photos.length > 0 ? (
+                  user.photos.map((photo) => <Image size="small" src={photo} />)
+                ) : (
+                  <p>This user has no photos yet!</p>
+                )}
+                <Divider />
               </Grid.Column>
               <Grid.Column width={2}></Grid.Column>
             </Grid.Row>
             <Grid.Row>
               <Grid.Column width={2}></Grid.Column>
               <Grid.Column width={12}>
-                {/* <ShowVideos username={username as string} /> */}
+                <Header as="h3">
+                  <Link to={`/users/${username}/videos`}>
+                    All {username}'s Videos
+                  </Link>
+                </Header>
+                {videoIds && videoIds.length > 0 ? (
+                  videoIds.map((video) => (
+                    <Embed size="small" id={video} source="youtube" />
+                  ))
+                ) : (
+                  <p>This user has no videos yet!</p>
+                )}
+                <Divider />
               </Grid.Column>
               <Grid.Column width={2}></Grid.Column>
             </Grid.Row>
@@ -130,7 +174,6 @@ const UserPage: React.FC = () => {
             <Button onClick={() => setShowDeleteModal(false)}>Cancel</Button>
           </Modal.Actions>
         </Modal>
-        <Inbox username={user.username} />
       </div>
     );
   }

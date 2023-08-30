@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from "uuid";
 
 interface FavMountainData {
   userId: string;
+  username: string;
   skiAreaSlug: string;
 }
 
@@ -64,12 +65,14 @@ class FavMountain {
     return favMountains;
   }
 
-  static async remove(id: string): Promise<void> {
+  static async remove(username: string, slug: string): Promise<void> {
     const result = await db.query(
-      `DELETE FROM fav_mountains
-                WHERE id = $1
+      `DELETE FROM fav_mountains fm
+                LEFT JOIN users u ON u.id = fm.user_id
+                WHERE u.username = $1
+                AND fm.ski_area_slug = $2
                 RETURNING id`,
-      [id]
+      [username, slug]
     );
     const favMountain = result.rows[0];
 

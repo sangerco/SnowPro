@@ -11,12 +11,14 @@ import {
   Button,
   Icon,
   Embed,
+  Card,
 } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 import { RootState, AppDispatch } from "../../redux/store";
 import { fetchOneUser, deleteUser } from "../../redux/slices/userSlice";
 import PhotoForm from "../Media/PhotoForm";
 import VideoForm from "../Media/VideoForm";
+import FavMountain from "../SkiAreas/FavMountain";
 
 const MyPage = () => {
   const auth = useSelector((state: RootState) => state.auth);
@@ -106,11 +108,17 @@ const MyPage = () => {
                 <p>{user.bio}</p>
               </Grid.Column>
               <Grid.Column width={4}>
-                {/* {user.favMountains.length > 0 ? (
-                    <FavMountain userId={user.id} />
+                {user.favMountains &&
+                username &&
+                user.favMountains.length > 0 ? (
+                  user.favMountains.map((fm) => (
+                    <Card.Group>
+                      <FavMountain key={fm} slug={fm} username={username} />
+                    </Card.Group>
+                  ))
                 ) : (
-                    <p>This user has no favorited mountains yet!</p>
-                )} */}
+                  <p>This user has no favorited mountains yet!</p>
+                )}
               </Grid.Column>
             </Grid.Row>
             <Grid.Row>

@@ -7,6 +7,8 @@ import reviewReducer from "./slices/reviewSlice";
 import reviewReplyReducer from "./slices/reviewReplySlice";
 import tagReducer from "./slices/tagSlice";
 import mediaReducer from "./slices/mediaSlices";
+import favMountainReducer from "./slices/favMountainSlice";
+import skiAreaReducer from "./slices/skiAreaSlice";
 import storage from "redux-persist/lib/storage";
 import { persistReducer, persistStore } from "redux-persist";
 
@@ -25,6 +27,8 @@ const rootReducer = combineReducers({
   reviewReplies: reviewReplyReducer,
   tags: tagReducer,
   media: mediaReducer,
+  favMountains: favMountainReducer,
+  skiAreas: skiAreaReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

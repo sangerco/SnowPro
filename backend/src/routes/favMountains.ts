@@ -9,6 +9,7 @@ const router = express.Router();
 
 interface FavMountainData {
   userId: string;
+  username: string;
   skiAreaSlug: string;
 }
 
@@ -39,12 +40,13 @@ router.post(
 );
 
 router.get(
-  "/users/:user_id/fav-mountains",
+  "/users/:username/fav-mountains",
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const favMountains = await FavMountain.fetchFavMountainDataByUserId(
-        req.params.user_id
+        req.params.username
       );
+      console.log(favMountains);
       return res.json({ favMountains });
     } catch (e) {
       next(e);
@@ -67,13 +69,15 @@ router.get(
 );
 
 router.delete(
-  "/api/fav-mountain/:id",
+  "/api/fav-mountain/:username/:slug",
   ensureLoggedIn,
   checkIfUserOrAdmin,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      await FavMountain.remove(req.params.id);
-      return res.json({ deleted: `Favorite ${req.params.id}` });
+      await FavMountain.remove(req.params.username, req.params.slug);
+      return res.json({
+        deleted: `Favorite ${(req.params.username, req.params.slug)}`,
+      });
     } catch (e) {
       return next(e);
     }

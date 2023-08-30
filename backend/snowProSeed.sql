@@ -58,7 +58,7 @@ VALUES
     ('602', '2', 'https://example.com/video2.mp4', 'Skiing in powder.', NULL, '2023-07-26 12:58:00');
 
 -- Dummy data for fav_mountains table
-INSERT INTO "fav_mountains" ("user_id", "ski_area_slug")
+INSERT INTO "fav_mountains" ("username", "ski_area_slug")
 VALUES
     ('1', 'alpine'),
     ('2', 'powder'),
