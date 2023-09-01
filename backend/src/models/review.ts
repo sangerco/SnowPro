@@ -177,6 +177,7 @@ class Review {
                 r.header,
                 r.body,
                 r.stars,
+                r.created_at AS "createdAt",
                 p.link,
                 u.username,
                 s.name AS "skiAreaName",

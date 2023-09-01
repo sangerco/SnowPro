@@ -14,6 +14,7 @@ import {
   Button,
   Container,
   Dimmer,
+  Divider,
   Header,
   List,
   Loader,
@@ -71,13 +72,8 @@ const Inbox: React.FC<InboxProps> = ({ username }) => {
     return (
       <Container fluid>
         <Header as="h2">Messages</Header>
-        <Segment>
-          <Button floated="right" as={Link} to={`/messages/create-message`}>
-            New Message
-          </Button>
-        </Segment>
-        <Segment>
-          <List divided relaxed>
+        <Container>
+          <List divided relaxed style={{ marginBottom: "5px" }}>
             {messages.messages.map((message: MessageData) => (
               <List.Item
                 key={message.id}
@@ -93,7 +89,17 @@ const Inbox: React.FC<InboxProps> = ({ username }) => {
               </List.Item>
             ))}
           </List>
-        </Segment>
+        </Container>
+        <Divider />
+        <Container style={{ marginTop: "5px" }}>
+          <Button
+            color="green"
+            floated="right"
+            as={Link}
+            to={`/messages/create-message`}>
+            New Message
+          </Button>
+        </Container>
       </Container>
     );
   }

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Card, Icon, Modal } from "semantic-ui-react";
+import { Button, Card, Header, Icon, Modal, Segment } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 import { fetchOneSkiArea } from "../../redux/slices/skiAreaSlice";
 import {
@@ -17,6 +17,7 @@ interface FavMountainProps {
 const FavMountain: React.FC<FavMountainProps> = ({ slug, username }) => {
   const dispatch = useDispatch<AppDispatch>();
   const auth = useSelector((state: RootState) => state.auth);
+  console.log(auth);
   const userId = auth.data?.id;
   const loggedInUsername = auth.data?.username;
 
@@ -26,7 +27,6 @@ const FavMountain: React.FC<FavMountainProps> = ({ slug, username }) => {
 
   const skiAreas = useSelector((state: RootState) => state.skiAreas);
   const skiArea = skiAreas.skiArea;
-
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   const handleShowDeleteModal = () => {
@@ -45,23 +45,23 @@ const FavMountain: React.FC<FavMountainProps> = ({ slug, username }) => {
     }
   };
 
-  if (skiAreas.error || auth.error) {
-    return null;
-  }
-
   if (skiArea) {
     return (
       <>
-        <Card>
-          <Card.Header as={Link} to={`/ski-areas/${slug}`}>
-            {skiArea.name}
-          </Card.Header>
+        <Segment raised style={{ width: "250px" }}>
+          <Header as="h2" textAlign="left">
+            <Link to={`/ski-areas/${slug}`}>{skiArea.name}</Link>
+          </Header>
           {username === loggedInUsername ? (
-            <Button color="red" size="mini" onClick={handleShowDeleteModal}>
+            <Button
+              floated="right"
+              color="red"
+              size="mini"
+              onClick={handleShowDeleteModal}>
               <Icon name="times" />
             </Button>
           ) : null}
-        </Card>
+        </Segment>
         <Modal open={showDeleteModal} onClose={() => setShowDeleteModal(false)}>
           <Modal.Content>
             Remove this Ski Area from your favorites list?

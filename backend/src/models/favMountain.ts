@@ -13,17 +13,14 @@ class FavMountain {
     userId: string,
     skiAreaSlug: string
   ): Promise<FavMountainData> {
-    const id = uuidv4();
-
     const result = await db.query(
       `
             INSERT INTO fav_mountains
-            (   id,
-                user_id,
-                ski_area_slug)
-            VALUES ($1, $2, $3)
-            RETURNING id, user_id AS "userId, ski_area_slug AS "skiAreaSlug`,
-      [id, userId, skiAreaSlug]
+            (   user_id,
+                ski_areas_slug)
+            VALUES ($1, $2)
+            RETURNING user_id AS "userId", ski_areas_slug AS "skiAreaSlug"`,
+      [userId, skiAreaSlug]
     );
     const favMountain = result.rows[0];
 
@@ -37,7 +34,7 @@ class FavMountain {
                     s.name AS "skiAreaName"
             FROM users u
             LEFT JOIN fav_mountains fm ON u.id = fm.user_id
-            LEFT JOIN ski_areas s ON fm.ski_area_slug = s.slug
+            LEFT JOIN ski_areas s ON fm.ski_areas_slug = s.slug
             WHERE user_id = $1`,
       [userId]
     );
@@ -54,7 +51,7 @@ class FavMountain {
                     u.user_id AS "userId",
                     u.username,
             FROM ski_areas s
-            LEFT JOIN fav_mountains fm ON s.slug = fm.ski_area_slug
+            LEFT JOIN fav_mountains fm ON s.slug = fm.ski_areas_slug
             LEFT JOIN users u ON fm.user_id = u.id
             WHERE slug = $1`,
       [skiAreaSlug]
@@ -66,17 +63,13 @@ class FavMountain {
   }
 
   static async remove(username: string, slug: string): Promise<void> {
-    const result = await db.query(
+    await db.query(
       `DELETE FROM fav_mountains fm
                 LEFT JOIN users u ON u.id = fm.user_id
                 WHERE u.username = $1
-                AND fm.ski_area_slug = $2
-                RETURNING id`,
+                AND fm.ski_areas_slug = $2`,
       [username, slug]
     );
-    const favMountain = result.rows[0];
-
-    if (!favMountain) throw new NotFoundError("Favorite not found!");
   }
 }
 

@@ -1,7 +1,5 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
-import Users from "./components/Users/Users";
-import MyPage from "./components/Users/MyPage";
 import LoginForm from "./components/Auth/LoginForm";
 import UserForm from "./components/Auth/UserForm";
 import UserPage from "./components/Users/UserPage";
@@ -20,12 +18,12 @@ import UserPhotos from "./components/Media/UserPhotos";
 import UserVideos from "./components/Media/UserVideos";
 import SkiAreaData from "./components/SkiAreas/SkiAreaData";
 import SkiAreaPage from "./components/SkiAreas/SkiAreaPage";
+import Home from "./components/Home/Home";
 
 const AppRoutes: React.FC = () => {
   return (
     <Routes>
-      <Route path="/" element={<Users />} />
-      <Route path="/my-page" element={<MyPage />} />
+      <Route path="/" element={<Home />} />
       <Route path="/login" element={<LoginForm />} />
       <Route path="/register" element={<UserForm />} />
       <Route path="/users/:username" element={<UserPage />} />

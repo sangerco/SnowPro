@@ -40,7 +40,7 @@ export const fetchSkiAreas = createAsyncThunk(
   "ski-area/fetchSkiAreas",
   async () => {
     const response = await axios.get(`${URL}/ski-areas`);
-    const skiAreas = response.data.allSkiAreas;
+    const skiAreas = response.data;
     return skiAreas;
   }
 );
@@ -49,7 +49,7 @@ export const fetchOneSkiArea = createAsyncThunk(
   "ski-area/fetchOneSkiArea",
   async (slug: string) => {
     const response = await axios.get(`${URL}/ski-areas/${slug}`);
-    const skiArea = response.data.combinedData;
+    const skiArea = response.data;
     return skiArea;
   }
 );

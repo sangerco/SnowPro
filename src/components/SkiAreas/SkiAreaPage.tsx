@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState, AppDispatch } from "../../redux/store";
 import {
   Dimmer,
   Loader,
@@ -6,11 +8,20 @@ import {
   Grid,
   Divider,
   List,
+  Button,
+  Card,
+  Segment,
+  Rail,
 } from "semantic-ui-react";
 import { URL } from "../../utils/config";
 import axios from "axios";
 import { SkiAreaPageData } from "../interfaces/skiAreaInterfaces";
-import { useParams } from "react-router-dom";
+import { fetchReviewsBySkiArea } from "../../redux/slices/reviewSlice";
+import {
+  createFavMountain,
+  FavMountainData,
+} from "../../redux/slices/favMountainSlice";
+import { Link, useParams } from "react-router-dom";
 import { Header } from "semantic-ui-react";
 import SkiAreaMap from "./SkiAreaMap";
 import ReviewView from "../Reviews/ReviewView";
@@ -35,8 +46,16 @@ type Stats = {
 
 type LiftStatus = "closed" | "open" | "hold" | "scheduled";
 
-const SkiAreaPage = () => {
+const SkiAreaPage: React.FC = () => {
   const { slug } = useParams();
+  const dispatch = useDispatch<AppDispatch>();
+  const auth = useSelector((state: RootState) => state.auth);
+  const isAuthenticated = auth.isAuthenticated;
+  const userId = auth.data?.id;
+  let username;
+  if (auth.data) {
+    username = auth.data.username;
+  }
 
   const [skiAreaData, setSkiAreaData] = useState<SkiAreaPageData | null>(null);
   const [loading, setLoading] = useState(true);
@@ -57,6 +76,33 @@ const SkiAreaPage = () => {
 
     fetchSkiAreaData();
   }, [slug]);
+
+  const favMountainData: FavMountainData = {
+    userId: userId || "",
+    username: username || "",
+    skiAreaSlug: slug || "",
+  };
+
+  const favMountainInfo = skiAreaData?.usersFavoritedBy;
+
+  let isFavorited = false;
+
+  if (favMountainInfo) {
+    for (let i = 0; i < favMountainInfo.length; i++) {
+      if (favMountainInfo[i].username === username) {
+        isFavorited = true;
+      }
+    }
+  }
+
+  useEffect(() => {
+    if (slug) {
+      dispatch(fetchReviewsBySkiArea(slug));
+    }
+  }, [dispatch, slug]);
+
+  const reviewState = useSelector((state: RootState) => state.reviews);
+  const reviews = reviewState.reviews;
 
   if (loading) {
     return (
@@ -125,47 +171,65 @@ const SkiAreaPage = () => {
 
     return (
       <Container fluid>
-        <Grid>
-          <Grid.Row>
-            <Grid.Column width={3}></Grid.Column>
-            <Grid.Column width={6}>
-              <a href={skiAreaData.href}>
-                <Header as="h1" color="green">
-                  {skiAreaData.name}
-                </Header>
-              </a>
-              <Divider />
-              <Header as="h4" textAlign="right">
-                Country: {skiAreaData.country}
+        <Grid centered columns={3}>
+          <Segment>
+            <a href={skiAreaData.href}>
+              <Header as="h1" color="green" style={{ padding: "10px" }}>
+                {skiAreaData.name}
               </Header>
-              <Header as="h4" textAlign="right">
-                Region: {skiAreaData.region}
-              </Header>
-              <Divider />
-              {skiAreaData.reviewData && skiAreaData.reviewData.length > 0
-                ? skiAreaData.reviewData.map((review) => (
-                    <ReviewView review={review} />
-                  ))
-                : null}
-            </Grid.Column>
-            <Grid.Column width={6}>
+            </a>
+            <Divider />
+            <Header as="h4" textAlign="right">
+              Country: {skiAreaData.country}
+            </Header>
+            <Header as="h4" textAlign="right">
+              Region: {skiAreaData.region}
+            </Header>
+            <Divider />
+            {isAuthenticated && !isFavorited ? (
+              <Button
+                color="green"
+                size="small"
+                floated="right"
+                onClick={() => dispatch(createFavMountain(favMountainData))}
+                style={{ marginTop: "10px", marginBottom: "10px" }}>
+                Save as favorite mountain?
+              </Button>
+            ) : null}
+            <Divider />
+            {reviews && reviews.length > 0
+              ? reviews.map((review) => <ReviewView review={review} />)
+              : null}
+
+            <Rail size="small" dividing position="left">
+              <Card.Group>
+                {favMountainInfo && favMountainInfo.length > 0
+                  ? favMountainInfo.map((fm) => (
+                      <Card
+                        key={fm.userId}
+                        style={{ marginTop: "20px", padding: "10px" }}>
+                        <Header>{fm.username}</Header>
+                        <Card.Meta as={Link} to={`/users/${fm.username}`}>
+                          {fm.username}'s Page
+                        </Card.Meta>
+                      </Card>
+                    ))
+                  : null}
+              </Card.Group>
+            </Rail>
+
+            <Rail size="big" dividing position="right">
               <SkiAreaMap skiAreaPageData={skiAreaData} />
               <Divider />
               <Header as="h2">Lift Status</Header>
-              {/* <List divided relaxed> */}
               {stats}
-              {/* </List> */}
-              <br />
-              {/* <List divided relaxed> */}
+              <Divider />
               {percent}
-              {/* </List> */}
+              <Divider />
               <Header as="h3">Lifts</Header>
-              {/* <List divided relaxed> */}
               {lifts}
-              {/* </List> */}
-            </Grid.Column>
-            <Grid.Column width={1}></Grid.Column>
-          </Grid.Row>
+            </Rail>
+          </Segment>
         </Grid>
       </Container>
     );

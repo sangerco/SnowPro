@@ -25,10 +25,10 @@ const initialState: FavMountainState = {
 export const createFavMountain = createAsyncThunk(
   "favMountain/createFavMountain",
   async (favMountainData: FavMountainData) => {
-    const response = await axios.post(
-      `${URL}/api/fav-mountain`,
-      favMountainData
-    );
+    const response = await axios.post(`${URL}/api/fav-mountain`, {
+      user_id: favMountainData.userId,
+      ski_area_slug: favMountainData.skiAreaSlug,
+    });
     const favMountain = response.data.favMountain;
     return favMountain;
   }

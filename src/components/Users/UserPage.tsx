@@ -58,6 +58,10 @@ const UserPage: React.FC = () => {
     }
   }
 
+  if (username && user?.favMountains && user.favMountains.length > 0) {
+    console.log("true");
+  }
+
   if (users.loading) {
     return (
       <div>
@@ -88,7 +92,7 @@ const UserPage: React.FC = () => {
                 <Header.Subheader>
                   {user.firstName && user.firstName !== ""
                     ? user.firstName
-                    : ""}
+                    : ""}{" "}
                   {user.lastName && user.lastName !== "" ? user.lastName : ""}
                 </Header.Subheader>
                 {authId && authId === user.id ? (
@@ -112,6 +116,8 @@ const UserPage: React.FC = () => {
                 <p>{user.bio}</p>
               </Grid.Column>
               <Grid.Column width={4}>
+                <Header as="h3">Favorite Mountains</Header>
+                <Divider />
                 {user.favMountains &&
                 username &&
                 user.favMountains.length > 0 ? (

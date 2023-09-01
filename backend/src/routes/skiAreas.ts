@@ -57,7 +57,6 @@ router.get(
       for (let skiArea of allSkiAreas) {
         await SkiArea.createSkiArea(skiArea.slug, skiArea.name);
       }
-
       res.json(allSkiAreas);
     } catch (e) {
       console.error(e);
@@ -95,6 +94,8 @@ router.get(
         reviewData: getReviewData,
         usersFavoritedBy: getUsersFavoritedBy,
       };
+
+      console.log(combinedData);
 
       res.json(combinedData);
     } catch (e) {

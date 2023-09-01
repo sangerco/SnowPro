@@ -15,7 +15,13 @@ import { persistReducer, persistStore } from "redux-persist";
 const persistConfig = {
   key: "root",
   storage,
-  blacklist: ["messages", "messageReplies", "reviews", "reviewReplies"],
+  blacklist: [
+    "messages",
+    "messageReplies",
+    "reviews",
+    "reviewReplies",
+    "skiAreas",
+  ],
 };
 
 const rootReducer = combineReducers({

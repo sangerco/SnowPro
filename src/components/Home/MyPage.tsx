@@ -12,6 +12,7 @@ import {
   Icon,
   Embed,
   Card,
+  Divider,
 } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 import { RootState, AppDispatch } from "../../redux/store";
@@ -24,6 +25,8 @@ const MyPage = () => {
   const auth = useSelector((state: RootState) => state.auth);
   const dispatch = useDispatch<AppDispatch>();
   const username = auth.data?.username;
+
+  console.log(username);
 
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showNewPhotoForm, setShowNewPhotoForm] = useState(false);
@@ -68,10 +71,6 @@ const MyPage = () => {
     );
   }
 
-  if (auth.error) {
-    return <div>Error: {auth.error}</div>;
-  }
-
   if (user) {
     return (
       <div>
@@ -88,7 +87,7 @@ const MyPage = () => {
                 <Header.Subheader>
                   {user.firstName && user.firstName !== ""
                     ? user.firstName
-                    : ""}
+                    : ""}{" "}
                   {user.lastName && user.lastName !== "" ? user.lastName : ""}
                 </Header.Subheader>
                 <Link to={`/users/${user.username}/update`}>
@@ -103,11 +102,13 @@ const MyPage = () => {
               <Grid.Column width={4}></Grid.Column>
             </Grid.Row>
             <Grid.Row>
-              <Grid.Column width={4}></Grid.Column>
-              <Grid.Column width={8}>
+              <Grid.Column width={2}></Grid.Column>
+              <Grid.Column width={6}>
                 <p>{user.bio}</p>
               </Grid.Column>
-              <Grid.Column width={4}>
+              <Grid.Column width={8}>
+                <Header as="h3">Favorite Mountains</Header>
+                <Divider />
                 {user.favMountains &&
                 username &&
                 user.favMountains.length > 0 ? (
@@ -134,7 +135,10 @@ const MyPage = () => {
                       />
                     ))
                   : null}
-                <Button color="green" onClick={() => setShowNewPhotoForm(true)}>
+                <Button
+                  size="small"
+                  color="green"
+                  onClick={() => setShowNewPhotoForm(true)}>
                   Add New Photo?
                 </Button>
                 {showNewPhotoForm && <PhotoForm />}
@@ -155,7 +159,10 @@ const MyPage = () => {
                       />
                     ))
                   : null}
-                <Button color="green" onClick={() => setShowNewVideoForm(true)}>
+                <Button
+                  color="green"
+                  size="small"
+                  onClick={() => setShowNewVideoForm(true)}>
                   Add New Video?
                 </Button>
                 {showNewVideoForm && <VideoForm />}
@@ -177,6 +184,10 @@ const MyPage = () => {
         </Modal>
       </div>
     );
+  }
+
+  if (auth.error) {
+    return <div>Error: {auth.error}</div>;
   }
 
   return null;

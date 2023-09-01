@@ -1,0 +1,10 @@
+body {
+    background-image: url('../../media/sebastian-staines-xZIFEPtRsRI-unsplash.jpg') !important;
+    background-size: cover !important;
+    background-repeat: no-repeat !important;
+    background-attachment: fixed !important;
+}
+
+#review-card {
+    margin-top: 10px;
+}

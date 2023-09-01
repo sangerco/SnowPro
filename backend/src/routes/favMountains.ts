@@ -8,9 +8,8 @@ import favMountainSchema from "../schemas/favMountain.json";
 const router = express.Router();
 
 interface FavMountainData {
-  userId: string;
-  username: string;
-  skiAreaSlug: string;
+  user_id: string;
+  ski_area_slug: string;
 }
 
 router.post(
@@ -27,10 +26,10 @@ router.post(
         const errors: string | string[] = validator.errors.map((e) => e.stack);
         throw new BadRequestError(errors);
       }
-      const { userId, skiAreaSlug }: FavMountainData = req.body;
+      const { user_id, ski_area_slug }: FavMountainData = req.body;
       const favMountain = await FavMountain.createFavMountain(
-        userId,
-        skiAreaSlug
+        user_id,
+        ski_area_slug
       );
       return res.status(201).json({ favMountain });
     } catch (e) {
@@ -61,6 +60,7 @@ router.get(
       const favMountains = await FavMountain.fetchFavMountainDataBySkiAreaSlug(
         req.params.slug
       );
+      console.log(favMountains);
       return res.json({ favMountains });
     } catch (e) {
       next(e);

@@ -1,11 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState, AppDispatch } from "../../redux/store";
-import {
-  UserData,
-  fetchOneUser,
-  updateUser,
-} from "../../redux/slices/userSlice";
+import { fetchOneUser, updateUser } from "../../redux/slices/userSlice";
 import {
   Container,
   Form,
@@ -19,33 +15,25 @@ import {
 } from "semantic-ui-react";
 import PhotoForm from "../Media/PhotoForm";
 import VideoForm from "../Media/VideoForm";
+import { useNavigate, useParams } from "react-router";
+import { initialUserState } from "../../helpers/helperStates";
 
 const UpdateUserForm: React.FC = () => {
+  const navigate = useNavigate();
+  const { username } = useParams();
   const dispatch = useDispatch<AppDispatch>();
+  const auth = useSelector((state: RootState) => state.auth);
+
+  useEffect(() => {
+    if (username) {
+      dispatch(fetchOneUser(username));
+    }
+  }, [dispatch, username]);
+
   const users = useSelector((state: RootState) => state.users);
   const user = users.user;
-  useEffect(() => {
-    if (user) {
-      dispatch(fetchOneUser(user.username));
-    }
-  }, [dispatch, user]);
 
-  let initialState: UserData = {
-    id: "",
-    username: "",
-    password: "",
-    email: "",
-    firstName: "",
-    lastName: "",
-    isAdmin: false,
-    avatar: "",
-    bio: "",
-    videos: [],
-    photos: [],
-    favMountains: [],
-  };
-
-  const [formData, setFormData] = useState(initialState);
+  const [formData, setFormData] = useState(initialUserState);
   const [showNewPhotoForm, setShowNewPhotoForm] = useState(false);
   const [showNewVideoForm, setShowNewVideoForm] = useState(false);
 
@@ -70,21 +58,37 @@ const UpdateUserForm: React.FC = () => {
 
   if (users.loading) {
     return (
-      <div>
+      <>
         <Dimmer active>
           <Loader>Loading...</Loader>
         </Dimmer>
-      </div>
+      </>
+    );
+  }
+
+  if (!user || !auth.data || user.username !== auth.data.username) {
+    console.log(true);
+    return (
+      <>
+        <Dimmer active>
+          <Header color="orange" as="h1">
+            Access not authorized.
+          </Header>
+          <Button color="red" onClick={() => navigate(-1)}>
+            Go Back
+          </Button>
+        </Dimmer>
+      </>
     );
   }
 
   if (users.error) {
     return (
-      <div>
+      <>
         <Dimmer>
           <p>Error! User data cannot be found! {`${users.error}`}</p>
         </Dimmer>
-      </div>
+      </>
     );
   }
 
@@ -95,7 +99,7 @@ const UpdateUserForm: React.FC = () => {
       dispatch(updateUser(formData));
     }
 
-    setFormData(initialState);
+    setFormData(initialUserState);
   };
 
   const handleChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
