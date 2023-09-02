@@ -29,6 +29,7 @@ export interface MessageData {
 interface MessageState {
   message: MessageData | null;
   messages: MessageData[] | null;
+  sentMessages: MessageData[] | null;
   loading: boolean;
   error: string | null;
 }
@@ -36,6 +37,7 @@ interface MessageState {
 const initialState: MessageState = {
   message: null,
   messages: null,
+  sentMessages: null,
   loading: false,
   error: null,
 };
@@ -65,6 +67,7 @@ export const fetchUserMessages = createAsyncThunk(
   async (username: string) => {
     const response = await axios.get(`${URL}/messages/users/${username}`);
     const messages = response.data.messages;
+    console.log(messages);
     return messages;
   }
 );
@@ -159,7 +162,7 @@ const messageSlice = createSlice({
       .addCase(
         fetchSentMessages.fulfilled,
         (state, action: PayloadAction<MessageData[]>) => {
-          state.messages = action.payload;
+          state.sentMessages = action.payload;
           state.loading = false;
         }
       )

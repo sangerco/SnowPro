@@ -86,8 +86,12 @@ router.get(
 
       const getReviewData: SkiAreaReviewDataReturn[] =
         await SkiArea.fetchReviewsBySkiAreaSlug(slug);
-      const getUsersFavoritedBy: SkiAreasUsersFavoritedBy[] =
+      let getUsersFavoritedBy: SkiAreasUsersFavoritedBy[] =
         await SkiArea.returnUsersFavoritedBy(slug);
+
+      if (getUsersFavoritedBy[0].userId === null) {
+        getUsersFavoritedBy = [];
+      }
 
       const combinedData = {
         ...skiAreaData,

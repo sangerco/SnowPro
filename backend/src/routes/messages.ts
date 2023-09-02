@@ -73,7 +73,7 @@ router.get(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const messages = await Message.getUsersMessages(req.params.username);
-      return res.json(messages);
+      return res.json({ messages });
     } catch (e) {
       return next(e);
     }

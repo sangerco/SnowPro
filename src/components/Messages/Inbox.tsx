@@ -18,7 +18,6 @@ import {
   Header,
   List,
   Loader,
-  Segment,
 } from "semantic-ui-react";
 
 interface InboxProps {
@@ -28,7 +27,8 @@ interface InboxProps {
 const Inbox: React.FC<InboxProps> = ({ username }) => {
   const messages = useSelector((state: RootState) => state.messages);
   const dispatch = useDispatch<AppDispatch>();
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
+
+  const [showSentMessages, setShowSentMessages] = useState(false);
 
   useEffect(() => {
     dispatch(fetchUserMessages(username));
@@ -45,6 +45,9 @@ const Inbox: React.FC<InboxProps> = ({ username }) => {
   const handleMarkAsUnread = (id: string) => {
     dispatch(markMessageAsUnread(id));
   };
+
+  const sentMessages = messages.sentMessages;
+  console.log(messages.messages);
 
   const formatDate = (date: Date) => {
     const newDate = new Date(date);
@@ -68,38 +71,94 @@ const Inbox: React.FC<InboxProps> = ({ username }) => {
     return <div>Error loading messages! Error: {`${messages.error}`}</div>;
   }
 
-  if (messages.messages) {
+  if (messages.messages || messages.sentMessages) {
     return (
       <Container fluid>
-        <Header as="h2">Messages</Header>
-        <Container>
-          <List divided relaxed style={{ marginBottom: "5px" }}>
-            {messages.messages.map((message: MessageData) => (
-              <List.Item
-                key={message.id}
+        {showSentMessages === true ? (
+          <>
+            <Button
+              floated="right"
+              size="tiny"
+              color="blue"
+              onClick={() => setShowSentMessages(false)}>
+              Show Messages
+            </Button>
+            <Header as="h2">Sent Messages</Header>
+            <Container>
+              <List divided relaxed style={{ marginBottom: "5px" }}>
+                {sentMessages &&
+                  sentMessages.map((message: MessageData) => (
+                    <List.Item
+                      key={message.id}
+                      as={Link}
+                      to={`/messages/${message.id}`}>
+                      <List.Content floated="left">
+                        {message.subject}
+                      </List.Content>
+                      <List.Content>
+                        {message.senderFirstName} {message.senderLastName}
+                      </List.Content>
+                      <List.Content floated="right">
+                        {formatDate(message.createdAt)}
+                      </List.Content>
+                    </List.Item>
+                  ))}
+              </List>
+            </Container>
+            <Divider />
+            <Container style={{ marginTop: "5px" }}>
+              <Button
+                color="green"
+                floated="right"
                 as={Link}
-                to={`/messages/${message.id}`}>
-                <List.Content floated="left">{message.subject}</List.Content>
-                <List.Content>
-                  {message.senderFirstName} {message.senderLastName}
-                </List.Content>
-                <List.Content floated="right">
-                  {formatDate(message.createdAt)}
-                </List.Content>
-              </List.Item>
-            ))}
-          </List>
-        </Container>
-        <Divider />
-        <Container style={{ marginTop: "5px" }}>
-          <Button
-            color="green"
-            floated="right"
-            as={Link}
-            to={`/messages/create-message`}>
-            New Message
-          </Button>
-        </Container>
+                to={`/messages/create-message`}>
+                New Message
+              </Button>
+            </Container>
+          </>
+        ) : (
+          <>
+            <Button
+              floated="right"
+              size="tiny"
+              color="blue"
+              onClick={() => setShowSentMessages(true)}>
+              Show Sent Messages
+            </Button>
+            <Header as="h2">Messages</Header>
+            <Container>
+              <List divided relaxed style={{ marginBottom: "5px" }}>
+                {messages.messages &&
+                  messages.messages.map((message: MessageData) => (
+                    <List.Item
+                      key={message.id}
+                      as={Link}
+                      to={`/messages/${message.id}`}>
+                      <List.Content floated="left">
+                        {message.subject}
+                      </List.Content>
+                      <List.Content>
+                        {message.senderFirstName} {message.senderLastName}
+                      </List.Content>
+                      <List.Content floated="right">
+                        {formatDate(message.createdAt)}
+                      </List.Content>
+                    </List.Item>
+                  ))}
+              </List>
+            </Container>
+            <Divider />
+            <Container style={{ marginTop: "5px" }}>
+              <Button
+                color="green"
+                floated="right"
+                as={Link}
+                to={`/messages/create-message`}>
+                New Message
+              </Button>
+            </Container>
+          </>
+        )}
       </Container>
     );
   }

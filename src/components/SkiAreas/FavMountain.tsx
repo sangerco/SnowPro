@@ -48,7 +48,7 @@ const FavMountain: React.FC<FavMountainProps> = ({ slug, username }) => {
   if (skiArea) {
     return (
       <>
-        <Segment raised style={{ width: "250px" }}>
+        <Segment raised style={{ width: "250px", margin: "10px" }}>
           <Header as="h2" textAlign="left">
             <Link to={`/ski-areas/${slug}`}>{skiArea.name}</Link>
           </Header>

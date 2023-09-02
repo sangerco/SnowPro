@@ -48,6 +48,6 @@ export interface SkiAreaReviewDataReturn {
 
 export interface SkiAreasUsersFavoritedBy {
   slug: string;
-  user_ids: string[];
-  usernames: string[];
+  userId: string;
+  username: string;
 }

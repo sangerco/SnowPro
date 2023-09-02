@@ -203,18 +203,22 @@ const SkiAreaPage: React.FC = () => {
 
             <Rail size="small" dividing position="left">
               <Card.Group>
-                {favMountainInfo && favMountainInfo.length > 0
-                  ? favMountainInfo.map((fm) => (
-                      <Card
-                        key={fm.userId}
-                        style={{ marginTop: "20px", padding: "10px" }}>
-                        <Header>{fm.username}</Header>
-                        <Card.Meta as={Link} to={`/users/${fm.username}`}>
-                          {fm.username}'s Page
-                        </Card.Meta>
-                      </Card>
-                    ))
-                  : null}
+                {favMountainInfo && favMountainInfo.length > 0 ? (
+                  favMountainInfo.map((fm) => (
+                    <Card
+                      key={fm.userId}
+                      style={{ marginTop: "20px", padding: "10px" }}>
+                      <Header>{fm.username}</Header>
+                      <Card.Meta as={Link} to={`/users/${fm.username}`}>
+                        {fm.username}'s Page
+                      </Card.Meta>
+                    </Card>
+                  ))
+                ) : (
+                  <Segment raised style={{ marginTop: "20px" }}>
+                    <p>No one has favorited this mountain yet!</p>
+                  </Segment>
+                )}
               </Card.Group>
             </Rail>
 
