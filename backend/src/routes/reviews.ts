@@ -74,12 +74,8 @@ router.get(
       const review = await Review.fetchReviewById(req.params.id);
       const replies: ReplyReviewData[] =
         await ReviewReply.fetchRepliesByReviewId(req.params.id);
-
-      const fullReview = {
-        review,
-        replies: replies,
-      };
-      return res.json(fullReview);
+      console.log({ review, replies });
+      return res.json({ review, replies });
     } catch (e) {
       next(e);
     }

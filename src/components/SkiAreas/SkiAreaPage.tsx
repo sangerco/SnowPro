@@ -170,61 +170,66 @@ const SkiAreaPage: React.FC = () => {
     });
 
     return (
-      <Container fluid>
-        <Grid centered columns={3}>
-          <Segment>
-            <a href={skiAreaData.href}>
-              <Header as="h1" color="green" style={{ padding: "10px" }}>
-                {skiAreaData.name}
-              </Header>
-            </a>
-            <Divider />
-            <Header as="h4" textAlign="right">
-              Country: {skiAreaData.country}
+      <Grid centered columns={3}>
+        <Segment>
+          <a href={skiAreaData.href}>
+            <Header as="h1" color="green" style={{ padding: "10px" }}>
+              {skiAreaData.name}
             </Header>
-            <Header as="h4" textAlign="right">
-              Region: {skiAreaData.region}
-            </Header>
-            <Divider />
-            {isAuthenticated && !isFavorited ? (
-              <Button
-                color="green"
-                size="small"
-                floated="right"
-                onClick={() => dispatch(createFavMountain(favMountainData))}
-                style={{ marginTop: "10px", marginBottom: "10px" }}>
-                Save as favorite mountain?
-              </Button>
-            ) : null}
-            <Divider />
-            {reviews && reviews.length > 0
-              ? reviews.map((review) => <ReviewView review={review} />)
-              : null}
+          </a>
+          <Divider />
+          <Header as="h4" textAlign="right">
+            Country: {skiAreaData.country}
+          </Header>
+          <Header as="h4" textAlign="right">
+            Region: {skiAreaData.region}
+          </Header>
+          <Divider />
+          {isAuthenticated && !isFavorited ? (
+            <Button
+              color="green"
+              size="small"
+              floated="right"
+              onClick={() => dispatch(createFavMountain(favMountainData))}
+              style={{ marginTop: "10px", marginBottom: "10px" }}>
+              Save as favorite mountain?
+            </Button>
+          ) : null}
+          <Divider />
+          {reviews && reviews.length > 0
+            ? reviews.map((review) => <ReviewView review={review} />)
+            : null}
 
-            <Rail size="small" dividing position="left">
-              <Card.Group>
-                {favMountainInfo && favMountainInfo.length > 0 ? (
-                  favMountainInfo.map((fm) => (
-                    <Card
-                      key={fm.userId}
-                      style={{ marginTop: "20px", padding: "10px" }}>
-                      <Header>{fm.username}</Header>
-                      <Card.Meta as={Link} to={`/users/${fm.username}`}>
-                        {fm.username}'s Page
-                      </Card.Meta>
-                    </Card>
-                  ))
-                ) : (
-                  <Segment raised style={{ marginTop: "20px" }}>
-                    <p>No one has favorited this mountain yet!</p>
-                  </Segment>
-                )}
-              </Card.Group>
-            </Rail>
+          <Rail size="small" dividing position="left">
+            <Card.Group>
+              {favMountainInfo && favMountainInfo.length > 0 ? (
+                favMountainInfo.map((fm) => (
+                  <Card
+                    key={fm.userId}
+                    style={{ marginTop: "20px", padding: "10px" }}>
+                    <Header>{fm.username}</Header>
+                    <Card.Meta as={Link} to={`/users/${fm.username}`}>
+                      {fm.username}'s Page
+                    </Card.Meta>
+                  </Card>
+                ))
+              ) : (
+                <Segment raised style={{ marginTop: "20px" }}>
+                  <p>No one has favorited this mountain yet!</p>
+                </Segment>
+              )}
+            </Card.Group>
+          </Rail>
 
-            <Rail size="big" dividing position="right">
-              <SkiAreaMap skiAreaPageData={skiAreaData} />
-              <Divider />
+          <Rail size="big" dividing position="right">
+            <SkiAreaMap skiAreaPageData={skiAreaData} />
+            <Divider />
+            <div
+              style={{
+                backgroundColor: "antiquewhite",
+                width: "450px",
+                padding: "10px",
+              }}>
               <Header as="h2">Lift Status</Header>
               {stats}
               <Divider />
@@ -232,10 +237,10 @@ const SkiAreaPage: React.FC = () => {
               <Divider />
               <Header as="h3">Lifts</Header>
               {lifts}
-            </Rail>
-          </Segment>
-        </Grid>
-      </Container>
+            </div>
+          </Rail>
+        </Segment>
+      </Grid>
     );
   }
 

@@ -1,12 +1,24 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Button, Dimmer, Loader, Icon, Card, Modal } from "semantic-ui-react";
+import {
+  Button,
+  Dimmer,
+  Loader,
+  Icon,
+  Card,
+  Modal,
+  Grid,
+  Segment,
+  Rail,
+  Header,
+} from "semantic-ui-react";
 import { Link, useParams } from "react-router-dom";
 import { RootState, AppDispatch } from "../../redux/store";
 import {
   fetchMessageReply,
   deleteMessageReply,
 } from "../../redux/slices/messageReplySlice";
+import { fetchSkiAreas } from "../../redux/slices/skiAreaSlice";
 
 const MessageReply: React.FC = () => {
   const { id } = useParams();
@@ -22,6 +34,13 @@ const MessageReply: React.FC = () => {
       dispatch(fetchMessageReply(id));
     }
   }, [dispatch, id]);
+
+  useEffect(() => {
+    dispatch(fetchSkiAreas());
+  }, [dispatch]);
+
+  const skiAreaState = useSelector((state: RootState) => state.skiAreas);
+  const skiAreas = skiAreaState.skiAreas;
 
   const handleShowDeleteModal = () => {
     setShowDeleteModal(true);
@@ -66,43 +85,75 @@ const MessageReply: React.FC = () => {
 
     return (
       <div>
-        <Card fluid>
-          <Card.Content>
-            <Card.Header>{messageReply.subject}</Card.Header>
-            <Card.Meta>
-              {messageReply.senderFirstName} {messageReply.senderLastName}
-            </Card.Meta>
-            <Card.Meta textAlign="right">
-              {formatDate(messageReply.createdAt)}
-            </Card.Meta>
-            <Card.Description>{messageReply.body}</Card.Description>
-          </Card.Content>
-          <Card.Content extra>
-            <div className="ui two buttons">
-              <Button basic color="red" onClick={handleShowDeleteModal}>
-                <Icon name="trash" />
-              </Button>
-              <Button basic color="blue">
-                <Link to={`/messages/${messageReply.messageId}/reply`}>
-                  Reply
-                </Link>
-              </Button>
-            </div>
-          </Card.Content>
-          <Modal
-            open={showDeleteModal}
-            onClose={() => setShowDeleteModal(false)}>
-            <Modal.Content>
-              Are You Sure You Want To Delete This Message Reply?
-            </Modal.Content>
-            <Modal.Actions>
-              <Button negative onClick={handleDeleteMessageReply}>
-                Yes
-              </Button>
-              <Button onClick={() => setShowDeleteModal(false)}>Cancel</Button>
-            </Modal.Actions>
-          </Modal>
-        </Card>
+        <Grid centered columns={3}>
+          <Grid.Column>
+            <Segment>
+              <Card fluid>
+                <Card.Content>
+                  <Card.Header>{messageReply.subject}</Card.Header>
+                  <Card.Meta>
+                    {messageReply.senderFirstName} {messageReply.senderLastName}
+                  </Card.Meta>
+                  <Card.Meta textAlign="right">
+                    {formatDate(messageReply.createdAt)}
+                  </Card.Meta>
+                  <Card.Description>{messageReply.body}</Card.Description>
+                </Card.Content>
+                <Card.Content extra>
+                  <div className="ui two buttons">
+                    <Button basic color="red" onClick={handleShowDeleteModal}>
+                      <Icon name="trash" />
+                    </Button>
+                    <Button basic color="blue">
+                      <Link to={`/messages/${messageReply.messageId}/reply`}>
+                        Reply
+                      </Link>
+                    </Button>
+                  </div>
+                </Card.Content>
+                <Modal
+                  open={showDeleteModal}
+                  onClose={() => setShowDeleteModal(false)}>
+                  <Modal.Content>
+                    Are You Sure You Want To Delete This Message Reply?
+                  </Modal.Content>
+                  <Modal.Actions>
+                    <Button negative onClick={handleDeleteMessageReply}>
+                      Yes
+                    </Button>
+                    <Button onClick={() => setShowDeleteModal(false)}>
+                      Cancel
+                    </Button>
+                  </Modal.Actions>
+                </Modal>
+              </Card>
+              <Rail dividing position={"left"}>
+                {skiAreaState.loading ? (
+                  <Dimmer active>
+                    <Loader>Loading...</Loader>
+                  </Dimmer>
+                ) : skiAreas && skiAreas.length > 0 ? (
+                  <Card>
+                    {skiAreas.map((sa) => (
+                      <Card.Content key={sa.slug}>
+                        <Link to={`/ski-areas/${sa.slug}`}>{sa.name}</Link>
+                      </Card.Content>
+                    ))}
+                  </Card>
+                ) : skiAreaState.error ? (
+                  <Dimmer active>
+                    <Header as="h1">
+                      Error! Ski Area Data cannot be retrieved!{" "}
+                      {skiAreaState.error}
+                    </Header>
+                  </Dimmer>
+                ) : null}
+              </Rail>
+
+              <Rail dividing position={"right"}></Rail>
+            </Segment>
+          </Grid.Column>
+        </Grid>
       </div>
     );
   }

@@ -47,7 +47,6 @@ const Inbox: React.FC<InboxProps> = ({ username }) => {
   };
 
   const sentMessages = messages.sentMessages;
-  console.log(messages.messages);
 
   const formatDate = (date: Date) => {
     const newDate = new Date(date);

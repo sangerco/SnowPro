@@ -13,9 +13,14 @@ import {
   Divider,
   Label,
   Image,
+  Grid,
+  Segment,
+  Rail,
+  Card,
 } from "semantic-ui-react";
 import { RootState, AppDispatch } from "../../redux/store";
 import { fetchReview, deleteReview } from "../../redux/slices/reviewSlice";
+import { fetchSkiAreas } from "../../redux/slices/skiAreaSlice";
 
 const Review: React.FC = () => {
   const auth = useSelector((state: RootState) => state.auth);
@@ -40,6 +45,13 @@ const Review: React.FC = () => {
       dispatch(deleteReview(id));
     }
   };
+
+  useEffect(() => {
+    dispatch(fetchSkiAreas());
+  }, [dispatch]);
+
+  const skiAreaState = useSelector((state: RootState) => state.skiAreas);
+  const skiAreas = skiAreaState.skiAreas;
 
   const formatDate = (date: Date) => {
     const newDate = new Date(date);
@@ -76,85 +88,152 @@ const Review: React.FC = () => {
     const date = formatDate(review.createdAt);
     const userId = review.userId;
     return (
-      <div>
-        <Container fluid>
-          <Header as="h1">{review.header}</Header>
-          <Divider />
-          <Header as="h3">Review of {review.skiAreaName}</Header>
-          <Divider />
-          <Header as="h5">By {review.username}</Header>
-          <Header as="h6" textAlign="right">
-            {date}
-          </Header>
-          <Rating
-            icon="star"
-            defaultRating={review.stars}
-            maxRating={5}
-            disabled
-          />
-        </Container>
-        {authId && authId === userId ? (
-          <Container>
-            <Link to={`/ski-areas/reviews/${review.id}/update`}>
-              <Icon name="edit" style={{ cursor: "pointer" }} />
-            </Link>
-            <Icon
-              name="trash"
-              style={{ cursor: "pointer" }}
-              onClick={handleShowDeleteModal}
-            />
-          </Container>
-        ) : null}
-        <Container text>
-          <p>{review.body}</p>
-          <Divider />
-          {review.tags && review.tags.length > 0 ? (
-            review.tags.map((tag) => (
-              <div>
-                <Label.Group green>
-                  <Label as="a">{tag}</Label>
-                </Label.Group>
-              </div>
-            ))
-          ) : (
-            <Divider />
-          )}
-          <Divider />
-          {review.photos && review.photos.length > 0 ? (
-            review.photos.map((photo) => (
-              <div>
-                <Image src={photo} fluid />
-              </div>
-            ))
-          ) : (
-            <p>No photos yet.</p>
-          )}
-        </Container>
-        <Modal open={showDeleteModal} onClose={() => setShowDeleteModal(false)}>
-          <Modal.Content>
-            Are You Sure You Want To Delete This Review?
-          </Modal.Content>
-          <Modal.Actions>
-            <Button negative onClick={handleDeleteReview}>
-              Yes
-            </Button>
-            <Button onClick={() => setShowDeleteModal(false)}>Cancel</Button>
-          </Modal.Actions>
-        </Modal>
+      <Grid centered columns={3}>
+        <Grid.Column>
+          <Segment>
+            <div>
+              <Container fluid>
+                <Header as="h1">{review.header}</Header>
+                <Divider />
+                <Header as="h3">Review of {review.skiAreaName}</Header>
+                <Divider />
+                <Header as="h5">By {review.username}</Header>
+                <Header as="h6" textAlign="right">
+                  {date}
+                </Header>
+                <Rating
+                  icon="star"
+                  defaultRating={review.stars}
+                  maxRating={5}
+                  disabled
+                />
+              </Container>
+              {authId && authId === userId ? (
+                <Container>
+                  <Link to={`/ski-areas/reviews/${review.id}/update`}>
+                    <Icon name="edit" style={{ cursor: "pointer" }} />
+                  </Link>
+                  <Icon
+                    name="trash"
+                    style={{ cursor: "pointer" }}
+                    onClick={handleShowDeleteModal}
+                  />
+                </Container>
+              ) : null}
+              <Container text>
+                <p>{review.body}</p>
+                <Divider />
+                {review.tags && review.tags.length > 0 ? (
+                  review.tags.map((tag) => (
+                    <div>
+                      <Label.Group green>
+                        <Label as="a">{tag}</Label>
+                      </Label.Group>
+                    </div>
+                  ))
+                ) : (
+                  <Divider />
+                )}
+                <Divider />
+                {review.photos && review.photos.length > 0 ? (
+                  review.photos.map((photo) => (
+                    <div>
+                      <Image src={photo} fluid />
+                    </div>
+                  ))
+                ) : (
+                  <p>No photos yet.</p>
+                )}
+              </Container>
+              <Modal
+                open={showDeleteModal}
+                onClose={() => setShowDeleteModal(false)}>
+                <Modal.Content>
+                  Are You Sure You Want To Delete This Review?
+                </Modal.Content>
+                <Modal.Actions>
+                  <Button negative onClick={handleDeleteReview}>
+                    Yes
+                  </Button>
+                  <Button onClick={() => setShowDeleteModal(false)}>
+                    Cancel
+                  </Button>
+                </Modal.Actions>
+              </Modal>
 
-        {review.replies && review.replies.length > 0 ? (
-          review.replies.map((reply) => (
-            <Container as={Link} to={`/ski-areas/reviews/replies/${reply.id}`}>
-              <Header as="h2">{reply.body}</Header>
-              <Header as="h6" textAlign="right">
-                {formatDate(reply.createdAt)}
-              </Header>
-            </Container>
-          ))
-        ) : (
-          <p>No replies to this review yet.</p>
-        )}
-      </div>
+              {review.replies && review.replies.length > 0 ? (
+                review.replies.map((reply) => (
+                  <Container
+                    as={Link}
+                    to={`/ski-areas/reviews/replies/${reply.id}`}>
+                    <Header as="h2">{reply.body}</Header>
+                    <Header as="h6" textAlign="right">
+                      {formatDate(reply.createdAt)}
+                    </Header>
+                  </Container>
+                ))
+              ) : (
+                <p>No replies to this review yet.</p>
+              )}
+            </div>
+
+            <Rail dividing position={"left"}>
+              {skiAreaState.loading ? (
+                <Dimmer active>
+                  <Loader>Loading...</Loader>
+                </Dimmer>
+              ) : skiAreaState.error ? (
+                <Dimmer active>
+                  <Header as="h1">
+                    Error! Ski Area Data cannot be retrieved!{" "}
+                    {skiAreaState.error}
+                  </Header>
+                </Dimmer>
+              ) : skiAreas && skiAreas.length > 0 ? (
+                <Card>
+                  {skiAreas.map((sa) => (
+                    <Card.Content key={sa.slug}>
+                      <Link to={`/ski-areas/${sa.slug}`}>{sa.name}</Link>
+                    </Card.Content>
+                  ))}
+                </Card>
+              ) : null}
+            </Rail>
+
+            <Rail dividing position={"right"}>
+              {reviews.reviews && reviews.reviews.length > 0 ? (
+                <>
+                  {reviews.reviews.map((review) => (
+                    <Card>
+                      <Card.Content key={review.id} id="review-card">
+                        <Card.Header>
+                          <Link to={`/ski-areas/reviews/${review.id}`}>
+                            {review.header}
+                          </Link>{" "}
+                          <Divider />
+                          {review.skiAreaName}
+                        </Card.Header>
+                        <Card.Description>
+                          By {review.username}
+                        </Card.Description>
+                        <Card.Meta>
+                          <Rating
+                            icon="star"
+                            defaultRating={review.stars}
+                            maxRating={5}
+                            disabled
+                          />
+                        </Card.Meta>
+                        {formatDate(review.createdAt)}
+                      </Card.Content>
+                    </Card>
+                  ))}
+                </>
+              ) : null}
+            </Rail>
+          </Segment>
+        </Grid.Column>
+      </Grid>
     );
   }
 

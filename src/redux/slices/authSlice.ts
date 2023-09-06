@@ -15,7 +15,7 @@ interface UserData {
   id: string;
   username: string;
   password: string;
-  email?: string;
+  email: string;
   first_name: string;
   last_name: string;
 }
@@ -45,7 +45,7 @@ export const createUser = createAsyncThunk(
   "auth/createUser",
   async (newUserData: NewUserData) => {
     const response = await axios.post(`${URL}/api/new-user`, newUserData);
-    const user = response.data.user;
+    const user: UserData = response.data.user;
     const token = response.data.token;
     return { user, token };
   }
@@ -57,7 +57,7 @@ export const loginUser = createAsyncThunk(
     const response = await axios.post(`${URL}/login`, loginData);
     console.log(response);
     const token = response.data.token;
-    const user = response.data.user;
+    const user: UserData = response.data.user;
     return { token, user };
   }
 );

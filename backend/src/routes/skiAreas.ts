@@ -99,8 +99,6 @@ router.get(
         usersFavoritedBy: getUsersFavoritedBy,
       };
 
-      console.log(combinedData);
-
       res.json(combinedData);
     } catch (e) {
       console.error(e);

@@ -133,9 +133,6 @@ class ReviewReply {
 
     const replies = result.rows;
 
-    if (replies.length === 0)
-      throw new NotFoundError("No Replies to this Review");
-
     return replies;
   }
 

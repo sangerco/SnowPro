@@ -24,7 +24,18 @@ const MessageForm: React.FC = () => {
   const navigate = useNavigate();
   const auth = useSelector((state: RootState) => state.auth);
   const userId = auth.data?.id;
-  const senderId = userId ? userId : "";
+  let senderId = userId ? userId : "";
+
+  useEffect(() => {
+    dispatch(fetchUserData);
+  }, [dispatch]);
+
+  const userState = useSelector((state: RootState) => state.users);
+  const users = userState.users;
+
+  if (senderId === "") {
+    senderId = userState.user!.id;
+  }
 
   const initialMessageState = {
     sender_id: senderId,
@@ -32,14 +43,6 @@ const MessageForm: React.FC = () => {
     subject: "",
     body: "",
   };
-
-  console.log(initialMessageState);
-
-  useEffect(() => {
-    dispatch(fetchUserData);
-  }, [dispatch]);
-
-  const users = useSelector((state: RootState) => state.users.users);
 
   useEffect(() => {
     dispatch(fetchSkiAreas());
@@ -103,7 +106,6 @@ const MessageForm: React.FC = () => {
   };
 
   console.log(formData);
-
   return (
     <div id="background-container">
       <Grid centered columns={3}>
