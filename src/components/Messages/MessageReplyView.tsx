@@ -38,7 +38,10 @@ const MessageReplyView: React.FC<MessageReplyViewProps> = ({
 
   return (
     <div>
-      <Card as={Link} to={`/messages/replies/${messageReply.id}`}>
+      <Card
+        as={Link}
+        to={`/messages/replies/${messageReply.id}`}
+        style={{ width: "500px" }}>
         <Card.Header>{messageReply.subject}</Card.Header>
         <Card.Meta textAlign="right">
           {formatDate(messageReply.createdAt)}
@@ -46,6 +49,7 @@ const MessageReplyView: React.FC<MessageReplyViewProps> = ({
         <Card.Meta>
           {messageReply.senderFirstName} {messageReply.senderLastName}
         </Card.Meta>
+        <Card.Content>{messageReply.body}</Card.Content>
         <Card.Content>
           <Button basic color="red" onClick={handleShowDeleteModal}>
             <Icon name="trash" />

@@ -42,6 +42,7 @@ export const createTag = createAsyncThunk(
   async (tagData: NewTag) => {
     const response = await axios.post(`${URL}/api/tags`, tagData);
     const tag = response.data.result;
+    console.log(tag);
     return tag;
   }
 );

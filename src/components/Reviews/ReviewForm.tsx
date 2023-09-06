@@ -124,6 +124,16 @@ const ReviewForm: React.FC = () => {
     });
   };
 
+  const handleDropdownChange = (
+    e: React.SyntheticEvent<HTMLElement>,
+    data: any
+  ) => {
+    setFormData({
+      ...formData,
+      tags: data.value,
+    });
+  };
+
   const handlePhotoChange = (index: number, value: string) => {
     if (formData.photos) {
       const updatedPhotoLinks = [...formData.photos];
@@ -190,11 +200,11 @@ const ReviewForm: React.FC = () => {
               <label>Tags</label>
               <Dropdown
                 clearable
-                options={tagOptions}
                 multiple
+                options={tagOptions}
                 fluid
                 selection
-                value={formData.tags}
+                onChange={handleDropdownChange}
               />
               <Button
                 onClick={() => setShowCreateNewTagForm(true)}

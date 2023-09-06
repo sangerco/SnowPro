@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { createTag } from "../../redux/slices/tagSlice";
+import { createTag, fetchAllTags } from "../../redux/slices/tagSlice";
 import { useDispatch } from "react-redux";
 import { Form, Button } from "semantic-ui-react";
 import { AppDispatch } from "../../redux/store";
@@ -14,6 +14,8 @@ const TagForm: React.FC = () => {
     dispatch(createTag(formData));
 
     setFormData({ tag: "" });
+
+    dispatch(fetchAllTags());
   };
 
   const handleChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
@@ -26,7 +28,7 @@ const TagForm: React.FC = () => {
   };
 
   return (
-    <Form onSubmit={handleSubmit}>
+    <Form onSubmit={handleSubmit} style={{ marginTop: "10px" }}>
       <Form.Field>
         <input
           placeholder="Create New Tag"
@@ -35,7 +37,7 @@ const TagForm: React.FC = () => {
           onChange={handleChange}
         />
       </Form.Field>
-      <Button size="mini" color="green">
+      <Button size="mini" color="green" type="submit">
         Submit
       </Button>
     </Form>

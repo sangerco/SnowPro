@@ -196,11 +196,27 @@ const SkiAreaPage: React.FC = () => {
             </Button>
           ) : null}
           <Divider />
+          <Segment raised>
+            <span style={{ margin: "10px", padding: "10px" }}>
+              Visited this resort?
+            </span>
+            <Link to={`/ski-areas/${skiAreaData.slug}/review`}>
+              <Button size="mini" color="blue">
+                Leave a Review!
+              </Button>
+            </Link>
+          </Segment>
+          <Header as="h4" textAlign="left">
+            Reviews of {skiAreaData.name}
+          </Header>
           {reviews && reviews.length > 0
             ? reviews.map((review) => <ReviewView review={review} />)
             : null}
 
           <Rail size="small" dividing position="left">
+            <Header as="h3" style={{ margin: "10px" }}>
+              Users who favorited this ski area:
+            </Header>
             <Card.Group>
               {favMountainInfo && favMountainInfo.length > 0 ? (
                 favMountainInfo.map((fm) => (
