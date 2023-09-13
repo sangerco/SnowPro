@@ -48,7 +48,7 @@ const PhotoView: React.FC<PhotoViewProps> = ({ id }) => {
     if (photo.tagIds && photo.tagIds.length > 0) {
       for (let i = 0; i > photo.tagIds.length; i++) {
         for (let j = 0; j > tags.length; j++) {
-          if (photo.tagIds[i] === tags[j].tagId) {
+          if (photo.tagIds[i] === tags[j].id) {
             assocTags.push(tags[j].tag);
           }
         }

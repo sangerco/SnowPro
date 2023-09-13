@@ -72,7 +72,9 @@ const Inbox: React.FC<InboxProps> = ({ username }) => {
 
   if (messages.messages || messages.sentMessages) {
     return (
-      <Container fluid>
+      <Container
+        style={{ backgroundColor: "white", margin: "25px", padding: "10px" }}
+        fluid>
         {showSentMessages === true ? (
           <>
             <Button
@@ -91,7 +93,9 @@ const Inbox: React.FC<InboxProps> = ({ username }) => {
                       key={message.id}
                       as={Link}
                       to={`/messages/${message.id}`}>
-                      <List.Content floated="left">
+                      <List.Content
+                        style={{ color: "black", fontSize: "2em" }}
+                        floated="left">
                         {message.subject}
                       </List.Content>
                       <List.Content>
@@ -147,8 +151,9 @@ const Inbox: React.FC<InboxProps> = ({ username }) => {
               </List>
             </Container>
             <Divider />
-            <Container style={{ marginTop: "5px" }}>
+            <Container style={{ marginTop: "25px" }}>
               <Button
+                style={{ marginTop: "25px" }}
                 color="green"
                 floated="right"
                 as={Link}

@@ -1,32 +1,32 @@
-import React, { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { AppDispatch, RootState } from "../../redux/store";
-import { useParams } from "react-router";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../redux/store";
 import { createReviewReply } from "../../redux/slices/reviewReplySlice";
-import { fetchReview } from "../../redux/slices/reviewSlice";
-import { Button, Container, Form } from "semantic-ui-react";
+import { Button, Container, Form, Header } from "semantic-ui-react";
 
-const ReviewReplyForm: React.FC = () => {
+interface ReviewReplyFormProps {
+  reviewId: string;
+  slug: string;
+  username: string;
+  userId: string;
+  closeModal: () => void;
+}
+
+const ReviewReplyForm: React.FC<ReviewReplyFormProps> = ({
+  reviewId,
+  slug,
+  username,
+  userId,
+  closeModal,
+}) => {
   const dispatch = useDispatch<AppDispatch>();
-  const { id } = useParams();
-  const auth = useSelector((state: RootState) => state.auth);
-  const userId = auth.data?.id;
-  const username = auth.data?.username;
-
-  useEffect(() => {
-    if (id) {
-      dispatch(fetchReview(id));
-    }
-  }, [dispatch, id]);
-
-  const review = useSelector((state: RootState) => state.reviews.review);
-  const skiAreaSlug = review?.skiAreaSlug;
+  const id = reviewId;
 
   const initialReviewReplyState = {
-    userId: userId ?? "",
-    username: username ?? "",
-    reviewId: id ?? "",
-    slug: skiAreaSlug ?? "",
+    userId: userId!,
+    username: username!,
+    reviewId: id,
+    slug: slug,
     body: "",
   };
 
@@ -50,7 +50,8 @@ const ReviewReplyForm: React.FC = () => {
   };
 
   return (
-    <Container fluid>
+    <Container fluid style={{ margin: "20px", padding: "20px" }}>
+      <Header as="h3">Reply to {`${username}`}'s review:</Header>
       <Form onSubmit={handleSubmit}>
         <Form.TextArea
           placeholder="Reply to this review"
@@ -60,6 +61,9 @@ const ReviewReplyForm: React.FC = () => {
         />
         <Button size="small" color="green" type="submit">
           Reply
+        </Button>
+        <Button size="small" color="red" onClick={closeModal}>
+          Cancel
         </Button>
       </Form>
     </Container>

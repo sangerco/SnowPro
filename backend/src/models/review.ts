@@ -2,7 +2,6 @@ import db from "../db";
 import { sqlForPartialUpdate } from "../helpers/sql";
 import { NotFoundError } from "../expressError";
 import { v4 as uuidv4 } from "uuid";
-import axios from "axios";
 
 interface ReviewData {
   id: string;
@@ -32,13 +31,14 @@ interface ReviewDataReturn {
 
 class Review {
   static async createReview(
-    userId: string,
-    skiAreaSlug: string,
+    user_id: string,
+    username: string,
+    ski_area_slug: string,
     header: string,
     body: string,
     stars: number,
     photos: string[],
-    tagIds: string[]
+    tags: string[]
   ): Promise<ReviewData> {
     const id = uuidv4();
     const createdAt = new Date();
@@ -46,29 +46,41 @@ class Review {
     const result = await db.query(
       `INSERT INTO reviews
                 (id,
+                    username,
                    user_id,
                    ski_area_slug,
                    header,
                    body,
                    stars,
-                   tag_ids,
+                   tags,
                    created_at)
             VALUES ($1, $2, $3, $4, $5, $6, $7)
             RETURNING
                 id,
+                username,
                 user_id AS "userId", 
                 ski_area_slug AS "skiAreaSlug", 
                 header,
                 body, 
                 stars,
-                tag_ids AS "tagIds",
+                tags AS "tags",
                 created_at AS "createdAt"`,
-      [id, userId, skiAreaSlug, header, body, stars, tagIds, createdAt]
+      [
+        id,
+        username,
+        user_id,
+        ski_area_slug,
+        header,
+        body,
+        stars,
+        tags,
+        createdAt,
+      ]
     );
 
     const reviewData = result.rows[0];
 
-    for (let tagId of tagIds) {
+    for (let tagId of tags) {
       await db.query(
         `
                 INSERT INTO review_tags (review_id, tag_id)
@@ -96,7 +108,7 @@ class Review {
                     user_id AS "userId",
                     link,
                     created_at AS "createdAt"`,
-        [photoId, userId, photo, photoCreatedAt]
+        [photoId, user_id, photo, photoCreatedAt]
       );
 
       await db.query(
@@ -112,16 +124,10 @@ class Review {
     const skiAreaName = await db.query(
       `
             SELECT name AS "skiAreaName" FROM ski_areas WHERE slug = $1`,
-      [skiAreaSlug]
+      [ski_area_slug]
     );
 
     reviewData.skiAreaName = skiAreaName;
-
-    const username = await db.query(
-      `
-            SELECT username FROM users WHERE id = $1`,
-      [userId]
-    );
 
     reviewData.username = username;
 

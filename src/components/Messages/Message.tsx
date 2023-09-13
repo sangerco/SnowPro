@@ -8,9 +8,8 @@ import {
   Card,
   Modal,
   Grid,
-  Segment,
-  Rail,
   Header,
+  Divider,
 } from "semantic-ui-react";
 import { Link, useParams } from "react-router-dom";
 import { RootState, AppDispatch } from "../../redux/store";
@@ -78,80 +77,82 @@ const Message: React.FC = () => {
     const message = messages.message;
 
     return (
-      <>
-        <Grid centered columns={3}>
-          <Grid.Column>
-            <Segment>
-              <Card fluid>
-                <Card.Content>
-                  <Card.Header>{message.subject}</Card.Header>
-                  <Card.Meta>
-                    {message.senderFirstName} {message.senderLastName}
-                  </Card.Meta>
-                  <Card.Meta textAlign="right">
-                    {formatDate(message.createdAt)}
-                  </Card.Meta>
-                  <Card.Description>{message.body}</Card.Description>
-                </Card.Content>
-                <Card.Content extra>
-                  <div className="ui two buttons">
-                    <Button basic color="red" onClick={handleShowDeleteModal}>
-                      <Icon name="trash" />
-                    </Button>
-                    <Button basic color="blue">
-                      <Link to={`/messages/${message.id}/reply`}>Reply</Link>
-                    </Button>
-                  </div>
-                </Card.Content>
+      <Grid>
+        <Grid.Row>
+          <Grid.Column width={4}>
+            {skiAreaState.loading ? (
+              <Dimmer active>
+                <Loader>Loading...</Loader>
+              </Dimmer>
+            ) : skiAreas && skiAreas.length > 0 ? (
+              <Card style={{ marginTop: "10px", marginLeft: "20px" }}>
+                {skiAreas.map((sa) => (
+                  <Card.Content key={sa.slug}>
+                    <Link to={`/ski-areas/${sa.slug}`}>{sa.name}</Link>
+                  </Card.Content>
+                ))}
               </Card>
-              {message.replies && message.replies.length > 0
-                ? message.replies.map((reply) => (
-                    <MessageReplyView key={reply.id} messageReply={reply} />
-                  ))
-                : null}
-              <Modal
-                open={showDeleteModal}
-                onClose={() => setShowDeleteModal(false)}>
-                <Modal.Content>
-                  Are You Sure You Want To Delete This Message?
-                </Modal.Content>
-                <Modal.Actions>
-                  <Button negative onClick={handleDeleteMessage}>
-                    Yes
-                  </Button>
-                  <Button onClick={() => setShowDeleteModal(false)}>
-                    Cancel
-                  </Button>
-                </Modal.Actions>
-              </Modal>
-              <Rail dividing position={"left"}>
-                {skiAreaState.loading ? (
-                  <Dimmer active>
-                    <Loader>Loading...</Loader>
-                  </Dimmer>
-                ) : skiAreas && skiAreas.length > 0 ? (
-                  <Card>
-                    {skiAreas.map((sa) => (
-                      <Card.Content key={sa.slug}>
-                        <Link to={`/ski-areas/${sa.slug}`}>{sa.name}</Link>
-                      </Card.Content>
-                    ))}
-                  </Card>
-                ) : skiAreaState.error ? (
-                  <Dimmer active>
-                    <Header as="h1">
-                      Error! Ski Area Data cannot be retrieved!{" "}
-                      {skiAreaState.error}
-                    </Header>
-                  </Dimmer>
-                ) : null}
-              </Rail>
-
-              <Rail dividing position={"right"}></Rail>
-            </Segment>
+            ) : skiAreaState.error ? (
+              <Dimmer active>
+                <Header as="h1">
+                  Error! Ski Area Data cannot be retrieved! {skiAreaState.error}
+                </Header>
+              </Dimmer>
+            ) : null}
           </Grid.Column>
-        </Grid>
-      </>
+          <Grid.Column width={8}>
+            <Card fluid>
+              <Card.Content>
+                <Card.Header>{message.subject}</Card.Header>
+                <Divider />
+                <Card.Content>
+                  {message.senderFirstName} {message.senderLastName}
+                </Card.Content>
+                <Card.Meta textAlign="right">
+                  {formatDate(message.createdAt)}
+                </Card.Meta>
+                <Divider />
+                <Card.Description>{message.body}</Card.Description>
+              </Card.Content>
+              <Card.Content extra>
+                <div className="ui two buttons">
+                  <Button basic color="red" onClick={handleShowDeleteModal}>
+                    <Icon name="trash" />
+                  </Button>
+                  <Button basic color="green">
+                    <Link
+                      to={`/messages/${message.id}/reply`}
+                      style={{ color: "green" }}>
+                      Reply
+                    </Link>
+                  </Button>
+                </div>
+              </Card.Content>
+            </Card>
+            {message.replies && message.replies.length > 0
+              ? message.replies.map((reply) => (
+                  <MessageReplyView key={reply.id} messageReply={reply} />
+                ))
+              : null}
+            <Modal
+              open={showDeleteModal}
+              onClose={() => setShowDeleteModal(false)}>
+              <Modal.Content>
+                Are You Sure You Want To Delete This Message?
+              </Modal.Content>
+              <Modal.Actions>
+                <Button negative onClick={handleDeleteMessage}>
+                  Yes
+                </Button>
+                <Button onClick={() => setShowDeleteModal(false)}>
+                  Cancel
+                </Button>
+              </Modal.Actions>
+            </Modal>
+          </Grid.Column>
+          <Grid.Column width={4}></Grid.Column>
+        </Grid.Row>
+      </Grid>
     );
   }
 

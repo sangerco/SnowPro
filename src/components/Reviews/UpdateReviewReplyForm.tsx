@@ -14,7 +14,11 @@ import {
   Dimmer,
   Loader,
   Header,
+  Grid,
+  Card,
 } from "semantic-ui-react";
+import { Link } from "react-router-dom";
+import { fetchSkiAreas } from "../../redux/slices/skiAreaSlice";
 
 const UpdateReviewReplyForm: React.FC = () => {
   const { id } = useParams();
@@ -31,6 +35,13 @@ const UpdateReviewReplyForm: React.FC = () => {
 
   const reviewReplies = useSelector((state: RootState) => state.reviewReplies);
   const reviewReply = reviewReplies.reviewReply;
+
+  useEffect(() => {
+    dispatch(fetchSkiAreas());
+  }, [dispatch]);
+
+  const skiAreaState = useSelector((state: RootState) => state.skiAreas);
+  const skiAreas = skiAreaState.skiAreas;
 
   let initialUpdateReviewReplyState: ReviewReplyData;
 
@@ -109,19 +120,48 @@ const UpdateReviewReplyForm: React.FC = () => {
 
   if (reviewReply) {
     return (
-      <Container fluid>
-        <Form onSubmit={handleSubmit}>
-          <Form.TextArea
-            placeholder="Reply to this review"
-            name="body"
-            value={formData.body}
-            onChange={handleChange}
-          />
-          <Button size="small" color="green" type="submit">
-            Reply
-          </Button>
-        </Form>
-      </Container>
+      <Grid>
+        <Grid.Row>
+          <Grid.Column width={4}>
+            {skiAreaState.loading ? (
+              <Dimmer active>
+                <Loader>Loading...</Loader>
+              </Dimmer>
+            ) : skiAreas && skiAreas.length > 0 ? (
+              <Card style={{ marginTop: "10px", marginLeft: "20px" }}>
+                {skiAreas.map((sa) => (
+                  <Card.Content key={sa.slug}>
+                    <Link to={`/ski-areas/${sa.slug}`}>{sa.name}</Link>
+                  </Card.Content>
+                ))}
+              </Card>
+            ) : skiAreaState.error ? (
+              <Dimmer active>
+                <Header as="h1">
+                  Error! Ski Area Data cannot be retrieved! {skiAreaState.error}
+                </Header>
+              </Dimmer>
+            ) : null}
+          </Grid.Column>
+          <Grid.Column width={8}>
+            {" "}
+            <Container fluid>
+              <Form onSubmit={handleSubmit}>
+                <Form.TextArea
+                  placeholder="Reply to this review"
+                  name="body"
+                  value={formData.body}
+                  onChange={handleChange}
+                />
+                <Button size="small" color="green" type="submit">
+                  Reply
+                </Button>
+              </Form>
+            </Container>
+          </Grid.Column>
+          <Grid.Column width={4}></Grid.Column>
+        </Grid.Row>
+      </Grid>
     );
   }
 

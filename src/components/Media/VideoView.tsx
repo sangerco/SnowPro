@@ -56,7 +56,7 @@ const VideoView: React.FC<VideoViewProps> = ({ id }) => {
     if (video.tagIds && video.tagIds.length > 0) {
       for (let i = 0; i > video.tagIds.length; i++) {
         for (let j = 0; j > tags.length; j++) {
-          if (video.tagIds[i] === tags[j].tagId) {
+          if (video.tagIds[i] === tags[j].id) {
             assocTags.push(tags[j].tag);
           }
         }

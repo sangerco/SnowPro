@@ -12,17 +12,25 @@ import {
   Image,
   Embed,
   Divider,
+  Grid,
+  Card,
 } from "semantic-ui-react";
 import PhotoForm from "../Media/PhotoForm";
 import VideoForm from "../Media/VideoForm";
 import { useNavigate, useParams } from "react-router";
 import { initialUserState } from "../../helpers/helperStates";
+import { Link } from "react-router-dom";
+import { fetchSkiAreas } from "../../redux/slices/skiAreaSlice";
 
 const UpdateUserForm: React.FC = () => {
   const navigate = useNavigate();
   const { username } = useParams();
   const dispatch = useDispatch<AppDispatch>();
   const auth = useSelector((state: RootState) => state.auth);
+
+  const [formData, setFormData] = useState(initialUserState);
+  const [showNewPhotoForm, setShowNewPhotoForm] = useState(false);
+  const [showNewVideoForm, setShowNewVideoForm] = useState(false);
 
   useEffect(() => {
     if (username) {
@@ -33,9 +41,12 @@ const UpdateUserForm: React.FC = () => {
   const users = useSelector((state: RootState) => state.users);
   const user = users.user;
 
-  const [formData, setFormData] = useState(initialUserState);
-  const [showNewPhotoForm, setShowNewPhotoForm] = useState(false);
-  const [showNewVideoForm, setShowNewVideoForm] = useState(false);
+  useEffect(() => {
+    dispatch(fetchSkiAreas());
+  }, [dispatch]);
+
+  const skiAreaState = useSelector((state: RootState) => state.skiAreas);
+  const skiAreas = skiAreaState.skiAreas;
 
   useEffect(() => {
     if (user) {
@@ -135,94 +146,124 @@ const UpdateUserForm: React.FC = () => {
 
   if (user) {
     return (
-      <div>
-        <Container>
-          <Header as="h2">{`Update ${user.username}'s Profile`}</Header>
-          <Form onSubmit={handleSubmit}>
-            <Form.Field>
-              <label>Username</label>
-              <input
-                placeholder={formData.username}
-                name="username"
-                value={formData.username}
-                onChange={handleChange}
-              />
-            </Form.Field>
-            <Form.Field>
-              <label>Password</label>
-              <input
-                type="password"
-                placeholder={formData.password}
-                name="password"
-                value={formData.password}
-                onChange={handleChange}
-              />
-            </Form.Field>
-            <Form.Field>
-              <label>First Name</label>
-              <input
-                placeholder={formData.firstName}
-                name="firstName"
-                value={formData.firstName}
-                onChange={handleChange}
-              />
-            </Form.Field>
-            <Form.Field>
-              <label>Last Name</label>
-              <input
-                placeholder={formData.lastName}
-                name="lastName"
-                value={formData.lastName}
-                onChange={handleChange}
-              />
-            </Form.Field>
-            <Form.Field>
-              <label>Email</label>
-              <input
-                type="email"
-                placeholder={formData.email}
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-              />
-            </Form.Field>
-            <Form.Field>
-              <label>About You...</label>
-              <textarea
-                placeholder={formData.bio}
-                name="bio"
-                value={formData.bio}
-                onChange={handleTextAreaChange}
-              />
-            </Form.Field>
-            <Form.Field>
-              <label>Avatar Link</label>
-              <input
-                placeholder={formData.avatar}
-                name="avatar"
-                value={formData.avatar}
-                onChange={handleChange}
-              />
-            </Form.Field>
-            <Button type="submit">Submit Changes</Button>
-          </Form>
-          {formData.photos &&
-            formData.photos.map((photo) => <Image src={photo} />)}
-          <Button color="green" onClick={() => setShowNewPhotoForm(true)}>
-            Add Photos?
-          </Button>
-          {showNewPhotoForm && <PhotoForm />}
-          <Divider />
-          {videoIds.length > 0
-            ? videoIds.map((id) => <Embed id={id} source="youtube" />)
-            : null}
-          <Button color="green" onClick={() => setShowNewVideoForm(true)}>
-            Add Photos?
-          </Button>
-          {showNewVideoForm && <VideoForm />}
-          <Divider />
-        </Container>
-      </div>
+      <Grid>
+        <Grid.Row>
+          <Grid.Column width={4}>
+            {skiAreaState.loading ? (
+              <Dimmer active>
+                <Loader>Loading...</Loader>
+              </Dimmer>
+            ) : skiAreas && skiAreas.length > 0 ? (
+              <Card style={{ marginTop: "10px", marginLeft: "20px" }}>
+                {skiAreas.map((sa) => (
+                  <Card.Content key={sa.slug}>
+                    <Link to={`/ski-areas/${sa.slug}`}>{sa.name}</Link>
+                  </Card.Content>
+                ))}
+              </Card>
+            ) : skiAreaState.error ? (
+              <Dimmer active>
+                <Header as="h1">
+                  Error! Ski Area Data cannot be retrieved! {skiAreaState.error}
+                </Header>
+              </Dimmer>
+            ) : null}
+          </Grid.Column>
+          <Grid.Column width={8}>
+            <Container>
+              <Header
+                as="h2"
+                style={{
+                  margin: "10px",
+                }}>{`Update ${user.username}'s Profile`}</Header>
+              <Form onSubmit={handleSubmit}>
+                <Form.Field>
+                  <label>Username</label>
+                  <input
+                    placeholder={formData.username}
+                    name="username"
+                    value={formData.username}
+                    onChange={handleChange}
+                  />
+                </Form.Field>
+                <Form.Field>
+                  <label>Password</label>
+                  <input
+                    type="password"
+                    placeholder={formData.password}
+                    name="password"
+                    value={formData.password}
+                    onChange={handleChange}
+                  />
+                </Form.Field>
+                <Form.Field>
+                  <label>First Name</label>
+                  <input
+                    placeholder={formData.firstName}
+                    name="firstName"
+                    value={formData.firstName}
+                    onChange={handleChange}
+                  />
+                </Form.Field>
+                <Form.Field>
+                  <label>Last Name</label>
+                  <input
+                    placeholder={formData.lastName}
+                    name="lastName"
+                    value={formData.lastName}
+                    onChange={handleChange}
+                  />
+                </Form.Field>
+                <Form.Field>
+                  <label>Email</label>
+                  <input
+                    type="email"
+                    placeholder={formData.email}
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                  />
+                </Form.Field>
+                <Form.Field>
+                  <label>About You...</label>
+                  <textarea
+                    placeholder={formData.bio}
+                    name="bio"
+                    value={formData.bio}
+                    onChange={handleTextAreaChange}
+                  />
+                </Form.Field>
+                <Form.Field>
+                  <label>Avatar Link</label>
+                  <input
+                    placeholder={formData.avatar}
+                    name="avatar"
+                    value={formData.avatar}
+                    onChange={handleChange}
+                  />
+                </Form.Field>
+                <Button type="submit">Submit Changes</Button>
+              </Form>
+              {formData.photos &&
+                formData.photos.map((photo) => <Image src={photo} />)}
+              <Button color="green" onClick={() => setShowNewPhotoForm(true)}>
+                Add Photos?
+              </Button>
+              {showNewPhotoForm && <PhotoForm />}
+              <Divider />
+              {videoIds.length > 0
+                ? videoIds.map((id) => <Embed id={id} source="youtube" />)
+                : null}
+              <Button color="green" onClick={() => setShowNewVideoForm(true)}>
+                Add Photos?
+              </Button>
+              {showNewVideoForm && <VideoForm />}
+              <Divider />
+            </Container>
+          </Grid.Column>
+          <Grid.Column width={4}></Grid.Column>
+        </Grid.Row>
+      </Grid>
     );
   }
 

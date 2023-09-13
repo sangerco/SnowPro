@@ -11,7 +11,6 @@ import {
   Grid,
   Header,
   Loader,
-  Rail,
   Rating,
   Segment,
 } from "semantic-ui-react";
@@ -53,79 +52,76 @@ const Home: React.FC = () => {
 
   return (
     <div id="background-container">
-      <Grid centered columns={3}>
-        <Grid.Column>
-          <Segment>
-            {isAuthenticated ? <MyPage /> : <AnonHome />}
-
-            <Rail dividing position={"left"}>
-              {skiAreaState.loading ? (
-                <Dimmer active>
-                  <Loader>Loading...</Loader>
-                </Dimmer>
-              ) : skiAreas && skiAreas.length > 0 ? (
-                <Card>
-                  {skiAreas.map((sa) => (
-                    <Card.Content key={sa.slug}>
-                      <Link to={`/ski-areas/${sa.slug}`}>{sa.name}</Link>
-                    </Card.Content>
-                  ))}
-                </Card>
-              ) : skiAreaState.error ? (
-                <Dimmer active>
-                  <Header as="h1">
-                    Error! Ski Area Data cannot be retrieved!{" "}
-                    {skiAreaState.error}
-                  </Header>
-                </Dimmer>
-              ) : null}
-            </Rail>
-
-            <Rail dividing position={"right"}>
-              {reviewState.loading ? (
-                <Dimmer active>
-                  <Loader>Loading...</Loader>
-                </Dimmer>
-              ) : reviewState.error ? (
-                <Dimmer active>
-                  <Header as="h1">
-                    Error! Review Data cannot be retrieved! {reviewState.error}
-                  </Header>
-                </Dimmer>
-              ) : isAuthenticated && username ? (
+      <Grid>
+        <Grid.Row>
+          <Grid.Column widescreen={4}>
+            {skiAreaState.loading ? (
+              <Dimmer active>
+                <Loader>Loading...</Loader>
+              </Dimmer>
+            ) : skiAreas && skiAreas.length > 0 ? (
+              <Card id="ski-area-card">
+                {skiAreas.map((sa) => (
+                  <Card.Content key={sa.slug}>
+                    <Link to={`/ski-areas/${sa.slug}`}>{sa.name}</Link>
+                  </Card.Content>
+                ))}
+              </Card>
+            ) : skiAreaState.error ? (
+              <Dimmer active>
+                <Header as="h1">
+                  Error! Ski Area Data cannot be retrieved! {skiAreaState.error}
+                </Header>
+              </Dimmer>
+            ) : null}
+          </Grid.Column>
+          <Grid.Column width={8}>
+            <Segment>{isAuthenticated ? <MyPage /> : <AnonHome />}</Segment>
+          </Grid.Column>
+          <Grid.Column width={4}>
+            {reviewState.loading ? (
+              <Dimmer active>
+                <Loader>Loading...</Loader>
+              </Dimmer>
+            ) : reviewState.error ? (
+              <Dimmer active>
+                <Header as="h1">
+                  Error! Review Data cannot be retrieved! {reviewState.error}
+                </Header>
+              </Dimmer>
+            ) : isAuthenticated && username ? (
+              <div id="inbox-div">
                 <Inbox username={username} />
-              ) : reviews && reviews.length > 0 ? (
-                <>
-                  {reviews.map((review) => (
-                    <Card>
-                      <Card.Content key={review.id} id="review-card">
-                        <Card.Header>
-                          <Link to={`/ski-areas/reviews/${review.id}`}>
-                            {review.header}
-                          </Link>{" "}
-                          <Divider />
-                          {review.skiAreaName}
-                        </Card.Header>
-                        <Card.Description>
-                          By {review.username}
-                        </Card.Description>
-                        <Card.Meta>
-                          <Rating
-                            icon="star"
-                            defaultRating={review.stars}
-                            maxRating={5}
-                            disabled
-                          />
-                        </Card.Meta>
-                        {formatDate(review.createdAt)}
-                      </Card.Content>
-                    </Card>
-                  ))}
-                </>
-              ) : null}
-            </Rail>
-          </Segment>
-        </Grid.Column>
+              </div>
+            ) : reviews && reviews.length > 0 ? (
+              <>
+                {reviews.map((review) => (
+                  <Card>
+                    <Card.Content key={review.id} id="review-card">
+                      <Card.Header>
+                        <Link to={`/ski-areas/reviews/${review.id}`}>
+                          {review.header}
+                        </Link>{" "}
+                        <Divider />
+                        {review.skiAreaName}
+                      </Card.Header>
+                      <Card.Description>By {review.username}</Card.Description>
+                      <Card.Meta>
+                        <Rating
+                          icon="star"
+                          defaultRating={review.stars}
+                          maxRating={5}
+                          disabled
+                        />
+                      </Card.Meta>
+                      {formatDate(review.createdAt)}
+                    </Card.Content>
+                  </Card>
+                ))}
+              </>
+            ) : null}
+          </Grid.Column>
+        </Grid.Row>
       </Grid>
     </div>
   );

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { URL } from "../../utils/config";
 import { Link } from "react-router-dom";
-import { Container, Header, Icon } from "semantic-ui-react";
+import { Container, Header, Icon, Segment } from "semantic-ui-react";
 import { SkiAreaProps, SkiAreaData } from "../interfaces/skiAreaInterfaces";
 
 const SkiArea: React.FC<SkiAreaProps> = ({
@@ -36,7 +36,7 @@ const SkiArea: React.FC<SkiAreaProps> = ({
   console.log(slug);
 
   return (
-    <Container text>
+    <Segment raised style={{}}>
       <Header size="huge">
         <Link to={`/ski-areas/${slug}`}>{name}</Link>
       </Header>
@@ -54,7 +54,7 @@ const SkiArea: React.FC<SkiAreaProps> = ({
           </small>
         </p>
       </Container>
-    </Container>
+    </Segment>
   );
 };
 

@@ -49,7 +49,7 @@ const FavMountain: React.FC<FavMountainProps> = ({ slug, username }) => {
     return (
       <>
         <Segment raised style={{ width: "250px", margin: "10px" }}>
-          <Header as="h2" textAlign="left">
+          <Header as="h4" textAlign="left">
             <Link to={`/ski-areas/${slug}`}>{skiArea.name}</Link>
           </Header>
           {username === loggedInUsername ? (
@@ -57,7 +57,8 @@ const FavMountain: React.FC<FavMountainProps> = ({ slug, username }) => {
               floated="right"
               color="red"
               size="mini"
-              onClick={handleShowDeleteModal}>
+              onClick={handleShowDeleteModal}
+              textAlign="center">
               <Icon name="times" />
             </Button>
           ) : null}

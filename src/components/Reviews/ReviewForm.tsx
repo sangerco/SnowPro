@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { createReview, NewReviewData } from "../../redux/slices/reviewSlice";
+import {
+  createReview,
+  NewReviewData,
+  fetchAllReviews,
+} from "../../redux/slices/reviewSlice";
 import { fetchAllTags } from "../../redux/slices/tagSlice";
 import {
   Button,
@@ -10,7 +14,6 @@ import {
   Form,
   Grid,
   Segment,
-  Rail,
   Card,
   Rating,
   Dimmer,
@@ -19,7 +22,7 @@ import {
 } from "semantic-ui-react";
 import { RootState, AppDispatch } from "../../redux/store";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router";
+import { useParams, useNavigate } from "react-router";
 import TagForm from "../Tags/TagForm";
 import PhotoForm from "../Media/PhotoForm";
 import { deletePhoto } from "../../redux/slices/mediaSlices";
@@ -30,8 +33,14 @@ const ReviewForm: React.FC = () => {
   const { slug } = useParams();
   const dispatch = useDispatch<AppDispatch>();
   const auth = useSelector((state: RootState) => state.auth);
-  const userId = auth.data?.id;
-  const username = auth.data?.username;
+  const userId = auth.data!.id;
+  const username = auth.data!.username;
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    dispatch(fetchAllReviews());
+  }, [dispatch]);
+
   const reviews = useSelector((state: RootState) => state.reviews);
 
   useEffect(() => {
@@ -47,9 +56,9 @@ const ReviewForm: React.FC = () => {
 
   if (tags.tags) {
     tagOptions = tags.tags.map((tag) => ({
-      key: tag.tagId,
+      key: tag.id,
       text: tag.tag,
-      value: tag.tagId,
+      value: tag.id,
     }));
   } else {
     tagOptions = [];
@@ -64,9 +73,9 @@ const ReviewForm: React.FC = () => {
   ];
 
   const initialReviewState: NewReviewData = {
-    userId: userId ?? "",
-    username: username ?? "",
-    skiAreaSlug: slug ?? "",
+    user_id: userId!,
+    username: username!,
+    ski_area_slug: slug!,
     header: "",
     body: "",
     stars: 0,
@@ -101,6 +110,8 @@ const ReviewForm: React.FC = () => {
 
     dispatch(createReview(formData));
 
+    navigate(`/ski-areas/${slug}`);
+
     setFormData(initialReviewState);
   };
 
@@ -124,7 +135,17 @@ const ReviewForm: React.FC = () => {
     });
   };
 
-  const handleDropdownChange = (
+  const handleStarsDropdownChange = (
+    e: React.SyntheticEvent<HTMLElement>,
+    data: any
+  ) => {
+    setFormData({
+      ...formData,
+      stars: data.value,
+    });
+  };
+
+  const handleTagDropdownChange = (
     e: React.SyntheticEvent<HTMLElement>,
     data: any
   ) => {
@@ -132,6 +153,7 @@ const ReviewForm: React.FC = () => {
       ...formData,
       tags: data.value,
     });
+    console.log(data);
   };
 
   const handlePhotoChange = (index: number, value: string) => {
@@ -151,133 +173,136 @@ const ReviewForm: React.FC = () => {
     }
   };
 
+  console.log(reviews.reviews);
+
   return (
-    <Grid centered columns={3}>
-      <Grid.Column>
-        <Segment>
-          <Container fluid>
-            <Form onSubmit={handleSubmit}>
-              <Form.Field required>
-                <label>Header</label>
-                <input
-                  name="header"
-                  value={formData.header}
-                  onChange={handleInputChange}
-                />
-              </Form.Field>
-              <Form.TextArea
-                required={true}
-                placeholder="How was it?"
-                name="body"
-                value={formData.body}
-                onChange={handleTextAreaChange}
-              />
-              {photos.map((photo, index) => (
-                <Form.Field key={index}>
-                  <label>Photo Links</label>
-                  <input
-                    type="text"
-                    value={photo}
-                    onChange={(e) => handlePhotoChange(index, e.target.value)}
-                  />
-                  {index === photos.length - 1 && (
-                    <Button
-                      icon="plus"
-                      onClick={() => setShowPhotoForm(true)}
-                    />
-                  )}
-                  {showPhotoForm && <PhotoForm />}
-                  {index > 0 && (
-                    <Button
-                      icon="minus"
-                      onClick={() => handleRemovePhotoInput(index)}
-                    />
-                  )}
-                </Form.Field>
+    <Grid>
+      <Grid.Row>
+        <Grid.Column width={4}>
+          {skiAreaState.loading ? (
+            <Dimmer active>
+              <Loader>Loading...</Loader>
+            </Dimmer>
+          ) : skiAreaState.error ? (
+            <Dimmer active>
+              <Header as="h1">
+                Error! Ski Area Data cannot be retrieved! {skiAreaState.error}
+              </Header>
+            </Dimmer>
+          ) : skiAreas && skiAreas.length > 0 ? (
+            <Card style={{ marginTop: "10px", marginLeft: "20px" }}>
+              {skiAreas.map((sa) => (
+                <Card.Content key={sa.slug}>
+                  <Link to={`/ski-areas/${sa.slug}`}>{sa.name}</Link>
+                </Card.Content>
               ))}
-              <Button type="submit">Send it!</Button>
-              <Divider />
-              <label>Tags</label>
-              <Dropdown
-                clearable
-                multiple
-                options={tagOptions}
-                fluid
-                selection
-                onChange={handleDropdownChange}
-              />
+            </Card>
+          ) : null}
+        </Grid.Column>
+        <Grid.Column width={8}>
+          <Segment>
+            <Container fluid>
+              <Form onSubmit={handleSubmit}>
+                <Form.Field required>
+                  <label>Header</label>
+                  <input
+                    name="header"
+                    value={formData.header}
+                    onChange={handleInputChange}
+                  />
+                </Form.Field>
+                <Form.TextArea
+                  required={true}
+                  placeholder="How was it?"
+                  name="body"
+                  value={formData.body}
+                  onChange={handleTextAreaChange}
+                />
+                {photos.map((photo, index) => (
+                  <Form.Field key={index}>
+                    <label>Photo Links</label>
+                    <input
+                      type="text"
+                      value={photo}
+                      onChange={(e) => handlePhotoChange(index, e.target.value)}
+                    />
+                    {index === photos.length - 1 && (
+                      <Button
+                        icon="plus"
+                        onClick={() => setShowPhotoForm(true)}
+                      />
+                    )}
+                    {showPhotoForm && <PhotoForm />}
+                    {index > 0 && (
+                      <Button
+                        icon="minus"
+                        onClick={() => handleRemovePhotoInput(index)}
+                      />
+                    )}
+                  </Form.Field>
+                ))}{" "}
+                <label>How would you rate your experience?</label>
+                <Dropdown
+                  clearable
+                  options={ratingOptions}
+                  selection
+                  fluid
+                  value={formData.stars}
+                  onChange={handleStarsDropdownChange}
+                />
+                <Divider />
+                <Button type="submit">Send it!</Button>
+                <Divider />
+                <label>Tags</label>
+                <Dropdown
+                  clearable
+                  multiple
+                  options={tagOptions}
+                  fluid
+                  selection
+                  onChange={handleTagDropdownChange}
+                />
+                <Divider />
+              </Form>
               <Button
                 onClick={() => setShowCreateNewTagForm(true)}
                 size="small">
                 Create New Tag?
               </Button>
               {showCreateNewTagForm && <TagForm />}
-              <Divider />
-              <label>How would you rate your experience?</label>
-              <Dropdown
-                clearable
-                options={ratingOptions}
-                selection
-                fluid
-                value={formData.stars}
-              />
-              <Divider />
-            </Form>
-          </Container>
-
-          <Rail dividing position={"left"}>
-            {skiAreaState.loading ? (
-              <Dimmer active>
-                <Loader>Loading...</Loader>
-              </Dimmer>
-            ) : skiAreaState.error ? (
-              <Dimmer active>
-                <Header as="h1">
-                  Error! Ski Area Data cannot be retrieved! {skiAreaState.error}
-                </Header>
-              </Dimmer>
-            ) : skiAreas && skiAreas.length > 0 ? (
-              <Card>
-                {skiAreas.map((sa) => (
-                  <Card.Content key={sa.slug}>
-                    <Link to={`/ski-areas/${sa.slug}`}>{sa.name}</Link>
+            </Container>
+          </Segment>
+        </Grid.Column>
+        <Grid.Column width={4}>
+          {reviews.reviews && reviews.reviews.length > 0 ? (
+            <>
+              {reviews.reviews.map((review) => (
+                <Card>
+                  <Card.Content key={review.id} id="review-card">
+                    <Card.Header>
+                      <Link to={`/ski-areas/reviews/${review.id}`}>
+                        {review.header}
+                      </Link>{" "}
+                      <Divider />
+                      {review.skiAreaName}
+                    </Card.Header>
+                    <Card.Description>By {review.username}</Card.Description>
+                    <Card.Meta>
+                      <Rating
+                        icon="star"
+                        defaultRating={review.stars}
+                        maxRating={5}
+                        disabled
+                      />
+                    </Card.Meta>
+                    {formatDate(review.createdAt)}
                   </Card.Content>
-                ))}
-              </Card>
-            ) : null}
-          </Rail>
-
-          <Rail dividing position={"right"}>
-            {reviews.reviews && reviews.reviews.length > 0 ? (
-              <>
-                {reviews.reviews.map((review) => (
-                  <Card>
-                    <Card.Content key={review.id} id="review-card">
-                      <Card.Header>
-                        <Link to={`/ski-areas/reviews/${review.id}`}>
-                          {review.header}
-                        </Link>{" "}
-                        <Divider />
-                        {review.skiAreaName}
-                      </Card.Header>
-                      <Card.Description>By {review.username}</Card.Description>
-                      <Card.Meta>
-                        <Rating
-                          icon="star"
-                          defaultRating={review.stars}
-                          maxRating={5}
-                          disabled
-                        />
-                      </Card.Meta>
-                      {formatDate(review.createdAt)}
-                    </Card.Content>
-                  </Card>
-                ))}
-              </>
-            ) : null}
-          </Rail>
-        </Segment>
-      </Grid.Column>
+                </Card>
+              ))}
+            </>
+          ) : null}
+        </Grid.Column>
+      </Grid.Row>
     </Grid>
   );
 };

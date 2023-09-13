@@ -19,7 +19,11 @@ import {
   Dropdown,
   DropdownItemProps,
   Header,
+  Grid,
+  Card,
 } from "semantic-ui-react";
+import { fetchSkiAreas } from "../../redux/slices/skiAreaSlice";
+import { Link } from "react-router-dom";
 
 const UpdateReviewForm: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -39,6 +43,13 @@ const UpdateReviewForm: React.FC = () => {
   const review = reviews.review;
 
   useEffect(() => {
+    dispatch(fetchSkiAreas());
+  }, [dispatch]);
+
+  const skiAreaState = useSelector((state: RootState) => state.skiAreas);
+  const skiAreas = skiAreaState.skiAreas;
+
+  useEffect(() => {
     dispatch(fetchAllTags());
   }, [dispatch]);
 
@@ -51,9 +62,9 @@ const UpdateReviewForm: React.FC = () => {
 
   if (tags.tags) {
     tagOptions = tags.tags.map((tag) => ({
-      key: tag.tagId,
+      key: tag.id,
       text: tag.tag,
-      value: tag.tagId,
+      value: tag.id,
     }));
   } else {
     tagOptions = [];
@@ -185,68 +196,98 @@ const UpdateReviewForm: React.FC = () => {
 
   if (review) {
     return (
-      <Container fluid>
-        <Form onSubmit={handleSubmit}>
-          <Form.Field>
-            <input
-              placeholder={formData.body}
-              name="header"
-              value={formData.header}
-              onChange={handleInputChange}
-            />
-          </Form.Field>
-          <Form.TextArea
-            placeholder={formData.body}
-            name="body"
-            value={formData.body}
-            onChange={handleTextAreaChange}
-          />
-          {photos.map((photo, index) => (
-            <Form.Field key={index}>
-              <label>Photo Links</label>
-              <input
-                type="text"
-                value={photo}
-                onChange={(e) => handlePhotoChange(index, e.target.value)}
-              />
-              {index === photos.length - 1 && (
-                <Button icon="plus" onClick={handleAddPhotoInput} />
-              )}
-              {index > 0 && (
-                <Button
-                  icon="minus"
-                  onClick={() => handleRemovePhotoInput(index)}
+      <Grid>
+        <Grid.Row>
+          <Grid.Column width={4}>
+            {skiAreaState.loading ? (
+              <Dimmer active>
+                <Loader>Loading...</Loader>
+              </Dimmer>
+            ) : skiAreas && skiAreas.length > 0 ? (
+              <Card style={{ marginTop: "10px", marginLeft: "20px" }}>
+                {skiAreas.map((sa) => (
+                  <Card.Content key={sa.slug}>
+                    <Link to={`/ski-areas/${sa.slug}`}>{sa.name}</Link>
+                  </Card.Content>
+                ))}
+              </Card>
+            ) : skiAreaState.error ? (
+              <Dimmer active>
+                <Header as="h1">
+                  Error! Ski Area Data cannot be retrieved! {skiAreaState.error}
+                </Header>
+              </Dimmer>
+            ) : null}
+          </Grid.Column>
+          <Grid.Column width={8}>
+            <Container fluid>
+              <Form onSubmit={handleSubmit}>
+                <Form.Field>
+                  <input
+                    placeholder={formData.body}
+                    name="header"
+                    value={formData.header}
+                    onChange={handleInputChange}
+                  />
+                </Form.Field>
+                <Form.TextArea
+                  placeholder={formData.body}
+                  name="body"
+                  value={formData.body}
+                  onChange={handleTextAreaChange}
                 />
-              )}
-            </Form.Field>
-          ))}
-          <Divider />
-          <label>Tags</label>
-          <Dropdown
-            clearable
-            options={tagOptions}
-            multiple
-            fluid
-            selection
-            value={formData.tags}
-          />
-          <Button onClick={() => setShowCreateNewTagForm(true)} size="small">
-            Create New Tag?
-          </Button>
-          {showCreateNewTagForm && <TagForm />}
-          <Divider />
-          <label>How would you rate your experience?</label>
-          <Dropdown
-            clearable
-            options={ratingOptions}
-            selection
-            fluid
-            value={formData.stars}
-          />
-          <Divider />
-          <Button type="submit">Send it!</Button>
-        </Form>
-      </Container>
+                {photos.map((photo, index) => (
+                  <Form.Field key={index}>
+                    <label>Photo Links</label>
+                    <input
+                      type="text"
+                      value={photo}
+                      onChange={(e) => handlePhotoChange(index, e.target.value)}
+                    />
+                    {index === photos.length - 1 && (
+                      <Button icon="plus" onClick={handleAddPhotoInput} />
+                    )}
+                    {index > 0 && (
+                      <Button
+                        icon="minus"
+                        onClick={() => handleRemovePhotoInput(index)}
+                      />
+                    )}
+                  </Form.Field>
+                ))}
+                <Divider />
+                <label>Tags</label>
+                <Dropdown
+                  clearable
+                  options={tagOptions}
+                  multiple
+                  fluid
+                  selection
+                  value={formData.tags}
+                />
+                <Button
+                  onClick={() => setShowCreateNewTagForm(true)}
+                  size="small">
+                  Create New Tag?
+                </Button>
+                {showCreateNewTagForm && <TagForm />}
+                <Divider />
+                <label>How would you rate your experience?</label>
+                <Dropdown
+                  clearable
+                  options={ratingOptions}
+                  selection
+                  fluid
+                  value={formData.stars}
+                />
+                <Divider />
+                <Button type="submit">Send it!</Button>
+              </Form>
+            </Container>
+          </Grid.Column>
+          <Grid.Column width={4}></Grid.Column>
+        </Grid.Row>
+      </Grid>
     );
   }
 

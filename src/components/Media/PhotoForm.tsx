@@ -31,9 +31,9 @@ const PhotoForm: React.FC = () => {
 
   if (tags.tags) {
     tagOptions = tags.tags.map((tag) => ({
-      key: tag.tagId,
+      key: tag.id,
       text: tag.tag,
-      value: tag.tagId,
+      value: tag.id,
     }));
   } else {
     tagOptions = [];

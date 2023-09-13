@@ -7,7 +7,7 @@ export interface NewTag {
 }
 
 export interface TagData {
-  tagId: string;
+  id: string;
   tag: string;
 }
 

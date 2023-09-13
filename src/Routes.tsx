@@ -11,7 +11,6 @@ import UpdateUserForm from "./components/Users/UpdateUserForm";
 import Review from "./components/Reviews/Review";
 import ReviewReply from "./components/Reviews/ReviewReply";
 import ReviewForm from "./components/Reviews/ReviewForm";
-import ReviewReplyForm from "./components/Reviews/ReviewReplyForm";
 import UpdateReviewForm from "./components/Reviews/UpdateReviewForm";
 import UpdateReviewReplyForm from "./components/Reviews/UpdateReviewReplyForm";
 import UserPhotos from "./components/Media/UserPhotos";
@@ -41,10 +40,6 @@ const AppRoutes: React.FC = () => {
       <Route
         path="/ski-areas/reviews/:id/update"
         element={<UpdateReviewForm />}
-      />
-      <Route
-        path="/ski-areas/reviews/:id/reply"
-        element={<ReviewReplyForm />}
       />
       <Route path="/ski-areas/reviews/replies/:id" element={<ReviewReply />} />
       <Route

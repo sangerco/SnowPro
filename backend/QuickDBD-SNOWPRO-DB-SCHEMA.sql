@@ -35,6 +35,7 @@ CREATE TABLE "ski_areas" (
 CREATE TABLE "reviews" (
     "id" text   NOT NULL,
     "user_id" text   NOT NULL,
+    "username" text NOT NULL,
     "ski_area_slug" text  NOT NULL,
     "header" text  NOT NULL,
     "body" varchar(500)   NULL,

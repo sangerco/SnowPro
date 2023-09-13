@@ -15,13 +15,14 @@ import {
 import { checkIfUserOrAdmin, ensureLoggedIn } from "../middleware/auth";
 
 interface ReviewData {
-  userId: string;
-  skiAreaSlug: string;
+  user_id: string;
+  username: string;
+  ski_area_slug: string;
   header: string;
   body: string;
   stars: number;
   photos: string[];
-  tagIds: string[];
+  tags: string[];
 }
 
 const router = express.Router();
@@ -114,6 +115,7 @@ router.post(
   ensureLoggedIn,
   checkIfUserOrAdmin,
   async (req: Request, res: Response, next: NextFunction) => {
+    console.log(req.body);
     try {
       const validator: jsonschema.ValidatorResult = jsonschema.validate(
         req.body,
@@ -124,22 +126,24 @@ router.post(
         throw new BadRequestError(errors);
       }
       const {
-        userId,
-        skiAreaSlug,
+        user_id,
+        username,
+        ski_area_slug,
         header,
         body,
         stars,
         photos,
-        tagIds,
+        tags,
       }: ReviewData = req.body;
       const review = await Review.createReview(
-        userId,
-        skiAreaSlug,
+        user_id,
+        username,
+        ski_area_slug,
         header,
         body,
         stars,
         photos,
-        tagIds
+        tags
       );
       return res.status(201).json({ review });
     } catch (e) {

@@ -6,7 +6,6 @@ import {
   Form,
   Button,
   Grid,
-  Rail,
   Segment,
   Card,
   Dimmer,
@@ -86,120 +85,120 @@ const UserForm: React.FC = () => {
   };
 
   return (
-    <Grid centered columns={3}>
-      <Grid.Column>
-        <Segment>
-          <Form onSubmit={handleSubmit}>
-            <Form.Field required>
-              <label>Username</label>
-              <input
-                placeholder="username"
-                name="username"
-                value={formData.username}
-                onChange={handleChange}
-              />
-            </Form.Field>
-            <Form.Field required>
-              <label>Password</label>
-              <input
-                placeholder="password"
-                type="password"
-                name="password"
-                value={formData.password}
-                onChange={handleChange}
-              />
-            </Form.Field>
-            <Form.Field required>
-              <label>First Name</label>
-              <input
-                placeholder="First Name"
-                name="firstName"
-                value={formData.firstName}
-                onChange={handleChange}
-              />
-            </Form.Field>
-            <Form.Field required>
-              <label>Last Name</label>
-              <input
-                placeholder="Last Name"
-                name="lastName"
-                value={formData.lastName}
-                onChange={handleChange}
-              />
-            </Form.Field>
-            <Form.Field required>
-              <label>Email</label>
-              <input
-                placeholder="Email"
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-              />
-            </Form.Field>
-            <div className="ui two buttons">
-              <Button color="green" type="submit">
-                Register
-              </Button>
-              <Button color="red" onClick={() => navigate("/")}>
-                Cancel
-              </Button>
-            </div>
-          </Form>
-
-          <Rail dividing position={"left"}>
-            {skiAreaState.loading ? (
-              <Dimmer active>
-                <Loader>Loading...</Loader>
-              </Dimmer>
-            ) : skiAreaState.error ? (
-              <Dimmer active>
-                <Header as="h1">
-                  Error! Ski Area Data cannot be retrieved! {skiAreaState.error}
-                </Header>
-              </Dimmer>
-            ) : skiAreas && skiAreas.length > 0 ? (
-              <Card>
-                {skiAreas.map((sa) => (
-                  <Card.Content key={sa.slug}>
-                    <Link to={`/ski-areas/${sa.slug}`}>{sa.name}</Link>
+    <Grid>
+      <Grid.Row>
+        <Grid.Column width={4}>
+          {skiAreaState.loading ? (
+            <Dimmer active>
+              <Loader>Loading...</Loader>
+            </Dimmer>
+          ) : skiAreaState.error ? (
+            <Dimmer active>
+              <Header as="h1">
+                Error! Ski Area Data cannot be retrieved! {skiAreaState.error}
+              </Header>
+            </Dimmer>
+          ) : skiAreas && skiAreas.length > 0 ? (
+            <Card style={{ marginTop: "10px", marginLeft: "20px" }}>
+              {skiAreas.map((sa) => (
+                <Card.Content key={sa.slug}>
+                  <Link to={`/ski-areas/${sa.slug}`}>{sa.name}</Link>
+                </Card.Content>
+              ))}
+            </Card>
+          ) : null}
+        </Grid.Column>
+        <Grid.Column width={8}>
+          <Segment raised>
+            <Form onSubmit={handleSubmit}>
+              <Form.Field required>
+                <label>Username</label>
+                <input
+                  placeholder="username"
+                  name="username"
+                  value={formData.username}
+                  onChange={handleChange}
+                />
+              </Form.Field>
+              <Form.Field required>
+                <label>Password</label>
+                <input
+                  placeholder="password"
+                  type="password"
+                  name="password"
+                  value={formData.password}
+                  onChange={handleChange}
+                />
+              </Form.Field>
+              <Form.Field required>
+                <label>First Name</label>
+                <input
+                  placeholder="First Name"
+                  name="firstName"
+                  value={formData.firstName}
+                  onChange={handleChange}
+                />
+              </Form.Field>
+              <Form.Field required>
+                <label>Last Name</label>
+                <input
+                  placeholder="Last Name"
+                  name="lastName"
+                  value={formData.lastName}
+                  onChange={handleChange}
+                />
+              </Form.Field>
+              <Form.Field required>
+                <label>Email</label>
+                <input
+                  placeholder="Email"
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                />
+              </Form.Field>
+              <div className="ui two buttons">
+                <Button color="green" type="submit">
+                  Register
+                </Button>
+                <Button color="red" onClick={() => navigate("/")}>
+                  Cancel
+                </Button>
+              </div>
+            </Form>
+          </Segment>
+        </Grid.Column>
+        <Grid.Column width={4}>
+          {reviews.reviews && reviews.reviews.length > 0 ? (
+            <>
+              {reviews.reviews.map((review) => (
+                <Card>
+                  <Card.Content key={review.id} id="review-card">
+                    <Card.Header>
+                      <Link to={`/ski-areas/reviews/${review.id}`}>
+                        {review.header}
+                      </Link>{" "}
+                      <Divider />
+                      {review.skiAreaName}
+                    </Card.Header>
+                    <Card.Description>By {review.username}</Card.Description>
+                    <Card.Meta>
+                      <Rating
+                        icon="star"
+                        defaultRating={review.stars}
+                        maxRating={5}
+                        disabled
+                      />
+                    </Card.Meta>
+                    {formatDate(review.createdAt)}
                   </Card.Content>
-                ))}
-              </Card>
-            ) : null}
-          </Rail>
-
-          <Rail dividing position={"right"}>
-            {reviews.reviews && reviews.reviews.length > 0 ? (
-              <>
-                {reviews.reviews.map((review) => (
-                  <Card>
-                    <Card.Content key={review.id} id="review-card">
-                      <Card.Header>
-                        <Link to={`/ski-areas/reviews/${review.id}`}>
-                          {review.header}
-                        </Link>{" "}
-                        <Divider />
-                        {review.skiAreaName}
-                      </Card.Header>
-                      <Card.Description>By {review.username}</Card.Description>
-                      <Card.Meta>
-                        <Rating
-                          icon="star"
-                          defaultRating={review.stars}
-                          maxRating={5}
-                          disabled
-                        />
-                      </Card.Meta>
-                      {formatDate(review.createdAt)}
-                    </Card.Content>
-                  </Card>
-                ))}
-              </>
-            ) : null}
-          </Rail>
-        </Segment>
-      </Grid.Column>
+                </Card>
+              ))}
+            </>
+          ) : null}
+        </Grid.Column>
+      </Grid.Row>
     </Grid>
   );
 };

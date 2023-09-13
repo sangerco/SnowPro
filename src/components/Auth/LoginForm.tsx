@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../redux/store";
 import { loginUser } from "../../redux/slices/authSlice";
 import {
-  Rail,
   Button,
   Form,
   Card,
@@ -91,93 +90,90 @@ const LoginForm = () => {
 
   return (
     <>
-      <Grid centered columns={3}>
-        <Grid.Column>
-          <Segment>
-            <Form onSubmit={handleSubmit}>
-              <Form.Field>
+      <Grid>
+        <Grid.Row>
+          <Grid.Column width={4}>
+            {skiAreaState.loading ? (
+              <Dimmer active>
+                <Loader>Loading...</Loader>
+              </Dimmer>
+            ) : skiAreaState.error ? (
+              <Dimmer active>
+                <Header as="h1">
+                  Error! Ski Area Data cannot be retrieved! {skiAreaState.error}
+                </Header>
+              </Dimmer>
+            ) : skiAreas && skiAreas.length > 0 ? (
+              <Card style={{ marginTop: "10px", marginLeft: "20px" }}>
+                {skiAreas.map((sa) => (
+                  <Card.Content key={sa.slug}>
+                    <Link to={`/ski-areas/${sa.slug}`}>{sa.name}</Link>
+                  </Card.Content>
+                ))}
+              </Card>
+            ) : null}
+          </Grid.Column>
+          <Grid.Column width={8}>
+            <Segment raised>
+              <Form onSubmit={handleSubmit}>
+                <Form.Field>
+                  <label>
+                    Username:
+                    <input
+                      type="text"
+                      name="username"
+                      value={formData.username}
+                      onChange={handleChange}
+                    />
+                  </label>
+                </Form.Field>
+                <Form.Field></Form.Field>
                 <label>
-                  Username:
+                  Password:
                   <input
-                    type="text"
-                    name="username"
-                    value={formData.username}
+                    type="password"
+                    name="password"
+                    value={formData.password}
                     onChange={handleChange}
                   />
                 </label>
-              </Form.Field>
-              <Form.Field></Form.Field>
-              <label>
-                Password:
-                <input
-                  type="password"
-                  name="password"
-                  value={formData.password}
-                  onChange={handleChange}
-                />
-              </label>
-              <Form.Field />
-              <Button color="blue" type="submit">
-                Login
-              </Button>
-            </Form>
-
-            <Rail dividing position={"left"}>
-              {skiAreaState.loading ? (
-                <Dimmer active>
-                  <Loader>Loading...</Loader>
-                </Dimmer>
-              ) : skiAreaState.error ? (
-                <Dimmer active>
-                  <Header as="h1">
-                    Error! Ski Area Data cannot be retrieved!{" "}
-                    {skiAreaState.error}
-                  </Header>
-                </Dimmer>
-              ) : skiAreas && skiAreas.length > 0 ? (
-                <Card>
-                  {skiAreas.map((sa) => (
-                    <Card.Content key={sa.slug}>
-                      <Link to={`/ski-areas/${sa.slug}`}>{sa.name}</Link>
+                <Form.Field />
+                <Button color="blue" type="submit">
+                  Login
+                </Button>
+              </Form>
+            </Segment>
+          </Grid.Column>
+          <Grid.Column width={4}>
+            {reviews && reviews.length > 0 ? (
+              <>
+                {reviews.map((review) => (
+                  <Card>
+                    <Card.Content key={review.id} id="review-card">
+                      <Card.Header>
+                        <Link to={`/ski-areas/reviews/${review.id}`}>
+                          {review.header}
+                        </Link>{" "}
+                        <Divider />
+                        {review.skiAreaName}
+                      </Card.Header>
+                      <Card.Description>By {review.username}</Card.Description>
+                      <Card.Meta>
+                        <Rating
+                          icon="star"
+                          defaultRating={review.stars}
+                          maxRating={5}
+                          disabled
+                        />
+                      </Card.Meta>
+                      {formatDate(review.createdAt)}
                     </Card.Content>
-                  ))}
-                </Card>
-              ) : null}
-            </Rail>
-
-            <Rail dividing position={"right"}>
-              {reviews && reviews.length > 0 ? (
-                <>
-                  {reviews.map((review) => (
-                    <Card>
-                      <Card.Content key={review.id} id="review-card">
-                        <Card.Header>
-                          <Link to={`/ski-areas/reviews/${review.id}`}>
-                            {review.header}
-                          </Link>{" "}
-                          <Divider />
-                          {review.skiAreaName}
-                        </Card.Header>
-                        <Card.Description>
-                          By {review.username}
-                        </Card.Description>
-                        <Card.Meta>
-                          <Rating
-                            icon="star"
-                            defaultRating={review.stars}
-                            maxRating={5}
-                            disabled
-                          />
-                        </Card.Meta>
-                        {formatDate(review.createdAt)}
-                      </Card.Content>
-                    </Card>
-                  ))}
-                </>
-              ) : null}
-            </Rail>
-          </Segment>
-        </Grid.Column>
+                  </Card>
+                ))}
+              </>
+            ) : null}
+          </Grid.Column>
+        </Grid.Row>
       </Grid>
       <Modal open={modalOpen}>
         <Modal.Content>

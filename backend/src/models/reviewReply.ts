@@ -148,7 +148,7 @@ class ReviewReply {
                 r.created_at AS "createdAt"
             FROM review_replies r
             LEFT JOIN users u ON r.user_id = u.id
-            WHERE id = $1`,
+            WHERE r.id = $1`,
       [id]
     );
 

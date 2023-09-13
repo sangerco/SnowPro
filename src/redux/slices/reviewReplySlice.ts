@@ -1,7 +1,6 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 import { URL } from "../../utils/config";
-import { stat } from "fs";
 
 export interface ReviewReplyData {
   id: string;

@@ -160,84 +160,92 @@ const SkiAreaPage: React.FC = () => {
       const liftStatus = liftsObject[liftName];
       const color = statusColor(liftStatus as LiftStatus);
       return (
-        <List.Item
-          key={liftName}
-          style={{ display: "flex", justifyContent: "space-between" }}>
-          <span>{liftName}</span>
-          <span style={{ color }}>{liftStatus}</span>
-        </List.Item>
+        <>
+          <List.Item
+            key={liftName}
+            style={{ display: "flex", justifyContent: "space-between" }}>
+            <span>{liftName}</span>
+            <span style={{ color }}>{liftStatus}</span>
+          </List.Item>
+          <Divider />
+        </>
       );
     });
 
     return (
-      <Grid centered columns={3}>
-        <Segment>
-          <a href={skiAreaData.href}>
-            <Header as="h1" color="green" style={{ padding: "10px" }}>
-              {skiAreaData.name}
+      <Grid>
+        <Grid.Row>
+          <Grid.Column width={4}>
+            <Container style={{ margin: "10px" }}>
+              <Header as="h3" style={{ margin: "20px" }}>
+                Users who favorited this ski area:
+              </Header>
+              <Card.Group>
+                {favMountainInfo && favMountainInfo.length > 0 ? (
+                  favMountainInfo.map((fm) => (
+                    <Card
+                      key={fm.userId}
+                      style={{ marginTop: "20px", padding: "10px" }}>
+                      <Header>{fm.username}</Header>
+                      <Card.Meta as={Link} to={`/users/${fm.username}`}>
+                        {fm.username}'s Page
+                      </Card.Meta>
+                    </Card>
+                  ))
+                ) : (
+                  <Segment
+                    textAlign="center"
+                    raised
+                    style={{ marginTop: "20px", marginLeft: "20px" }}>
+                    <p>No one has favorited this mountain yet!</p>
+                  </Segment>
+                )}
+              </Card.Group>
+            </Container>
+          </Grid.Column>
+          <Grid.Column width={5}>
+            <a href={skiAreaData.href}>
+              <Header as="h1" color="green" style={{ padding: "10px" }}>
+                {skiAreaData.name}
+              </Header>
+            </a>
+            <Divider />
+            <Header as="h4" textAlign="right">
+              Country: {skiAreaData.country}
             </Header>
-          </a>
-          <Divider />
-          <Header as="h4" textAlign="right">
-            Country: {skiAreaData.country}
-          </Header>
-          <Header as="h4" textAlign="right">
-            Region: {skiAreaData.region}
-          </Header>
-          <Divider />
-          {isAuthenticated && !isFavorited ? (
-            <Button
-              color="green"
-              size="small"
-              floated="right"
-              onClick={() => dispatch(createFavMountain(favMountainData))}
-              style={{ marginTop: "10px", marginBottom: "10px" }}>
-              Save as favorite mountain?
-            </Button>
-          ) : null}
-          <Divider />
-          <Segment raised>
-            <span style={{ margin: "10px", padding: "10px" }}>
-              Visited this resort?
-            </span>
-            <Link to={`/ski-areas/${skiAreaData.slug}/review`}>
-              <Button size="mini" color="blue">
-                Leave a Review!
+            <Header as="h4" textAlign="right">
+              Region: {skiAreaData.region}
+            </Header>
+            <Divider />
+            {isAuthenticated && !isFavorited ? (
+              <Button
+                color="green"
+                size="small"
+                floated="right"
+                onClick={() => dispatch(createFavMountain(favMountainData))}
+                style={{ marginTop: "10px", marginBottom: "10px" }}>
+                Save as favorite mountain?
               </Button>
-            </Link>
-          </Segment>
-          <Header as="h4" textAlign="left">
-            Reviews of {skiAreaData.name}
-          </Header>
-          {reviews && reviews.length > 0
-            ? reviews.map((review) => <ReviewView review={review} />)
-            : null}
-
-          <Rail size="small" dividing position="left">
-            <Header as="h3" style={{ margin: "10px" }}>
-              Users who favorited this ski area:
+            ) : null}
+            <Divider />
+            <Segment raised>
+              <span style={{ margin: "10px", padding: "10px" }}>
+                Visited this resort?
+              </span>
+              <Link to={`/ski-areas/${skiAreaData.slug}/review`}>
+                <Button size="mini" color="blue">
+                  Leave a Review!
+                </Button>
+              </Link>
+            </Segment>
+            <Header as="h4" textAlign="left">
+              Reviews of {skiAreaData.name}
             </Header>
-            <Card.Group>
-              {favMountainInfo && favMountainInfo.length > 0 ? (
-                favMountainInfo.map((fm) => (
-                  <Card
-                    key={fm.userId}
-                    style={{ marginTop: "20px", padding: "10px" }}>
-                    <Header>{fm.username}</Header>
-                    <Card.Meta as={Link} to={`/users/${fm.username}`}>
-                      {fm.username}'s Page
-                    </Card.Meta>
-                  </Card>
-                ))
-              ) : (
-                <Segment raised style={{ marginTop: "20px" }}>
-                  <p>No one has favorited this mountain yet!</p>
-                </Segment>
-              )}
-            </Card.Group>
-          </Rail>
-
-          <Rail size="big" dividing position="right">
+            {reviews && reviews.length > 0
+              ? reviews.map((review) => <ReviewView review={review} />)
+              : null}
+          </Grid.Column>
+          <Grid.Column width={7}>
             <SkiAreaMap skiAreaPageData={skiAreaData} />
             <Divider />
             <div
@@ -254,8 +262,8 @@ const SkiAreaPage: React.FC = () => {
               <Header as="h3">Lifts</Header>
               {lifts}
             </div>
-          </Rail>
-        </Segment>
+          </Grid.Column>
+        </Grid.Row>
       </Grid>
     );
   }
