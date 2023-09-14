@@ -10,6 +10,7 @@ import {
   DropdownItemProps,
   Container,
   Divider,
+  Modal,
 } from "semantic-ui-react";
 import TagForm from "../Tags/TagForm";
 
@@ -48,9 +49,20 @@ const VideoForm: React.FC = () => {
 
   const [formData, setFormData] = useState(initialState);
   const [showCreateNewTagForm, setShowCreateNewTagForm] = useState(false);
+  const [showErrorModal, setShowErrorModal] = useState<boolean>(false);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (
+      !formData.link.includes("youtube") &&
+      !formData.link.includes("youtu.be")
+    ) {
+      setShowErrorModal(true);
+      return;
+    }
+
+    setShowErrorModal(false);
 
     dispatch(createVideo(formData));
 
@@ -67,17 +79,22 @@ const VideoForm: React.FC = () => {
   };
 
   return (
-    <Container fluid>
-      <Form onSubmit={handleSubmit}>
-        <Form.Field>
-          <label>Photo Link</label>
-          <input type="text" onChange={handleChange} value={formData.link} />
-        </Form.Field>
-        <Form.Field>
-          <label>About</label>
-          <input type="text" onChange={handleChange} value={formData.about} />
-        </Form.Field>
-        <Divider />
+    <>
+      <Container fluid style={{ margin: "10px" }}>
+        <Form onSubmit={handleSubmit}>
+          <Form.Field>
+            <label>Video Link - must be YouTube link</label>
+            <input type="text" onChange={handleChange} value={formData.link} />
+          </Form.Field>
+          <Form.Field>
+            <label>About</label>
+            <input type="text" onChange={handleChange} value={formData.about} />
+          </Form.Field>
+          <Divider />
+          <Button size="small" type="submit" color="green">
+            Send it.
+          </Button>
+        </Form>
         <label>Tags</label>
         <Dropdown
           clearable
@@ -87,13 +104,21 @@ const VideoForm: React.FC = () => {
           selection
           value={formData.tagIds}
         />
-        <Button onClick={() => setShowCreateNewTagForm(true)} size="small">
-          Create New Tag?
-        </Button>
-        {showCreateNewTagForm && <TagForm />}
+        <Container style={{ margin: "10px" }}>
+          <Button onClick={() => setShowCreateNewTagForm(true)} size="small">
+            Create New Tag?
+          </Button>
+        </Container>
         <Divider />
-      </Form>
-    </Container>
+        {showCreateNewTagForm && <TagForm />}
+      </Container>
+      <Modal open={showErrorModal} onClose={() => setShowErrorModal(false)}>
+        <Modal.Content>Video link must be a YouTube link.</Modal.Content>
+        <Modal.Actions>
+          <Button onClick={() => setShowErrorModal(false)}>close</Button>
+        </Modal.Actions>
+      </Modal>
+    </>
   );
 };
 

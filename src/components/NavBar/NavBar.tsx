@@ -31,8 +31,18 @@ const NavBar = () => {
               Ski Areas
             </Link>
           </Dropdown.Item>
-          <Dropdown.Item>Recent Reviews</Dropdown.Item>
-          <Dropdown.Item>Recent Media</Dropdown.Item>
+          <Dropdown.Item>
+            <Link
+              to="/ski-areas/reviews/recent-reviews"
+              style={{ color: "green" }}>
+              Recent Reviews
+            </Link>
+          </Dropdown.Item>
+          <Dropdown.Item>
+            <Link to="/media/recent-media" style={{ color: "green" }}>
+              Recent Media
+            </Link>
+          </Dropdown.Item>
           <Dropdown.Item>Users</Dropdown.Item>
         </Dropdown.Menu>
       </Dropdown>

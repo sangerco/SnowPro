@@ -9,6 +9,7 @@ import MessageForm from "./components/Messages/MessageForm";
 import MessageReplyForm from "./components/Messages/MessageReplyForm";
 import UpdateUserForm from "./components/Users/UpdateUserForm";
 import Review from "./components/Reviews/Review";
+import RecentReviews from "./components/Reviews/RecentReviews";
 import ReviewReply from "./components/Reviews/ReviewReply";
 import ReviewForm from "./components/Reviews/ReviewForm";
 import UpdateReviewForm from "./components/Reviews/UpdateReviewForm";
@@ -18,6 +19,7 @@ import UserVideos from "./components/Media/UserVideos";
 import SkiAreaData from "./components/SkiAreas/SkiAreaData";
 import SkiAreaPage from "./components/SkiAreas/SkiAreaPage";
 import Home from "./components/Home/Home";
+import RecentMedia from "./components/Media/RecentMedia";
 
 const AppRoutes: React.FC = () => {
   return (
@@ -29,6 +31,7 @@ const AppRoutes: React.FC = () => {
       <Route path="/users/:username/update" element={<UpdateUserForm />} />
       <Route path="/users/:username/photos" element={<UserPhotos />} />
       <Route path="/users/:username/videos" element={<UserVideos />} />
+      <Route path="/media/recent-media" element={<RecentMedia />} />
       <Route path="/messages/:id" element={<Message />} />
       <Route path="/messages/replies/:id" element={<MessageReply />} />
       <Route path="/messages/create-message" element={<MessageForm />} />
@@ -37,6 +40,10 @@ const AppRoutes: React.FC = () => {
       <Route path="/ski-areas/:slug" element={<SkiAreaPage />} />
       <Route path="/ski-areas/:slug/review" element={<ReviewForm />} />
       <Route path="/ski-areas/reviews/:id" element={<Review />} />
+      <Route
+        path="/ski-areas/reviews/recent-reviews"
+        element={<RecentReviews />}
+      />
       <Route
         path="/ski-areas/reviews/:id/update"
         element={<UpdateReviewForm />}

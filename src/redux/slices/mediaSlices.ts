@@ -34,11 +34,17 @@ export interface VideoData {
   createdAt: Date;
 }
 
+export interface MediaData {
+  photos: PhotoData[];
+  videos: VideoData[];
+}
+
 interface MediaState {
   photo: PhotoData | null;
   photos: PhotoData[] | [];
   video: VideoData | null;
   videos: VideoData[] | [];
+  media: MediaData | null;
   loading: boolean;
   error: string | null;
 }
@@ -48,6 +54,7 @@ const initialState: MediaState = {
   photos: [],
   video: null,
   videos: [],
+  media: null,
   loading: false,
   error: null,
 };
@@ -149,6 +156,15 @@ export const deleteVideo = createAsyncThunk(
   async (id: string) => {
     await axios.delete(`${URL}/api/video/${id}`);
     return null;
+  }
+);
+
+export const fetchRecentMedia = createAsyncThunk(
+  "media/fetchRecentMedia",
+  async () => {
+    const response = await axios.get(`${URL}/media/all-recent-media`);
+    const media = response.data.media;
+    return media;
   }
 );
 
@@ -308,7 +324,24 @@ const mediaSlice = createSlice({
       .addCase(deleteVideo.rejected, (state, action: PayloadAction<any>) => {
         state.loading = false;
         state.error = action.payload;
-      });
+      })
+      .addCase(fetchRecentMedia.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(
+        fetchRecentMedia.fulfilled,
+        (state, action: PayloadAction<MediaData>) => {
+          state.media = action.payload;
+          state.loading = false;
+        }
+      )
+      .addCase(
+        fetchRecentMedia.rejected,
+        (state, action: PayloadAction<any>) => {
+          state.loading = false;
+          state.error = action.payload;
+        }
+      );
   },
 });
 

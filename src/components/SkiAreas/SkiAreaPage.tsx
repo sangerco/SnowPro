@@ -176,7 +176,12 @@ const SkiAreaPage: React.FC = () => {
       <Grid>
         <Grid.Row>
           <Grid.Column width={4}>
-            <Container style={{ margin: "10px" }}>
+            <Container
+              style={{
+                margin: "10px",
+                border: "red solid 1px",
+                padding: "10px",
+              }}>
               <Header as="h3" style={{ margin: "20px" }}>
                 Users who favorited this ski area:
               </Header>

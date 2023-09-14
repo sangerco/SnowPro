@@ -62,6 +62,18 @@ router.get(
   }
 );
 
+router.get(
+  "/media/all-recent-media",
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const media = await Photo.getAllMedia();
+      return res.json({ media });
+    } catch (e) {
+      return next(e);
+    }
+  }
+);
+
 router.patch(
   "/api/photo/:id",
   ensureLoggedIn,

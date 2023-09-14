@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { createTag, fetchAllTags } from "../../redux/slices/tagSlice";
 import { useDispatch } from "react-redux";
-import { Form, Button } from "semantic-ui-react";
+import { Form, Button, Container } from "semantic-ui-react";
 import { AppDispatch } from "../../redux/store";
 
 const TagForm: React.FC = () => {
@@ -28,19 +28,21 @@ const TagForm: React.FC = () => {
   };
 
   return (
-    <Form onSubmit={handleSubmit} style={{ marginTop: "10px" }}>
-      <Form.Field>
-        <input
-          placeholder="Create New Tag"
-          name="tag"
-          value={formData.tag}
-          onChange={handleChange}
-        />
-      </Form.Field>
-      <Button size="mini" color="green" type="submit">
-        Submit
-      </Button>
-    </Form>
+    <Container style={{ margin: "10px" }}>
+      <Form onSubmit={handleSubmit} style={{ marginTop: "10px" }}>
+        <Form.Field>
+          <input
+            placeholder="Create New Tag"
+            name="tag"
+            value={formData.tag}
+            onChange={handleChange}
+          />
+        </Form.Field>
+        <Button size="mini" color="green" type="submit">
+          Submit
+        </Button>
+      </Form>
+    </Container>
   );
 };
 

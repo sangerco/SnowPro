@@ -3,7 +3,7 @@ import { sqlForPartialUpdate } from "../helpers/sql";
 import { NotFoundError } from "../expressError";
 import { v4 as uuidv4 } from "uuid";
 
-interface VideoData {
+export interface VideoData {
   id: string;
   userId: string;
   username: string;

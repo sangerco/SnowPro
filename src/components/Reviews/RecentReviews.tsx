@@ -1,30 +1,25 @@
 import React, { useEffect } from "react";
-import MyPage from "./MyPage";
-import { fetchSkiAreas } from "../../redux/slices/skiAreaSlice";
-import { fetchAllReviews } from "../../redux/slices/reviewSlice";
-import AnonHome from "./AnonHome";
-import "./Home.css";
+import { useSelector, useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
 import {
-  Card,
   Dimmer,
-  Divider,
-  Grid,
-  Header,
   Loader,
   Rating,
-  Segment,
+  Header,
+  Divider,
+  Grid,
+  Card,
 } from "semantic-ui-react";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../../redux/store";
-import { Link } from "react-router-dom";
-import Inbox from "../Messages/Inbox";
+import { RootState, AppDispatch } from "../../redux/store";
+import { fetchAllReviews } from "../../redux/slices/reviewSlice";
+import { fetchSkiAreas } from "../../redux/slices/skiAreaSlice";
 
-const Home: React.FC = () => {
+const RecentReviews: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const isAuthenticated = useSelector(
-    (state: RootState) => state.auth.isAuthenticated
-  );
-  const username = useSelector((state: RootState) => state.auth.data?.username);
+  const reviews = useSelector((state: RootState) => state.reviews);
+  useEffect(() => {
+    dispatch(fetchAllReviews());
+  }, [dispatch]);
 
   useEffect(() => {
     dispatch(fetchSkiAreas());
@@ -32,13 +27,6 @@ const Home: React.FC = () => {
 
   const skiAreaState = useSelector((state: RootState) => state.skiAreas);
   const skiAreas = skiAreaState.skiAreas;
-
-  useEffect(() => {
-    dispatch(fetchAllReviews());
-  }, [dispatch]);
-
-  const reviewState = useSelector((state: RootState) => state.reviews);
-  const reviews = reviewState.reviews;
 
   const formatDate = (date: Date) => {
     const newDate = new Date(date);
@@ -50,57 +38,56 @@ const Home: React.FC = () => {
     return newDate.toLocaleDateString("en-US", options);
   };
 
-  return (
-    <div id="background-container">
+  if (reviews.error) {
+    return (
+      <Dimmer active>
+        <div>
+          <p>Error! Review cannot be retrieved! {`${reviews.error}`}</p>
+        </div>
+      </Dimmer>
+    );
+  }
+
+  if (reviews.loading) {
+    return (
+      <Dimmer active>
+        <Loader>Loading...</Loader>
+      </Dimmer>
+    );
+  }
+
+  if (Array.isArray(reviews)) {
+    return <div>Error! Reviews cannot be retrieved!</div>;
+  } else if (reviews) {
+    return (
       <Grid>
         <Grid.Row>
-          <Grid.Column widescreen={4}>
+          <Grid.Column width={4}>
             {skiAreaState.loading ? (
               <Dimmer active>
                 <Loader>Loading...</Loader>
               </Dimmer>
-            ) : skiAreas && skiAreas.length > 0 ? (
-              <Card id="ski-area-card">
-                {" "}
-                {/* max height overflow auto */}
-                {skiAreas.map((sa) => (
-                  <Card.Content key={sa.slug}>
-                    <Link to={`/ski-areas/${sa.slug}`}>{sa.name}</Link>
-                  </Card.Content>
-                ))}
-              </Card>
             ) : skiAreaState.error ? (
               <Dimmer active>
                 <Header as="h1">
                   Error! Ski Area Data cannot be retrieved! {skiAreaState.error}
                 </Header>
               </Dimmer>
+            ) : skiAreas && skiAreas.length > 0 ? (
+              <Card style={{ marginTop: "10px", marginLeft: "20px" }}>
+                {skiAreas.map((sa) => (
+                  <Card.Content key={sa.slug}>
+                    <Link to={`/ski-areas/${sa.slug}`}>{sa.name}</Link>
+                  </Card.Content>
+                ))}
+              </Card>
             ) : null}
           </Grid.Column>
           <Grid.Column width={8}>
-            <Segment>{isAuthenticated ? <MyPage /> : <AnonHome />}</Segment>
-          </Grid.Column>
-          <Grid.Column width={4}>
-            {reviewState.loading ? (
-              <Dimmer active>
-                <Loader>Loading...</Loader>
-              </Dimmer>
-            ) : reviewState.error ? (
-              <Dimmer active>
-                <Header as="h1">
-                  Error! Review Data cannot be retrieved! {reviewState.error}
-                </Header>
-              </Dimmer>
-            ) : isAuthenticated && username ? (
-              <div id="inbox-div">
-                <Inbox username={username} />
-              </div>
-            ) : reviews && reviews.length > 0 ? (
+            {reviews.reviews && reviews.reviews.length > 0 ? (
               <>
-                {reviews.map((review) => (
+                {reviews.reviews.map((review) => (
                   <Card>
-                    {" "}
-                    {/* paginated */}
                     <Card.Content key={review.id} id="review-card">
                       <Card.Header>
                         <Link to={`/ski-areas/reviews/${review.id}`}>
@@ -125,10 +112,13 @@ const Home: React.FC = () => {
               </>
             ) : null}
           </Grid.Column>
+          <Grid.Column width={4}></Grid.Column>
         </Grid.Row>
       </Grid>
-    </div>
-  );
+    );
+  }
+
+  return null;
 };
 
-export default Home;
+export default RecentReviews;
