@@ -11,7 +11,6 @@ export interface NewReviewData {
   body: string;
   stars: number;
   photos: string[];
-  tags: string[];
 }
 
 export interface ReviewData {
@@ -24,7 +23,6 @@ export interface ReviewData {
   body: string;
   stars: number;
   photos: string[];
-  tags: string[];
   createdAt: Date;
   replies?: ReviewReplyData[];
 }
@@ -39,7 +37,6 @@ export interface ReviewDataReturn {
   body: string;
   stars: number;
   photos: string[];
-  tags: string[];
   createdAt: Date;
   replies: ReviewReplyData[];
 }

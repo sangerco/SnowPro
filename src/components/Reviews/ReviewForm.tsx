@@ -4,7 +4,6 @@ import {
   NewReviewData,
   fetchAllReviews,
 } from "../../redux/slices/reviewSlice";
-import { fetchAllTags } from "../../redux/slices/tagSlice";
 import {
   Button,
   Container,
@@ -23,7 +22,6 @@ import {
 import { RootState, AppDispatch } from "../../redux/store";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams, useNavigate } from "react-router";
-import TagForm from "../Tags/TagForm";
 import PhotoForm from "../Media/PhotoForm";
 import { deletePhoto } from "../../redux/slices/mediaSlices";
 import { fetchSkiAreas } from "../../redux/slices/skiAreaSlice";
@@ -43,27 +41,6 @@ const ReviewForm: React.FC = () => {
 
   const reviews = useSelector((state: RootState) => state.reviews);
 
-  useEffect(() => {
-    dispatch(fetchAllTags());
-  }, [dispatch]);
-
-  const tags = useSelector((state: RootState) => state.tags);
-
-  let tagOptions:
-    | { key: string; text: string; value: string }[]
-    | DropdownItemProps[]
-    | undefined;
-
-  if (tags.tags) {
-    tagOptions = tags.tags.map((tag) => ({
-      key: tag.id,
-      text: tag.tag,
-      value: tag.id,
-    }));
-  } else {
-    tagOptions = [];
-  }
-
   const ratingOptions = [
     { key: 1, text: "1", value: 1 },
     { key: 2, text: "2", value: 2 },
@@ -80,7 +57,6 @@ const ReviewForm: React.FC = () => {
     body: "",
     stars: 0,
     photos: [],
-    tags: [],
   };
 
   useEffect(() => {
@@ -102,7 +78,6 @@ const ReviewForm: React.FC = () => {
 
   const [formData, setFormData] = useState(initialReviewState);
   const [photos, setPhotos] = useState(initialReviewState.photos);
-  const [showCreateNewTagForm, setShowCreateNewTagForm] = useState(false);
   const [showPhotoForm, setShowPhotoForm] = useState(false);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -143,17 +118,6 @@ const ReviewForm: React.FC = () => {
       ...formData,
       stars: data.value,
     });
-  };
-
-  const handleTagDropdownChange = (
-    e: React.SyntheticEvent<HTMLElement>,
-    data: any
-  ) => {
-    setFormData({
-      ...formData,
-      tags: data.value,
-    });
-    console.log(data);
   };
 
   const handlePhotoChange = (index: number, value: string) => {
@@ -253,23 +217,7 @@ const ReviewForm: React.FC = () => {
                 <Divider />
                 <Button type="submit">Send it!</Button>
                 <Divider />
-                <label>Tags</label>
-                <Dropdown
-                  clearable
-                  multiple
-                  options={tagOptions}
-                  fluid
-                  selection
-                  onChange={handleTagDropdownChange}
-                />
-                <Divider />
               </Form>
-              <Button
-                onClick={() => setShowCreateNewTagForm(true)}
-                size="small">
-                Create New Tag?
-              </Button>
-              {showCreateNewTagForm && <TagForm />}
             </Container>
           </Segment>
         </Grid.Column>

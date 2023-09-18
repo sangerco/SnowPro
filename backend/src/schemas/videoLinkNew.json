@@ -1,10 +1,10 @@
 {
     "type": "object",
     "properties": {
-        "username": {
+        "userId": {
             "type": "string",
             "minLength": 1,
-            "maxLength": 20
+            "maxLength": 40
         },
         "link": {
             "type": "string",
@@ -15,14 +15,6 @@
             "type": "string",
             "minLength": 1,
             "maxLength": 20
-        },
-        "tags": {
-            "type": "array",
-            "items": {
-                "minLength": 1,
-                "maxLength": 40
-            }
-
         }
     },
     "additionalProperties": false,

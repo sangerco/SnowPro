@@ -9,28 +9,17 @@ export interface VideoData {
   username: string;
   link: string;
   about: string;
-  tagIds: string[];
-  tags: string[];
   createdAt: Date;
 }
 
 class Video {
   static async createVideo(
-    username: string,
+    userId: string,
     link: string,
-    about: string,
-    tagIds: string[]
+    about: string
   ): Promise<VideoData> {
     const id = uuidv4();
     const createdAt = new Date();
-
-    const userId = await db.query(
-      `
-            SELECT id
-                FROM users
-                WHERE username = $1`,
-      [username]
-    );
 
     const result = await db.query(
       `
@@ -40,7 +29,7 @@ class Video {
                     link,
                     about,
                     created_at)
-            VALUES ($1, $2, $3, $4, $5, $6)
+            VALUES ($1, $2, $3, $4, $5)
             RETURNING 
                     id,
                     user_id AS "userId",
@@ -52,16 +41,11 @@ class Video {
 
     const video = result.rows[0];
 
-    for (let tagId of tagIds) {
-      await db.query(
-        `
-                INSERT INTO videos_tags (videos_id, tag_id)
-                VALUES ($1, $2)`,
-        [video.id, tagId]
-      );
-
-      video.tagIds.push(tagId);
-    }
+    await db.query(
+      `INSERT INTO users_videos (user_id, video_id)
+      VALUES ($1, $2)`,
+      [userId, video.id]
+    );
 
     return video;
   }
@@ -72,14 +56,10 @@ class Video {
                 v.user_id AS "userId",
                 v.link,
                 v.about,
-                v.tag_id AS "tagId",
                 v.created_at AS "createdAt",
-                u.username,
-                t.tag
+                u.username
                 FROM videos v
                 LEFT JOIN users u ON v.user_id = u.id
-                LEFT JOIN videos_tags vt ON v.tag_id = vt.tag_id
-                LEFT JOIN tags t ON vt.tag_id = t.id
                 WHERE v.id = $1
                 ORDER BY v.created_at`,
       [id]
@@ -100,13 +80,9 @@ class Video {
                 v.user_id,
                 v.link,
                 v.about,
-                v.tag_id AS "tagId",
-                v.created_at AS "createdAt",
-                t.tag
+                v.created_at AS "createdAt"
                 FROM users u
                 LEFT JOIN videos v ON u.id = v.user_id
-                LEFT JOIN videos_tags vt ON v.tag_id = vt.tag_id
-                LEFT JOIN tags t ON vt.tag_id = t.id
                 WHERE u.username = $1
                 ORDER BY v.created_at`,
       [username]

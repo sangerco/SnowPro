@@ -9,7 +9,6 @@ interface PhotoData {
   username: string;
   link: string;
   about: string;
-  tagIds: string[];
   createdAt: Date;
 }
 
@@ -19,17 +18,14 @@ interface MediaData {
   username: string;
   link: string;
   about: string;
-  tagIds: string[];
   createdAt: string;
-  tag: string;
 }
 
 class Photo {
   static async createPhoto(
     username: string,
     link: string,
-    about: string,
-    tagIds: string[]
+    about: string
   ): Promise<PhotoData> {
     const id = uuidv4();
     const createdAt = new Date();
@@ -62,17 +58,6 @@ class Photo {
 
     const photo = result.rows[0];
 
-    for (let tagId of tagIds) {
-      await db.query(
-        `
-                INSERT INTO photo_tags (photo_id, tag_id)
-                VALUES ($1, $2)`,
-        [photo.id, tagId]
-      );
-
-      photo.tagIds.push(tagId);
-    }
-
     return photo;
   }
 
@@ -82,14 +67,10 @@ class Photo {
                 p.user_id AS "userId",
                 p.link,
                 p.about,
-                p.tag_id AS "tagId",
                 p.created_at AS "createdAt",
-                u.username,
-                t.tag
+                u.username
                 FROM photos p
                 LEFT JOIN users u ON p.user_id = u.id
-                LEFT JOIN photos_tags pt ON p.tag_id = pt.tag_id
-                LEFT JOIN tags t ON pt.tag_id = t.id
                 WHERE p.id = $1
                 ORDER BY p.created_at`,
       [id]
@@ -110,13 +91,9 @@ class Photo {
                 p.user_id,
                 p.link,
                 p.about,
-                p.tag_id AS "tagId",
-                p.created_at AS "createdAt",
-                t.tag
+                p.created_at AS "createdAt"
                 FROM users u
                 LEFT JOIN photos p ON u.id = p.user_id
-                LEFT JOIN photos_tags pt ON p.tag_id = pt.tag_id
-                LEFT JOIN tags t ON pt.tag_id = t.id
                 WHERE u.username = $1
                 ORDER BY p.created_at`,
       [username]
@@ -159,15 +136,10 @@ class Photo {
                 p.user_id AS "userId",
                 p.link,
                 p.about,
-                p.tag_ids AS "tagIds",
                 p.created_at AS "createdAt",
-                u.username,
-                t.tag
+                u.username
                 FROM photos p
                 LEFT JOIN users u ON p.user_id = u.id
-                CROSS JOIN unnest(string_to_array(p.tag_ids, ',')) AS photo_tag_id
-                LEFT JOIN photos_tags pt ON photo_tag_id = pt.tag_id
-                LEFT JOIN tags t ON pt.tag_id = t.id
                 ORDER BY p.created_at
                 LIMIT 5`
     );
@@ -177,15 +149,10 @@ class Photo {
                 v.user_id AS "userId",
                 v.link,
                 v.about,
-                v.tag_ids AS "tagIds",
                 v.created_at AS "createdAt",
-                u.username,
-                t.tag
+                u.username
             FROM videos v
             LEFT JOIN users u ON v.user_id = u.id
-            CROSS JOIN unnest(string_to_array(v.tag_ids, ',')) AS video_tag_id
-            LEFT JOIN videos_tags vt ON video_tag_id = vt.tag_id
-            LEFT JOIN tags t ON vt.tag_id = t.id
             ORDER BY v.created_at
             LIMIT 5;
   `
@@ -195,6 +162,7 @@ class Photo {
     const videos = videoResult.rows;
 
     const media: MediaData[] = photos.concat(videos);
+    console.log(media);
 
     media.sort((a, b) => {
       const dateA: Date = new Date(a.createdAt);

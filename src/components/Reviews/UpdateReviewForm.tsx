@@ -6,8 +6,6 @@ import {
   ReviewData,
 } from "../../redux/slices/reviewSlice";
 import { RootState, AppDispatch } from "../../redux/store";
-import { fetchAllTags } from "../../redux/slices/tagSlice";
-import TagForm from "../Tags/TagForm";
 import { useParams, useNavigate } from "react-router";
 import {
   Container,
@@ -49,27 +47,6 @@ const UpdateReviewForm: React.FC = () => {
   const skiAreaState = useSelector((state: RootState) => state.skiAreas);
   const skiAreas = skiAreaState.skiAreas;
 
-  useEffect(() => {
-    dispatch(fetchAllTags());
-  }, [dispatch]);
-
-  const tags = useSelector((state: RootState) => state.tags);
-
-  let tagOptions:
-    | { key: string; text: string; value: string }[]
-    | DropdownItemProps[]
-    | undefined;
-
-  if (tags.tags) {
-    tagOptions = tags.tags.map((tag) => ({
-      key: tag.id,
-      text: tag.tag,
-      value: tag.id,
-    }));
-  } else {
-    tagOptions = [];
-  }
-
   const ratingOptions = [
     { key: 1, text: "1", value: 1 },
     { key: 2, text: "2", value: 2 },
@@ -91,7 +68,6 @@ const UpdateReviewForm: React.FC = () => {
       body: review.body,
       stars: review.stars,
       photos: review.photos || [],
-      tags: review.tags || [],
       createdAt: review.createdAt,
     };
   } else {
@@ -105,14 +81,12 @@ const UpdateReviewForm: React.FC = () => {
       body: "",
       stars: 0,
       photos: [],
-      tags: [],
       createdAt: new Date(),
     };
   }
 
   const [formData, setFormData] = useState(initialUpdateReviewState);
   const [photos, setPhotos] = useState(initialUpdateReviewState.photos);
-  const [showCreateNewTagForm, setShowCreateNewTagForm] = useState(false);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -255,22 +229,6 @@ const UpdateReviewForm: React.FC = () => {
                     )}
                   </Form.Field>
                 ))}
-                <Divider />
-                <label>Tags</label>
-                <Dropdown
-                  clearable
-                  options={tagOptions}
-                  multiple
-                  fluid
-                  selection
-                  value={formData.tags}
-                />
-                <Button
-                  onClick={() => setShowCreateNewTagForm(true)}
-                  size="small">
-                  Create New Tag?
-                </Button>
-                {showCreateNewTagForm && <TagForm />}
                 <Divider />
                 <label>How would you rate your experience?</label>
                 <Dropdown

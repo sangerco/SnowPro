@@ -50,8 +50,6 @@ export interface SkiAreaData {
       body: string;
       stars: number;
       photos: string[];
-      tagIds: string[];
-      tags: string[];
     }[];
 
     usersFavoritedBy: {
@@ -127,8 +125,6 @@ export interface SkiAreaPageData {
     body: string;
     stars: number;
     photos: string[];
-    tagIds: string[];
-    tags: string[];
     createdAt: Date;
   }[];
 
@@ -149,8 +145,6 @@ export interface ReviewViewData {
   body: string;
   stars: number;
   photos: string[];
-  tagIds: string[];
-  tags: string[];
   createdAt: Date;
   replies?: ReviewReplyData[];
 }

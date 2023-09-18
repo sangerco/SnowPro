@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import MyPage from "./MyPage";
 import { fetchSkiAreas } from "../../redux/slices/skiAreaSlice";
 import { fetchAllReviews } from "../../redux/slices/reviewSlice";
@@ -11,6 +11,8 @@ import {
   Grid,
   Header,
   Loader,
+  Pagination,
+  PaginationProps,
   Rating,
   Segment,
 } from "semantic-ui-react";
@@ -39,6 +41,26 @@ const Home: React.FC = () => {
 
   const reviewState = useSelector((state: RootState) => state.reviews);
   const reviews = reviewState.reviews;
+
+  let totalReviews;
+  let paginatedReviews;
+
+  const itemsPerPage = 3;
+  const [activePage, setActivePage] = useState(1);
+  reviews ? (totalReviews = reviews.length) : (totalReviews = 1);
+  const totalPages = Math.ceil(totalReviews / itemsPerPage);
+  const startIndex = (activePage - 1) * itemsPerPage;
+  const endIndex = Math.min(startIndex + itemsPerPage, totalReviews);
+  reviews
+    ? (paginatedReviews = reviews.slice(startIndex, endIndex))
+    : (paginatedReviews = 1);
+
+  const handlePaginationChange = (
+    e: React.MouseEvent,
+    data: PaginationProps
+  ) => {
+    setActivePage(data.activePage as number);
+  };
 
   const formatDate = (date: Date) => {
     const newDate = new Date(date);
@@ -96,33 +118,39 @@ const Home: React.FC = () => {
                 <Inbox username={username} />
               </div>
             ) : reviews && reviews.length > 0 ? (
-              <>
-                {reviews.map((review) => (
-                  <Card>
-                    {" "}
-                    {/* paginated */}
-                    <Card.Content key={review.id} id="review-card">
-                      <Card.Header>
-                        <Link to={`/ski-areas/reviews/${review.id}`}>
-                          {review.header}
-                        </Link>{" "}
+              <div>
+                <Grid.Row style={{ width: "250px" }}>
+                  {reviews.map((review) => (
+                    <Grid.Column>
+                      {" "}
+                      {/* paginated */}
+                      <Segment key={review.id} id="review-card">
+                        <Header as="h3">
+                          <Link to={`/ski-areas/reviews/${review.id}`}>
+                            {review.header}
+                          </Link>{" "}
+                        </Header>
+                        <Header as="h4">{review.skiAreaName}</Header>
+                        <p>By {review.username}</p>
                         <Divider />
-                        {review.skiAreaName}
-                      </Card.Header>
-                      <Card.Description>By {review.username}</Card.Description>
-                      <Card.Meta>
                         <Rating
                           icon="star"
                           defaultRating={review.stars}
                           maxRating={5}
                           disabled
                         />
-                      </Card.Meta>
-                      {formatDate(review.createdAt)}
-                    </Card.Content>
-                  </Card>
-                ))}
-              </>
+                        <Divider />
+                        {formatDate(review.createdAt)}
+                      </Segment>
+                    </Grid.Column>
+                  ))}
+                </Grid.Row>
+                <Pagination
+                  activePage={activePage}
+                  totalPages={totalPages}
+                  onPageChange={handlePaginationChange}
+                />
+              </div>
             ) : null}
           </Grid.Column>
         </Grid.Row>

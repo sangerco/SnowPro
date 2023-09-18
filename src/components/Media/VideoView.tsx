@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { deleteVideo, fetchVideo } from "../../redux/slices/mediaSlices";
-import { fetchAllTags } from "../../redux/slices/tagSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState, AppDispatch } from "../../redux/store";
 import {
@@ -11,7 +10,6 @@ import {
   Dimmer,
   Loader,
   Header,
-  Label,
   Modal,
   Embed,
 } from "semantic-ui-react";
@@ -43,40 +41,11 @@ const VideoView: React.FC<VideoViewProps> = ({ id }) => {
     videoId = id.includes("&") ? id.split("&")[0] : id;
   }
 
-  useEffect(() => {
-    dispatch(fetchAllTags());
-  }, [dispatch]);
-
-  const tagData = useSelector((state: RootState) => state.tags);
-  const tags = tagData.tags;
-
-  let assocTags = [];
-
-  if (tags && video) {
-    if (video.tagIds && video.tagIds.length > 0) {
-      for (let i = 0; i > video.tagIds.length; i++) {
-        for (let j = 0; j > tags.length; j++) {
-          if (video.tagIds[i] === tags[j].id) {
-            assocTags.push(tags[j].tag);
-          }
-        }
-      }
-    }
-  }
-
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   const handleDelete = (videoId: string) => {
     dispatch(deleteVideo(videoId));
   };
-
-  if (tagData.loading || media.loading) {
-    return (
-      <Dimmer active>
-        <Loader>Loading...</Loader>
-      </Dimmer>
-    );
-  }
 
   if (media.error) {
     return (
@@ -85,6 +54,14 @@ const VideoView: React.FC<VideoViewProps> = ({ id }) => {
         <Button color="red" onClick={() => navigate(-1)}>
           God Back
         </Button>
+      </Dimmer>
+    );
+  }
+
+  if (media.loading) {
+    return (
+      <Dimmer active>
+        <Loader>Loading...</Loader>
       </Dimmer>
     );
   }
@@ -98,9 +75,6 @@ const VideoView: React.FC<VideoViewProps> = ({ id }) => {
           <Container text>
             <p>{video.about}</p>
           </Container>
-          {assocTags.map((tag) => (
-            <Label color="green">{tag}</Label>
-          ))}
           <Divider />
           <Button.Group>
             {userId === video.userId ? (

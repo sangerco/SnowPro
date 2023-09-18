@@ -11,7 +11,6 @@ import {
   Button,
   Card,
   Segment,
-  Rail,
 } from "semantic-ui-react";
 import { URL } from "../../utils/config";
 import axios from "axios";

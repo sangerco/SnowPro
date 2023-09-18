@@ -20,6 +20,7 @@ import SkiAreaData from "./components/SkiAreas/SkiAreaData";
 import SkiAreaPage from "./components/SkiAreas/SkiAreaPage";
 import Home from "./components/Home/Home";
 import RecentMedia from "./components/Media/RecentMedia";
+import Users from "./components/Users/Users";
 
 const AppRoutes: React.FC = () => {
   return (
@@ -27,6 +28,7 @@ const AppRoutes: React.FC = () => {
       <Route path="/" element={<Home />} />
       <Route path="/login" element={<LoginForm />} />
       <Route path="/register" element={<UserForm />} />
+      <Route path="/users/all-users" element={<Users />} />
       <Route path="/users/:username" element={<UserPage />} />
       <Route path="/users/:username/update" element={<UpdateUserForm />} />
       <Route path="/users/:username/photos" element={<UserPhotos />} />

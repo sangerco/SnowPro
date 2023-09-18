@@ -22,7 +22,6 @@ interface ReviewData {
   body: string;
   stars: number;
   photos: string[];
-  tags: string[];
 }
 
 const router = express.Router();
@@ -133,7 +132,6 @@ router.post(
         body,
         stars,
         photos,
-        tags,
       }: ReviewData = req.body;
       const review = await Review.createReview(
         user_id,
@@ -142,8 +140,7 @@ router.post(
         header,
         body,
         stars,
-        photos,
-        tags
+        photos
       );
       return res.status(201).json({ review });
     } catch (e) {

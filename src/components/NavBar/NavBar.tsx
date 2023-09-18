@@ -43,7 +43,11 @@ const NavBar = () => {
               Recent Media
             </Link>
           </Dropdown.Item>
-          <Dropdown.Item>Users</Dropdown.Item>
+          <Dropdown.Item>
+            <Link to="/users/all-users" style={{ color: "green" }}>
+              Users
+            </Link>
+          </Dropdown.Item>
         </Dropdown.Menu>
       </Dropdown>
       {isAuthenticated ? (

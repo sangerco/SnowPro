@@ -9,10 +9,9 @@ import updateVideoSchema from "../schemas/updateVideo.json";
 const router = express.Router();
 
 interface VideoData {
-  username: string;
+  userId: string;
   link: string;
   about: string;
-  tagIds: string[];
 }
 
 router.post(
@@ -29,8 +28,8 @@ router.post(
         const errors: string | string[] = validator.errors.map((e) => e.stack);
         throw new BadRequestError(errors);
       }
-      const { username, link, about, tagIds }: VideoData = req.body;
-      const video = await Video.createVideo(username, link, about, tagIds);
+      const { userId, link, about }: VideoData = req.body;
+      const video = await Video.createVideo(userId, link, about);
       return res.status(201).json({ video });
     } catch (e) {
       return next(e);

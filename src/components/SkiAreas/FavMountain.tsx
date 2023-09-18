@@ -17,7 +17,6 @@ interface FavMountainProps {
 const FavMountain: React.FC<FavMountainProps> = ({ slug, username }) => {
   const dispatch = useDispatch<AppDispatch>();
   const auth = useSelector((state: RootState) => state.auth);
-  console.log(auth);
   const userId = auth.data?.id;
   const loggedInUsername = auth.data?.username;
 
@@ -57,8 +56,7 @@ const FavMountain: React.FC<FavMountainProps> = ({ slug, username }) => {
               floated="right"
               color="red"
               size="mini"
-              onClick={handleShowDeleteModal}
-              textAlign="center">
+              onClick={handleShowDeleteModal}>
               <Icon name="times" />
             </Button>
           ) : null}

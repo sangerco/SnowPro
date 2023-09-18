@@ -13,7 +13,6 @@ interface ReviewData {
   body: string;
   stars: number;
   photos: string[];
-  tagIds: string[];
 }
 
 interface ReviewDataReturn {
@@ -26,7 +25,6 @@ interface ReviewDataReturn {
   body: string;
   stars: number;
   photos: string[];
-  tagsId: string[];
 }
 
 class Review {
@@ -37,8 +35,7 @@ class Review {
     header: string,
     body: string,
     stars: number,
-    photos: string[],
-    tags: string[]
+    photos: string[]
   ): Promise<ReviewData> {
     const id = uuidv4();
     const createdAt = new Date();
@@ -52,9 +49,8 @@ class Review {
                    header,
                    body,
                    stars,
-                   tags,
                    created_at)
-            VALUES ($1, $2, $3, $4, $5, $6, $7)
+            VALUES ($1, $2, $3, $4, $5, $6)
             RETURNING
                 id,
                 username,
@@ -63,33 +59,11 @@ class Review {
                 header,
                 body, 
                 stars,
-                tags AS "tags",
                 created_at AS "createdAt"`,
-      [
-        id,
-        username,
-        user_id,
-        ski_area_slug,
-        header,
-        body,
-        stars,
-        tags,
-        createdAt,
-      ]
+      [id, username, user_id, ski_area_slug, header, body, stars, createdAt]
     );
 
     const reviewData = result.rows[0];
-
-    for (let tagId of tags) {
-      await db.query(
-        `
-                INSERT INTO review_tags (review_id, tag_id)
-                VALUES ($1, $2)`,
-        [reviewData.id, tagId]
-      );
-
-      reviewData.tagIds.push(tagId);
-    }
 
     for (let photo of photos) {
       const photoId = uuidv4();
@@ -141,7 +115,6 @@ class Review {
       body: reviewData.body,
       stars: reviewData.stars,
       photos: reviewData.photos,
-      tagIds: reviewData.tagIds,
     };
 
     return review;
@@ -150,9 +123,7 @@ class Review {
     id: string,
     data: Partial<ReviewData>
   ): Promise<ReviewData> {
-    const { setCols, values } = sqlForPartialUpdate(data, {
-      tagIds: "tag_ids",
-    });
+    const { setCols, values } = sqlForPartialUpdate(data, {});
 
     const sqlQuery = `UPDATE reviews
                             SET ${setCols}
@@ -186,13 +157,10 @@ class Review {
                 r.created_at AS "createdAt",
                 p.link,
                 u.username,
-                s.name AS "skiAreaName",
-                t.tag
+                s.name AS "skiAreaName"
             FROM reviews r
             LEFT JOIN users u ON r.user_id = u.id
             LEFT JOIN ski_areas s ON r.ski_area_slug = s.slug
-            LEFT JOIN review_tags rt ON r.tag_ids = rt.tag_id
-            LEFT JOIN tags t ON rt.tag_id = t.id
             LEFT JOIN reviews_photos rp ON r.photo = rp.photo_id
             LEFT JOIN photos p ON rp.photo_id = p.id
             WHERE s.name = $1
@@ -220,13 +188,10 @@ class Review {
                 r.stars,
                 p.link AS "photos",
                 u.username,
-                s.name AS "skiAreaName",
-                t.tag AS "tags"
+                s.name AS "skiAreaName"
             FROM reviews r
             LEFT JOIN users u ON r.user_id = u.id
             LEFT JOIN ski_areas s ON r.ski_area_slug = s.slug
-            LEFT JOIN review_tags rt ON r.tag_ids = rt.tag_id
-            LEFT JOIN tags t ON rt.tag_id = t.id
             LEFT JOIN reviews_photos rp ON r.photos = rp.photo_id
             LEFT JOIN photos p ON rp.photo_id = p.id
             WHERE r.id = $1
@@ -251,13 +216,10 @@ class Review {
                     r.stars,
                     p.link AS "photos",
                     u.username,
-                    s.name AS "skiAreaName",
-                    t.tag AS "tags"
+                    s.name AS "skiAreaName"
                 FROM reviews r
                 LEFT JOIN users u ON r.user_id = u.id
                 LEFT JOIN ski_areas s ON r.ski_area_slug = s.slug
-                LEFT JOIN review_tags rt ON r.tag_ids = rt.tag_id
-                LEFT JOIN tags t ON rt.tag_id = t.id
                 LEFT JOIN reviews_photos rp ON r.photos = rp.photo_id
                 LEFT JOIN photos p ON rp.photo_id = p.id
                 ORDER BY r.created_at

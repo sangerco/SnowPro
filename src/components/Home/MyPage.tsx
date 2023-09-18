@@ -26,8 +26,6 @@ const MyPage = () => {
   const dispatch = useDispatch<AppDispatch>();
   const username = auth.data?.username;
 
-  console.log(username);
-
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showNewPhotoForm, setShowNewPhotoForm] = useState(false);
   const [showNewVideoForm, setShowNewVideoForm] = useState(false);
@@ -60,6 +58,8 @@ const MyPage = () => {
       videoLinks.push(finalId);
     });
   }
+
+  console.log(videoLinks);
 
   if (auth.loading) {
     return (
@@ -113,7 +113,7 @@ const MyPage = () => {
                 username &&
                 user.favMountains.length > 0 ? (
                   user.favMountains.map((fm) => (
-                    <Card.Group>
+                    <Card.Group key={fm}>
                       <FavMountain key={fm} slug={fm} username={username} />
                     </Card.Group>
                   ))
@@ -150,16 +150,13 @@ const MyPage = () => {
               <Grid.Column width={12}>
                 {videoLinks.length > 0
                   ? videoLinks.map((link) => (
-                      <Embed
-                        id={link}
-                        source="youtube"
-                        size="small"
-                        as={Link}
-                        to={`/users/${user.username}/videos`}
-                      />
+                      <div style={{ marginTop: "20px" }}>
+                        <Embed id={link} source="youtube" size="small" />
+                      </div>
                     ))
                   : null}
                 <Button
+                  style={{ marginTop: "20px" }}
                   color="green"
                   size="small"
                   onClick={() => setShowNewVideoForm(true)}>

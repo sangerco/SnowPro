@@ -23,15 +23,7 @@
                 "minLength": 0,
                 "maxLength": 125
             }
-        },
-        "tag_ids": {
-            "type": "array",
-            "items": {
-                "type": "string",
-                "minLength": 0,
-                "maxLength": 40
-            }
-        } 
+        }
     },
     "additionalProperties": false,
     "required": []

@@ -51,13 +51,10 @@ class SkiArea {
                 r.photos,
                 r.created_at AS "createdAt",
                 u.username,
-                s.name AS "skiAreaName",
-                t.tag
+                s.name AS "skiAreaName"
             FROM reviews r
             LEFT JOIN users u ON r.user_id = u.id
             LEFT JOIN ski_areas s ON r.ski_area_slug = s.slug
-            LEFT JOIN review_tags rt ON r.tag_ids = rt.tag_id
-            LEFT JOIN tags t ON rt.tag_id = t.id
             WHERE r.ski_area_slug = $1
             ORDER BY r.created_at`,
       [slug]

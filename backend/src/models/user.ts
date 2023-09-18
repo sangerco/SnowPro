@@ -180,6 +180,8 @@ class User {
       isAdmin: rows[0].isAdmin,
     };
 
+    console.log(rows[0]);
+
     return user;
   }
 

@@ -11,7 +11,6 @@ import {
   Container,
   Header,
   Divider,
-  Label,
   Image,
   Grid,
   Segment,
@@ -150,18 +149,6 @@ const Review: React.FC = () => {
                 ) : null}
                 <Container text>
                   <p>{review.body}</p>
-                  <Divider />
-                  {review.tags && review.tags.length > 0 ? (
-                    review.tags.map((tag) => (
-                      <div>
-                        <Label.Group green>
-                          <Label as="a">{tag}</Label>
-                        </Label.Group>
-                      </div>
-                    ))
-                  ) : (
-                    <Divider />
-                  )}
                   <Divider />
                   {review.photos && review.photos.length > 0 ? (
                     review.photos.map((photo) => (

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { deletePhoto, fetchPhoto } from "../../redux/slices/mediaSlices";
-import { fetchAllTags } from "../../redux/slices/tagSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState, AppDispatch } from "../../redux/store";
 import {
@@ -35,40 +34,11 @@ const PhotoView: React.FC<PhotoViewProps> = ({ id }) => {
   const media = useSelector((state: RootState) => state.media);
   const photo = media.photo;
 
-  useEffect(() => {
-    dispatch(fetchAllTags());
-  }, [dispatch]);
-
-  const tagData = useSelector((state: RootState) => state.tags);
-  const tags = tagData.tags;
-
-  let assocTags = [];
-
-  if (tags && photo) {
-    if (photo.tagIds && photo.tagIds.length > 0) {
-      for (let i = 0; i > photo.tagIds.length; i++) {
-        for (let j = 0; j > tags.length; j++) {
-          if (photo.tagIds[i] === tags[j].id) {
-            assocTags.push(tags[j].tag);
-          }
-        }
-      }
-    }
-  }
-
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   const handleDelete = (photoId: string) => {
     dispatch(deletePhoto(photoId));
   };
-
-  if (tagData.loading || media.loading) {
-    return (
-      <Dimmer active>
-        <Loader>Loading...</Loader>
-      </Dimmer>
-    );
-  }
 
   if (media.error) {
     return (
@@ -90,9 +60,6 @@ const PhotoView: React.FC<PhotoViewProps> = ({ id }) => {
           <Container text>
             <p>{photo.about}</p>
           </Container>
-          {assocTags.map((tag) => (
-            <Label color="green">{tag}</Label>
-          ))}
           <Divider />
           <Button.Group>
             {userId === photo.userId ? (

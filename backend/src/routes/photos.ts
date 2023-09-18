@@ -9,10 +9,9 @@ import updatePhotoSchema from "../schemas/photoUpdate.json";
 const router = express.Router();
 
 interface PhotoData {
-  username: string;
+  userId: string;
   link: string;
   about: string;
-  tagIds: string[];
 }
 
 router.post(
@@ -29,8 +28,8 @@ router.post(
         const errors: string | string[] = validator.errors.map((e) => e.stack);
         throw new BadRequestError(errors);
       }
-      const { username, link, about, tagIds }: PhotoData = req.body;
-      const photo = await Photo.createPhoto(username, link, about, tagIds);
+      const { userId, link, about }: PhotoData = req.body;
+      const photo = await Photo.createPhoto(userId, link, about);
       return res.status(201).json({ photo });
     } catch (e) {
       return next(e);

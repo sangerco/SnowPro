@@ -84,33 +84,37 @@ const RecentReviews: React.FC = () => {
             ) : null}
           </Grid.Column>
           <Grid.Column width={8}>
-            {reviews.reviews && reviews.reviews.length > 0 ? (
-              <>
-                {reviews.reviews.map((review) => (
-                  <Card>
-                    <Card.Content key={review.id} id="review-card">
-                      <Card.Header>
-                        <Link to={`/ski-areas/reviews/${review.id}`}>
-                          {review.header}
-                        </Link>{" "}
-                        <Divider />
-                        {review.skiAreaName}
-                      </Card.Header>
-                      <Card.Description>By {review.username}</Card.Description>
-                      <Card.Meta>
-                        <Rating
-                          icon="star"
-                          defaultRating={review.stars}
-                          maxRating={5}
-                          disabled
-                        />
-                      </Card.Meta>
-                      {formatDate(review.createdAt)}
-                    </Card.Content>
-                  </Card>
-                ))}
-              </>
-            ) : null}
+            <Card.Group>
+              {reviews.reviews && reviews.reviews.length > 0 ? (
+                <>
+                  {reviews.reviews.map((review) => (
+                    <Card>
+                      <Card.Content key={review.id} id="review-card">
+                        <Card.Header>
+                          <Link to={`/ski-areas/reviews/${review.id}`}>
+                            {review.header}
+                          </Link>{" "}
+                          <Divider />
+                          {review.skiAreaName}
+                        </Card.Header>
+                        <Card.Description>
+                          By {review.username}
+                        </Card.Description>
+                        <Card.Meta>
+                          <Rating
+                            icon="star"
+                            defaultRating={review.stars}
+                            maxRating={5}
+                            disabled
+                          />
+                        </Card.Meta>
+                        {formatDate(review.createdAt)}
+                      </Card.Content>
+                    </Card>
+                  ))}
+                </>
+              ) : null}
+            </Card.Group>
           </Grid.Column>
           <Grid.Column width={4}></Grid.Column>
         </Grid.Row>

@@ -40,7 +40,7 @@ const UserPhotos: React.FC = () => {
     return (
       <div>
         {photos.length > 0
-          ? photos.map((photo) => <PhotoView id={photo.id} />)
+          ? photos.map((photo) => <PhotoView key={photo.id} id={photo.id} />)
           : null}
       </div>
     );

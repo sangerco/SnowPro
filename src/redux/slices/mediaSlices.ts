@@ -6,7 +6,6 @@ export interface NewPhotoData {
   userId: string;
   link: string;
   about: string;
-  tagIds: string[];
 }
 
 export interface PhotoData {
@@ -14,7 +13,6 @@ export interface PhotoData {
   userId: string;
   link: string;
   about: string;
-  tagIds: string[];
   createdAt: Date;
 }
 
@@ -22,7 +20,6 @@ export interface NewVideoData {
   userId: string;
   link: string;
   about: string;
-  tagIds: string[];
 }
 
 export interface VideoData {
@@ -30,13 +27,11 @@ export interface VideoData {
   userId: string;
   link: string;
   about: string;
-  tagIds: string[];
   createdAt: Date;
 }
 
 export interface MediaData {
-  photos: PhotoData[];
-  videos: VideoData[];
+  media: PhotoData[];
 }
 
 interface MediaState {
@@ -163,7 +158,7 @@ export const fetchRecentMedia = createAsyncThunk(
   "media/fetchRecentMedia",
   async () => {
     const response = await axios.get(`${URL}/media/all-recent-media`);
-    const media = response.data.media;
+    const media = response.data;
     return media;
   }
 );

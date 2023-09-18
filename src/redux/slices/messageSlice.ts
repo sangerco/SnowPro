@@ -67,7 +67,6 @@ export const fetchUserMessages = createAsyncThunk(
   async (username: string) => {
     const response = await axios.get(`${URL}/messages/users/${username}`);
     const messages = response.data.messages;
-    console.log(messages);
     return messages;
   }
 );
