@@ -28,7 +28,7 @@ const VideoView: React.FC<VideoViewProps> = ({ id }) => {
 
   useEffect(() => {
     dispatch(fetchVideo(id));
-  }, [dispatch, id]);
+  }, [dispatch]);
 
   const media = useSelector((state: RootState) => state.media);
   const video = media.video;

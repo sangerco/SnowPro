@@ -29,7 +29,7 @@ const PhotoView: React.FC<PhotoViewProps> = ({ id }) => {
 
   useEffect(() => {
     dispatch(fetchPhoto(id));
-  }, [dispatch, id]);
+  }, [dispatch]);
 
   const media = useSelector((state: RootState) => state.media);
   const photo = media.photo;

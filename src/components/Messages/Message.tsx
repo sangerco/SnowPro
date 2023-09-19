@@ -10,6 +10,7 @@ import {
   Grid,
   Header,
   Divider,
+  Segment,
 } from "semantic-ui-react";
 import { Link, useParams } from "react-router-dom";
 import { RootState, AppDispatch } from "../../redux/store";
@@ -85,13 +86,17 @@ const Message: React.FC = () => {
                 <Loader>Loading...</Loader>
               </Dimmer>
             ) : skiAreas && skiAreas.length > 0 ? (
-              <Card style={{ marginTop: "10px", marginLeft: "20px" }}>
-                {skiAreas.map((sa) => (
-                  <Card.Content key={sa.slug}>
-                    <Link to={`/ski-areas/${sa.slug}`}>{sa.name}</Link>
-                  </Card.Content>
-                ))}
-              </Card>
+              <Segment style={{ overflow: "auto", maxHeight: "75vh" }}>
+                <Card id="ski-area-card">
+                  {" "}
+                  {/* max height overflow auto */}
+                  {skiAreas.map((sa) => (
+                    <Card.Content key={sa.slug}>
+                      <Link to={`/ski-areas/${sa.slug}`}>{sa.name}</Link>
+                    </Card.Content>
+                  ))}
+                </Card>
+              </Segment>
             ) : skiAreaState.error ? (
               <Dimmer active>
                 <Header as="h1">

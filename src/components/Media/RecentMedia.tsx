@@ -105,14 +105,14 @@ const RecentMedia: React.FC = () => {
               ) : null}
             </Grid.Column>
             <Grid.Column width={8}>
-              {recentMedia.media.map((item) =>
+              {/* {recentMedia.media.map((item) =>
                 item.link.includes("youtube") ||
                 item.link.includes("youtu.be") ? (
                   <VideoView key={item.id} id={item.id} />
                 ) : (
                   <PhotoView key={item.id} id={item.id} />
                 )
-              )}
+              )} */}
             </Grid.Column>
             <Grid.Column width={4}>
               {reviewState.loading ? (

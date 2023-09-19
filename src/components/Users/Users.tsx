@@ -12,6 +12,7 @@ import {
   Rating,
   Divider,
   Header,
+  Segment,
 } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 import { fetchSkiAreas } from "../../redux/slices/skiAreaSlice";
@@ -76,15 +77,17 @@ const Users = () => {
                   <Loader>Loading...</Loader>
                 </Dimmer>
               ) : skiAreas && skiAreas.length > 0 ? (
-                <Card id="ski-area-card">
-                  {" "}
-                  {/* max height overflow auto */}
-                  {skiAreas.map((sa) => (
-                    <Card.Content key={sa.slug}>
-                      <Link to={`/ski-areas/${sa.slug}`}>{sa.name}</Link>
-                    </Card.Content>
-                  ))}
-                </Card>
+                <Segment style={{ overflow: "auto", maxHeight: "75vh" }}>
+                  <Card id="ski-area-card">
+                    {" "}
+                    {/* max height overflow auto */}
+                    {skiAreas.map((sa) => (
+                      <Card.Content key={sa.slug}>
+                        <Link to={`/ski-areas/${sa.slug}`}>{sa.name}</Link>
+                      </Card.Content>
+                    ))}
+                  </Card>
+                </Segment>
               ) : skiAreaState.error ? (
                 <Dimmer active>
                   <Header as="h1">
@@ -95,9 +98,9 @@ const Users = () => {
               ) : null}
             </Grid.Column>
             <Grid.Column width={8}>
-              {users.users.map((user: UserData) => (
-                <Card.Group key={user.id}>
-                  <Card>
+              <Card.Group>
+                {users.users.map((user: UserData) => (
+                  <Card key={user.id}>
                     <Card.Content>
                       {user.avatar ? (
                         <Image floated="right" wrapped src={user.avatar} />
@@ -108,13 +111,16 @@ const Users = () => {
                       </Card.Meta>
                     </Card.Content>
                     <Card.Content extra>
-                      <Button as={Link} to={`/users/${user.username}`}>
+                      <Button
+                        color="blue"
+                        as={Link}
+                        to={`/users/${user.username}`}>
                         {`${user.username}'s Profile`}
                       </Button>
                     </Card.Content>
                   </Card>
-                </Card.Group>
-              ))}
+                ))}
+              </Card.Group>
             </Grid.Column>
             <Grid.Column width={4}>
               {reviewState.loading ? (

@@ -107,13 +107,17 @@ const Review: React.FC = () => {
                 </Header>
               </Dimmer>
             ) : skiAreas && skiAreas.length > 0 ? (
-              <Card style={{ marginTop: "10px", marginLeft: "20px" }}>
-                {skiAreas.map((sa) => (
-                  <Card.Content key={sa.slug}>
-                    <Link to={`/ski-areas/${sa.slug}`}>{sa.name}</Link>
-                  </Card.Content>
-                ))}
-              </Card>
+              <Segment style={{ overflow: "auto", maxHeight: "75vh" }}>
+                <Card id="ski-area-card">
+                  {" "}
+                  {/* max height overflow auto */}
+                  {skiAreas.map((sa) => (
+                    <Card.Content key={sa.slug}>
+                      <Link to={`/ski-areas/${sa.slug}`}>{sa.name}</Link>
+                    </Card.Content>
+                  ))}
+                </Card>
+              </Segment>
             ) : null}
           </Grid.Column>
           <Grid.Column width={8}>

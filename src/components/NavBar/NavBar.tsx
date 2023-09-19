@@ -24,7 +24,7 @@ const NavBar = () => {
       <Menu.Item header as={Link} to="/">
         <Image src={logo} alt={"snow-pro-logo"} size="small" />
       </Menu.Item>
-      <Dropdown item text="Check it out">
+      <Dropdown item text="Check it out" style={{ color: "goldenrod" }}>
         <Dropdown.Menu>
           <Dropdown.Item>
             <Link to="/ski-areas" style={{ color: "green" }}>
@@ -38,32 +38,37 @@ const NavBar = () => {
               Recent Reviews
             </Link>
           </Dropdown.Item>
-          <Dropdown.Item>
-            <Link to="/media/recent-media" style={{ color: "green" }}>
-              Recent Media
-            </Link>
-          </Dropdown.Item>
-          <Dropdown.Item>
-            <Link to="/users/all-users" style={{ color: "green" }}>
-              Users
-            </Link>
-          </Dropdown.Item>
+          {isAuthenticated ? (
+            <Dropdown.Item>
+              <Link to="/users/all-users" style={{ color: "green" }}>
+                Users
+              </Link>
+            </Dropdown.Item>
+          ) : null}
         </Dropdown.Menu>
       </Dropdown>
       {isAuthenticated ? (
         <Menu.Menu position="right">
           <Menu.Item>
-            <Link to="/">Home</Link>
+            <Link to="/" style={{ color: "goldenrod" }}>
+              Home
+            </Link>
           </Menu.Item>
-          <Menu.Item onClick={handleLogout}>Logout</Menu.Item>
+          <Menu.Item onClick={handleLogout} style={{ color: "goldenrod" }}>
+            Logout
+          </Menu.Item>
         </Menu.Menu>
       ) : (
         <Menu.Menu position="right">
           <Menu.Item>
-            <Link to="/login">Login</Link>
+            <Link to="/login" style={{ color: "goldenrod" }}>
+              Login
+            </Link>
           </Menu.Item>
           <Menu.Item>
-            <Link to="/register">Sign Up!</Link>
+            <Link to="/register" style={{ color: "goldenrod" }}>
+              Sign Up!
+            </Link>
           </Menu.Item>
         </Menu.Menu>
       )}

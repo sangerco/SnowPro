@@ -59,8 +59,6 @@ const MyPage = () => {
     });
   }
 
-  console.log(videoLinks);
-
   if (auth.loading) {
     return (
       <div>

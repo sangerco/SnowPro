@@ -19,7 +19,6 @@ import UserVideos from "./components/Media/UserVideos";
 import SkiAreaData from "./components/SkiAreas/SkiAreaData";
 import SkiAreaPage from "./components/SkiAreas/SkiAreaPage";
 import Home from "./components/Home/Home";
-import RecentMedia from "./components/Media/RecentMedia";
 import Users from "./components/Users/Users";
 
 const AppRoutes: React.FC = () => {
@@ -33,7 +32,6 @@ const AppRoutes: React.FC = () => {
       <Route path="/users/:username/update" element={<UpdateUserForm />} />
       <Route path="/users/:username/photos" element={<UserPhotos />} />
       <Route path="/users/:username/videos" element={<UserVideos />} />
-      <Route path="/media/recent-media" element={<RecentMedia />} />
       <Route path="/messages/:id" element={<Message />} />
       <Route path="/messages/replies/:id" element={<MessageReply />} />
       <Route path="/messages/create-message" element={<MessageForm />} />
