@@ -9,7 +9,7 @@ import {
 
 class SkiArea {
   static async createSkiArea(slug: string, name: string): Promise<void> {
-    const result = await db.query(
+    await db.query(
       `INSERT INTO ski_areas 
             (   slug,
                 name)
@@ -28,7 +28,7 @@ class SkiArea {
                 u.id as "userId",
                 u.username
                 FROM ski_areas s
-                LEFT JOIN fav_mountains fm ON s.slug = fm.ski_areas_slug
+                LEFT JOIN fav_mountains fm ON s.slug = fm.ski_area_slug
                 LEFT JOIN users u ON fm.user_id = u.id
                 WHERE s.slug = $1`,
       [slug]
@@ -66,6 +66,7 @@ class SkiArea {
       console.error("No reviews found");
     }
 
+    console.log(reviews);
     return reviews;
   }
 }

@@ -1,7 +1,5 @@
-import express, { Express, NextFunction, Request, Response } from "express";
-import cors from "cors";
+import { NextFunction, Request, Response } from "express";
 import { NotFoundError } from "./expressError";
-import { authenticateJWT } from "./middleware/auth";
 import messageRoutes from "./routes/messages";
 import messageReplyRoutes from "./routes/messageReplies";
 import reviewRoutes from "./routes/reviews";
@@ -11,15 +9,10 @@ import photoRoutes from "./routes/photos";
 import videoRoutes from "./routes/videos";
 import tagRoutes from "./routes/tags";
 import favMountainRoutes from "./routes/favMountains";
-
 import { PORT } from "./config";
+import createServer from "./server";
 
-const app: Express = express();
-
-app.use(cors());
-app.use(express.json());
-// app.use(morgan('combined')); - deal with this later
-app.use(authenticateJWT);
+const app = createServer();
 
 app.use(messageRoutes);
 app.use(messageReplyRoutes);

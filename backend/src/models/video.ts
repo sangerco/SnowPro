@@ -77,7 +77,6 @@ class Video {
       `SELECT u.id AS "userId",
                 u.username,
                 v.id,
-                v.user_id,
                 v.link,
                 v.about,
                 v.created_at AS "createdAt"
@@ -105,13 +104,13 @@ class Video {
 
     const sqlQuery = `UPDATE videos
                             SET ${setCols}
-                            WHERE id = ${id}
+                            WHERE id = '${id}'
                             RETURNING id,
                                 user_id AS "userId",
                                 link,
                                 about,
-                                created_at`;
-    const result = await db.query(sqlQuery, [...values, id]);
+                                created_at AS "createdAt"`;
+    const result = await db.query(sqlQuery, values);
     const video = result.rows[0];
 
     if (!video) throw new NotFoundError("Video not found!");

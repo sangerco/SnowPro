@@ -30,13 +30,17 @@ class Photo {
     const id = uuidv4();
     const createdAt = new Date();
 
-    const userId = await db.query(
+    const findId = await db.query(
       `
             SELECT id
                 FROM users
                 WHERE username = $1`,
       [username]
     );
+
+    const userId = findId.rows[0].id;
+
+    console.log(typeof userId);
 
     const result = await db.query(
       `
@@ -51,7 +55,7 @@ class Photo {
                     id,
                     user_id AS "userId",
                     link,
-                    about
+                    about,
                     created_at AS "createdAt"`,
       [id, userId, link, about, createdAt]
     );
@@ -88,7 +92,6 @@ class Photo {
       `SELECT u.id AS "userId",
                 u.username,
                 p.id,
-                p.user_id,
                 p.link,
                 p.about,
                 p.created_at AS "createdAt"
@@ -116,13 +119,13 @@ class Photo {
 
     const sqlQuery = `UPDATE photos
                             SET ${setCols}
-                            WHERE id = ${id}
+                            WHERE id = '${id}'
                             RETURNING id,
                                 user_id AS "userId",
                                 link,
                                 about,
                                 created_at as "createdAt"`;
-    const result = await db.query(sqlQuery, [...values, id]);
+    const result = await db.query(sqlQuery, values);
     const photo = result.rows[0];
 
     if (!photo) throw new NotFoundError("Photo not found!");

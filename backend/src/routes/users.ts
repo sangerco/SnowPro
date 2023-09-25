@@ -40,6 +40,7 @@ router.post(
       );
       if (!validator.valid) {
         const errors: string | string[] = validator.errors.map((e) => e.stack);
+        // @ts-ignore
         throw new BadRequestError(errors);
       }
       const {
@@ -76,6 +77,7 @@ router.post(
       );
       if (!validator.valid) {
         const errors: string | string[] = validator.errors.map((e) => e.stack);
+        // @ts-ignore
         throw new BadRequestError(errors);
       }
       const { username, password }: UserLoginData = req.body;
@@ -152,6 +154,7 @@ router.patch(
       );
       if (!validator.valid) {
         const errors: string | string[] = validator.errors.map((e) => e.stack);
+        // @ts-ignore
         throw new BadRequestError(errors);
       }
 
@@ -177,6 +180,7 @@ router.patch(
       );
       if (!validator.valid) {
         const errors: string | string[] = validator.errors.map((e) => e.stack);
+        // @ts-ignore
         throw new BadRequestError(errors);
       }
 

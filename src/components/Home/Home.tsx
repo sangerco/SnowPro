@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import MyPage from "./MyPage";
 import { fetchSkiAreas } from "../../redux/slices/skiAreaSlice";
-import { fetchAllReviews } from "../../redux/slices/reviewSlice";
+import { ReviewData, fetchAllReviews } from "../../redux/slices/reviewSlice";
 import AnonHome from "./AnonHome";
 import "./Home.css";
 import {
@@ -43,7 +43,9 @@ const Home: React.FC = () => {
   const reviews = reviewState.reviews;
 
   let totalReviews;
-  let paginatedReviews;
+  let paginatedReviews: ReviewData[];
+
+  reviews ? (paginatedReviews = reviews.slice(0, 3)) : (paginatedReviews = []);
 
   const itemsPerPage = 3;
   const [activePage, setActivePage] = useState(1);
@@ -53,7 +55,7 @@ const Home: React.FC = () => {
   const endIndex = Math.min(startIndex + itemsPerPage, totalReviews);
   reviews
     ? (paginatedReviews = reviews.slice(startIndex, endIndex))
-    : (paginatedReviews = 1);
+    : (paginatedReviews = []);
 
   const handlePaginationChange = (
     e: React.MouseEvent,
@@ -119,10 +121,10 @@ const Home: React.FC = () => {
               <div id="inbox-div">
                 <Inbox username={username} />
               </div>
-            ) : reviews && reviews.length > 0 ? (
+            ) : paginatedReviews && paginatedReviews.length > 0 ? (
               <div>
                 <Grid.Row style={{ width: "250px" }}>
-                  {reviews.map((review) => (
+                  {paginatedReviews.map((review) => (
                     <Grid.Column>
                       {" "}
                       {/* paginated */}

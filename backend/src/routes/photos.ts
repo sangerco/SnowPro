@@ -26,6 +26,7 @@ router.post(
       );
       if (!validator.valid) {
         const errors: string | string[] = validator.errors.map((e) => e.stack);
+        // @ts-ignore
         throw new BadRequestError(errors);
       }
       const { userId, link, about }: PhotoData = req.body;
@@ -85,6 +86,7 @@ router.patch(
       );
       if (!validator.valid) {
         const errors: string | string[] = validator.errors.map((e) => e.stack);
+        // @ts-ignore
         throw new BadRequestError(errors);
       }
       const photo = await Photo.updatePhoto(req.params.id, req.body);

@@ -50,7 +50,7 @@ class Review {
                    body,
                    stars,
                    created_at)
-            VALUES ($1, $2, $3, $4, $5, $6)
+            VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
             RETURNING
                 id,
                 username,
@@ -65,13 +65,14 @@ class Review {
 
     const reviewData = result.rows[0];
 
+    let photoIds: string[] = [];
+
     for (let photo of photos) {
       const photoId = uuidv4();
       const photoCreatedAt = new Date();
 
-      const photoResult = await db.query(
-        `
-                INSERT INTO photos (
+      await db.query(
+        `   INSERT INTO photos (
                     id,
                     user_id,
                     link,
@@ -86,13 +87,12 @@ class Review {
       );
 
       await db.query(
-        `
-                INSERT INTO reviews_photos (review_id, photo_id)
+        `   INSERT INTO reviews_photos (review_id, photo_id)
                 VALUES ($1, $2)`,
         [reviewData.id, photoId]
       );
 
-      reviewData.photos.push(photoId);
+      photoIds.push(photoId);
     }
 
     const skiAreaName = await db.query(
@@ -101,7 +101,7 @@ class Review {
       [ski_area_slug]
     );
 
-    reviewData.skiAreaName = skiAreaName;
+    reviewData.skiAreaName = skiAreaName.rows[0].skiAreaName;
 
     reviewData.username = username;
 
@@ -114,7 +114,7 @@ class Review {
       header: reviewData.header,
       body: reviewData.body,
       stars: reviewData.stars,
-      photos: reviewData.photos,
+      photos: photoIds,
     };
 
     return review;
@@ -123,11 +123,13 @@ class Review {
     id: string,
     data: Partial<ReviewData>
   ): Promise<ReviewData> {
-    const { setCols, values } = sqlForPartialUpdate(data, {});
+    const { setCols, values } = sqlForPartialUpdate(data, {
+      userId: "user_id",
+    });
 
     const sqlQuery = `UPDATE reviews
                             SET ${setCols}
-                            WHERE id = ${id}
+                            WHERE id = '${id}'
                             RETURNING user_id AS "userId",
                             ski_area_slug AS "skiAreaSlug",
                             header,
@@ -135,7 +137,7 @@ class Review {
                             stars,
                             photos,
                             created_at AS "createdAt"`;
-    const result = await db.query(sqlQuery, [...values, id]);
+    const result = await db.query(sqlQuery, values);
     const review = result.rows[0];
 
     if (!review) throw new NotFoundError("No such review found.");
@@ -161,10 +163,10 @@ class Review {
             FROM reviews r
             LEFT JOIN users u ON r.user_id = u.id
             LEFT JOIN ski_areas s ON r.ski_area_slug = s.slug
-            LEFT JOIN reviews_photos rp ON r.photo = rp.photo_id
+            LEFT JOIN reviews_photos rp ON r.photos = rp.photo_id
             LEFT JOIN photos p ON rp.photo_id = p.id
             WHERE s.name = $1
-            // ORDER BY r.created_at`,
+            ORDER BY r.created_at`,
       [skiAreaName]
     );
 
@@ -188,14 +190,14 @@ class Review {
                 r.stars,
                 p.link AS "photos",
                 u.username,
-                s.name AS "skiAreaName"
+                s.name AS "skiAreaName",
+                r.created_at AS "createdAt"
             FROM reviews r
             LEFT JOIN users u ON r.user_id = u.id
             LEFT JOIN ski_areas s ON r.ski_area_slug = s.slug
             LEFT JOIN reviews_photos rp ON r.photos = rp.photo_id
             LEFT JOIN photos p ON rp.photo_id = p.id
-            WHERE r.id = $1
-            ORDER BY r.created_at`,
+            WHERE r.id = $1`,
       [id]
     );
 

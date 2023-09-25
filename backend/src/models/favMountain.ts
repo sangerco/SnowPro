@@ -1,6 +1,4 @@
 import db from "../db";
-import { NotFoundError } from "../expressError";
-import { v4 as uuidv4 } from "uuid";
 
 interface FavMountainData {
   userId: string;
@@ -17,9 +15,9 @@ class FavMountain {
       `
             INSERT INTO fav_mountains
             (   user_id,
-                ski_areas_slug)
+                ski_area_slug)
             VALUES ($1, $2)
-            RETURNING user_id AS "userId", ski_areas_slug AS "skiAreaSlug"`,
+            RETURNING user_id AS "userId", ski_area_slug AS "skiAreaSlug"`,
       [userId, skiAreaSlug]
     );
     const favMountain = result.rows[0];
@@ -34,7 +32,7 @@ class FavMountain {
                     s.name AS "skiAreaName"
             FROM users u
             LEFT JOIN fav_mountains fm ON u.id = fm.user_id
-            LEFT JOIN ski_areas s ON fm.ski_areas_slug = s.slug
+            LEFT JOIN ski_areas s ON fm.ski_area_slug = s.slug
             WHERE user_id = $1`,
       [userId]
     );
@@ -48,10 +46,10 @@ class FavMountain {
     const result = await db.query(
       `
             SELECT s.slug AS "skiAreaSlug",
-                    u.user_id AS "userId",
-                    u.username,
+                    u.id AS "userId",
+                    u.username
             FROM ski_areas s
-            LEFT JOIN fav_mountains fm ON s.slug = fm.ski_areas_slug
+            LEFT JOIN fav_mountains fm ON s.slug = fm.ski_area_slug
             LEFT JOIN users u ON fm.user_id = u.id
             WHERE slug = $1`,
       [skiAreaSlug]
@@ -64,10 +62,11 @@ class FavMountain {
 
   static async remove(username: string, slug: string): Promise<void> {
     await db.query(
-      `DELETE FROM fav_mountains fm
-                LEFT JOIN users u ON u.id = fm.user_id
-                WHERE u.username = $1
-                AND fm.ski_areas_slug = $2`,
+      `DELETE FROM fav_mountains AS fm
+      USING users AS u
+      WHERE u.id = fm.user_id
+        AND u.username = $1
+        AND fm.ski_area_slug = $2`,
       [username, slug]
     );
   }

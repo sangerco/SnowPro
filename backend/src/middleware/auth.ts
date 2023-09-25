@@ -28,6 +28,7 @@ const ensureLoggedIn = (
 ): void => {
   try {
     if (!res.locals.user) throw new UnauthorizedError("Unauthorized");
+    console.log(res.locals.user);
     return next();
   } catch (e) {
     return next();

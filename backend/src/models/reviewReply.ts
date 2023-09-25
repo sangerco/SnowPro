@@ -23,6 +23,15 @@ interface ReviewReplyRow {
   createdAt: Date;
 }
 
+interface UpdatedReviewReplyData {
+  id: string;
+  userId: string;
+  reviewId: string;
+  body: string;
+  slug: string;
+  createdAt: Date;
+}
+
 class ReviewReply {
   static async replyToReview(
     userId: string,
@@ -71,7 +80,7 @@ class ReviewReply {
 
     const reviewReplyData = result.rows[0];
 
-    reviewReplyData.username = username;
+    reviewReplyData.username = username.rows[0].username;
 
     const reviewReply: ReviewReplyData = {
       id: reviewReplyData.id,
@@ -87,21 +96,22 @@ class ReviewReply {
   }
 
   static async replyToReviewUpdate(id: string, data: Partial<ReviewReplyData>) {
-    const { setCols, values } = sqlForPartialUpdate(data, {});
+    const { setCols, values } = sqlForPartialUpdate(data, {
+      userId: "user_id",
+    });
 
     const sqlQuery = `UPDATE review_replies
                             SET ${setCols}
-                            WHERE id = ${id}
+                            WHERE id = '${id}'
                             RETURNING user_id AS "userId",
                                         review_id AS "reviewId",
                                         ski_area_slug AS "slug",
                                         body,
                                         created_at AS "createdAt"`;
-    const result = await db.query<ReviewReplyRow>(sqlQuery, [...values, id]);
-    const reviewReply: ReviewReplyData = {
-      id: result.rows[0].id,
+    const result = await db.query<ReviewReplyRow>(sqlQuery, values);
+    const reviewReply: UpdatedReviewReplyData = {
+      id: id,
       userId: result.rows[0].userId,
-      username: result.rows[0].username,
       reviewId: result.rows[0].reviewId,
       slug: result.rows[0].slug,
       body: result.rows[0].body,

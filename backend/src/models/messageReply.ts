@@ -34,6 +34,7 @@ class Reply {
   ): Promise<ReplyData> {
     const id = uuidv4();
     const created_at = new Date();
+    console.log(created_at);
 
     const result = await db.query(
       `
@@ -44,8 +45,9 @@ class Reply {
                 recipient_id,
                 subject,
                 body,
-                created_at)
-            VALUES ($1, $2, $3, $4, $5, $6, false)
+                created_at,
+                is_read)
+            VALUES ($1, $2, $3, $4, $5, $6, $7, false)
             RETURNING 
                 id,
                 message_id AS "messageId",
@@ -74,6 +76,7 @@ class Reply {
                 r.subject,
                 r.body,
                 r.created_at AS "createdAt",
+                r.is_read AS "isRead",
                 sender.username AS "senderUsername",
                 sender.first_name AS "senderFirstName",
                 sender.last_name AS "senderLastName",            

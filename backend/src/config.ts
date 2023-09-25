@@ -1,17 +1,19 @@
-import dotenv from 'dotenv';
+import dotenv from "dotenv";
 
 dotenv.config();
 
-const SECRET_KEY: string = process.env.SECRET_KEY || 'this-is-my-secret-key';
+const SECRET_KEY: string = process.env.SECRET_KEY || "this-is-my-secret-key";
 const PORT: number = +(process.env.PORT || 5000);
 
 function getDatabaseURI(): string {
-    return process.env.NODE_ENV === 'test' ? 'postgresql:///snowpro_test' : process.env.DATABASE_URL || 'postgresql:///snowpro';
+  return process.env.NODE_ENV === "test"
+    ? "postgresql:///snowpro_test"
+    : process.env.DATABASE_URL || "postgresql:///snowpro";
 }
 
-const BCRYPT_WORK_FACTOR: number = process.env.NODE_ENV === 'test' ? 1 : 12;
+const BCRYPT_WORK_FACTOR: number = process.env.NODE_ENV === "test" ? 1 : 12;
 
-console.log('SnowPro Config');
+console.log("SnowPro Config");
 console.log(`SECRET KEY: ${SECRET_KEY}`);
 console.log(`PORT: ${PORT.toString()}`);
 console.log(`BCRYPT_WORK_FACTOR: ${BCRYPT_WORK_FACTOR}`);

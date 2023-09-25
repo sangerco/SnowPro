@@ -78,6 +78,7 @@ class Message {
                 m.subject,
                 m.body,
                 m.created_at AS "createdAt",
+                m.is_read AS "isRead",
                 sender.username AS "senderUsername",
                 sender.first_name AS "senderFirstName",
                 sender.last_name AS "senderLastName",
