@@ -6,8 +6,8 @@ const createServer = () => {
   const app: Express = express();
 
   app.use(cors());
-  app.use(express.json());
   app.use(authenticateJWT);
+  app.use(express.json());
 
   return app;
 };
