@@ -46,7 +46,7 @@ router.get(
         req.params.username
       );
       console.log(favMountains);
-      return res.json({ favMountains });
+      return res.status(200).json({ favMountains });
     } catch (e) {
       next(e);
     }
@@ -61,7 +61,7 @@ router.get(
         req.params.slug
       );
       console.log(favMountains);
-      return res.json({ favMountains });
+      return res.status(200).json({ favMountains });
     } catch (e) {
       next(e);
     }
@@ -75,7 +75,7 @@ router.delete(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       await FavMountain.remove(req.params.username, req.params.slug);
-      return res.json({
+      return res.status(200).json({
         deleted: `Favorite ${(req.params.username, req.params.slug)}`,
       });
     } catch (e) {

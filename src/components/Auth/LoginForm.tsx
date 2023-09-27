@@ -20,7 +20,11 @@ import { initialLoginState } from "../../helpers/helperStates";
 import { fetchSkiAreas } from "../../redux/slices/skiAreaSlice";
 import { fetchAllReviews } from "../../redux/slices/reviewSlice";
 
-const LoginForm = () => {
+interface LoginFormProps {
+  onSubmit: () => void;
+}
+
+const LoginForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const [formData, setFormData] = useState(initialLoginState);
@@ -116,7 +120,7 @@ const LoginForm = () => {
           <Grid.Column width={8}>
             <Segment raised>
               <Form onSubmit={handleSubmit}>
-                <Form.Field>
+                <Form.Field data-testid="username-input">
                   <label>
                     Username:
                     <input
@@ -127,17 +131,17 @@ const LoginForm = () => {
                     />
                   </label>
                 </Form.Field>
-                <Form.Field></Form.Field>
-                <label>
-                  Password:
-                  <input
-                    type="password"
-                    name="password"
-                    value={formData.password}
-                    onChange={handleChange}
-                  />
-                </label>
-                <Form.Field />
+                <Form.Field data-testid="password-input">
+                  <label>
+                    Password:
+                    <input
+                      type="password"
+                      name="password"
+                      value={formData.password}
+                      onChange={handleChange}
+                    />
+                  </label>
+                </Form.Field>
                 <Button color="blue" type="submit">
                   Login
                 </Button>
