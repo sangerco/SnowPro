@@ -10,9 +10,16 @@ import videoRoutes from "./routes/videos";
 import tagRoutes from "./routes/tags";
 import favMountainRoutes from "./routes/favMountains";
 import { PORT } from "./config";
-import createServer from "./server";
+import express, { Express } from "express";
+import cors from "cors";
+import { authenticateJWT } from "./middleware/auth";
+// import createServer from "./server";
 
-const app = createServer();
+export const app: Express = express();
+
+app.use(cors());
+app.use(authenticateJWT);
+app.use(express.json());
 
 app.use(messageRoutes);
 app.use(messageReplyRoutes);

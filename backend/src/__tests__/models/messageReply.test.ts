@@ -6,8 +6,8 @@ describe("create message reply", () => {
   it("should create a reply", async () => {
     const newReply = {
       messageId: "message-1",
-      senderId: "2",
-      recipientId: "1",
+      senderId: "22",
+      recipientId: "11",
       subject: "test subject",
       body: "test body",
     };
@@ -23,8 +23,8 @@ describe("create message reply", () => {
     expect(reply).toEqual({
       id: expect.any(String),
       messageId: "message-1",
-      senderId: "2",
-      recipientId: "1",
+      senderId: "22",
+      recipientId: "11",
       subject: "test subject",
       body: "test body",
       isRead: false,
@@ -39,8 +39,8 @@ describe("get replies", () => {
     expect(reply).toEqual({
       id: "message-reply-1",
       messageId: "message-1",
-      senderId: "2",
-      recipientId: "1",
+      senderId: "22",
+      recipientId: "11",
       subject: "Re: Greetings",
       body: `Hello John! I'm glad to hear you're doing well.`,
       createdAt: expect.any(Date),
@@ -60,8 +60,8 @@ describe("get replies", () => {
       {
         id: expect.any(String),
         messageId: "message-1",
-        senderId: "2",
-        recipientId: "1",
+        senderId: "22",
+        recipientId: "11",
         subject: "Re: Greetings",
         body: `Hello John! I'm glad to hear you're doing well.`,
         createdAt: expect.any(Date),
@@ -75,8 +75,8 @@ describe("get replies", () => {
       {
         id: expect.any(String),
         messageId: "message-1",
-        senderId: "2",
-        recipientId: "1",
+        senderId: "22",
+        recipientId: "11",
         subject: "test subject",
         body: `test body`,
         createdAt: expect.any(Date),
@@ -95,8 +95,8 @@ describe("get replies", () => {
       {
         id: expect.any(String),
         messageId: expect.any(String),
-        senderId: "4",
-        recipientId: "3",
+        senderId: "44",
+        recipientId: "33",
         subject: "Re: Question about resorts",
         body: "Of course! What do you need help with?",
         createdAt: expect.any(Date),
@@ -115,8 +115,8 @@ describe("get replies", () => {
       {
         id: expect.any(String),
         messageId: expect.any(String),
-        senderId: "4",
-        recipientId: "3",
+        senderId: "44",
+        recipientId: "33",
         subject: "Re: Question about resorts",
         body: "Of course! What do you need help with?",
         createdAt: expect.any(Date),

@@ -5,7 +5,7 @@ let reviewReplyId: string;
 describe("create review reply", () => {
   it("should create a new review reply", async () => {
     const reviewReplyData = {
-      userId: "3",
+      userId: "33",
       reviewId: "review-1",
       skiAreaSlug: "ski-area-3",
       body: "test review reply",
@@ -19,7 +19,7 @@ describe("create review reply", () => {
     reviewReplyId = reviewReply.id;
     expect(reviewReply).toEqual({
       id: expect.any(String),
-      userId: "3",
+      userId: "33",
       username: "mike_jones",
       reviewId: "review-1",
       slug: "ski-area-3",
@@ -36,7 +36,7 @@ describe("fetch review replies", () => {
       {
         id: expect.any(String),
         reviewId: "review-2",
-        userId: "1",
+        userId: "11",
         username: "john_doe",
         body: "Thanks for the recommendation!",
         slug: "ski-area-2",
@@ -49,7 +49,7 @@ describe("fetch review replies", () => {
     expect(reply).toEqual({
       id: "review-reply-3",
       reviewId: "review-3",
-      userId: "4",
+      userId: "44",
       username: "susan_brown",
       body: "Yes, the views are breathtaking!",
       slug: "ski-area-3",
@@ -62,7 +62,7 @@ describe("update review reply", () => {
   it("should update a reply", async () => {
     const updateData = {
       id: reviewReplyId,
-      userId: "3",
+      userId: "33",
       body: "updated body",
     };
     const reply = await ReviewReply.replyToReviewUpdate(
@@ -71,7 +71,7 @@ describe("update review reply", () => {
     );
     expect(reply).toEqual({
       id: expect.any(String),
-      userId: "3",
+      userId: "33",
       reviewId: "review-1",
       slug: "ski-area-3",
       body: "updated body",

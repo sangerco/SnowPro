@@ -42,7 +42,7 @@ router.get(
   "/users/:username/fav-mountains",
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const favMountains = await FavMountain.fetchFavMountainDataByUserId(
+      const favMountains = await FavMountain.fetchFavMountainDataByUsername(
         req.params.username
       );
       console.log(favMountains);
@@ -76,7 +76,7 @@ router.delete(
     try {
       await FavMountain.remove(req.params.username, req.params.slug);
       return res.status(200).json({
-        deleted: `Favorite ${(req.params.username, req.params.slug)}`,
+        deleted: `Favorite`,
       });
     } catch (e) {
       return next(e);

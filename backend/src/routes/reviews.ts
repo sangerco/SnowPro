@@ -44,7 +44,7 @@ router.get(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const reviews = await Review.getAllReviews();
-      return res.json({ reviews });
+      return res.status(200).json({ reviews });
     } catch (e) {
       next(e);
     }
@@ -75,7 +75,7 @@ router.get(
       const replies: ReplyReviewData[] =
         await ReviewReply.fetchRepliesByReviewId(req.params.id);
       console.log({ review, replies });
-      return res.json({ review, replies });
+      return res.status(200).json({ review, replies });
     } catch (e) {
       next(e);
     }
@@ -195,7 +195,7 @@ router.delete(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       await ReviewReply.removeReply(req.params.id);
-      res.json({ deleted: `reply: ${req.params.id}` });
+      res.status(200).json({ deleted: `reply: ${req.params.id}` });
     } catch (e) {
       return next(e);
     }

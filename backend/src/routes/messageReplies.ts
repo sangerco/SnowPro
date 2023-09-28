@@ -56,7 +56,7 @@ router.get(
     try {
       console.log(req.params.id);
       const reply = await Reply.getReplyById(req.params.id);
-      return res.json({ reply });
+      return res.status(200).json({ reply });
     } catch (e) {
       return next(e);
     }
@@ -72,7 +72,7 @@ router.get(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const replies = await Reply.getRepliesByMessageId(req.params.id);
-      return res.json({ replies });
+      return res.status(200).json({ replies });
     } catch (e) {
       return next(e);
     }
@@ -88,7 +88,7 @@ router.patch(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       await Reply.markMessageReplyAsRead(req.params.id);
-      return res.json({ markedAsRead: req.params.id });
+      return res.status(200).json({ markedAsRead: req.params.id });
     } catch (e) {
       next(e);
     }
@@ -104,7 +104,7 @@ router.patch(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       await Reply.markMessageReplyAsUnread(req.params.id);
-      return res.json({ markedAsUnread: req.params.id });
+      return res.status(200).json({ markedAsUnread: req.params.id });
     } catch (e) {
       next(e);
     }
@@ -120,7 +120,7 @@ router.delete(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       await Reply.deleteReply(req.params.id);
-      return res.json({ deleted: req.params.id });
+      return res.status(200).json({ deleted: req.params.id });
     } catch (e) {
       return next(e);
     }

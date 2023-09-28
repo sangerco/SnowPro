@@ -6,7 +6,7 @@ describe("users favorited by", () => {
     expect(favoritedUsers).toEqual([
       {
         slug: "ski-area-1",
-        userId: "1",
+        userId: "11",
         username: "john_doe",
       },
     ]);
@@ -19,7 +19,7 @@ describe("get reviews by ski area slug", () => {
     expect(reviews).toEqual([
       {
         id: "review-2",
-        userId: "2",
+        userId: "22",
         skiAreaSlug: "ski-area-2",
         header: "Great Skiing Spot",
         body: "The skiing trails are excellent here.",

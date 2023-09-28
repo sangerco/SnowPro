@@ -209,7 +209,8 @@ class User {
                                     last_name AS "lastName",
                                     email,
                                     avatar,
-                                    bio`;
+                                    bio,
+                                    is_admin AS "isAdmin"`;
     const result = await db.query(sqlQuery, [...values, username]);
     const user = result.rows[0];
 

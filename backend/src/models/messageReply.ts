@@ -34,7 +34,6 @@ class Reply {
   ): Promise<ReplyData> {
     const id = uuidv4();
     const created_at = new Date();
-    console.log(created_at);
 
     const result = await db.query(
       `

@@ -15,9 +15,9 @@ import {
 import { checkIfUserOrAdmin, ensureLoggedIn } from "../middleware/auth";
 
 interface ReviewData {
-  user_id: string;
+  userId: string;
   username: string;
-  ski_area_slug: string;
+  skiAreaSlug: string;
   header: string;
   body: string;
   stars: number;
@@ -57,7 +57,7 @@ router.get(
       for (let skiArea of allSkiAreas) {
         await SkiArea.createSkiArea(skiArea.slug, skiArea.name);
       }
-      res.json(allSkiAreas);
+      res.status(200).json(allSkiAreas);
     } catch (e) {
       console.error(e);
       res.status(500).json({ error: "An error occurred while fetching data." });
@@ -99,7 +99,7 @@ router.get(
         usersFavoritedBy: getUsersFavoritedBy,
       };
 
-      res.json(combinedData);
+      res.status(200).json(combinedData);
     } catch (e) {
       console.error(e);
       res
@@ -125,18 +125,18 @@ router.post(
         throw new BadRequestError(errors);
       }
       const {
-        user_id,
+        userId,
         username,
-        ski_area_slug,
+        skiAreaSlug,
         header,
         body,
         stars,
         photos,
       }: ReviewData = req.body;
       const review = await Review.createReview(
-        user_id,
+        userId,
         username,
-        ski_area_slug,
+        skiAreaSlug,
         header,
         body,
         stars,

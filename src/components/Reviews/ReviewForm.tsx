@@ -50,9 +50,9 @@ const ReviewForm: React.FC = () => {
   ];
 
   const initialReviewState: NewReviewData = {
-    user_id: userId!,
+    userId: userId!,
     username: username!,
-    ski_area_slug: slug!,
+    skiAreaSlug: slug!,
     header: "",
     body: "",
     stars: 0,

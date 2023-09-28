@@ -1,20 +1,15 @@
 {
     "type": "object",
     "properties": {
-        "sender_id": {
+        "senderId": {
             "type": "string",
             "minLength": 1,
             "maxLength": 40
         },
-        "recipient_id": {
-            "type": "array",
-            "items": {
-                "type": "string",
-                "minLength": 1,
-                "maxLength": 40
-            },
-            "minItems": 1,
-            "maxItems": 20
+        "recipientId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 40
         },
         "subject": {
             "type": "string",
@@ -29,8 +24,8 @@
     },
     "additionalProperties": false,
     "required": [
-        "sender_id",
-        "recipient_id",
+        "senderId",
+        "recipientId",
         "body"
     ]
 }

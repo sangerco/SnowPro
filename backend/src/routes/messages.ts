@@ -9,8 +9,8 @@ import messageNewSchema from "../schemas/messageNew.json";
 const router = express.Router();
 
 interface MessageData {
-  sender_id: string;
-  recipient_id: string[];
+  senderId: string;
+  recipientId: string;
   subject: string;
   body: string;
 }
@@ -31,10 +31,10 @@ router.post(
         const errors: string | string[] = validator.errors.map((e) => e.stack);
         throw new BadRequestError(errors);
       }
-      const { sender_id, recipient_id, subject, body }: MessageData = req.body;
+      const { senderId, recipientId, subject, body }: MessageData = req.body;
       const message = await Message.createMessage(
-        sender_id,
-        recipient_id,
+        senderId,
+        recipientId,
         subject,
         body
       );
@@ -57,7 +57,7 @@ router.get(
       const replies = await MessageReply.getRepliesByMessageId(req.params.id);
 
       const fullMessage = { message, replies: replies };
-      return res.json(fullMessage);
+      return res.status(200).json(fullMessage);
     } catch (e) {
       return next(e);
     }
@@ -73,7 +73,7 @@ router.get(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const messages = await Message.getUsersMessages(req.params.username);
-      return res.json({ messages });
+      return res.status(200).json({ messages });
     } catch (e) {
       return next(e);
     }
@@ -105,7 +105,7 @@ router.patch(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       await Message.markMessageAsRead(req.params.id);
-      return res.json({ markedAsRead: req.params.id });
+      return res.status(200).json({ markedAsRead: req.params.id });
     } catch (e) {
       next(e);
     }
@@ -121,7 +121,7 @@ router.patch(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       await Message.markMessageAsUnread(req.params.id);
-      return res.json({ markedAsUnread: req.params.id });
+      return res.status(200).json({ markedAsUnread: req.params.id });
     } catch (e) {
       next(e);
     }
@@ -137,7 +137,7 @@ router.delete(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       await Message.removeMessage(req.params.id);
-      return res.json({ deleted: req.params.id });
+      return res.status(200).json({ deleted: req.params.id });
     } catch (e) {
       return next(e);
     }

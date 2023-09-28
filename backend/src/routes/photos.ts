@@ -43,7 +43,7 @@ router.get(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const photo = await Photo.getPhoto(req.params.id);
-      return res.json({ photo });
+      return res.status(200).json({ photo });
     } catch (e) {
       return next(e);
     }
@@ -55,7 +55,7 @@ router.get(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const photos = await Photo.getPhotosByUsername(req.params.username);
-      return res.json({ photos });
+      return res.status(200).json({ photos });
     } catch (e) {
       return next(e);
     }
@@ -67,7 +67,7 @@ router.get(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const media = await Photo.getAllMedia();
-      return res.json({ media });
+      return res.status(200).json({ media });
     } catch (e) {
       return next(e);
     }
@@ -90,7 +90,7 @@ router.patch(
         throw new BadRequestError(errors);
       }
       const photo = await Photo.updatePhoto(req.params.id, req.body);
-      return res.json({ photo });
+      return res.status(200).json({ photo });
     } catch (e) {
       next(e);
     }
@@ -104,26 +104,9 @@ router.delete(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       await Photo.removePhoto(req.params.id);
-      return res.json({ deleted: `Photo removed ${req.params.id}` });
-    } catch (e) {
-      return next(e);
-    }
-  }
-);
-
-// delete photo by username and link
-
-router.delete(
-  "photo/:userId/:link",
-  async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      await Photo.deletePhotoByUsernameAndLink(
-        req.params.userId,
-        req.params.link
-      );
-      return res.json({
-        deleted: `Photo removed ${req.params.userId}, ${req.params.link}`,
-      });
+      return res
+        .status(200)
+        .json({ deleted: `Photo removed ${req.params.id}` });
     } catch (e) {
       return next(e);
     }

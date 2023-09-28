@@ -18,8 +18,8 @@ const router = express.Router();
 interface UserRegisterData {
   username: string;
   password: string;
-  first_name: string;
-  last_name: string;
+  firstName: string;
+  lastName: string;
   email: string;
 }
 
@@ -46,15 +46,15 @@ router.post(
       const {
         username,
         password,
-        first_name,
-        last_name,
+        firstName,
+        lastName,
         email,
       }: UserRegisterData = req.body;
       const user = await User.register(
         username,
         password,
-        first_name,
-        last_name,
+        firstName,
+        lastName,
         email
       );
       const token = createToken(user);
@@ -83,7 +83,7 @@ router.post(
       const { username, password }: UserLoginData = req.body;
       const user = await User.authenticate(username, password);
       const token = createToken(user);
-      return res.json({ user, token });
+      return res.status(200).json({ user, token });
     } catch (e) {
       return next(e);
     }
@@ -99,7 +99,7 @@ router.get(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const users = await User.findAllUsers();
-      return res.json({ users });
+      return res.status(200).json({ users });
     } catch (e) {
       return next(e);
     }
@@ -120,7 +120,7 @@ router.get(
       );
 
     const { userId, username } = user;
-    return res.json({ userId, username });
+    return res.status(200).json({ userId, username });
   }
 );
 
@@ -133,7 +133,7 @@ router.get(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const user = await User.getUser(req.params.username);
-      return res.json({ user });
+      return res.status(200).json({ user });
     } catch (e) {
       return next(e);
     }
@@ -159,7 +159,7 @@ router.patch(
       }
 
       const user = await User.updateUser(req.params.username, req.body);
-      return res.json({ "Made admin": user });
+      return res.status(200).json({ "Made admin": user.username });
     } catch (e) {
       return next(e);
     }
@@ -185,7 +185,7 @@ router.patch(
       }
 
       const user = await User.updateUser(req.params.username, req.body);
-      return res.json({ user });
+      return res.status(200).json({ user });
     } catch (e) {
       return next(e);
     }
@@ -201,7 +201,7 @@ router.delete(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       await User.remove(req.params.username);
-      return res.json({ deleted: req.params.username });
+      return res.status(200).json({ deleted: `${req.params.username}` });
     } catch (e) {
       return next(e);
     }

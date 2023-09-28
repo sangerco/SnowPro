@@ -13,7 +13,7 @@ describe("create new favorite mountain", () => {
       newFavMountain.ski_area_slug
     );
     expect(favMountain).toEqual({
-      userId: "1",
+      userId: "11",
       skiAreaSlug: "ski-area-2",
     });
   });
@@ -36,7 +36,7 @@ describe("Find favorite mountains", () => {
       "ski-area-3"
     );
     expect(favMountains).toEqual([
-      { skiAreaSlug: "ski-area-3", userId: "3", username: "mike_jones" },
+      { skiAreaSlug: "ski-area-3", userId: "33", username: "mike_jones" },
     ]);
   });
 });
@@ -52,7 +52,7 @@ describe("delete favorite mountains", () => {
       favMountainData.ski_area_slug
     );
     const result = await db.query(
-      `SELECT * FROM fav_mountains WHERE user_id = '1' and ski_area_slug = 'ski-area-2'`
+      `SELECT * FROM fav_mountains WHERE user_id = '11' and ski_area_slug = 'ski-area-2'`
     );
     expect(result.rows.length).toEqual(0);
   });

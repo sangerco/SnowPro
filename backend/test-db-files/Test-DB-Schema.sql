@@ -197,7 +197,7 @@ REFERENCES "tags" ("id");
 ALTER TABLE "fav_mountains" ADD CONSTRAINT "fk_fav_mountains_user_id" FOREIGN KEY("user_id")
 REFERENCES "users" ("id");
 
-ALTER TABLE "fav_mountains" ADD CONSTRAINT "fk_fav_mountains_ski_areas_slug" FOREIGN KEY("ski_areas_slug")
+ALTER TABLE "fav_mountains" ADD CONSTRAINT "fk_fav_mountains_ski_area_slug" FOREIGN KEY("ski_area_slug")
 REFERENCES "ski_areas" ("slug");
 
 ALTER TABLE "messages" ADD COLUMN "is_read" BOOLEAN DEFAULT false;

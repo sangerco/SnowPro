@@ -130,7 +130,8 @@ class Review {
     const sqlQuery = `UPDATE reviews
                             SET ${setCols}
                             WHERE id = '${id}'
-                            RETURNING user_id AS "userId",
+                            RETURNING id,
+                            user_id AS "userId",
                             ski_area_slug AS "skiAreaSlug",
                             header,
                             body,
@@ -141,6 +142,30 @@ class Review {
     const review = result.rows[0];
 
     if (!review) throw new NotFoundError("No such review found.");
+
+    if (data.photos) {
+      const updatedPhotoIds: string[] = [];
+
+      for (let photoLink of data.photos) {
+        const photoId = uuidv4();
+        const photoCreatedAt = new Date();
+
+        await db.query(
+          `INSERT INTO photos (id, user_id, link, created_at)
+                          VALUES ($1, $2, $3, $4)
+                          RETURNING id`,
+          [photoId, review.userId, photoLink, photoCreatedAt]
+        );
+        await db.query(
+          `INSERT INTO reviews_photos (review_id, photo_id)
+                          values ($1, $2)`,
+          [review.id, photoId]
+        );
+        updatedPhotoIds.push(photoId);
+      }
+
+      review.photos = updatedPhotoIds;
+    }
 
     return review;
   }

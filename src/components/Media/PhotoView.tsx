@@ -45,7 +45,7 @@ const PhotoView: React.FC<PhotoViewProps> = ({ id }) => {
       <Dimmer active>
         <Header as="h1">Error! Photo cannot be retrieved! {media.error}</Header>
         <Button color="red" onClick={() => navigate(-1)}>
-          God Back
+          Go Back
         </Button>
       </Dimmer>
     );

@@ -6,7 +6,7 @@ let videoLink: string;
 describe("create new video", () => {
   it("creates a video", async () => {
     const newVideo = {
-      userId: "1",
+      userId: "11",
       link: "https://www.fakelink.com/video.mp4",
       about: "test video",
     };
@@ -34,7 +34,7 @@ describe("get videos", () => {
     const video = await Video.getVideo("video-1");
     expect(video).toEqual({
       id: "video-1",
-      userId: "1",
+      userId: "11",
       link: "https://youtube.com/video1",
       about: "Snowboarding adventure",
       createdAt: expect.any(Date),
@@ -48,7 +48,7 @@ describe("get videos", () => {
       {
         username: "john_doe",
         id: expect.any(String),
-        userId: "1",
+        userId: "11",
         link: "https://youtube.com/video1",
         about: "Snowboarding adventure",
         createdAt: expect.any(Date),
@@ -56,7 +56,7 @@ describe("get videos", () => {
       {
         username: "john_doe",
         id: expect.any(String),
-        userId: "1",
+        userId: "11",
         link: "https://www.fakelink.com/video.mp4",
         about: "test video",
         createdAt: expect.any(Date),
@@ -69,7 +69,7 @@ describe("update videos", () => {
   it("updates a video", async () => {
     const updateData = {
       id: videoId,
-      userId: "1",
+      userId: "11",
       about: "test update data",
     };
     const video = await Video.updateVideo(updateData.id, updateData);

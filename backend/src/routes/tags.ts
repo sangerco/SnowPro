@@ -37,7 +37,7 @@ router.post(
 router.get("/tags", async (req: Request, res: Response, next: NextFunction) => {
   try {
     const tags = await Tag.getTags();
-    return res.json({ tags });
+    return res.status(200).json({ tags });
   } catch (e) {
     return next(e);
   }
@@ -48,7 +48,7 @@ router.get(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const tag = await Tag.getTag(req.params.id);
-      return res.json({ tag });
+      return res.status(200).json({ tag });
     } catch (e) {
       return next(e);
     }
@@ -62,7 +62,7 @@ router.get(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const tag = await Tag.getAssociatedItems(req.params.id);
-      return res.json({ tag });
+      return res.status(200).json({ tag });
     } catch (e) {
       return next(e);
     }
@@ -76,7 +76,7 @@ router.delete(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       await Tag.deleteTag(req.params.id);
-      return res.json({ deleted: `Tag deleted: ${req.params.id}` });
+      return res.status(200).json({ deleted: `Tag deleted: ${req.params.id}` });
     } catch (e) {
       return next(e);
     }

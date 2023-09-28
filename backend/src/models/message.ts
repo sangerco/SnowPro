@@ -4,8 +4,8 @@ import { v4 as uuidv4 } from "uuid";
 
 interface MessageData {
   id: string;
-  sender_id: string;
-  recipient_id: string[];
+  senderId: string;
+  recipientId: string;
   subject: string;
   body: string;
   createdId: Date;
@@ -29,19 +29,16 @@ interface UserWithMessages extends MessageData {
 
 class Message {
   static async createMessage(
-    sender_id: string,
-    recipient_ids: string[],
+    senderId: string,
+    recipientId: string,
     subject: string,
     body: string
-  ): Promise<MessageData[]> {
+  ): Promise<MessageData> {
     const createdAt = new Date();
+    const id = uuidv4();
 
-    const messages = await Promise.all(
-      recipient_ids.map(async (recipient_id) => {
-        const id = uuidv4();
-
-        const result = await db.query(
-          `
+    const result = await db.query(
+      `
             INSERT INTO messages
             (   id,
                 sender_id,
@@ -59,14 +56,12 @@ class Message {
                 body,
                 is_read AS "isRead",
                 created_at AS "createdAt"`,
-          [id, sender_id, recipient_id, subject, body, createdAt]
-        );
-
-        return result.rows[0];
-      })
+      [id, senderId, recipientId, subject, body, createdAt]
     );
 
-    return messages;
+    const message = result.rows[0];
+
+    return message;
   }
 
   static async getMessage(id: string): Promise<MessageData> {
@@ -107,6 +102,7 @@ class Message {
                 m.subject,
                 m.body,
                 m.created_at AS "createdAt",
+                m.is_read AS "isRead",
                 sender.username AS "senderUsername",
                 sender.first_name AS "senderFirstName",
                 sender.last_name AS "senderLastName",
@@ -133,6 +129,7 @@ class Message {
                 m.subject,
                 m.body,
                 m.created_at AS "createdAt",
+                m.is_read AS "isRead",
                 sender.username AS "senderUsername",
                 sender.first_name AS "senderFirstName",
                 sender.last_name AS "senderLastName",

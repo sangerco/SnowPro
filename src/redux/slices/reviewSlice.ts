@@ -4,9 +4,9 @@ import { URL } from "../../utils/config";
 import { ReviewReplyData } from "./reviewReplySlice";
 
 export interface NewReviewData {
-  user_id: string;
+  userId: string;
   username: string;
-  ski_area_slug: string;
+  skiAreaSlug: string;
   header: string;
   body: string;
   stars: number;
@@ -59,7 +59,7 @@ export const createReview = createAsyncThunk(
   "review/createReview",
   async (newReviewData: NewReviewData) => {
     const response = await axios.post(
-      `${URL}/api/ski-areas/${newReviewData.ski_area_slug}/review`,
+      `${URL}/api/ski-areas/${newReviewData.skiAreaSlug}/review`,
       newReviewData
     );
     const review = response.data.review;

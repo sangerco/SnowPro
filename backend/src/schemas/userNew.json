@@ -7,12 +7,12 @@
       "type": "string",
       "maxLength": 25
     },
-    "first_name": {
+    "firstName": {
       "type": "string",
       "minLength": 1,
       "maxLength": 255
     },
-    "last_name": {
+    "lastName": {
       "type": "string",
       "minLength": 1,
       "maxLength": 255
@@ -38,7 +38,7 @@
       "maxLength": 1000,
       "nullable": true
     },
-    "photo_links": {
+    "photoLinks": {
       "type": "array",
       "items": {
         "type": "string",
@@ -48,7 +48,7 @@
       "minItems": 0,
       "maxItems": 20
     },
-    "video_links": {
+    "videoLinks": {
       "type": "array",
       "items": {
         "type": "string",
@@ -61,8 +61,8 @@
   },
   "required": [
     "username",
-    "first_name",
-    "last_name",
+    "firstName",
+    "lastName",
     "email",
     "password"
   ],

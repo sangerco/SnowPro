@@ -1,9 +1,11 @@
+/* eslint-disable testing-library/no-node-access */
 import React from "react";
-import { render, fireEvent, screen, getByText } from "@testing-library/react";
+import { render, fireEvent, screen } from "@testing-library/react";
 import LoginForm from "../../../components/Auth/LoginForm";
 import { Provider } from "react-redux";
 import { store } from "../../../redux/store";
 import { BrowserRouter } from "react-router-dom";
+import { debug } from "console";
 
 describe("test LoginForm", () => {
   it("renders without crashing", () => {
@@ -38,11 +40,22 @@ describe("test LoginForm", () => {
       </Provider>
     );
 
-    const usernameInput = screen.getByTestId("username-input");
-    const passwordInput = screen.getByTestId("password-input");
+    const usernameInput = screen
+      .getByTestId("username-input")
+      .querySelector("input");
+    // console.log(usernameInput);
+    const passwordInput = screen
+      .getByTestId("password-input")
+      .querySelector("input");
+    // console.log(passwordInput);
     const button = screen.getByText("Login");
+    // console.log(button);
+    // @ts-ignore
+    fireEvent.change(usernameInput, { target: { value: "testuser" } });
+    // @ts-ignore
+    fireEvent.change(passwordInput, { target: { value: "testpassword" } });
 
-    fireEvent.submit(button);
+    fireEvent.click(button);
     expect(handleSubmit).toHaveBeenCalled();
   });
 });

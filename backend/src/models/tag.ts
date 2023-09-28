@@ -70,14 +70,14 @@ class Tag {
                     p.link AS "photoLinks",
                     v.id AS "videoIds",
                     v.link AS "videoLinks"
-                FROM tags
-                LEFT JOIN reviews_tags rt ON t.id = rt.tag_id
+                FROM tags t
+                LEFT JOIN review_tags rt ON t.id = rt.tag_id
                 LEFT JOIN reviews r ON rt.review_id = r.id
                 LEFT JOIN photos_tags pt ON t.id = pt.tag_id
                 LEFT JOIN photos p ON pt.photo_id = p.id
-                LEFT JOIN video_tags vt ON t.id =  vt.tag_id
+                LEFT JOIN videos_tags vt ON t.id =  vt.tag_id
                 LEFT JOIN videos v ON vt.tag_id = v.id
-                WHERE id = $1`,
+                WHERE t.id = $1`,
       [id]
     );
 

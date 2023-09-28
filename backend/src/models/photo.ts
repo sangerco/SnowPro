@@ -23,24 +23,12 @@ interface MediaData {
 
 class Photo {
   static async createPhoto(
-    username: string,
+    userId: string,
     link: string,
     about: string
   ): Promise<PhotoData> {
     const id = uuidv4();
     const createdAt = new Date();
-
-    const findId = await db.query(
-      `
-            SELECT id
-                FROM users
-                WHERE username = $1`,
-      [username]
-    );
-
-    const userId = findId.rows[0].id;
-
-    console.log(typeof userId);
 
     const result = await db.query(
       `
@@ -188,25 +176,6 @@ class Photo {
     const photo = result.rows[0];
 
     if (!photo) throw new NotFoundError("Photo not found!");
-  }
-
-  static async deletePhotoByUsernameAndLink(
-    userId: string,
-    link: string
-  ): Promise<PhotoData> {
-    const result = await db.query(
-      `DELETE FROM photos
-              WHERE user_id = $1
-              AND link = $2
-              returning id`,
-      [userId, link]
-    );
-
-    const photo = result.rows[0];
-
-    if (!photo) throw new NotFoundError("Photo not found!");
-
-    return photo;
   }
 }
 

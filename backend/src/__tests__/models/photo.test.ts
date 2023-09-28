@@ -34,7 +34,7 @@ describe("get photos", () => {
     const photo = await Photo.getPhoto("photo-1");
     expect(photo).toEqual({
       id: "photo-1",
-      userId: "1",
+      userId: "11",
       link: "https://example.com/photo1.jpg",
       about: "test update",
       createdAt: expect.any(Date),
@@ -48,7 +48,7 @@ describe("get photos", () => {
       {
         username: "john_doe",
         id: expect.any(String),
-        userId: "1",
+        userId: "11",
         link: "https://example.com/photo1.jpg",
         about: "test update",
         createdAt: expect.any(Date),
@@ -56,7 +56,7 @@ describe("get photos", () => {
       {
         username: "john_doe",
         id: expect.any(String),
-        userId: "1",
+        userId: "11",
         link: "https://www.fakelink.com/image.jpg",
         about: "test photo",
         createdAt: expect.any(Date),
@@ -69,7 +69,7 @@ describe("update photos", () => {
   it("updates a photo", async () => {
     const updateData = {
       id: photoId,
-      userId: "1",
+      userId: "11",
       about: "test update data",
     };
     const photo = await Photo.updatePhoto(updateData.id, updateData);

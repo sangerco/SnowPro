@@ -1,12 +1,12 @@
 {
     "type": "object",
     "properties": {
-        "review_id": {
+        "reviewId": {
             "type": "string",
             "minLength": 1,
             "maxLength": 40
         },
-        "user_id": {
+        "userId": {
             "type": "string",
             "minLength": 1,
             "maxLength": 20
@@ -24,8 +24,8 @@
     },
     "additionalProperties": false,
     "required": [
-        "review_id",
-        "user_id",
+        "reviewId",
+        "userId",
         "body",
         "slug"
     ]

@@ -25,7 +25,7 @@ class FavMountain {
     return favMountain;
   }
 
-  static async fetchFavMountainDataByUserId(userId: string) {
+  static async fetchFavMountainDataByUsername(username: string) {
     const result = await db.query(
       `     SELECT u.username,
                     s.slug AS "skiAreaSlug",
@@ -33,8 +33,8 @@ class FavMountain {
             FROM users u
             LEFT JOIN fav_mountains fm ON u.id = fm.user_id
             LEFT JOIN ski_areas s ON fm.ski_area_slug = s.slug
-            WHERE user_id = $1`,
-      [userId]
+            WHERE username = $1`,
+      [username]
     );
 
     const favMountains = result.rows;
