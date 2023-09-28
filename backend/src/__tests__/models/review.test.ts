@@ -41,6 +41,29 @@ describe("create review", () => {
   });
 });
 
+describe("update review", () => {
+  it("should update a review", async () => {
+    const updateData = {
+      id: reviewId,
+      userId: "44",
+      header: "updated header",
+      body: "updated body",
+    };
+
+    const review = await Review.updateReview(updateData.id, updateData);
+    expect(review).toEqual({
+      id: expect.any(String),
+      userId: "44",
+      skiAreaSlug: "ski-area-2",
+      header: "updated header",
+      body: "updated body",
+      stars: 3,
+      photos: null,
+      createdAt: expect.any(Date),
+    });
+  });
+});
+
 describe("delete review", () => {
   it("should remove a review", async () => {
     const review = await Review.removeReview(reviewId);
@@ -91,27 +114,5 @@ describe("get reviews", () => {
       expect.any(Object),
       expect.any(Object),
     ]);
-  });
-});
-
-describe("update review", () => {
-  it("should update a review", async () => {
-    const updateData = {
-      id: reviewId,
-      userId: "44",
-      header: "updated header",
-      body: "updated body",
-    };
-
-    const review = await Review.updateReview(updateData.id, updateData);
-    expect(review).toEqual({
-      userId: "44",
-      skiAreaSlug: "ski-area-2",
-      header: "updated header",
-      body: "updated body",
-      stars: 3,
-      photos: null,
-      createdAt: expect.any(Date),
-    });
   });
 });

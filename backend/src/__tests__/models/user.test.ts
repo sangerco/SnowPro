@@ -108,7 +108,7 @@ describe("get users", () => {
       email: "john@example.com",
       avatar: null,
       bio: "Sample bio for John Doe.",
-      isAdmin: "false",
+      isAdmin: "true",
       videos: [],
       photos: [],
       favMountains: ["ski-area-1"],
@@ -133,6 +133,7 @@ describe("update user", () => {
       email: "test@user.com",
       avatar: null,
       bio: "test bio",
+      isAdmin: "true",
     });
   });
 });

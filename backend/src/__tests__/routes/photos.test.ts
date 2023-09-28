@@ -47,16 +47,24 @@ describe("get photos", () => {
 
   describe("get /users/:username/photos", () => {
     it(`it should retrieve a user's photos`, async () => {
-      const resp = await request(app).get(`/users/susan_brown/photos`);
+      const resp = await request(app).get(`/users/mike_jones/photos`);
       expect(resp.status).toEqual(200);
       expect(resp.body).toEqual({
         photos: [
           {
-            userId: "44",
-            username: "susan_brown",
-            id: "photo-4",
-            link: "https://example.com/photo4.jpg",
-            about: "Family fun at Alpine Paradise",
+            userId: "33",
+            username: "mike_jones",
+            id: "photo-3",
+            link: "https://example.com/photo3.jpg",
+            about: "Snowy Peaks Resort adventure",
+            createdAt: expect.any(String),
+          },
+          {
+            userId: "33",
+            username: "mike_jones",
+            id: expect.any(String),
+            link: "https://www.fakelink.com/fake-image2.jpg",
+            about: "photo about test",
             createdAt: expect.any(String),
           },
         ],

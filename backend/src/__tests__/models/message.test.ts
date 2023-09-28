@@ -18,17 +18,15 @@ describe("create new message", () => {
       newMessage.body
     );
     messageId = message.id;
-    expect(message).toEqual([
-      {
-        senderId: "11",
-        recipientId: "22",
-        subject: "test subject",
-        body: "test body",
-        isRead: false,
-        id: expect.any(String),
-        createdAt: expect.any(Date),
-      },
-    ]);
+    expect(message).toEqual({
+      senderId: "11",
+      recipientId: "22",
+      subject: "test subject",
+      body: "test body",
+      isRead: false,
+      id: expect.any(String),
+      createdAt: expect.any(Date),
+    });
   });
 });
 
@@ -83,6 +81,7 @@ describe("get messages", () => {
         subject: "Greetings",
         body: "Hello Jane! How are you?",
         createdAt: expect.any(Date),
+        isRead: true,
         senderUsername: "john_doe",
         senderFirstName: "John",
         senderLastName: "Doe",
@@ -97,6 +96,7 @@ describe("get messages", () => {
         subject: "test subject",
         body: "test body",
         createdAt: expect.any(Date),
+        isRead: false,
         senderUsername: "john_doe",
         senderFirstName: "John",
         senderLastName: "Doe",

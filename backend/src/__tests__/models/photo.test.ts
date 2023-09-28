@@ -6,13 +6,13 @@ let photoLink: string;
 describe("create new photo", () => {
   it("creates a photo", async () => {
     const newPhoto = {
-      username: "john_doe",
+      userId: "11",
       link: "https://www.fakelink.com/image.jpg",
       about: "test photo",
     };
 
     const photo = await Photo.createPhoto(
-      newPhoto.username,
+      newPhoto.userId,
       newPhoto.link,
       newPhoto.about
     );
@@ -36,29 +36,21 @@ describe("get photos", () => {
       id: "photo-1",
       userId: "11",
       link: "https://example.com/photo1.jpg",
-      about: "test update",
+      about: "Skiing at Mountain Resort 1",
       createdAt: expect.any(Date),
       username: "john_doe",
     });
   });
 
   it("retrieves photos by username", async () => {
-    const photos = await Photo.getPhotosByUsername("john_doe");
+    const photos = await Photo.getPhotosByUsername("jane_smith");
     expect(photos).toEqual([
       {
-        username: "john_doe",
-        id: expect.any(String),
-        userId: "11",
-        link: "https://example.com/photo1.jpg",
-        about: "test update",
-        createdAt: expect.any(Date),
-      },
-      {
-        username: "john_doe",
-        id: expect.any(String),
-        userId: "11",
-        link: "https://www.fakelink.com/image.jpg",
-        about: "test photo",
+        id: "photo-2",
+        userId: "22",
+        username: "jane_smith",
+        link: "https://example.com/photo2.jpg",
+        about: "Beautiful views at Hilltop Ski Resort",
         createdAt: expect.any(Date),
       },
     ]);

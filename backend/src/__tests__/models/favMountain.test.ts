@@ -3,7 +3,7 @@ import FavMountain from "../../models/favMountain";
 
 describe("create new favorite mountain", () => {
   const newFavMountain = {
-    user_id: "1",
+    user_id: "11",
     ski_area_slug: "ski-area-2",
   };
 
@@ -20,8 +20,10 @@ describe("create new favorite mountain", () => {
 });
 
 describe("Find favorite mountains", () => {
-  it("should find favorite mountains by user id", async () => {
-    const favMountains = await FavMountain.fetchFavMountainDataByUserId("2");
+  it("should find favorite mountains by username", async () => {
+    const favMountains = await FavMountain.fetchFavMountainDataByUsername(
+      "jane_smith"
+    );
     expect(favMountains).toEqual([
       {
         skiAreaName: "Hilltop Ski Resort",
