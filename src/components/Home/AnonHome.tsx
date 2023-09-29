@@ -14,17 +14,23 @@ const AnonHome: React.FC = () => {
       <Divider />
       <Segment raised>
         <Header as="h4">
-          <Link to="/login">Log In</Link>
+          <Link data-testid="loginLink" to="/login">
+            Log In
+          </Link>
         </Header>
         <Divider />
         <Header as="h4">
-          <Link to="/register">Sign Up</Link>
+          <Link data-testid="registerLink" to="/register">
+            Sign Up
+          </Link>
         </Header>
       </Segment>
       <Divider />
       <Segment raised>
         <Header as="h4">
-          <Link to="/ski-areas">Find Ski Areas</Link>
+          <Link data-testid="skiAreasLink" to="/ski-areas">
+            Find Ski Areas
+          </Link>
         </Header>
       </Segment>
     </Container>

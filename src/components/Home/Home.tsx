@@ -81,11 +81,11 @@ const Home: React.FC = () => {
           <Grid.Column widescreen={4}>
             {skiAreaState.loading ? (
               <Dimmer active>
-                <Loader>Loading...</Loader>
+                <Loader data-testid="loader">Loading...</Loader>
               </Dimmer>
             ) : skiAreas && skiAreas.length > 0 ? (
               <Segment style={{ overflow: "auto", maxHeight: "75vh" }}>
-                <Card id="ski-area-card">
+                <Card data-testid="ski-area-card" id="ski-area-card">
                   {" "}
                   {/* max height overflow auto */}
                   {skiAreas.map((sa) => (

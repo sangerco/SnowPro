@@ -1,23 +1,17 @@
+/* eslint-disable testing-library/no-node-access */
 import React from "react";
-import {
-  render,
-  fireEvent,
-  waitFor,
-  screen,
-  waitForElementToBeRemoved,
-} from "@testing-library/react";
+import VideoForm from "../../../components/Media/VideoForm";
+import { render, fireEvent, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { store } from "../../../redux/store";
 import { BrowserRouter } from "react-router-dom";
 
-import Home from "../../../components/Home/Home";
-
-describe("test home component", () => {
-  it("should render", () => {
+describe("test Video Form", () => {
+  it("renders with crashing", () => {
     render(
       <Provider store={store}>
         <BrowserRouter>
-          <Home />
+          <VideoForm />
         </BrowserRouter>
       </Provider>
     );
@@ -27,23 +21,27 @@ describe("test home component", () => {
     const { asFragment } = render(
       <Provider store={store}>
         <BrowserRouter>
-          <Home />
+          <VideoForm />
         </BrowserRouter>
       </Provider>
     );
+
     expect(asFragment()).toMatchSnapshot();
   });
 
-  it("renders loader", async () => {
+  it("should render a form", () => {
     render(
       <Provider store={store}>
         <BrowserRouter>
-          <Home />
+          <VideoForm />
         </BrowserRouter>
       </Provider>
     );
-
-    const loader = screen.getByTestId("loader");
-    expect(loader).toBeInTheDocument();
+    const videoLink = screen.getByLabelText(
+      "Video Link - must be YouTube link"
+    );
+    const about = screen.getByLabelText("About");
+    expect(videoLink).toBeInTheDocument();
+    expect(about).toBeInTheDocument();
   });
 });

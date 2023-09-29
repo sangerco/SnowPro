@@ -112,8 +112,9 @@ const UserForm: React.FC = () => {
           <Segment raised>
             <Form onSubmit={handleSubmit}>
               <Form.Field required>
-                <label>Username</label>
+                <label htmlFor="username">Username</label>
                 <input
+                  id="username"
                   placeholder="username"
                   name="username"
                   value={formData.username}
@@ -121,8 +122,9 @@ const UserForm: React.FC = () => {
                 />
               </Form.Field>
               <Form.Field required>
-                <label>Password</label>
+                <label htmlFor="password">Password</label>
                 <input
+                  id="password"
                   placeholder="password"
                   type="password"
                   name="password"
@@ -131,8 +133,9 @@ const UserForm: React.FC = () => {
                 />
               </Form.Field>
               <Form.Field required>
-                <label>First Name</label>
+                <label htmlFor="firstName">First Name</label>
                 <input
+                  id="firstName"
                   placeholder="First Name"
                   name="firstName"
                   value={formData.firstName}
@@ -140,8 +143,9 @@ const UserForm: React.FC = () => {
                 />
               </Form.Field>
               <Form.Field required>
-                <label>Last Name</label>
+                <label htmlFor="lastName">Last Name</label>
                 <input
+                  id="lastName"
                   placeholder="Last Name"
                   name="lastName"
                   value={formData.lastName}
@@ -149,8 +153,9 @@ const UserForm: React.FC = () => {
                 />
               </Form.Field>
               <Form.Field required>
-                <label>Email</label>
+                <label htmlFor="email">Email</label>
                 <input
+                  id="email"
                   placeholder="Email"
                   type="email"
                   name="email"
@@ -159,10 +164,16 @@ const UserForm: React.FC = () => {
                 />
               </Form.Field>
               <div className="ui two buttons">
-                <Button color="green" type="submit">
+                <Button
+                  data-testid="registerButton"
+                  color="green"
+                  type="submit">
                   Register
                 </Button>
-                <Button color="red" onClick={() => navigate("/")}>
+                <Button
+                  data-testid="cancelButton"
+                  color="red"
+                  onClick={() => navigate("/")}>
                   Cancel
                 </Button>
               </div>

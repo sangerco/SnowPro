@@ -1,23 +1,17 @@
+/* eslint-disable testing-library/no-node-access */
 import React from "react";
-import {
-  render,
-  fireEvent,
-  waitFor,
-  screen,
-  waitForElementToBeRemoved,
-} from "@testing-library/react";
+import PhotoForm from "../../../components/Media/PhotoForm";
+import { render, fireEvent, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { store } from "../../../redux/store";
 import { BrowserRouter } from "react-router-dom";
 
-import Home from "../../../components/Home/Home";
-
-describe("test home component", () => {
-  it("should render", () => {
+describe("test Photo Form", () => {
+  it("renders with crashing", () => {
     render(
       <Provider store={store}>
         <BrowserRouter>
-          <Home />
+          <PhotoForm />
         </BrowserRouter>
       </Provider>
     );
@@ -27,23 +21,25 @@ describe("test home component", () => {
     const { asFragment } = render(
       <Provider store={store}>
         <BrowserRouter>
-          <Home />
+          <PhotoForm />
         </BrowserRouter>
       </Provider>
     );
+
     expect(asFragment()).toMatchSnapshot();
   });
 
-  it("renders loader", async () => {
+  it("should render a form", () => {
     render(
       <Provider store={store}>
         <BrowserRouter>
-          <Home />
+          <PhotoForm />
         </BrowserRouter>
       </Provider>
     );
-
-    const loader = screen.getByTestId("loader");
-    expect(loader).toBeInTheDocument();
+    const photoLink = screen.getByLabelText("Photo Link");
+    const about = screen.getByLabelText("About");
+    expect(photoLink).toBeInTheDocument();
+    expect(about).toBeInTheDocument();
   });
 });

@@ -45,8 +45,9 @@ const PhotoForm: React.FC = () => {
     <Container fluid>
       <Form onSubmit={handleSubmit}>
         <Form.Field>
-          <label>Photo Link</label>
+          <label htmlFor="photoLink">Photo Link</label>
           <input
+            id="photoLink"
             type="text"
             name="link"
             onChange={handleChange}
@@ -54,8 +55,9 @@ const PhotoForm: React.FC = () => {
           />
         </Form.Field>
         <Form.Field>
-          <label>About</label>
+          <label htmlFor="about">About</label>
           <input
+            id="about"
             type="text"
             name="about"
             onChange={handleChange}

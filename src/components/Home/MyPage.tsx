@@ -25,6 +25,7 @@ const MyPage = () => {
   const auth = useSelector((state: RootState) => state.auth);
   const dispatch = useDispatch<AppDispatch>();
   const username = auth.data?.username;
+  console.log(username);
 
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showNewPhotoForm, setShowNewPhotoForm] = useState(false);

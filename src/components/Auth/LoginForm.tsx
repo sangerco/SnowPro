@@ -96,7 +96,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
     <>
       <Grid>
         <Grid.Row>
-          <Grid.Column width={4}>
+          <Grid.Column data-testid="skiAreaColumn" width={4}>
             {skiAreaState.loading ? (
               <Dimmer active>
                 <Loader>Loading...</Loader>
@@ -128,6 +128,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
                       name="username"
                       value={formData.username}
                       onChange={handleChange}
+                      placeholder="Username"
                     />
                   </label>
                 </Form.Field>
@@ -139,6 +140,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
                       name="password"
                       value={formData.password}
                       onChange={handleChange}
+                      placeholder="Password"
                     />
                   </label>
                 </Form.Field>

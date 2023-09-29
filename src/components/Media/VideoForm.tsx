@@ -58,8 +58,9 @@ const VideoForm: React.FC = () => {
       <Container fluid style={{ margin: "10px" }}>
         <Form onSubmit={handleSubmit}>
           <Form.Field>
-            <label>Video Link - must be YouTube link</label>
+            <label htmlFor="videoLink">Video Link - must be YouTube link</label>
             <input
+              id="videoLink"
               type="text"
               name="link"
               onChange={handleChange}
@@ -67,8 +68,9 @@ const VideoForm: React.FC = () => {
             />
           </Form.Field>
           <Form.Field>
-            <label>About</label>
+            <label htmlFor="about">About</label>
             <input
+              id="about"
               type="text"
               name="about"
               onChange={handleChange}

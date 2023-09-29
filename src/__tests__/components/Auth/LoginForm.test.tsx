@@ -1,11 +1,10 @@
 /* eslint-disable testing-library/no-node-access */
 import React from "react";
-import { render, fireEvent, screen } from "@testing-library/react";
+import { render, fireEvent, screen, waitFor } from "@testing-library/react";
 import LoginForm from "../../../components/Auth/LoginForm";
 import { Provider } from "react-redux";
 import { store } from "../../../redux/store";
 import { BrowserRouter } from "react-router-dom";
-import { debug } from "console";
 
 describe("test LoginForm", () => {
   it("renders without crashing", () => {
@@ -13,6 +12,19 @@ describe("test LoginForm", () => {
     <Provider store={store}>
       <LoginForm onSubmit={handleSubmit} />
     </Provider>;
+  });
+
+  it("matches snapshot", () => {
+    const handleSubmit = jest.fn();
+    const { asFragment } = render(
+      <Provider store={store}>
+        <BrowserRouter>
+          <LoginForm onSubmit={handleSubmit} />
+        </BrowserRouter>
+      </Provider>
+    );
+
+    expect(asFragment()).toMatchSnapshot();
   });
 
   it("should contain a form", () => {
@@ -40,20 +52,16 @@ describe("test LoginForm", () => {
       </Provider>
     );
 
-    const usernameInput = screen
-      .getByTestId("username-input")
-      .querySelector("input");
-    // console.log(usernameInput);
-    const passwordInput = screen
-      .getByTestId("password-input")
-      .querySelector("input");
-    // console.log(passwordInput);
+    const username = screen.getByPlaceholderText("Username");
+    // const usernameInput = username.children[0];
+    const password = screen.getByPlaceholderText("Password");
+    // const passwordInput = password.children[0];
     const button = screen.getByText("Login");
-    // console.log(button);
+
     // @ts-ignore
-    fireEvent.change(usernameInput, { target: { value: "testuser" } });
+    fireEvent.change(username, { target: { value: "testuser" } });
     // @ts-ignore
-    fireEvent.change(passwordInput, { target: { value: "testpassword" } });
+    fireEvent.change(password, { target: { value: "testpassword" } });
 
     fireEvent.click(button);
     expect(handleSubmit).toHaveBeenCalled();
