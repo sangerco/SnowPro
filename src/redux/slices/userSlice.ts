@@ -19,6 +19,21 @@ export interface UserData {
   favMountains?: string[];
 }
 
+export interface UpdateUserData {
+  id?: string;
+  username: string;
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  password?: string;
+  avatar?: string;
+  bio?: string;
+  isAdmin?: boolean;
+  videos?: string[];
+  photos?: string[];
+  favMountains?: string[];
+}
+
 interface UserState {
   user: UserData | null;
   users: UserData[] | null;
@@ -42,12 +57,6 @@ export const fetchUserData = createAsyncThunk(
   }
 );
 
-export const fetchUser = createAsyncThunk("user/fetchUser", async () => {
-  const response = await axios.get(`${URL}/api/user`);
-  const user = response.data.user;
-  return user;
-});
-
 export const fetchOneUser = createAsyncThunk(
   "user/fetchOneUser",
   async (username: string) => {
@@ -59,7 +68,7 @@ export const fetchOneUser = createAsyncThunk(
 
 export const updateUser = createAsyncThunk(
   "user/updateUser",
-  async (updateData: UserData) => {
+  async (updateData: UpdateUserData) => {
     const response = await axios.patch(
       `${URL}/api/users/${updateData.username}`,
       updateData
@@ -71,9 +80,9 @@ export const updateUser = createAsyncThunk(
 
 export const makeUserAdmin = createAsyncThunk(
   "user/makeUserAdmin",
-  async (username, updateData) => {
+  async (updateData: UpdateUserData) => {
     const response = await axios.patch(
-      `${URL}/api/users/${username}`,
+      `${URL}/api/users/${updateData.username}`,
       updateData
     );
     const user = response.data.user;
@@ -108,20 +117,6 @@ const userSlice = createSlice({
         }
       )
       .addCase(fetchUserData.rejected, (state, action: PayloadAction<any>) => {
-        state.loading = false;
-        state.error = action.payload;
-      })
-      .addCase(fetchUser.pending, (state, action) => {
-        state.loading = true;
-      })
-      .addCase(
-        fetchUser.fulfilled,
-        (state, action: PayloadAction<UserData>) => {
-          state.user = action.payload;
-          state.loading = false;
-        }
-      )
-      .addCase(fetchUser.rejected, (state, action: PayloadAction<any>) => {
         state.loading = false;
         state.error = action.payload;
       })
@@ -170,7 +165,8 @@ const userSlice = createSlice({
       .addCase(deleteUser.pending, (state, action) => {
         state.loading = true;
       })
-      .addCase(deleteUser.fulfilled, (state, action) => {
+      .addCase(deleteUser.fulfilled, (state, action: PayloadAction<any>) => {
+        state.user = action.payload;
         state.loading = false;
       })
       .addCase(deleteUser.rejected, (state, action: PayloadAction<any>) => {

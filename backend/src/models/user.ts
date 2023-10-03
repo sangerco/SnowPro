@@ -155,7 +155,7 @@ class User {
                 LEFT JOIN users_photos up ON u.id = up.user_id
                 LEFT JOIN photos p ON up.photo_id = p.id
                 LEFT JOIN fav_mountains fm ON u.id = fm.user_id
-                LEFT JOIN ski_areas s ON fm.ski_area_slug = s.slug
+                LEFT JOIN ski_areas s ON fm.ski_areas_slug = s.slug
                 WHERE username = $1`,
       [username]
     );

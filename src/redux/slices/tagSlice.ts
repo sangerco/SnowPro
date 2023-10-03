@@ -127,7 +127,8 @@ const tagSlice = createSlice({
       .addCase(deleteTag.pending, (state) => {
         state.loading = true;
       })
-      .addCase(deleteTag.fulfilled, (state) => {
+      .addCase(deleteTag.fulfilled, (state, action: PayloadAction<any>) => {
+        state.tag = action.payload;
         state.loading = false;
       })
       .addCase(deleteTag.rejected, (state, action: PayloadAction<any>) => {
