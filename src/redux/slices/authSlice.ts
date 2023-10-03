@@ -7,8 +7,8 @@ interface NewUserData {
   username: string;
   password: string;
   email: string;
-  first_name: string;
-  last_name: string;
+  firstName: string;
+  lastName: string;
 }
 
 interface UserData {
@@ -16,8 +16,8 @@ interface UserData {
   username: string;
   password: string;
   email: string;
-  first_name: string;
-  last_name: string;
+  firstName: string;
+  lastName: string;
 }
 
 export interface LoginData {
@@ -55,7 +55,6 @@ export const loginUser = createAsyncThunk(
   "auth/loginUser",
   async (loginData: LoginData) => {
     const response = await axios.post(`${URL}/login`, loginData);
-    console.log(response);
     const token = response.data.token;
     const user: UserData = response.data.user;
     return { token, user };

@@ -26,18 +26,18 @@ export const createFavMountain = createAsyncThunk(
   "favMountain/createFavMountain",
   async (favMountainData: FavMountainData) => {
     const response = await axios.post(`${URL}/api/fav-mountain`, {
-      user_id: favMountainData.userId,
-      ski_area_slug: favMountainData.skiAreaSlug,
+      userId: favMountainData.userId,
+      skiAreaSlug: favMountainData.skiAreaSlug,
     });
     const favMountain = response.data.favMountain;
     return favMountain;
   }
 );
 
-export const fetchFavMountainsByUserId = createAsyncThunk(
+export const fetchFavMountainsByUsername = createAsyncThunk(
   "favMountain/fetchFavMountainsByUsername",
-  async (userId: string) => {
-    const response = await axios.get(`${URL}/users/${userId}/fav-mountains`);
+  async (username: string) => {
+    const response = await axios.get(`${URL}/users/${username}/fav-mountains`);
     const favMountains = response.data.favMountains;
     return favMountains;
   }
@@ -87,18 +87,18 @@ const favMountainSlice = createSlice({
           state.error = action.payload;
         }
       )
-      .addCase(fetchFavMountainsByUserId.pending, (state) => {
+      .addCase(fetchFavMountainsByUsername.pending, (state) => {
         state.loading = true;
       })
       .addCase(
-        fetchFavMountainsByUserId.fulfilled,
+        fetchFavMountainsByUsername.fulfilled,
         (state, action: PayloadAction<FavMountainData[]>) => {
           state.favMountainData = action.payload;
           state.loading = false;
         }
       )
       .addCase(
-        fetchFavMountainsByUserId.rejected,
+        fetchFavMountainsByUsername.rejected,
         (state, action: PayloadAction<any>) => {
           state.loading = false;
           state.error = action.payload;

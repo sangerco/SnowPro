@@ -1,0 +1,90 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`test Nav Bar should match snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="ui black large inverted menu"
+  >
+    <a
+      class="header item"
+      href="/"
+    >
+      <img
+        alt="snow-pro-logo"
+        class="ui small image"
+        src=""
+      />
+    </a>
+    <div
+      aria-expanded="false"
+      class="ui item dropdown"
+      role="listbox"
+      style="color: goldenrod;"
+      tabindex="0"
+    >
+      <div
+        aria-atomic="true"
+        aria-live="polite"
+        class="divider text"
+        role="alert"
+      >
+        Check it out
+      </div>
+      <i
+        aria-hidden="true"
+        class="dropdown icon"
+      />
+      <div
+        class="menu transition"
+      >
+        <div
+          class="item"
+          role="option"
+        >
+          <a
+            href="/ski-areas"
+            style="color: green;"
+          >
+            Ski Areas
+          </a>
+        </div>
+        <div
+          class="item"
+          role="option"
+        >
+          <a
+            href="/ski-areas/reviews/recent-reviews"
+            style="color: green;"
+          >
+            Recent Reviews
+          </a>
+        </div>
+      </div>
+    </div>
+    <div
+      class="right menu"
+    >
+      <div
+        class="item"
+      >
+        <a
+          href="/login"
+          style="color: goldenrod;"
+        >
+          Login
+        </a>
+      </div>
+      <div
+        class="item"
+      >
+        <a
+          href="/register"
+          style="color: goldenrod;"
+        >
+          Sign Up!
+        </a>
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;

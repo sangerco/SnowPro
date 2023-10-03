@@ -1,0 +1,38 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`test Nav Bar should match snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="ui grid"
+  >
+    <div
+      class="row"
+    >
+      <div
+        class="center aligned four wide column"
+      >
+        <div
+          class="ui active transition visible dimmer"
+          style="display: flex;"
+        >
+          <div
+            class="content"
+          >
+            <div
+              class="ui text loader"
+            >
+              Loading...
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="eight wide column"
+      />
+      <div
+        class="four wide column"
+      />
+    </div>
+  </div>
+</DocumentFragment>
+`;

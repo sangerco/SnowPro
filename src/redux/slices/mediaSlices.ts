@@ -16,6 +16,13 @@ export interface PhotoData {
   createdAt: Date;
 }
 
+export interface UpdatePhotoData {
+  id: string;
+  userId?: string;
+  link?: string;
+  about?: string;
+}
+
 export interface NewVideoData {
   userId: string;
   link: string;
@@ -28,6 +35,13 @@ export interface VideoData {
   link: string;
   about: string;
   createdAt: Date;
+}
+
+export interface UpdateVideoData {
+  id: string;
+  userId?: string;
+  link?: string;
+  about?: string;
 }
 
 export interface MediaData {
@@ -83,9 +97,10 @@ export const fetchPhotosByUsername = createAsyncThunk(
 
 export const updatePhoto = createAsyncThunk(
   "media/updatePhoto",
-  async (updatePhotoData: PhotoData) => {
+  async (updatePhotoData: UpdatePhotoData) => {
     const response = await axios.patch(
-      `${URL}/api/photo/${updatePhotoData.id}`
+      `${URL}/api/photo/${updatePhotoData.id}`,
+      updatePhotoData
     );
     const photo = response.data.photo;
     return photo;
@@ -137,9 +152,10 @@ export const fetchVideosByUsername = createAsyncThunk(
 
 export const updateVideo = createAsyncThunk(
   "media/updateVideo",
-  async (updateVideoData: VideoData) => {
+  async (updateVideoData: UpdateVideoData) => {
     const response = await axios.patch(
-      `${URL}/api/video/${updateVideoData.id}`
+      `${URL}/api/video/${updateVideoData.id}`,
+      updateVideoData
     );
     const video = response.data.video;
     return video;
@@ -231,7 +247,8 @@ const mediaSlice = createSlice({
       .addCase(deletePhoto.pending, (state) => {
         state.loading = true;
       })
-      .addCase(deletePhoto.fulfilled, (state) => {
+      .addCase(deletePhoto.fulfilled, (state, action: PayloadAction<any>) => {
+        state.photo = action.payload;
         state.loading = false;
       })
       .addCase(deletePhoto.rejected, (state, action: PayloadAction<any>) => {
@@ -244,9 +261,13 @@ const mediaSlice = createSlice({
       .addCase(deletePhotoByUserIdAndLink.pending, (state) => {
         state.loading = true;
       })
-      .addCase(deletePhotoByUserIdAndLink.fulfilled, (state) => {
-        state.loading = false;
-      })
+      .addCase(
+        deletePhotoByUserIdAndLink.fulfilled,
+        (state, action: PayloadAction<any>) => {
+          state.photo = action.payload;
+          state.loading = false;
+        }
+      )
       .addCase(
         deletePhotoByUserIdAndLink.rejected,
         (state, action: PayloadAction<any>) => {
@@ -285,7 +306,7 @@ const mediaSlice = createSlice({
       .addCase(
         fetchVideosByUsername.fulfilled,
         (state, action: PayloadAction<VideoData[]>) => {
-          state.photos = action.payload;
+          state.videos = action.payload;
           state.loading = false;
         }
       )
@@ -313,7 +334,8 @@ const mediaSlice = createSlice({
       .addCase(deleteVideo.pending, (state) => {
         state.loading = true;
       })
-      .addCase(deleteVideo.fulfilled, (state) => {
+      .addCase(deleteVideo.fulfilled, (state, action: PayloadAction<any>) => {
+        state.video = action.payload;
         state.loading = false;
       })
       .addCase(deleteVideo.rejected, (state, action: PayloadAction<any>) => {

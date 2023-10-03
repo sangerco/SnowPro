@@ -1,6 +1,8 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 import { URL } from "../../utils/config";
+import { logoutUser } from "./authSlice";
+import { store } from "../store";
 
 export interface UserData {
   id: string;
@@ -82,6 +84,8 @@ export const makeUserAdmin = createAsyncThunk(
 export const deleteUser = createAsyncThunk(
   "user/deleteUser",
   async (username: string) => {
+    await store.dispatch(logoutUser());
+
     await axios.delete(`${URL}/api/users/${username}`);
     return null;
   }

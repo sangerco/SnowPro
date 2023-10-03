@@ -1,12 +1,12 @@
 {
     "type": "object",
     "properties": {
-        "user_id": {
+        "userId": {
             "type": "string",
             "minLength": 2,
             "maxLength": 40
         },
-        "ski_area_slug": {
+        "skiAreaSlug": {
             "type": "string",
             "minLength": 2,
             "maxLength": 100
@@ -14,7 +14,7 @@
     },
     "additionalProperties": false,
     "required": [
-        "user_id",
-        "ski_area_slug"
+        "userId",
+        "skiAreaSlug"
     ]
 }

@@ -5,7 +5,6 @@ import { ReviewReplyData } from "./reviewReplySlice";
 
 export interface NewReviewData {
   userId: string;
-  username: string;
   skiAreaSlug: string;
   header: string;
   body: string;
@@ -39,6 +38,20 @@ export interface ReviewDataReturn {
   photos: string[];
   createdAt: Date;
   replies: ReviewReplyData[];
+}
+
+interface UpdateReviewData {
+  id: string;
+  userId?: string;
+  username?: string;
+  skiAreaSlug?: string;
+  skiAreaName?: string;
+  header?: string;
+  body?: string;
+  stars?: number;
+  photos?: string[];
+  createdAt?: Date;
+  replies?: ReviewReplyData[];
 }
 
 interface ReviewState {
@@ -98,7 +111,7 @@ export const fetchAllReviews = createAsyncThunk(
 
 export const updateReview = createAsyncThunk(
   "review/updateReview",
-  async (updateReviewData: ReviewData) => {
+  async (updateReviewData: UpdateReviewData) => {
     const response = await axios.patch(
       `${URL}/api/reviews/${updateReviewData.id}`,
       updateReviewData
@@ -201,7 +214,8 @@ const reviewSlice = createSlice({
       .addCase(deleteReview.pending, (state) => {
         state.loading = true;
       })
-      .addCase(deleteReview.fulfilled, (state) => {
+      .addCase(deleteReview.fulfilled, (state, action: PayloadAction<any>) => {
+        state.review = action.payload;
         state.loading = false;
       })
       .addCase(deleteReview.rejected, (state, action: PayloadAction<any>) => {

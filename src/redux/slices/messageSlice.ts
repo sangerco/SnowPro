@@ -4,8 +4,8 @@ import { URL } from "../../utils/config";
 import { MessageReplyData } from "./messageReplySlice";
 
 export interface NewMessageData {
-  sender_id: string;
-  recipient_id: string;
+  senderId: string;
+  recipientId: string;
   subject: string;
   body: string;
 }
@@ -99,7 +99,7 @@ export const markMessageAsUnread = createAsyncThunk(
 export const deleteMessage = createAsyncThunk(
   "message/deleteMessage",
   async (id: string) => {
-    await axios.delete(`${URL}/messages/${id}`);
+    await axios.delete(`${URL}/api/messages/${id}`);
     return null;
   }
 );
@@ -201,7 +201,8 @@ const messageSlice = createSlice({
       .addCase(deleteMessage.pending, (state, action) => {
         state.loading = true;
       })
-      .addCase(deleteMessage.fulfilled, (state, action) => {
+      .addCase(deleteMessage.fulfilled, (state, action: PayloadAction<any>) => {
+        state.message = action.payload;
         state.loading = false;
       })
       .addCase(deleteMessage.rejected, (state, action: PayloadAction<any>) => {

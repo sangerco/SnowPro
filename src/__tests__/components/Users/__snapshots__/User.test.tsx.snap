@@ -1,0 +1,30 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`test User should match snapshot 1`] = `
+<DocumentFragment>
+  <li>
+    <p>
+      11
+    </p>
+    <p>
+      testuser
+    </p>
+    <p>
+      Test
+    </p>
+    <p>
+      User
+    </p>
+    <p>
+      test@user.com
+    </p>
+    <p>
+      test user bio
+    </p>
+    <p>
+      https://testdata.com/testavatar.jpg
+    </p>
+    <p />
+  </li>
+</DocumentFragment>
+`;

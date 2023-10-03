@@ -63,7 +63,7 @@ export const fetchMessageReply = createAsyncThunk(
 
 export const fetchMessageRepliesByMessageId = createAsyncThunk(
   "messageReply/fetchMessageRepliesByMessageId",
-  async (messageId) => {
+  async (messageId: string) => {
     const response = await axios.get(`${URL}/messages/${messageId}/replies`);
     const replies = response.data.replies;
     return replies;
@@ -89,7 +89,7 @@ export const markMessageReplyAsUnread = createAsyncThunk(
 export const deleteMessageReply = createAsyncThunk(
   "messageReply/deleteMessageReply",
   async (id: string) => {
-    await axios.delete(`${URL}/messages/replies/${id}`);
+    await axios.delete(`${URL}/api/messages/replies/${id}`);
     return null;
   }
 );
@@ -180,9 +180,13 @@ const messageReplySlice = createSlice({
       .addCase(deleteMessageReply.pending, (state, action) => {
         state.loading = true;
       })
-      .addCase(deleteMessageReply.fulfilled, (state, action) => {
-        state.loading = false;
-      })
+      .addCase(
+        deleteMessageReply.fulfilled,
+        (state, action: PayloadAction<any>) => {
+          state.messageReply = action.payload;
+          state.loading = false;
+        }
+      )
       .addCase(
         deleteMessageReply.rejected,
         (state, action: PayloadAction<any>) => {

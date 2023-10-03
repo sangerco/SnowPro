@@ -124,18 +124,10 @@ router.post(
         const errors: string | string[] = validator.errors.map((e) => e.stack);
         throw new BadRequestError(errors);
       }
-      const {
-        userId,
-        username,
-        skiAreaSlug,
-        header,
-        body,
-        stars,
-        photos,
-      }: ReviewData = req.body;
+      const { userId, skiAreaSlug, header, body, stars, photos }: ReviewData =
+        req.body;
       const review = await Review.createReview(
         userId,
-        username,
         skiAreaSlug,
         header,
         body,

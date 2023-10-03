@@ -1,0 +1,50 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`test Nav Bar should match snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="ui raised segment"
+  >
+    <div
+      class="ui huge header"
+    >
+      <a
+        href="/ski-areas/ski-area-1"
+      >
+        Test Ski Area
+      </a>
+    </div>
+    <div
+      class="ui right aligned container"
+    >
+      <p
+        style="color: royalblue;"
+      >
+        US
+      </p>
+      <p
+        style="color: royalblue;"
+      >
+        US
+      </p>
+    </div>
+    <div
+      class="ui right aligned container"
+    >
+      <p>
+        <small>
+          <span
+            style="color: royalblue;"
+          >
+            <i
+              aria-hidden="true"
+              class="map outline icon"
+            />
+          </span>
+           0, 0
+        </small>
+      </p>
+    </div>
+  </div>
+</DocumentFragment>
+`;

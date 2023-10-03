@@ -1,0 +1,31 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`test FavMountain should match snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="ui container"
+    style="margin: 10px;"
+  >
+    <form
+      class="ui form"
+      style="margin-top: 10px;"
+    >
+      <div
+        class="field"
+      >
+        <input
+          name="tag"
+          placeholder="Create New Tag"
+          value=""
+        />
+      </div>
+      <button
+        class="ui green mini button"
+        type="submit"
+      >
+        Submit
+      </button>
+    </form>
+  </div>
+</DocumentFragment>
+`;

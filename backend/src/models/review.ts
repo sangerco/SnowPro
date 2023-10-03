@@ -6,7 +6,7 @@ import { v4 as uuidv4 } from "uuid";
 interface ReviewData {
   id: string;
   userId: string;
-  username: string;
+  username?: string;
   skiAreaSlug: string;
   skiAreaName: string | null;
   header: string;
@@ -25,12 +25,12 @@ interface ReviewDataReturn {
   body: string;
   stars: number;
   photos: string[];
+  createdAt: Date;
 }
 
 class Review {
   static async createReview(
     user_id: string,
-    username: string,
     ski_area_slug: string,
     header: string,
     body: string,
@@ -43,24 +43,22 @@ class Review {
     const result = await db.query(
       `INSERT INTO reviews
                 (id,
-                    username,
                    user_id,
                    ski_area_slug,
                    header,
                    body,
                    stars,
                    created_at)
-            VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+            VALUES ($1, $2, $3, $4, $5, $6, $7)
             RETURNING
                 id,
-                username,
                 user_id AS "userId", 
                 ski_area_slug AS "skiAreaSlug", 
                 header,
                 body, 
                 stars,
                 created_at AS "createdAt"`,
-      [id, username, user_id, ski_area_slug, header, body, stars, createdAt]
+      [id, user_id, ski_area_slug, header, body, stars, createdAt]
     );
 
     const reviewData = result.rows[0];
@@ -103,12 +101,9 @@ class Review {
 
     reviewData.skiAreaName = skiAreaName.rows[0].skiAreaName;
 
-    reviewData.username = username;
-
     const review: ReviewData = {
       id: reviewData.id,
       userId: reviewData.userId,
-      username: reviewData.username,
       skiAreaSlug: reviewData.skiAreaSlug,
       skiAreaName: reviewData.skiAreaName,
       header: reviewData.header,
@@ -139,13 +134,11 @@ class Review {
                             photos,
                             created_at AS "createdAt"`;
     const result = await db.query(sqlQuery, values);
-    const review = result.rows[0];
+    const reviewData = result.rows[0];
 
-    if (!review) throw new NotFoundError("No such review found.");
+    let photoLinks: string[] = [];
 
     if (data.photos) {
-      const updatedPhotoIds: string[] = [];
-
       for (let photoLink of data.photos) {
         const photoId = uuidv4();
         const photoCreatedAt = new Date();
@@ -154,18 +147,46 @@ class Review {
           `INSERT INTO photos (id, user_id, link, created_at)
                           VALUES ($1, $2, $3, $4)
                           RETURNING id`,
-          [photoId, review.userId, photoLink, photoCreatedAt]
+          [photoId, reviewData.userId, photoLink, photoCreatedAt]
         );
         await db.query(
           `INSERT INTO reviews_photos (review_id, photo_id)
                           values ($1, $2)`,
-          [review.id, photoId]
+          [reviewData.id, photoId]
         );
-        updatedPhotoIds.push(photoId);
+        photoLinks.push(photoId);
       }
+    } else {
+      const photoQuery = await db.query(
+        `     SELECT p.link 
+            FROM photos p 
+            LEFT JOIN reviews_photos rp ON p.id = rp.photo_id 
+            LEFT JOIN reviews r ON rp.review_id = r.id 
+            WHERE r.id = $1`,
+        [id]
+      );
 
-      review.photos = updatedPhotoIds;
+      const photos = photoQuery.rows;
+
+      for (let photo of photos) {
+        photoLinks.push(photo.link);
+      }
     }
+
+    if (!reviewData) throw new NotFoundError("No such review found.");
+
+    const review: ReviewDataReturn = {
+      id: reviewData.id,
+      userId: reviewData.userId,
+      username: reviewData.username,
+      skiAreaSlug: reviewData.skiAreaSlug,
+      skiAreaName: reviewData.skiAreaName,
+      header: reviewData.header,
+      body: reviewData.body,
+      stars: reviewData.stars,
+      photos: photoLinks,
+      createdAt: reviewData.createdAt,
+    };
 
     return review;
   }
@@ -182,7 +203,6 @@ class Review {
                 r.body,
                 r.stars,
                 r.created_at AS "createdAt",
-                p.link,
                 u.username,
                 s.name AS "skiAreaName"
             FROM reviews r
@@ -195,7 +215,43 @@ class Review {
       [skiAreaName]
     );
 
-    const reviews = result.rows;
+    const reviewData = result.rows;
+
+    let reviews: ReviewDataReturn[] = [];
+
+    for (let review of reviewData) {
+      let photoLinks: string[] = [];
+
+      const photoQuery = await db.query(
+        `     SELECT p.link 
+              FROM photos p 
+              LEFT JOIN reviews_photos rp ON p.id = rp.photo_id 
+              LEFT JOIN reviews r ON rp.review_id = r.id 
+              WHERE r.id = $1`,
+        [review.id]
+      );
+
+      const photos = photoQuery.rows;
+
+      for (let photo of photos) {
+        photoLinks.push(photo.link);
+      }
+
+      const oneReview: ReviewDataReturn = {
+        id: review.id,
+        userId: review.userId,
+        username: review.username,
+        skiAreaSlug: review.skiAreaSlug,
+        skiAreaName: review.skiAreaName,
+        header: review.header,
+        body: review.body,
+        stars: review.stars,
+        photos: photoLinks,
+        createdAt: review.createdAt,
+      };
+
+      reviews.push(oneReview);
+    }
 
     if (reviews.length === 0) {
       throw new NotFoundError("No reviews found");
@@ -213,20 +269,47 @@ class Review {
                 r.header,
                 r.body,
                 r.stars,
-                p.link AS "photos",
                 u.username,
                 s.name AS "skiAreaName",
                 r.created_at AS "createdAt"
             FROM reviews r
             LEFT JOIN users u ON r.user_id = u.id
             LEFT JOIN ski_areas s ON r.ski_area_slug = s.slug
-            LEFT JOIN reviews_photos rp ON r.photos = rp.photo_id
-            LEFT JOIN photos p ON rp.photo_id = p.id
             WHERE r.id = $1`,
       [id]
     );
 
-    const review = result.rows[0];
+    const reviewData = result.rows[0];
+
+    let photoLinks: string[] = [];
+
+    const photoQuery = await db.query(
+      `     SELECT p.link 
+            FROM photos p 
+            LEFT JOIN reviews_photos rp ON p.id = rp.photo_id 
+            LEFT JOIN reviews r ON rp.review_id = r.id 
+            WHERE r.id = $1`,
+      [id]
+    );
+
+    const photos = photoQuery.rows;
+
+    for (let photo of photos) {
+      photoLinks.push(photo.link);
+    }
+
+    const review: ReviewDataReturn = {
+      id: reviewData.id,
+      userId: reviewData.userId,
+      username: reviewData.username,
+      skiAreaSlug: reviewData.skiAreaSlug,
+      skiAreaName: reviewData.skiAreaName,
+      header: reviewData.header,
+      body: reviewData.body,
+      stars: reviewData.stars,
+      photos: photoLinks,
+      createdAt: reviewData.createdAt,
+    };
 
     if (!review) throw new NotFoundError("Review Not Found");
 
@@ -247,12 +330,52 @@ class Review {
                 FROM reviews r
                 LEFT JOIN users u ON r.user_id = u.id
                 LEFT JOIN ski_areas s ON r.ski_area_slug = s.slug
-                LEFT JOIN reviews_photos rp ON r.photos = rp.photo_id
+                LEFT JOIN reviews_photos rp ON r.id = rp.review_id
                 LEFT JOIN photos p ON rp.photo_id = p.id
                 ORDER BY r.created_at
                 `);
 
-    const reviews = result.rows;
+    const reviewData = result.rows;
+
+    let reviews: ReviewDataReturn[] = [];
+
+    for (let review of reviewData) {
+      let photoLinks: string[] = [];
+
+      const photoQuery = await db.query(
+        `     SELECT p.link 
+                          FROM photos p 
+                          LEFT JOIN reviews_photos rp ON p.id = rp.photo_id 
+                          LEFT JOIN reviews r ON rp.review_id = r.id 
+                          WHERE r.id = $1`,
+        [review.id]
+      );
+
+      const photos = photoQuery.rows;
+
+      for (let photo of photos) {
+        photoLinks.push(photo.link);
+      }
+
+      const oneReview: ReviewDataReturn = {
+        id: review.id,
+        userId: review.userId,
+        username: review.username,
+        skiAreaSlug: review.skiAreaSlug,
+        skiAreaName: review.skiAreaName,
+        header: review.header,
+        body: review.body,
+        stars: review.stars,
+        photos: photoLinks,
+        createdAt: review.createdAt,
+      };
+
+      reviews.push(oneReview);
+    }
+
+    if (reviews.length === 0) {
+      throw new NotFoundError("No reviews found");
+    }
 
     return reviews;
   }

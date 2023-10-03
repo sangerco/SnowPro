@@ -15,9 +15,9 @@ class FavMountain {
       `
             INSERT INTO fav_mountains
             (   user_id,
-                ski_area_slug)
+                ski_areas_slug)
             VALUES ($1, $2)
-            RETURNING user_id AS "userId", ski_area_slug AS "skiAreaSlug"`,
+            RETURNING user_id AS "userId", ski_areas_slug AS "skiAreaSlug"`,
       [userId, skiAreaSlug]
     );
     const favMountain = result.rows[0];
@@ -32,7 +32,7 @@ class FavMountain {
                     s.name AS "skiAreaName"
             FROM users u
             LEFT JOIN fav_mountains fm ON u.id = fm.user_id
-            LEFT JOIN ski_areas s ON fm.ski_area_slug = s.slug
+            LEFT JOIN ski_areas s ON fm.ski_areas_slug = s.slug
             WHERE username = $1`,
       [username]
     );
@@ -49,7 +49,7 @@ class FavMountain {
                     u.id AS "userId",
                     u.username
             FROM ski_areas s
-            LEFT JOIN fav_mountains fm ON s.slug = fm.ski_area_slug
+            LEFT JOIN fav_mountains fm ON s.slug = fm.ski_areas_slug
             LEFT JOIN users u ON fm.user_id = u.id
             WHERE slug = $1`,
       [skiAreaSlug]
@@ -66,7 +66,7 @@ class FavMountain {
       USING users AS u
       WHERE u.id = fm.user_id
         AND u.username = $1
-        AND fm.ski_area_slug = $2`,
+        AND fm.ski_areas_slug = $2`,
       [username, slug]
     );
   }

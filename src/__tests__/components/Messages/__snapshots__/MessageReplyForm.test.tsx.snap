@@ -1,0 +1,34 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`test Message Reply Form should match snapshot 1`] = `
+<DocumentFragment>
+  <form
+    class="ui form"
+  >
+    <div
+      class="field"
+    >
+      <input
+        name="subject"
+        placeholder="Whatcha talking about?"
+        value=""
+      />
+    </div>
+    <div
+      class="field"
+    >
+      <textarea
+        name="body"
+        placeholder="Message"
+        rows="3"
+      />
+    </div>
+    <button
+      class="ui button"
+      type="submit"
+    >
+      Send
+    </button>
+  </form>
+</DocumentFragment>
+`;

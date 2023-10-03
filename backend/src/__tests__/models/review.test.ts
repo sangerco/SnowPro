@@ -19,7 +19,6 @@ describe("create review", () => {
   it("should create a new review", async () => {
     const review = await Review.createReview(
       newReview.userId,
-      newReview.username,
       newReview.skiAreaSlug,
       newReview.header,
       newReview.body,

@@ -20,6 +20,16 @@ export interface NewReviewReplyData {
   slug: string;
 }
 
+export interface UpdatedReviewReplyData {
+  id: string;
+  reviewId?: string;
+  userId?: string;
+  username?: string;
+  body?: string;
+  slug?: string;
+  createdAt?: Date;
+}
+
 interface ReviewReplyState {
   reviewReply: ReviewReplyData | null;
   reviewReplies: ReviewReplyData[] | null;
@@ -66,9 +76,10 @@ export const fetchReviewRepliesByReviewId = createAsyncThunk(
 
 export const updateReviewReply = createAsyncThunk(
   "reviewReply/updateReviewReply",
-  async (updateData: ReviewReplyData) => {
+  async (updateData: UpdatedReviewReplyData) => {
     const response = await axios.patch(
-      `${URL}/api/reviews/reply/${updateData.id}`
+      `${URL}/api/reviews/reply/${updateData.id}`,
+      updateData
     );
     const reviewReply = response.data.reply;
     return reviewReply;
@@ -78,7 +89,7 @@ export const updateReviewReply = createAsyncThunk(
 export const deleteReviewReply = createAsyncThunk(
   "reviewReply/deleteReviewReply",
   async (id: string) => {
-    await axios.delete(`${URL}/reviews/reply/${id}`);
+    await axios.delete(`${URL}/api/reviews/reply/${id}`);
     return null;
   }
 );
@@ -160,9 +171,13 @@ const reviewReplySlice = createSlice({
       .addCase(deleteReviewReply.pending, (state) => {
         state.loading = true;
       })
-      .addCase(deleteReviewReply.fulfilled, (state) => {
-        state.loading = false;
-      })
+      .addCase(
+        deleteReviewReply.fulfilled,
+        (state, action: PayloadAction<any>) => {
+          state.reviewReply = action.payload;
+          state.loading = false;
+        }
+      )
       .addCase(
         deleteReviewReply.rejected,
         (state, action: PayloadAction<any>) => {

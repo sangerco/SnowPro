@@ -1,0 +1,46 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`test Message Reply View should match snapshot 1`] = `
+<DocumentFragment>
+  <div>
+    <a
+      class="ui card"
+      href="/messages/replies/testId"
+      style="width: 500px;"
+    >
+      <div
+        class="header"
+      >
+        test message reply
+      </div>
+      <div
+        class="right aligned meta"
+      >
+        October 1, 2023
+      </div>
+      <div
+        class="meta"
+      >
+        Test User
+      </div>
+      <div
+        class="content"
+      >
+         message reply test
+      </div>
+      <div
+        class="content"
+      >
+        <button
+          class="ui red basic button"
+        >
+          <i
+            aria-hidden="true"
+            class="trash icon"
+          />
+        </button>
+      </div>
+    </a>
+  </div>
+</DocumentFragment>
+`;

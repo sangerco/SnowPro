@@ -105,6 +105,7 @@ class Reply {
                 r.recipient_id AS "recipientId",
                 r.subject,
                 r.body,
+                r.is_read AS "isRead",
                 r.created_at AS "createdAt",
                 sender.username AS "senderUsername",
                 sender.first_name AS "senderFirstName",
