@@ -15,7 +15,7 @@ describe("test Ski Area", () => {
             slug={"ski-area-1"}
             name={"Test Ski Area"}
             country={"US"}
-            region={"US"}
+            region={"CO"}
             lat={0}
             long={0}
             url={"https://testskiarea.com"}
@@ -32,7 +32,7 @@ describe("test Ski Area", () => {
             slug={"ski-area-1"}
             name={"Test Ski Area"}
             country={"US"}
-            region={"US"}
+            region={"CO"}
             lat={0}
             long={0}
             url={"https://testskiarea.com"}
@@ -41,5 +41,34 @@ describe("test Ski Area", () => {
       </Provider>
     );
     expect(asFragment()).toMatchSnapshot();
+  });
+  it("should show ski area data", () => {
+    render(
+      <Provider store={store}>
+        <BrowserRouter>
+          <SkiArea
+            slug={"ski-area-1"}
+            name={"Test Ski Area"}
+            country={"US"}
+            region={"CO"}
+            lat={0}
+            long={0}
+            url={"https://testskiarea.com"}
+          />
+        </BrowserRouter>
+      </Provider>
+    );
+
+    const header = screen.getByTestId("ski-area-header");
+    expect(header).toBeInTheDocument();
+
+    const name = screen.getByTestId("ski-area-name");
+    expect(name.textContent).toEqual("Test Ski Area");
+
+    const country = screen.getByTestId("ski-area-country");
+    expect(country.textContent).toEqual("US");
+
+    const region = screen.getByTestId("ski-area-region");
+    expect(region.textContent).toEqual("CO");
   });
 });

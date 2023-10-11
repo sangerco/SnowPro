@@ -1,3 +1,30 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`test Nav Bar should match snapshot 1`] = `<DocumentFragment />`;
+exports[`test FavMountain should match snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="ui raised segment"
+    style="width: 250px; margin: 10px;"
+  >
+    <h4
+      class="ui left aligned header"
+      data-testid="fm-header"
+    >
+      <a
+        href="/ski-areas/ski-area-1"
+      >
+        Ski Area 1
+      </a>
+    </h4>
+    <button
+      class="ui red mini right floated button"
+      data-testid="delete-button"
+    >
+      <i
+        aria-hidden="true"
+        class="times icon"
+      />
+    </button>
+  </div>
+</DocumentFragment>
+`;

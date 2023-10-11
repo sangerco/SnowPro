@@ -5,6 +5,7 @@ exports[`test Message Reply View should match snapshot 1`] = `
   <div>
     <a
       class="ui card"
+      data-testid="message-reply"
       href="/messages/replies/testId"
       style="width: 500px;"
     >
@@ -16,7 +17,7 @@ exports[`test Message Reply View should match snapshot 1`] = `
       <div
         class="right aligned meta"
       >
-        October 1, 2023
+        October 9, 2023
       </div>
       <div
         class="meta"
@@ -25,6 +26,7 @@ exports[`test Message Reply View should match snapshot 1`] = `
       </div>
       <div
         class="content"
+        data-testid="message-reply-body"
       >
          message reply test
       </div>
@@ -33,6 +35,7 @@ exports[`test Message Reply View should match snapshot 1`] = `
       >
         <button
           class="ui red basic button"
+          data-testid="delete-button"
         >
           <i
             aria-hidden="true"

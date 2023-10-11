@@ -56,8 +56,8 @@ const UserForm: React.FC = () => {
       createUser({
         username: formData.username,
         password: formData.password,
-        first_name: formData.firstName,
-        last_name: formData.lastName,
+        firstName: formData.firstName,
+        lastName: formData.lastName,
         email: formData.email,
       })
     );
@@ -110,7 +110,7 @@ const UserForm: React.FC = () => {
         </Grid.Column>
         <Grid.Column width={8}>
           <Segment raised>
-            <Form onSubmit={handleSubmit}>
+            <Form onSubmit={handleSubmit} data-testid="user-form">
               <Form.Field required>
                 <label htmlFor="username">Username</label>
                 <input

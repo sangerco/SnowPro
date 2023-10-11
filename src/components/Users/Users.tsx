@@ -101,11 +101,13 @@ const Users = () => {
               <Card.Group>
                 {users.users.map((user: UserData) => (
                   <Card key={user.id}>
-                    <Card.Content>
+                    <Card.Content data-testid="user">
                       {user.avatar ? (
                         <Image floated="right" wrapped src={user.avatar} />
                       ) : null}
-                      <Card.Header>{user.username}</Card.Header>
+                      <Card.Header data-testid="user-header">
+                        {user.username}
+                      </Card.Header>
                       <Card.Meta>
                         {user.firstName} {user.lastName}
                       </Card.Meta>

@@ -94,7 +94,10 @@ const RecentReviews: React.FC = () => {
                 <>
                   {reviews.reviews.map((review) => (
                     <Card>
-                      <Card.Content key={review.id} id="review-card">
+                      <Card.Content
+                        key={review.id}
+                        id="review-card"
+                        data-testid="review">
                         <Card.Header>
                           <Link to={`/ski-areas/reviews/${review.id}`}>
                             {review.header}

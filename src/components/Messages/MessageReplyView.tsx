@@ -39,6 +39,7 @@ const MessageReplyView: React.FC<MessageReplyViewProps> = ({
   return (
     <div>
       <Card
+        data-testid="message-reply"
         as={Link}
         to={`/messages/replies/${messageReply.id}`}
         style={{ width: "500px" }}>
@@ -49,14 +50,23 @@ const MessageReplyView: React.FC<MessageReplyViewProps> = ({
         <Card.Meta>
           {messageReply.senderFirstName} {messageReply.senderLastName}
         </Card.Meta>
-        <Card.Content>{messageReply.body}</Card.Content>
+        <Card.Content data-testid="message-reply-body">
+          {messageReply.body}
+        </Card.Content>
         <Card.Content>
-          <Button basic color="red" onClick={handleShowDeleteModal}>
+          <Button
+            basic
+            color="red"
+            onClick={handleShowDeleteModal}
+            data-testid="delete-button">
             <Icon name="trash" />
           </Button>
         </Card.Content>
       </Card>
-      <Modal open={showDeleteModal} onClose={() => setShowDeleteModal(false)}>
+      <Modal
+        open={showDeleteModal}
+        onClose={() => setShowDeleteModal(false)}
+        data-testid="delete-modal">
         <Modal.Content>
           Are You Sure You Want To Delete This Message Reply?
         </Modal.Content>

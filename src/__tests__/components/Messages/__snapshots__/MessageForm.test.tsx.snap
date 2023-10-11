@@ -1,0 +1,138 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`test Message Form should match snapshot 1`] = `
+<DocumentFragment>
+  <div
+    id="background-container"
+  >
+    <div
+      class="ui grid"
+    >
+      <div
+        class="row"
+      >
+        <div
+          class="four wide column"
+        >
+          <div
+            class="ui segment"
+            style="overflow: auto; max-height: 75vh;"
+          >
+            <div
+              class="ui card"
+              id="ski-area-card"
+            >
+               
+              <div
+                class="content"
+              >
+                <a
+                  href="/ski-areas/ski-area-1"
+                >
+                  Ski Area 1
+                </a>
+              </div>
+              <div
+                class="content"
+              >
+                <a
+                  href="/ski-areas/ski-area-1"
+                >
+                  Ski Area 1
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="eight wide column"
+        >
+          <div
+            class="ui raised segment"
+          >
+            <form
+              class="ui form"
+              data-testid="message-form"
+            >
+              <label>
+                Who do you want to send this message to?
+              </label>
+              <div
+                aria-expanded="false"
+                aria-multiselectable="true"
+                class="ui fluid multiple selection dropdown"
+                data-testid="select"
+                required=""
+                role="listbox"
+                tabindex="0"
+              >
+                <i
+                  aria-hidden="true"
+                  class="dropdown icon"
+                />
+                <div
+                  class="menu transition"
+                >
+                  <div
+                    aria-checked="false"
+                    aria-selected="true"
+                    class="selected item"
+                    role="option"
+                    style="pointer-events: all;"
+                  >
+                    <span
+                      class="text"
+                    >
+                      testuser2
+                    </span>
+                  </div>
+                  <div
+                    aria-checked="false"
+                    aria-selected="false"
+                    class="item"
+                    role="option"
+                    style="pointer-events: all;"
+                  >
+                    <span
+                      class="text"
+                    >
+                      testuser3
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="field"
+              >
+                <input
+                  name="subject"
+                  placeholder="Whatcha talking about?"
+                  value=""
+                />
+              </div>
+              <div
+                class="field"
+              >
+                <textarea
+                  name="body"
+                  placeholder="Message"
+                  rows="3"
+                />
+              </div>
+              <button
+                class="ui button"
+                type="submit"
+              >
+                Send
+              </button>
+            </form>
+          </div>
+        </div>
+        <div
+          class="four wide column"
+        />
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;

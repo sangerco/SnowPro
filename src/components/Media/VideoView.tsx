@@ -69,10 +69,10 @@ const VideoView: React.FC<VideoViewProps> = ({ id }) => {
   if (video) {
     return (
       <div>
-        <Container fluid>
+        <Container fluid data-testid="video">
           <Embed id={videoId} source="youtube" />
           <Divider />
-          <Container text>
+          <Container text data-testid="video-about">
             <p>{video.about}</p>
           </Container>
           <Divider />

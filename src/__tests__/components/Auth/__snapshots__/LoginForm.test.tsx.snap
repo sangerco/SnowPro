@@ -1,0 +1,83 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`test LoginForm matches snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="ui grid"
+  >
+    <div
+      class="row"
+    >
+      <div
+        class="four wide column"
+        data-testid="skiAreaColumn"
+      >
+        <div
+          class="ui active transition visible dimmer"
+          style="display: flex;"
+        >
+          <div
+            class="content"
+          >
+            <div
+              class="ui text loader"
+            >
+              Loading...
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="eight wide column"
+      >
+        <div
+          class="ui raised segment"
+        >
+          <form
+            class="ui form"
+            data-testid="login-form"
+          >
+            <div
+              class="field"
+              data-testid="username-input"
+            >
+              <label>
+                Username:
+                <input
+                  name="username"
+                  placeholder="Username"
+                  type="text"
+                  value=""
+                />
+              </label>
+            </div>
+            <div
+              class="field"
+              data-testid="password-input"
+            >
+              <label>
+                Password:
+                <input
+                  name="password"
+                  placeholder="Password"
+                  type="password"
+                  value=""
+                />
+              </label>
+            </div>
+            <button
+              class="ui blue button"
+              type="submit"
+            >
+              Login
+            </button>
+          </form>
+        </div>
+      </div>
+      <div
+        class="four wide column"
+      />
+    </div>
+  </div>
+</DocumentFragment>
+`;

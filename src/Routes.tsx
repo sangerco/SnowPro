@@ -22,17 +22,10 @@ import Home from "./components/Home/Home";
 import Users from "./components/Users/Users";
 
 const AppRoutes: React.FC = () => {
-  function handleLoginSubmit(): void {
-    throw new Error("Function not implemented.");
-  }
-
   return (
     <Routes>
       <Route path="/" element={<Home />} />
-      <Route
-        path="/login"
-        element={<LoginForm onSubmit={handleLoginSubmit} />}
-      />
+      <Route path="/login" element={<LoginForm />} />
       <Route path="/register" element={<UserForm />} />
       <Route path="/users/all-users" element={<Users />} />
       <Route path="/users/:username" element={<UserPage />} />

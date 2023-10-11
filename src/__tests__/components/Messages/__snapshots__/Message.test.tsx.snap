@@ -1,3 +1,22 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`test Inbox matches a snapshot 1`] = `<DocumentFragment />`;
+exports[`test Message matches a snapshot 1`] = `
+<DocumentFragment>
+  <div>
+    <div
+      class="ui active transition visible dimmer"
+      style="display: flex;"
+    >
+      <div
+        class="content"
+      >
+        <div
+          class="ui text loader"
+        >
+          Loading...
+        </div>
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;

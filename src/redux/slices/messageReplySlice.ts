@@ -43,6 +43,7 @@ export const createMessageReply = createAsyncThunk(
   "messageReply/newMessageReply",
   async (newMessageReply: NewMessageReplyData) => {
     const messageId = newMessageReply.messageId;
+    console.log(newMessageReply);
     const response = await axios.post(
       `${URL}/api/messages/${messageId}/reply`,
       newMessageReply

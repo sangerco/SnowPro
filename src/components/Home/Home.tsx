@@ -128,7 +128,10 @@ const Home: React.FC = () => {
                     <Grid.Column>
                       {" "}
                       {/* paginated */}
-                      <Segment key={review.id} id="review-card">
+                      <Segment
+                        key={review.id}
+                        data-testId="review-card"
+                        id="review-card">
                         <Header as="h3">
                           <Link to={`/ski-areas/reviews/${review.id}`}>
                             {review.header}

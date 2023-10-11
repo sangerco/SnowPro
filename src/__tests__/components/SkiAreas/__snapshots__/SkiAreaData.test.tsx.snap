@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`test Nav Bar should match snapshot 1`] = `
+exports[`test Ski Area Data should match snapshot 1`] = `
 <DocumentFragment>
   <div
     class="ui grid"
@@ -12,17 +12,163 @@ exports[`test Nav Bar should match snapshot 1`] = `
         class="center aligned four wide column"
       >
         <div
-          class="ui active transition visible dimmer"
-          style="display: flex;"
+          class="ui card"
+          style="margin-left: 10px;"
         >
           <div
             class="content"
+            id="review-card"
           >
             <div
-              class="ui text loader"
+              class="header"
             >
-              Loading...
+              <a
+                href="/ski-areas/reviews/review-1"
+              >
+                test review
+              </a>
+               
+              <div
+                class="ui divider"
+              />
+              Ski Area 1
             </div>
+            <div
+              class="description"
+            >
+              By testuser
+            </div>
+            <div
+              class="meta"
+            >
+              <div
+                class="ui star disabled rating"
+                role="radiogroup"
+                tabindex="0"
+              >
+                <i
+                  aria-checked="false"
+                  aria-posinset="1"
+                  aria-setsize="5"
+                  class="active icon"
+                  role="radio"
+                  tabindex="-1"
+                />
+                <i
+                  aria-checked="false"
+                  aria-posinset="2"
+                  aria-setsize="5"
+                  class="active icon"
+                  role="radio"
+                  tabindex="-1"
+                />
+                <i
+                  aria-checked="false"
+                  aria-posinset="3"
+                  aria-setsize="5"
+                  class="active icon"
+                  role="radio"
+                  tabindex="-1"
+                />
+                <i
+                  aria-checked="false"
+                  aria-posinset="4"
+                  aria-setsize="5"
+                  class="active icon"
+                  role="radio"
+                  tabindex="-1"
+                />
+                <i
+                  aria-checked="true"
+                  aria-posinset="5"
+                  aria-setsize="5"
+                  class="active icon"
+                  role="radio"
+                  tabindex="-1"
+                />
+              </div>
+            </div>
+            Invalid Date
+          </div>
+        </div>
+        <div
+          class="ui card"
+          style="margin-left: 10px;"
+        >
+          <div
+            class="content"
+            id="review-card"
+          >
+            <div
+              class="header"
+            >
+              <a
+                href="/ski-areas/reviews/review-2"
+              >
+                test review
+              </a>
+               
+              <div
+                class="ui divider"
+              />
+              Ski Area 2
+            </div>
+            <div
+              class="description"
+            >
+              By testuser2
+            </div>
+            <div
+              class="meta"
+            >
+              <div
+                class="ui star disabled rating"
+                role="radiogroup"
+                tabindex="0"
+              >
+                <i
+                  aria-checked="false"
+                  aria-posinset="1"
+                  aria-setsize="5"
+                  class="active icon"
+                  role="radio"
+                  tabindex="-1"
+                />
+                <i
+                  aria-checked="true"
+                  aria-posinset="2"
+                  aria-setsize="5"
+                  class="active icon"
+                  role="radio"
+                  tabindex="-1"
+                />
+                <i
+                  aria-checked="false"
+                  aria-posinset="3"
+                  aria-setsize="5"
+                  class="icon"
+                  role="radio"
+                  tabindex="-1"
+                />
+                <i
+                  aria-checked="false"
+                  aria-posinset="4"
+                  aria-setsize="5"
+                  class="icon"
+                  role="radio"
+                  tabindex="-1"
+                />
+                <i
+                  aria-checked="false"
+                  aria-posinset="5"
+                  aria-setsize="5"
+                  class="icon"
+                  role="radio"
+                  tabindex="-1"
+                />
+              </div>
+            </div>
+            Invalid Date
           </div>
         </div>
       </div>

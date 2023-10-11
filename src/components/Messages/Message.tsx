@@ -20,6 +20,7 @@ import { fetchSkiAreas } from "../../redux/slices/skiAreaSlice";
 
 const Message: React.FC = () => {
   const { id } = useParams();
+  console.log(`${id}`);
   const messages = useSelector((state: RootState) => state.messages);
   const dispatch = useDispatch<AppDispatch>();
 
@@ -69,6 +70,7 @@ const Message: React.FC = () => {
   }
 
   if (messages.error) {
+    console.log("error here");
     return <div>Error: {messages.error}</div>;
   }
 
@@ -76,7 +78,6 @@ const Message: React.FC = () => {
     return <div>Error: Message cannot be loaded!</div>;
   } else if (messages.message) {
     const message = messages.message;
-
     return (
       <Grid>
         <Grid.Row>
@@ -106,7 +107,7 @@ const Message: React.FC = () => {
             ) : null}
           </Grid.Column>
           <Grid.Column width={8}>
-            <Card fluid>
+            <Card fluid data-testid="message">
               <Card.Content>
                 <Card.Header>{message.subject}</Card.Header>
                 <Divider />
@@ -121,10 +122,14 @@ const Message: React.FC = () => {
               </Card.Content>
               <Card.Content extra>
                 <div className="ui two buttons">
-                  <Button basic color="red" onClick={handleShowDeleteModal}>
+                  <Button
+                    basic
+                    color="red"
+                    onClick={handleShowDeleteModal}
+                    data-testid="delete-button">
                     <Icon name="trash" />
                   </Button>
-                  <Button basic color="green">
+                  <Button basic color="green" data-testid="reply-button">
                     <Link
                       to={`/messages/${message.id}/reply`}
                       style={{ color: "green" }}>
@@ -140,6 +145,7 @@ const Message: React.FC = () => {
                 ))
               : null}
             <Modal
+              data-testid="delete-modal"
               open={showDeleteModal}
               onClose={() => setShowDeleteModal(false)}>
               <Modal.Content>

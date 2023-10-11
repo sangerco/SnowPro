@@ -15,9 +15,9 @@ interface UserProps {
 
 const User: React.FC<UserProps> = ({ user }) => {
   return (
-    <li key={user.id}>
+    <li key={user.id} data-testid="user">
       <p>{user.id}</p>
-      <p>{user.username}</p>
+      <p data-testid="header">{user.username}</p>
       <p>{user.firstName}</p>
       <p>{user.lastName}</p>
       <p>{user.email}</p>

@@ -108,9 +108,9 @@ CREATE TABLE "videos" (
 CREATE TABLE "fav_mountains" (
     "user_id" TEXT
         REFERENCES "users" ("id") ON DELETE CASCADE,
-    "ski_area_slug" TEXT
+    "ski_areas_slug" TEXT
         REFERENCES "ski_areas" ("slug") ON DELETE CASCADE,
-    PRIMARY KEY ("user_id", "ski_area_slug")
+    PRIMARY KEY ("user_id", "ski_areas_slug")
 );
 
 CREATE TABLE review_tags (

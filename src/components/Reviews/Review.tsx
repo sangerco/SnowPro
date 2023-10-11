@@ -123,7 +123,7 @@ const Review: React.FC = () => {
           <Grid.Column width={8}>
             <Segment>
               <div>
-                <Container fluid>
+                <Container fluid data-testid="review">
                   <Header as="h1">{review.header}</Header>
                   <Divider />
                   <Header as="h3">Review of {review.skiAreaName}</Header>

@@ -40,6 +40,7 @@ const UpdateReviewForm: React.FC = () => {
 
   const reviews = useSelector((state: RootState) => state.reviews);
   const review = reviews.review;
+  console.log(reviews);
 
   useEffect(() => {
     dispatch(fetchSkiAreas());
@@ -200,7 +201,7 @@ const UpdateReviewForm: React.FC = () => {
           </Grid.Column>
           <Grid.Column width={8}>
             <Container fluid>
-              <Form onSubmit={handleSubmit}>
+              <Form onSubmit={handleSubmit} data-testid="update-review-form">
                 <Form.Field>
                   <input
                     placeholder={formData.body}
@@ -244,7 +245,9 @@ const UpdateReviewForm: React.FC = () => {
                   value={formData.stars}
                 />
                 <Divider />
-                <Button type="submit">Send it!</Button>
+                <Button type="submit" data-testid="review-button">
+                  Send it!
+                </Button>
               </Form>
             </Container>
           </Grid.Column>

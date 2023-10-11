@@ -136,7 +136,7 @@ const ReviewReply: React.FC = () => {
           </Grid.Column>
           <Grid.Column width={8}>
             <Segment>
-              <Container fluid>
+              <Container fluid data-testid="review-reply">
                 <Header as="h3">
                   Reply to{" "}
                   {
@@ -153,13 +153,14 @@ const ReviewReply: React.FC = () => {
                 <Divider />
                 <p>{reviewReply.body}</p>
                 {authId && authId === userId ? (
-                  <Container>
+                  <Container data-testid="buttons">
                     <Link
                       to={`/ski-areas/reviews/replies/${reviewReply.id}/update`}>
                       <Icon name="edit" style={{ cursor: "pointer" }} />
                     </Link>
                     <Icon
                       name="trash"
+                      data-testid="delete-button"
                       style={{ cursor: "pointer" }}
                       onClick={handleShowDeleteModal}
                     />
@@ -167,6 +168,7 @@ const ReviewReply: React.FC = () => {
                 ) : null}
               </Container>
               <Modal
+                data-testid="delete-modal"
                 open={showDeleteModal}
                 onClose={() => setShowDeleteModal(false)}>
                 <Modal.Content>

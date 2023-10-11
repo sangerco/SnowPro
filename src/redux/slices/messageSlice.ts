@@ -54,6 +54,7 @@ export const createMessage = createAsyncThunk(
 export const fetchMessage = createAsyncThunk(
   "message/fetchMessage",
   async (id: string) => {
+    console.log("fetching message");
     const response = await axios.get(`${URL}/messages/${id}`);
     const message: MessageData = response.data.message;
     const replies: MessageReplyData[] = response.data.replies;

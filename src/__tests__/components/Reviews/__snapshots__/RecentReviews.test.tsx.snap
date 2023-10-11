@@ -1,19 +1,217 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`test Nav Bar should match snapshot 1`] = `
+exports[`test Recent Reviews should match snapshot 1`] = `
 <DocumentFragment>
   <div
-    class="ui active transition visible dimmer"
-    style="display: flex;"
+    class="ui grid"
   >
     <div
-      class="content"
+      class="row"
     >
       <div
-        class="ui text loader"
+        class="four wide column"
       >
-        Loading...
+        <div
+          class="ui segment"
+          style="overflow: auto; max-height: 75vh;"
+        >
+          <div
+            class="ui card"
+            id="ski-area-card"
+          >
+             
+            <div
+              class="content"
+            >
+              <a
+                href="/ski-areas/ski-area-1"
+              >
+                Ski Area 1
+              </a>
+            </div>
+            <div
+              class="content"
+            >
+              <a
+                href="/ski-areas/ski-area-1"
+              >
+                Ski Area 1
+              </a>
+            </div>
+          </div>
+        </div>
       </div>
+      <div
+        class="eight wide column"
+      >
+        <div
+          class="ui cards"
+        >
+          <div
+            class="ui card"
+          >
+            <div
+              class="content"
+              data-testid="review"
+              id="review-card"
+            >
+              <div
+                class="header"
+              >
+                <a
+                  href="/ski-areas/reviews/review-1"
+                >
+                  test review
+                </a>
+                 
+                <div
+                  class="ui divider"
+                />
+                Ski Area 1
+              </div>
+              <div
+                class="description"
+              >
+                By testuser
+              </div>
+              <div
+                class="meta"
+              >
+                <div
+                  class="ui star disabled rating"
+                  role="radiogroup"
+                  tabindex="0"
+                >
+                  <i
+                    aria-checked="false"
+                    aria-posinset="1"
+                    aria-setsize="5"
+                    class="active icon"
+                    role="radio"
+                    tabindex="-1"
+                  />
+                  <i
+                    aria-checked="false"
+                    aria-posinset="2"
+                    aria-setsize="5"
+                    class="active icon"
+                    role="radio"
+                    tabindex="-1"
+                  />
+                  <i
+                    aria-checked="false"
+                    aria-posinset="3"
+                    aria-setsize="5"
+                    class="active icon"
+                    role="radio"
+                    tabindex="-1"
+                  />
+                  <i
+                    aria-checked="false"
+                    aria-posinset="4"
+                    aria-setsize="5"
+                    class="active icon"
+                    role="radio"
+                    tabindex="-1"
+                  />
+                  <i
+                    aria-checked="true"
+                    aria-posinset="5"
+                    aria-setsize="5"
+                    class="active icon"
+                    role="radio"
+                    tabindex="-1"
+                  />
+                </div>
+              </div>
+              Invalid Date
+            </div>
+          </div>
+          <div
+            class="ui card"
+          >
+            <div
+              class="content"
+              data-testid="review"
+              id="review-card"
+            >
+              <div
+                class="header"
+              >
+                <a
+                  href="/ski-areas/reviews/review-2"
+                >
+                  test review 2
+                </a>
+                 
+                <div
+                  class="ui divider"
+                />
+                Ski Area 2
+              </div>
+              <div
+                class="description"
+              >
+                By testuser2
+              </div>
+              <div
+                class="meta"
+              >
+                <div
+                  class="ui star disabled rating"
+                  role="radiogroup"
+                  tabindex="0"
+                >
+                  <i
+                    aria-checked="true"
+                    aria-posinset="1"
+                    aria-setsize="5"
+                    class="active icon"
+                    role="radio"
+                    tabindex="-1"
+                  />
+                  <i
+                    aria-checked="false"
+                    aria-posinset="2"
+                    aria-setsize="5"
+                    class="icon"
+                    role="radio"
+                    tabindex="-1"
+                  />
+                  <i
+                    aria-checked="false"
+                    aria-posinset="3"
+                    aria-setsize="5"
+                    class="icon"
+                    role="radio"
+                    tabindex="-1"
+                  />
+                  <i
+                    aria-checked="false"
+                    aria-posinset="4"
+                    aria-setsize="5"
+                    class="icon"
+                    role="radio"
+                    tabindex="-1"
+                  />
+                  <i
+                    aria-checked="false"
+                    aria-posinset="5"
+                    aria-setsize="5"
+                    class="icon"
+                    role="radio"
+                    tabindex="-1"
+                  />
+                </div>
+              </div>
+              Invalid Date
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="four wide column"
+      />
     </div>
   </div>
 </DocumentFragment>

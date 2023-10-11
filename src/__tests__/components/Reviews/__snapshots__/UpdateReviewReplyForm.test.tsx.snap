@@ -1,3 +1,82 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`test Nav Bar should match snapshot 1`] = `<DocumentFragment />`;
+exports[`test Update Review Reply Form should match snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="ui grid"
+  >
+    <div
+      class="row"
+    >
+      <div
+        class="four wide column"
+      >
+        <div
+          class="ui segment"
+          style="overflow: auto; max-height: 75vh;"
+        >
+          <div
+            class="ui card"
+            id="ski-area-card"
+          >
+             
+            <div
+              class="content"
+            >
+              <a
+                href="/ski-areas/ski-area-1"
+              >
+                Ski Area 1
+              </a>
+            </div>
+            <div
+              class="content"
+            >
+              <a
+                href="/ski-areas/ski-area-1"
+              >
+                Ski Area 1
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="eight wide column"
+      >
+         
+        <div
+          class="ui fluid container"
+        >
+          <form
+            class="ui form"
+            data-testid="update-review-reply-form"
+          >
+            <div
+              class="field"
+            >
+              <textarea
+                name="body"
+                placeholder="Reply to this review"
+                rows="3"
+              >
+                test review reply body
+              </textarea>
+            </div>
+            <button
+              class="ui green small button"
+              data-testid="submit-button"
+              type="submit"
+            >
+              Reply
+            </button>
+          </form>
+        </div>
+      </div>
+      <div
+        class="four wide column"
+      />
+    </div>
+  </div>
+</DocumentFragment>
+`;

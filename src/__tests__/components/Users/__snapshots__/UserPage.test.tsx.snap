@@ -1,3 +1,151 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`test User Page should match snapshot 1`] = `<DocumentFragment />`;
+exports[`test User Page should match snapshot 1`] = `
+<DocumentFragment>
+  <div>
+    <div
+      class="ui container"
+    >
+      <div
+        class="ui relaxed grid"
+      >
+        <div
+          class="row"
+        >
+          <div
+            class="four wide column"
+          >
+            <img
+              class="ui small image"
+              src="https://testdata.com/testavatar.jpg"
+            />
+          </div>
+          <div
+            class="eight wide column"
+          >
+            <h2
+              class="ui right aligned header"
+              data-testid="user-header"
+            >
+              testuser
+            </h2>
+            <div
+              class="sub header"
+              data-testid="user-name"
+            >
+              Test User
+            </div>
+            <div>
+              <a
+                href="/users/testuser/update"
+              >
+                <i
+                  aria-hidden="true"
+                  class="edit icon"
+                  style="cursor: pointer;"
+                />
+              </a>
+              <i
+                aria-hidden="true"
+                class="trash icon"
+                data-testid="delete-button"
+                style="cursor: pointer;"
+              />
+            </div>
+          </div>
+          <div
+            class="four wide column"
+          />
+        </div>
+        <div
+          class="row"
+        >
+          <div
+            class="four wide column"
+          />
+          <div
+            class="eight wide column"
+          >
+            <p>
+              test user bio
+            </p>
+          </div>
+          <div
+            class="four wide column"
+          >
+            <h3
+              class="ui header"
+            >
+              Favorite Mountains
+            </h3>
+            <div
+              class="ui divider"
+            />
+            <p>
+              This user has no favorited mountains yet!
+            </p>
+          </div>
+        </div>
+        <div
+          class="row"
+        >
+          <div
+            class="two wide column"
+          />
+          <div
+            class="twelve wide column"
+          >
+            <h3
+              class="ui header"
+            >
+              <a
+                href="/users/testuser/photos"
+              >
+                All testuser's Photos
+              </a>
+            </h3>
+            <p>
+              This user has no photos yet!
+            </p>
+            <div
+              class="ui divider"
+            />
+          </div>
+          <div
+            class="two wide column"
+          />
+        </div>
+        <div
+          class="row"
+        >
+          <div
+            class="two wide column"
+          />
+          <div
+            class="twelve wide column"
+          >
+            <h3
+              class="ui header"
+            >
+              <a
+                href="/users/testuser/videos"
+              >
+                All testuser's Videos
+              </a>
+            </h3>
+            <p>
+              This user has no videos yet!
+            </p>
+            <div
+              class="ui divider"
+            />
+          </div>
+          <div
+            class="two wide column"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;

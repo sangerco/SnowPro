@@ -50,7 +50,10 @@ const ReviewReplyForm: React.FC<ReviewReplyFormProps> = ({
   };
 
   return (
-    <Container fluid style={{ margin: "20px", padding: "20px" }}>
+    <Container
+      fluid
+      style={{ margin: "20px", padding: "20px" }}
+      data-testid="review-reply-form">
       <Header as="h3">Reply to {`${username}`}'s review:</Header>
       <Form onSubmit={handleSubmit}>
         <Form.TextArea
@@ -59,7 +62,11 @@ const ReviewReplyForm: React.FC<ReviewReplyFormProps> = ({
           value={formData.body}
           onChange={handleChange}
         />
-        <Button size="small" color="green" type="submit">
+        <Button
+          size="small"
+          color="green"
+          type="submit"
+          data-testid="submit-button">
           Reply
         </Button>
         <Button size="small" color="red" onClick={closeModal}>

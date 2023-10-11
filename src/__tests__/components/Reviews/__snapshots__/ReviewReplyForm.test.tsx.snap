@@ -1,9 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`test Nav Bar should match snapshot 1`] = `
+exports[`test Review Reply Form should match snapshot 1`] = `
 <DocumentFragment>
   <div
     class="ui fluid container"
+    data-testid="review-reply-form"
     style="margin: 20px; padding: 20px;"
   >
     <h3
@@ -25,6 +26,7 @@ exports[`test Nav Bar should match snapshot 1`] = `
       </div>
       <button
         class="ui green small button"
+        data-testid="submit-button"
         type="submit"
       >
         Reply

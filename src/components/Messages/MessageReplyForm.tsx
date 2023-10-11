@@ -25,8 +25,6 @@ const MessageReplyForm: React.FC = () => {
   const subject = message ? `Re: ${message.subject}` : "";
   const body = message ? `>${message.body} \n\n` : "";
 
-  console.log(body);
-
   const initialMessageReplyState = {
     messageId: messageId ? messageId : "",
     senderId: senderId,
@@ -41,6 +39,8 @@ const MessageReplyForm: React.FC = () => {
     e.preventDefault();
 
     dispatch(createMessageReply(formData));
+
+    console.log(formData);
 
     setFormData(initialMessageReplyState);
   };
@@ -64,7 +64,7 @@ const MessageReplyForm: React.FC = () => {
   };
 
   return (
-    <Form onSubmit={handleSubmit}>
+    <Form onSubmit={handleSubmit} data-testid="message-reply-form">
       <Form.Field>
         <input
           placeholder="Whatcha talking about?"

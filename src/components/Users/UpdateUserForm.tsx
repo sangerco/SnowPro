@@ -181,7 +181,7 @@ const UpdateUserForm: React.FC = () => {
                 style={{
                   margin: "10px",
                 }}>{`Update ${user.username}'s Profile`}</Header>
-              <Form onSubmit={handleSubmit}>
+              <Form onSubmit={handleSubmit} data-testid="update-user-form">
                 <Form.Field>
                   <label>Username</label>
                   <input
@@ -247,7 +247,9 @@ const UpdateUserForm: React.FC = () => {
                     onChange={handleChange}
                   />
                 </Form.Field>
-                <Button type="submit">Submit Changes</Button>
+                <Button type="submit" data-testid="submit-button">
+                  Submit Changes
+                </Button>
               </Form>
               {formData.photos &&
                 formData.photos.map((photo) => <Image src={photo} />)}

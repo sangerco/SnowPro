@@ -1,0 +1,55 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`test Video Form matches snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="ui fluid container"
+    style="margin: 10px;"
+  >
+    <form
+      class="ui form"
+      data-testid="video-form"
+    >
+      <div
+        class="field"
+      >
+        <label
+          for="videoLink"
+        >
+          Video Link - must be YouTube link
+        </label>
+        <input
+          id="videoLink"
+          name="link"
+          type="text"
+          value=""
+        />
+      </div>
+      <div
+        class="field"
+      >
+        <label
+          for="about"
+        >
+          About
+        </label>
+        <input
+          id="about"
+          name="about"
+          type="text"
+          value=""
+        />
+      </div>
+      <div
+        class="ui divider"
+      />
+      <button
+        class="ui green small button"
+        type="submit"
+      >
+        Send it.
+      </button>
+    </form>
+  </div>
+</DocumentFragment>
+`;

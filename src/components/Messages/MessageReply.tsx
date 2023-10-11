@@ -115,7 +115,7 @@ const MessageReply: React.FC = () => {
             </Grid.Column>
             <Grid.Column width={8}>
               <Segment raised>
-                <Card fluid>
+                <Card fluid data-testid="reply">
                   <Card.Content>
                     <Card.Header>{messageReply.subject}</Card.Header>
                     <Card.Meta>
@@ -125,11 +125,17 @@ const MessageReply: React.FC = () => {
                     <Card.Meta textAlign="right">
                       {formatDate(messageReply.createdAt)}
                     </Card.Meta>
-                    <Card.Description>{messageReply.body}</Card.Description>
+                    <Card.Description data-testid="reply-body">
+                      {messageReply.body}
+                    </Card.Description>
                   </Card.Content>
                   <Card.Content extra>
                     <div className="ui two buttons">
-                      <Button basic color="red" onClick={handleShowDeleteModal}>
+                      <Button
+                        basic
+                        color="red"
+                        onClick={handleShowDeleteModal}
+                        data-testid="delete-button">
                         <Icon name="trash" />
                       </Button>
                       <Button basic color="blue">

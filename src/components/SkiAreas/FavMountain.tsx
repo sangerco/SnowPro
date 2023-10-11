@@ -48,11 +48,12 @@ const FavMountain: React.FC<FavMountainProps> = ({ slug, username }) => {
     return (
       <>
         <Segment raised style={{ width: "250px", margin: "10px" }}>
-          <Header as="h4" textAlign="left">
+          <Header as="h4" textAlign="left" data-testid="fm-header">
             <Link to={`/ski-areas/${slug}`}>{skiArea.name}</Link>
           </Header>
           {username === loggedInUsername ? (
             <Button
+              data-testid="delete-button"
               floated="right"
               color="red"
               size="mini"
@@ -61,7 +62,10 @@ const FavMountain: React.FC<FavMountainProps> = ({ slug, username }) => {
             </Button>
           ) : null}
         </Segment>
-        <Modal open={showDeleteModal} onClose={() => setShowDeleteModal(false)}>
+        <Modal
+          open={showDeleteModal}
+          onClose={() => setShowDeleteModal(false)}
+          data-testid="delete-modal">
           <Modal.Content>
             Remove this Ski Area from your favorites list?
           </Modal.Content>

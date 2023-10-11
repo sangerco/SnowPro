@@ -1,6 +1,13 @@
 /* eslint-disable testing-library/no-node-access */
 import React from "react";
-import { render, fireEvent, screen, waitFor } from "@testing-library/react";
+import {
+  render,
+  fireEvent,
+  screen,
+  findByTestId,
+  waitFor,
+} from "@testing-library/react";
+import nock from "nock";
 import LoginForm from "../../../components/Auth/LoginForm";
 import { Provider } from "react-redux";
 import { store } from "../../../redux/store";
@@ -8,18 +15,16 @@ import { BrowserRouter } from "react-router-dom";
 
 describe("test LoginForm", () => {
   it("renders without crashing", () => {
-    const handleSubmit = jest.fn();
     <Provider store={store}>
-      <LoginForm onSubmit={handleSubmit} />
+      <LoginForm />
     </Provider>;
   });
 
   it("matches snapshot", () => {
-    const handleSubmit = jest.fn();
     const { asFragment } = render(
       <Provider store={store}>
         <BrowserRouter>
-          <LoginForm onSubmit={handleSubmit} />
+          <LoginForm />
         </BrowserRouter>
       </Provider>
     );
@@ -28,11 +33,10 @@ describe("test LoginForm", () => {
   });
 
   it("should contain a form", () => {
-    const handleSubmit = jest.fn();
     render(
       <Provider store={store}>
         <BrowserRouter>
-          <LoginForm onSubmit={handleSubmit} />
+          <LoginForm />
         </BrowserRouter>
       </Provider>
     );
@@ -42,28 +46,55 @@ describe("test LoginForm", () => {
     expect(password).toHaveTextContent("Password:");
   });
 
-  it("should submit the form", () => {
-    const handleSubmit = jest.fn();
+  it("should submit the form", async () => {
+    nock("http://localhost:5000")
+      .defaultReplyHeaders({
+        "access-control-allow-origin": "*",
+      })
+      .post("/login")
+      .reply(200, {
+        token: "faketoken",
+        user: {
+          username: "testuser",
+          password: "password",
+          firstName: "Test",
+          lastName: "User",
+          email: "test@user.com",
+        },
+      });
+    nock("http://localhost:5000")
+      .defaultReplyHeaders({
+        "access-control-allow-origin": "*",
+      })
+      .get("/ski-areas")
+      .reply(200, []);
+    nock("http://localhost:5000")
+      .defaultReplyHeaders({
+        "access-control-allow-origin": "*",
+      })
+      .get("/ski-areas/reviews")
+      .reply(200, []);
     render(
       <Provider store={store}>
         <BrowserRouter>
-          <LoginForm onSubmit={handleSubmit} />
+          <LoginForm />
         </BrowserRouter>
       </Provider>
     );
 
-    const username = screen.getByPlaceholderText("Username");
-    // const usernameInput = username.children[0];
-    const password = screen.getByPlaceholderText("Password");
-    // const passwordInput = password.children[0];
-    const button = screen.getByText("Login");
+    expect(nock.pendingMocks().length).toBe(3);
 
-    // @ts-ignore
+    const username = screen.getByPlaceholderText("Username");
+    const password = screen.getByPlaceholderText("Password");
+
     fireEvent.change(username, { target: { value: "testuser" } });
-    // @ts-ignore
     fireEvent.change(password, { target: { value: "testpassword" } });
 
-    fireEvent.click(button);
-    expect(handleSubmit).toHaveBeenCalled();
+    const loginForm = await screen.findByTestId("login-form");
+    fireEvent.submit(loginForm);
+
+    await waitFor(() => {
+      expect(nock.isDone()).toBe(true);
+    });
   });
 });

@@ -86,10 +86,10 @@ const UserPage: React.FC = () => {
                 <Image src={user.avatar} size="small" />
               </Grid.Column>
               <Grid.Column width={8}>
-                <Header as="h2" textAlign="right">
+                <Header as="h2" textAlign="right" data-testid="user-header">
                   {user.username}
                 </Header>
-                <Header.Subheader>
+                <Header.Subheader data-testid="user-name">
                   {user.firstName && user.firstName !== ""
                     ? user.firstName
                     : ""}{" "}
@@ -101,6 +101,7 @@ const UserPage: React.FC = () => {
                       <Icon name="edit" style={{ cursor: "pointer" }} />
                     </Link>
                     <Icon
+                      data-testid="delete-button"
                       name="trash"
                       style={{ cursor: "pointer" }}
                       onClick={handleShowDeleteModal}
@@ -169,7 +170,10 @@ const UserPage: React.FC = () => {
             </Grid.Row>
           </Grid>
         </Container>
-        <Modal open={showDeleteModal} onClose={() => setShowDeleteModal(false)}>
+        <Modal
+          open={showDeleteModal}
+          onClose={() => setShowDeleteModal(false)}
+          data-testid="delete-modal">
           <Modal.Content>
             Are You Sure You Want To Delete Your Profile?
           </Modal.Content>

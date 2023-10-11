@@ -85,6 +85,7 @@ export const fetchReview = createAsyncThunk(
   async (id: string) => {
     const response = await axios.get(`${URL}/ski-areas/reviews/${id}`);
     const review: ReviewData = response.data.review;
+    console.log(id);
     const replies: ReviewReplyData[] = response.data.replies;
     const fullReview = { ...review, replies: replies };
     return fullReview;

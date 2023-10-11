@@ -1,14 +1,16 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`test Nav Bar should match snapshot 1`] = `
+exports[`test Ski Area should match snapshot 1`] = `
 <DocumentFragment>
   <div
     class="ui raised segment"
   >
     <div
       class="ui huge header"
+      data-testid="ski-area-header"
     >
       <a
+        data-testid="ski-area-name"
         href="/ski-areas/ski-area-1"
       >
         Test Ski Area
@@ -18,14 +20,16 @@ exports[`test Nav Bar should match snapshot 1`] = `
       class="ui right aligned container"
     >
       <p
+        data-testid="ski-area-country"
         style="color: royalblue;"
       >
         US
       </p>
       <p
+        data-testid="ski-area-region"
         style="color: royalblue;"
       >
-        US
+        CO
       </p>
     </div>
     <div

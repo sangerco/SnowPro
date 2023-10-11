@@ -40,4 +40,17 @@ describe("test Review View", () => {
     );
     expect(asFragment()).toMatchSnapshot();
   });
+  it("should contain the correct data", () => {
+    render(
+      <Provider store={store}>
+        <BrowserRouter>
+          <ReviewView review={testReview} />
+        </BrowserRouter>
+      </Provider>
+    );
+
+    const header = screen.getByTestId("review-header");
+    // @ts-ignore
+    expect(header.textContent).toEqual("Test Review");
+  });
 });

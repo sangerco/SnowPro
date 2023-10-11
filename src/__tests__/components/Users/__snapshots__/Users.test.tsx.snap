@@ -1,3 +1,297 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`test Users should match snapshot 1`] = `<DocumentFragment />`;
+exports[`test Users should match snapshot 1`] = `
+<DocumentFragment>
+  <div>
+    <div
+      class="ui grid"
+    >
+      <div
+        class="row"
+      >
+        <div
+          class="four wide widescreen column"
+        >
+          <div
+            class="ui segment"
+            style="overflow: auto; max-height: 75vh;"
+          >
+            <div
+              class="ui card"
+              id="ski-area-card"
+            >
+               
+              <div
+                class="content"
+              >
+                <a
+                  href="/ski-areas/ski-area-1"
+                >
+                  Ski Area 1
+                </a>
+              </div>
+              <div
+                class="content"
+              >
+                <a
+                  href="/ski-areas/ski-area-1"
+                >
+                  Ski Area 1
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="eight wide column"
+        >
+          <div
+            class="ui cards"
+          >
+            <div
+              class="ui card"
+            >
+              <div
+                class="content"
+                data-testid="user"
+              >
+                <div
+                  class="ui right floated image"
+                >
+                  <img
+                    src="https://testdata.com/testavatar.jpg"
+                  />
+                </div>
+                <div
+                  class="header"
+                  data-testid="user-header"
+                >
+                  testuser
+                </div>
+                <div
+                  class="meta"
+                >
+                  Test User
+                </div>
+              </div>
+              <div
+                class="extra content"
+              >
+                <a
+                  class="ui blue button"
+                  href="/users/testuser"
+                  role="button"
+                >
+                  testuser's Profile
+                </a>
+              </div>
+            </div>
+            <div
+              class="ui card"
+            >
+              <div
+                class="content"
+                data-testid="user"
+              >
+                <div
+                  class="ui right floated image"
+                >
+                  <img
+                    src="https://testdata.com/testavatar2.jpg"
+                  />
+                </div>
+                <div
+                  class="header"
+                  data-testid="user-header"
+                >
+                  testuser2
+                </div>
+                <div
+                  class="meta"
+                >
+                  Test User2
+                </div>
+              </div>
+              <div
+                class="extra content"
+              >
+                <a
+                  class="ui blue button"
+                  href="/users/testuser2"
+                  role="button"
+                >
+                  testuser2's Profile
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="four wide column"
+        >
+          <div
+            class="ui card"
+          >
+             
+            <div
+              class="content"
+              id="review-card"
+            >
+              <div
+                class="header"
+              >
+                <a
+                  href="/ski-areas/reviews/review-1"
+                >
+                  test review
+                </a>
+                 
+                <div
+                  class="ui divider"
+                />
+                Ski Area 1
+              </div>
+              <div
+                class="description"
+              >
+                By testuser
+              </div>
+              <div
+                class="meta"
+              >
+                <div
+                  class="ui star disabled rating"
+                  role="radiogroup"
+                  tabindex="0"
+                >
+                  <i
+                    aria-checked="false"
+                    aria-posinset="1"
+                    aria-setsize="5"
+                    class="active icon"
+                    role="radio"
+                    tabindex="-1"
+                  />
+                  <i
+                    aria-checked="false"
+                    aria-posinset="2"
+                    aria-setsize="5"
+                    class="active icon"
+                    role="radio"
+                    tabindex="-1"
+                  />
+                  <i
+                    aria-checked="false"
+                    aria-posinset="3"
+                    aria-setsize="5"
+                    class="active icon"
+                    role="radio"
+                    tabindex="-1"
+                  />
+                  <i
+                    aria-checked="false"
+                    aria-posinset="4"
+                    aria-setsize="5"
+                    class="active icon"
+                    role="radio"
+                    tabindex="-1"
+                  />
+                  <i
+                    aria-checked="true"
+                    aria-posinset="5"
+                    aria-setsize="5"
+                    class="active icon"
+                    role="radio"
+                    tabindex="-1"
+                  />
+                </div>
+              </div>
+              Invalid Date
+            </div>
+          </div>
+          <div
+            class="ui card"
+          >
+             
+            <div
+              class="content"
+              id="review-card"
+            >
+              <div
+                class="header"
+              >
+                <a
+                  href="/ski-areas/reviews/review-2"
+                >
+                  test review
+                </a>
+                 
+                <div
+                  class="ui divider"
+                />
+                Ski Area 2
+              </div>
+              <div
+                class="description"
+              >
+                By testuser2
+              </div>
+              <div
+                class="meta"
+              >
+                <div
+                  class="ui star disabled rating"
+                  role="radiogroup"
+                  tabindex="0"
+                >
+                  <i
+                    aria-checked="false"
+                    aria-posinset="1"
+                    aria-setsize="5"
+                    class="active icon"
+                    role="radio"
+                    tabindex="-1"
+                  />
+                  <i
+                    aria-checked="true"
+                    aria-posinset="2"
+                    aria-setsize="5"
+                    class="active icon"
+                    role="radio"
+                    tabindex="-1"
+                  />
+                  <i
+                    aria-checked="false"
+                    aria-posinset="3"
+                    aria-setsize="5"
+                    class="icon"
+                    role="radio"
+                    tabindex="-1"
+                  />
+                  <i
+                    aria-checked="false"
+                    aria-posinset="4"
+                    aria-setsize="5"
+                    class="icon"
+                    role="radio"
+                    tabindex="-1"
+                  />
+                  <i
+                    aria-checked="false"
+                    aria-posinset="5"
+                    aria-setsize="5"
+                    class="icon"
+                    role="radio"
+                    tabindex="-1"
+                  />
+                </div>
+              </div>
+              Invalid Date
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;

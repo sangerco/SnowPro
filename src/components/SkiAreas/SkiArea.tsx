@@ -37,12 +37,18 @@ const SkiArea: React.FC<SkiAreaProps> = ({
 
   return (
     <Segment raised style={{}}>
-      <Header size="huge">
-        <Link to={`/ski-areas/${slug}`}>{name}</Link>
+      <Header size="huge" data-testid="ski-area-header">
+        <Link to={`/ski-areas/${slug}`} data-testid="ski-area-name">
+          {name}
+        </Link>
       </Header>
       <Container textAlign="right">
-        <p style={{ color: "royalblue" }}>{country}</p>
-        <p style={{ color: "royalblue" }}>{region}</p>
+        <p style={{ color: "royalblue" }} data-testid="ski-area-country">
+          {country}
+        </p>
+        <p style={{ color: "royalblue" }} data-testid="ski-area-region">
+          {region}
+        </p>
       </Container>
       <Container textAlign="right">
         <p>

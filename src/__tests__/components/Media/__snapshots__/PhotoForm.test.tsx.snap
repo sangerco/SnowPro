@@ -1,0 +1,57 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`test Photo Form matches snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="ui fluid container"
+  >
+    <form
+      class="ui form"
+      data-testid="photo-form"
+    >
+      <div
+        class="field"
+      >
+        <label
+          for="photoLink"
+        >
+          Photo Link
+        </label>
+        <input
+          id="photoLink"
+          name="link"
+          type="text"
+          value=""
+        />
+      </div>
+      <div
+        class="field"
+      >
+        <label
+          for="about"
+        >
+          About
+        </label>
+        <input
+          id="about"
+          name="about"
+          type="text"
+          value=""
+        />
+      </div>
+      <div
+        class="ui divider"
+      />
+      <button
+        class="ui green small button"
+        type="submit"
+      >
+        Send it.
+      </button>
+      <div
+        class="ui divider"
+      />
+    </form>
+  </div>
+</DocumentFragment>
+`;

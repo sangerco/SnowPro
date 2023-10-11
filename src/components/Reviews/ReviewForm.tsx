@@ -51,7 +51,6 @@ const ReviewForm: React.FC = () => {
 
   const initialReviewState: NewReviewData = {
     userId: userId!,
-    username: username!,
     skiAreaSlug: slug!,
     header: "",
     body: "",
@@ -170,7 +169,7 @@ const ReviewForm: React.FC = () => {
         <Grid.Column width={8}>
           <Segment>
             <Container fluid>
-              <Form onSubmit={handleSubmit}>
+              <Form onSubmit={handleSubmit} data-testid="review-form">
                 <Form.Field required>
                   <label>Header</label>
                   <input
@@ -219,7 +218,9 @@ const ReviewForm: React.FC = () => {
                   onChange={handleStarsDropdownChange}
                 />
                 <Divider />
-                <Button type="submit">Send it!</Button>
+                <Button type="submit" data-testid="review-button">
+                  Send it!
+                </Button>
                 <Divider />
               </Form>
             </Container>

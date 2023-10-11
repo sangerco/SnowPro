@@ -2,11 +2,15 @@
 
 exports[`test User should match snapshot 1`] = `
 <DocumentFragment>
-  <li>
+  <li
+    data-testid="user"
+  >
     <p>
       11
     </p>
-    <p>
+    <p
+      data-testid="header"
+    >
       testuser
     </p>
     <p>

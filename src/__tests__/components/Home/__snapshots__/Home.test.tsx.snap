@@ -1,0 +1,124 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`test home component matches snapshot 1`] = `
+<DocumentFragment>
+  <div
+    id="background-container"
+  >
+    <div
+      class="ui grid"
+    >
+      <div
+        class="row"
+      >
+        <div
+          class="four wide widescreen column"
+        >
+          <div
+            class="ui active transition visible dimmer"
+            style="display: flex;"
+          >
+            <div
+              class="content"
+            >
+              <div
+                class="ui text loader"
+                data-testid="loader"
+              >
+                Loading...
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="eight wide column"
+        >
+          <div
+            class="ui segment"
+          >
+            <div
+              class="ui text container"
+            >
+              <h1
+                class="ui green header"
+              >
+                Welcome to SnowPro
+              </h1>
+              <h2
+                class="ui green header"
+              >
+                Your hub for ski conditions, reviews and more!
+              </h2>
+              <div
+                class="ui divider"
+              />
+              <div
+                class="ui raised segment"
+              >
+                <h4
+                  class="ui header"
+                >
+                  <a
+                    data-testid="loginLink"
+                    href="/login"
+                  >
+                    Log In
+                  </a>
+                </h4>
+                <div
+                  class="ui divider"
+                />
+                <h4
+                  class="ui header"
+                >
+                  <a
+                    data-testid="registerLink"
+                    href="/register"
+                  >
+                    Sign Up
+                  </a>
+                </h4>
+              </div>
+              <div
+                class="ui divider"
+              />
+              <div
+                class="ui raised segment"
+              >
+                <h4
+                  class="ui header"
+                >
+                  <a
+                    data-testid="skiAreasLink"
+                    href="/ski-areas"
+                  >
+                    Find Ski Areas
+                  </a>
+                </h4>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="four wide column"
+        >
+          <div
+            class="ui active transition visible dimmer"
+            style="display: flex;"
+          >
+            <div
+              class="content"
+            >
+              <div
+                class="ui text loader"
+              >
+                Loading...
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;

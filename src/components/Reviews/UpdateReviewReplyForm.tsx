@@ -151,14 +151,20 @@ const UpdateReviewReplyForm: React.FC = () => {
           <Grid.Column width={8}>
             {" "}
             <Container fluid>
-              <Form onSubmit={handleSubmit}>
+              <Form
+                onSubmit={handleSubmit}
+                data-testid="update-review-reply-form">
                 <Form.TextArea
                   placeholder="Reply to this review"
                   name="body"
                   value={formData.body}
                   onChange={handleChange}
                 />
-                <Button size="small" color="green" type="submit">
+                <Button
+                  size="small"
+                  color="green"
+                  type="submit"
+                  data-testid="submit-button">
                   Reply
                 </Button>
               </Form>

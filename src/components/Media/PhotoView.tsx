@@ -55,9 +55,9 @@ const PhotoView: React.FC<PhotoViewProps> = ({ id }) => {
     return (
       <div>
         <Container fluid>
-          <Image src={photo.link} />
+          <Image src={photo.link} data-testid="photo" />
           <Divider />
-          <Container text>
+          <Container text data-testid="photo-about">
             <p>{photo.about}</p>
           </Container>
           <Divider />

@@ -37,8 +37,8 @@ const MessageForm: React.FC = () => {
   }
 
   const initialMessageState = {
-    sender_id: senderId,
-    recipient_id: "",
+    senderId: senderId,
+    recipientId: "",
     subject: "",
     body: "",
   };
@@ -100,7 +100,7 @@ const MessageForm: React.FC = () => {
   ) => {
     setFormData({
       ...formData,
-      recipient_id: data.value,
+      recipientId: data.value,
     });
   };
 
@@ -136,9 +136,10 @@ const MessageForm: React.FC = () => {
           </Grid.Column>
           <Grid.Column width={8}>
             <Segment raised>
-              <Form onSubmit={handleSubmit}>
+              <Form onSubmit={handleSubmit} data-testid="message-form">
                 <label>Who do you want to send this message to?</label>
                 <Dropdown
+                  data-testid="select"
                   required
                   clearable
                   multiple

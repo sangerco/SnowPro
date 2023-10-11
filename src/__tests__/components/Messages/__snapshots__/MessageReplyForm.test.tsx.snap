@@ -4,6 +4,7 @@ exports[`test Message Reply Form should match snapshot 1`] = `
 <DocumentFragment>
   <form
     class="ui form"
+    data-testid="message-reply-form"
   >
     <div
       class="field"
@@ -11,7 +12,7 @@ exports[`test Message Reply Form should match snapshot 1`] = `
       <input
         name="subject"
         placeholder="Whatcha talking about?"
-        value=""
+        value="Re: test message"
       />
     </div>
     <div
@@ -21,7 +22,11 @@ exports[`test Message Reply Form should match snapshot 1`] = `
         name="body"
         placeholder="Message"
         rows="3"
-      />
+      >
+        &gt;test message body 
+
+
+      </textarea>
     </div>
     <button
       class="ui button"

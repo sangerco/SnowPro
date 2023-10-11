@@ -43,7 +43,7 @@ const PhotoForm: React.FC = () => {
 
   return (
     <Container fluid>
-      <Form onSubmit={handleSubmit}>
+      <Form onSubmit={handleSubmit} data-testid="photo-form">
         <Form.Field>
           <label htmlFor="photoLink">Photo Link</label>
           <input
@@ -65,6 +65,9 @@ const PhotoForm: React.FC = () => {
           />
         </Form.Field>
         <Divider />
+        <Button size="small" type="submit" color="green">
+          Send it.
+        </Button>
         <Divider />
       </Form>
     </Container>

@@ -1,7 +1,7 @@
 /* eslint-disable testing-library/no-node-access */
 import React from "react";
 import MessageReplyView from "../../../components/Messages/MessageReplyView";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { store } from "../../../redux/store";
 import { BrowserRouter } from "react-router-dom";
@@ -42,5 +42,42 @@ describe("test Message Reply View", () => {
       </Provider>
     );
     expect(asFragment()).toMatchSnapshot();
+  });
+
+  it("should show a message reply view", () => {
+    render(
+      <Provider store={store}>
+        <BrowserRouter>
+          <MessageReplyView messageReply={messageReplyData} />
+        </BrowserRouter>
+      </Provider>
+    );
+
+    const messageReply = screen.getByTestId("message-reply");
+    expect(messageReply).toBeInTheDocument();
+
+    const messageReplyBody = screen.getByTestId("message-reply-body");
+    expect(messageReplyBody).toBeInTheDocument();
+
+    const deleteButton = screen.getByTestId("delete-button");
+    expect(deleteButton).toBeInTheDocument();
+  });
+
+  it("should display the delete modal", async () => {
+    render(
+      <Provider store={store}>
+        <BrowserRouter>
+          <MessageReplyView messageReply={messageReplyData} />
+        </BrowserRouter>
+      </Provider>
+    );
+
+    const deleteButton = screen.getByTestId("delete-button");
+    fireEvent.click(deleteButton);
+
+    await waitFor(() => {
+      const deleteModal = screen.getByTestId("delete-modal");
+      expect(deleteModal).toBeInTheDocument();
+    });
   });
 });

@@ -56,7 +56,7 @@ const VideoForm: React.FC = () => {
   return (
     <>
       <Container fluid style={{ margin: "10px" }}>
-        <Form onSubmit={handleSubmit}>
+        <Form onSubmit={handleSubmit} data-testid="video-form">
           <Form.Field>
             <label htmlFor="videoLink">Video Link - must be YouTube link</label>
             <input

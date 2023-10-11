@@ -73,6 +73,7 @@ const Inbox: React.FC<InboxProps> = ({ username }) => {
   if (messages.messages || messages.sentMessages) {
     return (
       <Container
+        data-testid="messages"
         style={{ backgroundColor: "white", margin: "25px", padding: "10px" }}
         fluid>
         {showSentMessages === true ? (
@@ -85,7 +86,7 @@ const Inbox: React.FC<InboxProps> = ({ username }) => {
               Show Messages
             </Button>
             <Header as="h2">Sent Messages</Header>
-            <Container>
+            <Container data-testid="sent-messages">
               <List divided relaxed style={{ marginBottom: "5px" }}>
                 {sentMessages &&
                   sentMessages.map((message: MessageData) => (
@@ -122,6 +123,7 @@ const Inbox: React.FC<InboxProps> = ({ username }) => {
         ) : (
           <>
             <Button
+              data-testid="sent-messages-button"
               floated="right"
               size="tiny"
               color="blue"
@@ -129,7 +131,7 @@ const Inbox: React.FC<InboxProps> = ({ username }) => {
               Show Sent Messages
             </Button>
             <Header as="h2">Messages</Header>
-            <Container>
+            <Container data-testid="received-messages">
               <List divided relaxed style={{ marginBottom: "5px" }}>
                 {messages.messages &&
                   messages.messages.map((message: MessageData) => (

@@ -65,3 +65,70 @@ exports[`test Nav Bar should match snapshot 1`] = `
   </a>
 </DocumentFragment>
 `;
+
+exports[`test Review View should match snapshot 1`] = `
+<DocumentFragment>
+  <a
+    class="ui container"
+    href="/ski-areas/reviews/review1"
+  >
+    <h2
+      class="ui header"
+      data-testid="review-header"
+    >
+      Test Review
+    </h2>
+    <div
+      class="ui star disabled rating"
+      role="radiogroup"
+      tabindex="0"
+    >
+      <i
+        aria-checked="false"
+        aria-posinset="1"
+        aria-setsize="5"
+        class="active icon"
+        role="radio"
+        tabindex="-1"
+      />
+      <i
+        aria-checked="false"
+        aria-posinset="2"
+        aria-setsize="5"
+        class="active icon"
+        role="radio"
+        tabindex="-1"
+      />
+      <i
+        aria-checked="true"
+        aria-posinset="3"
+        aria-setsize="5"
+        class="active icon"
+        role="radio"
+        tabindex="-1"
+      />
+      <i
+        aria-checked="false"
+        aria-posinset="4"
+        aria-setsize="5"
+        class="icon"
+        role="radio"
+        tabindex="-1"
+      />
+      <i
+        aria-checked="false"
+        aria-posinset="5"
+        aria-setsize="5"
+        class="icon"
+        role="radio"
+        tabindex="-1"
+      />
+    </div>
+    <h6
+      class="ui right aligned header"
+    >
+      October 10, 2023
+    </h6>
+  </a>
+</DocumentFragment>
+`;

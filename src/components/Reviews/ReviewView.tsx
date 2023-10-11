@@ -22,7 +22,9 @@ const ReviewView: React.FC<ReviewViewProps> = ({ review }) => {
 
   return (
     <Container as={Link} to={`/ski-areas/reviews/${review.id}`}>
-      <Header as="h2">{review.header}</Header>
+      <Header as="h2" data-testid="review-header">
+        {review.header}
+      </Header>
       <Rating icon="star" defaultRating={review.stars} maxRating={5} disabled />
       <Header as="h6" textAlign="right">
         {date}
