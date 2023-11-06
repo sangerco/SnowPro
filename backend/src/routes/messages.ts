@@ -10,7 +10,7 @@ const router = express.Router();
 
 interface MessageData {
   senderId: string;
-  recipientId: string;
+  recipientIds: string[];
   subject: string;
   body: string;
 }
@@ -31,10 +31,10 @@ router.post(
         const errors: string | string[] = validator.errors.map((e) => e.stack);
         throw new BadRequestError(errors);
       }
-      const { senderId, recipientId, subject, body }: MessageData = req.body;
+      const { senderId, recipientIds, subject, body }: MessageData = req.body;
       const message = await Message.createMessage(
         senderId,
-        recipientId,
+        recipientIds,
         subject,
         body
       );

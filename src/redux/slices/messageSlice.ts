@@ -5,7 +5,7 @@ import { MessageReplyData } from "./messageReplySlice";
 
 export interface NewMessageData {
   senderId: string;
-  recipientId: string;
+  recipientId: string[];
   subject: string;
   body: string;
 }
@@ -13,7 +13,6 @@ export interface NewMessageData {
 export interface MessageData {
   id: string;
   senderId: string;
-  recipientId: string;
   subject: string;
   body: string;
   isRead: boolean;
@@ -21,9 +20,12 @@ export interface MessageData {
   senderUsername: string;
   senderFirstName: string;
   senderLastName: string;
-  recipientUsername: string;
-  recipientFirstName: string;
-  recipientLastName: string;
+  recipients: {
+    recipientId: string;
+    recipientUsername: string;
+    recipientFirstName: string;
+    recipientLastName: string;
+  }[];
   replies?: MessageReplyData[];
 }
 interface MessageState {

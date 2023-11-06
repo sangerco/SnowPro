@@ -14,7 +14,7 @@ import {
   Divider,
   Embed,
 } from "semantic-ui-react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { RootState, AppDispatch } from "../../redux/store";
 import { fetchOneUser, deleteUser } from "../../redux/slices/userSlice";
 import Inbox from "../Messages/Inbox";
@@ -22,6 +22,7 @@ import FavMountain from "../SkiAreas/FavMountain";
 
 const UserPage: React.FC = () => {
   const auth = useSelector((state: RootState) => state.auth);
+  const navigate = useNavigate();
   const authId = auth.data?.id;
   const { username } = useParams();
   const users = useSelector((state: RootState) => state.users);
@@ -44,6 +45,7 @@ const UserPage: React.FC = () => {
   const handleDeleteUser = () => {
     if (username) {
       dispatch(deleteUser(username));
+      navigate("/");
     }
   };
 

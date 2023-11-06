@@ -38,7 +38,7 @@ const MessageForm: React.FC = () => {
 
   const initialMessageState = {
     senderId: senderId,
-    recipientId: "",
+    recipientId: [],
     subject: "",
     body: "",
   };

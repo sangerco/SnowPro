@@ -5,7 +5,6 @@ import { v4 as uuidv4 } from "uuid";
 interface MessageData {
   id: string;
   senderId: string;
-  recipientId: string;
   subject: string;
   body: string;
   createdId: Date;
@@ -13,9 +12,12 @@ interface MessageData {
   senderUsername: string;
   senderFirstName: string;
   senderLastName: string;
-  recipientUsername: string;
-  recipientFirstName: string;
-  recipientLastName: string;
+  recipients: {
+    recipientId: string;
+    recipientUsername: string;
+    recipientFirstName: string;
+    recipientLastName: string;
+  }[];
 }
 
 export interface UsernameWithId {
@@ -30,7 +32,7 @@ interface UserWithMessages extends MessageData {
 class Message {
   static async createMessage(
     senderId: string,
-    recipientId: string,
+    recipientIds: string[],
     subject: string,
     body: string
   ): Promise<MessageData> {
@@ -42,7 +44,6 @@ class Message {
             INSERT INTO messages
             (   id,
                 sender_id,
-                recipient_id,
                 subject,
                 body, 
                 created_at,
@@ -51,13 +52,22 @@ class Message {
             RETURNING
                 id,
                 sender_id AS "senderId",
-                recipient_id AS "recipientId",
                 subject,
                 body,
                 is_read AS "isRead",
                 created_at AS "createdAt"`,
-      [id, senderId, recipientId, subject, body, createdAt]
+      [id, senderId, subject, body, createdAt]
     );
+
+    for (let recipientId of recipientIds) {
+      await db.query(
+        `
+            INSERT INTO messages_recipients
+              (message_id, recipient_id)
+            VALUES ($1, $2)`,
+        [id, recipientId]
+      );
+    }
 
     const message = result.rows[0];
 
@@ -65,86 +75,172 @@ class Message {
   }
 
   static async getMessage(id: string): Promise<MessageData> {
-    const result = await db.query(
+    const messageData = await db.query(
       `SELECT 
                 m.id,
                 m.sender_id AS "senderId",
-                m.recipient_id AS "recipientId",
                 m.subject,
                 m.body,
                 m.created_at AS "createdAt",
                 m.is_read AS "isRead",
                 sender.username AS "senderUsername",
                 sender.first_name AS "senderFirstName",
-                sender.last_name AS "senderLastName",
-                recipient.username AS "recipientUsername",
-                recipient.first_name AS "recipientFirstName",
-                recipient.last_name AS "recipientLastName"              
+                sender.last_name AS "senderLastName"            
             FROM messages m
             JOIN users sender ON m.sender_id = sender.id
-            JOIN users recipient ON m.recipient_id = recipient.id
             WHERE m.id = $1
             ORDER BY created_at`,
       [id]
     );
 
-    const message = result.rows[0];
+    const message = messageData.rows[0];
 
-    return message;
+    const recipientData = await db.query(
+      `
+      SELECT 
+            u.id AS "recipientId",
+            u.username AS "recipientUsername",
+            u.first_name AS "recipientFirstName",
+            u.last_name AS "recipientLastName"
+        FROM messages_recipients mr
+        JOIN users u ON mr.recipient_id = u.id
+        WHERE mr.message_id = $1
+            `,
+      [id]
+    );
+    const recipients = recipientData.rows;
+
+    const messageWithRecipients = {
+      ...message,
+      recipients: recipients,
+    };
+
+    return messageWithRecipients;
   }
 
   static async getUsersMessages(username: string): Promise<UserWithMessages[]> {
-    const result = await db.query(
-      `SELECT 
-                m.id,
-                m.sender_id AS "senderId",
-                m.recipient_id AS "recipientId",
-                m.subject,
-                m.body,
-                m.created_at AS "createdAt",
-                m.is_read AS "isRead",
-                sender.username AS "senderUsername",
-                sender.first_name AS "senderFirstName",
-                sender.last_name AS "senderLastName",
-                recipient.username AS "recipientUsername",
-                recipient.first_name AS "recipientFirstName",
-                recipient.last_name AS "recipientLastName"              
-            FROM messages m
-            JOIN users sender ON m.sender_id = sender.id
-            JOIN users recipient ON m.recipient_id = recipient.id
-            WHERE recipient.username = $1
-            ORDER BY m.created_at`,
+    const receivedMessages = await db.query(
+      `
+      SELECT mr.message_id
+        FROM messages_recipients mr
+        JOIN users u ON u.id = mr.recipient_id
+        WHERE u.username = $1`,
       [username]
     );
 
-    return result.rows;
+    const receivedMessageIds = receivedMessages.rows.map(
+      (row) => row.message_id
+    );
+
+    const receivedMessagesWithRecipients = [];
+
+    for (let id of receivedMessageIds) {
+      const messageQuery = await db.query(
+        `SELECT 
+                  m.id,
+                  m.sender_id AS "senderId",
+                  m.subject,
+                  m.body,
+                  m.created_at AS "createdAt",
+                  m.is_read AS "isRead",
+                  sender.username AS "senderUsername",
+                  sender.first_name AS "senderFirstName",
+                  sender.last_name AS "senderLastName"            
+              FROM messages m
+              JOIN users sender ON m.sender_id = sender.id
+              WHERE m.id = $1
+              ORDER BY created_at`,
+        [id]
+      );
+
+      const message = messageQuery.rows[0];
+
+      const recipientData = await db.query(
+        `
+        SELECT 
+              u.id AS "recipientId",
+              u.username AS "recipientUsername",
+              u.first_name AS "recipientFirstName",
+              u.last_name AS "recipientLastName"
+          FROM messages_recipients mr
+          JOIN users u ON mr.recipient_id = u.id
+          WHERE mr.message_id = $1
+              `,
+        [id]
+      );
+      const recipients = recipientData.rows;
+
+      const messageWithRecipients = {
+        ...message,
+        recipients: recipients,
+      };
+
+      receivedMessagesWithRecipients.push(messageWithRecipients);
+    }
+
+    return receivedMessagesWithRecipients;
   }
 
   static async getSentMessages(username: string): Promise<UserWithMessages[]> {
-    const result = await db.query(
-      `SELECT 
-                m.id,
-                m.sender_id AS "senderId",
-                m.recipient_id AS "recipientId",
-                m.subject,
-                m.body,
-                m.created_at AS "createdAt",
-                m.is_read AS "isRead",
-                sender.username AS "senderUsername",
-                sender.first_name AS "senderFirstName",
-                sender.last_name AS "senderLastName",
-                recipient.username AS "recipientUsername",
-                recipient.first_name AS "recipientFirstName",
-                recipient.last_name AS "recipientLastName"              
-            FROM messages m
-            JOIN users sender ON m.sender_id = sender.id
-            JOIN users recipient ON m.recipient_id = recipient.id
-            WHERE sender.username = $1
-            ORDER BY m.created_at`,
+    const sentMessagesResults = await db.query(
+      `
+      SELECT m.id
+        FROM messages.m
+        JOIN users u ON u.id = m.sender_id
+        WHERE u.username = $1`,
       [username]
     );
 
-    return result.rows;
+    const sentMessageIds = sentMessagesResults.rows.map((row) => row.id);
+
+    const sentMessagesWithRecipients = [];
+
+    for (let id of sentMessageIds) {
+      const messageQuery = await db.query(
+        `SELECT 
+                  m.id,
+                  m.sender_id AS "senderId",
+                  m.subject,
+                  m.body,
+                  m.created_at AS "createdAt",
+                  m.is_read AS "isRead",
+                  sender.username AS "senderUsername",
+                  sender.first_name AS "senderFirstName",
+                  sender.last_name AS "senderLastName"            
+              FROM messages m
+              JOIN users sender ON m.sender_id = sender.id
+              WHERE m.id = $1
+              ORDER BY created_at`,
+        [id]
+      );
+
+      const message = messageQuery.rows[0];
+
+      const recipientData = await db.query(
+        `
+        SELECT 
+              u.id AS "recipientId",
+              u.username AS "recipientUsername",
+              u.first_name AS "recipientFirstName",
+              u.last_name AS "recipientLastName"
+          FROM messages_recipients mr
+          JOIN users u ON mr.recipient_id = u.id
+          WHERE mr.message_id = $1
+              `,
+        [id]
+      );
+
+      const recipients = recipientData.rows;
+
+      const messageWithRecipients = {
+        ...message,
+        recipients: recipients,
+      };
+
+      sentMessagesWithRecipients.push(messageWithRecipients);
+    }
+
+    return sentMessagesWithRecipients;
   }
 
   static async markMessageAsRead(id: string): Promise<void> {
